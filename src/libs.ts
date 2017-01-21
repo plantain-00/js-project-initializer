@@ -29,6 +29,18 @@ export function writeFile(filename: string, data: string) {
     });
 }
 
+export function appendFile(filename: string, data: string) {
+    return new Promise<void>((resolve, reject) => {
+        fs.appendFile(filename, data, error => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
 export function mkdir(dir: string) {
     return new Promise<void>((resolve, reject) => {
         mkdirp(dir, error => {

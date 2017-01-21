@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "lint": "tslint \"*.ts\""
+    "lint": "tslint \"src/*.ts\""
   },
   "repository": {
     "type": "git",
@@ -24,7 +24,9 @@
   },
   "devDependencies": {
     "@types/inquirer": "0.0.32",
+    "@types/jasmine": "2.5.41",
     "@types/mkdirp": "0.3.29",
+    "jasmine": "2.5.3",
     "tslint": "4.3.1",
     "typescript": "2.1.5"
   }
