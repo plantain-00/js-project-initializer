@@ -1,16 +1,16 @@
-[![Dependency Status](https://david-dm.org/plantain-00/js-project-initialize.svg)](https://david-dm.org/plantain-00/js-project-initialize)
-[![devDependency Status](https://david-dm.org/plantain-00/js-project-initialize/dev-status.svg)](https://david-dm.org/plantain-00/js-project-initialize#info=devDependencies)
-[![Build Status](https://travis-ci.org/plantain-00/js-project-initialize.svg?branch=master)](https://travis-ci.org/plantain-00/js-project-initialize)
-[![npm version](https://badge.fury.io/js/js-project-initialize.svg)](https://badge.fury.io/js/js-project-initialize)
-[![Downloads](https://img.shields.io/npm/dm/js-project-initialize.svg)](https://www.npmjs.com/package/js-project-initialize)
+[![Dependency Status](https://david-dm.org/plantain-00/js-project-initializer.svg)](https://david-dm.org/plantain-00/js-project-initializer)
+[![devDependency Status](https://david-dm.org/plantain-00/js-project-initializer/dev-status.svg)](https://david-dm.org/plantain-00/js-project-initializer#info=devDependencies)
+[![Build Status](https://travis-ci.org/plantain-00/js-project-initializer.svg?branch=master)](https://travis-ci.org/plantain-00/js-project-initializer)
+[![npm version](https://badge.fury.io/js/js-project-initializer.svg)](https://badge.fury.io/js/js-project-initializer)
+[![Downloads](https://img.shields.io/npm/dm/js-project-initializer.svg)](https://www.npmjs.com/package/js-project-initializer)
 
 # js-project-initializer
 An tool to initialize a nodejs project or frontend project.
 
 #### install
 
-`npm i js-project-initialize -g`
+`npm i js-project-initializer -g`
 
 #### usage
 
-run `js-project-initialize`
+run `js-project-initializer`
