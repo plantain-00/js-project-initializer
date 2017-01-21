@@ -1,0 +1,31 @@
+{
+  "name": "js-project-initializer",
+  "version": "1.0.0",
+  "description": "An tool to initialize a nodejs project or frontend project.",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "lint": "tslint \"*.ts\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plantain-00/js-project-initializer.git"
+  },
+  "author": "York Yao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/plantain-00/js-project-initializer/issues"
+  },
+  "homepage": "https://github.com/plantain-00/js-project-initializer#readme",
+  "dependencies": {
+    "inquirer": "2.0.0",
+    "mkdirp": "0.5.1",
+    "tslib": "1.5.0"
+  },
+  "devDependencies": {
+    "@types/inquirer": "0.0.32",
+    "@types/mkdirp": "0.3.29",
+    "tslint": "4.3.1",
+    "typescript": "2.1.5"
+  }
+}
