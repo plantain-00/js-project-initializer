@@ -150,4 +150,4 @@ module.exports = {
 };`;
 
 export const cli = `#!/usr/bin/env node
-require("../dist/index.js").executeCommandLine();`;
+require("../dist/index.js");`;
