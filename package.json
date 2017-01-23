@@ -1,6 +1,6 @@
 {
   "name": "js-project-initializer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "An tool to initialize a nodejs project or frontend project.",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,7 @@
   "author": "York Yao",
   "license": "MIT",
   "bin": {
-    "js-project-initialize": "bin/js-project-initialize.js"
+    "js-project-initialize": "bin/js-project-initialize"
   },
   "bugs": {
     "url": "https://github.com/plantain-00/js-project-initializer/issues"
