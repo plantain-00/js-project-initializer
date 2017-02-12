@@ -4,5 +4,5 @@ tslint.json
 tsconfig.json
 webpack.config.js
 src
-rev-static.config.json
+rev-static.config.js
 spec

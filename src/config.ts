@@ -65,7 +65,7 @@ tslint.json
 tsconfig.json
 webpack.config.js
 src
-rev-static.config.json
+rev-static.config.js
 spec`;
 
 export const travis = `language: node_js
@@ -94,22 +94,22 @@ export const badge = `[![Dependency Status](https://david-dm.org/plantain-00/rep
 [![npm version](https://badge.fury.io/js/repository-name.svg)](https://badge.fury.io/js/repository-name)
 [![Downloads](https://img.shields.io/npm/dm/repository-name.svg)](https://www.npmjs.com/package/repository-name)`;
 
-export const revStatic = `{
-    "inputFiles": [
+export const revStatic = `module.exports = {
+    inputFiles: [
         "demo/foo.js",
         "demo/bar.css",
-        "demo/baz.ejs.html",
-        "demo/qux.ejs.html"
+        "demo/*.ejs.html",
     ],
-    "outputFiles": [
-        "demo/baz.html",
-        "demo/qux.html"
-    ],
-    "json": false,
-    "ejsOptions": {
-        "rmWhitespace": true
+    outputFiles: file => file.replace(".ejs", ""),
+    json: false,
+    ejsOptions: {
+        rmWhitespace: true
     },
-    "sha": 256
+    sha: 256,
+    customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + "-" + md5String + extensionName,
+    noOutputFiles: [
+        "demo/worker.js",
+    ],
 }`;
 
 export const webpack = `const webpack = require("webpack");
