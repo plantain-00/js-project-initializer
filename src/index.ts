@@ -84,8 +84,8 @@ async function run() {
     if (options.find(o => o === revStaticChoice)) {
         console.log("installing rev-static...");
         await libs.exec(`npm i -DE ${registry} rev-static`);
-        console.log("setting rev-static.config.js...");
-        await libs.writeFile("rev-static.config.js", config.revStatic);
+        console.log("init rev-static...");
+        await libs.exec("./node_modules/.bin/rev-static init");
     }
 
     if (options.find(o => o === webpackChoice)) {

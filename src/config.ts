@@ -94,24 +94,6 @@ export const badge = `[![Dependency Status](https://david-dm.org/plantain-00/rep
 [![npm version](https://badge.fury.io/js/repository-name.svg)](https://badge.fury.io/js/repository-name)
 [![Downloads](https://img.shields.io/npm/dm/repository-name.svg)](https://www.npmjs.com/package/repository-name)`;
 
-export const revStatic = `module.exports = {
-    inputFiles: [
-        "demo/foo.js",
-        "demo/bar.css",
-        "demo/*.ejs.html",
-    ],
-    outputFiles: file => file.replace(".ejs", ""),
-    json: false,
-    ejsOptions: {
-        rmWhitespace: true
-    },
-    sha: 256,
-    customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + "-" + md5String + extensionName,
-    noOutputFiles: [
-        "demo/worker.js",
-    ],
-}`;
-
 export const webpack = `const webpack = require("webpack");
 
 module.exports = {
