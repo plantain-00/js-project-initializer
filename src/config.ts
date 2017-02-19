@@ -95,6 +95,7 @@ export const badge = `[![Dependency Status](https://david-dm.org/plantain-00/rep
 [![Downloads](https://img.shields.io/npm/dm/repository-name.svg)](https://www.npmjs.com/package/repository-name)`;
 
 export const webpack = `const webpack = require("webpack");
+const path = require("path");
 
 module.exports = {
     entry: {
@@ -102,7 +103,8 @@ module.exports = {
         vendor: "./vendor"
     },
     output: {
-        filename: "[name].bundle.js"
+        path: path.join(__dirname, "static/"),
+        filename: "[name].js"
     },
     plugins: [
         new webpack.DefinePlugin({
@@ -110,8 +112,7 @@ module.exports = {
                 "NODE_ENV": JSON.stringify("production")
             }
         }),
-        new webpack.NoErrorsPlugin(),
-        new webpack.optimize.DedupePlugin(),
+        new webpack.NoEmitOnErrorsPlugin(),
         new webpack.optimize.UglifyJsPlugin({
             compress: {
                 warnings: false,
