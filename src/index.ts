@@ -11,6 +11,16 @@ const revStaticChoice = "7. rev-static";
 const webpackChoice = "8. webpack";
 const taobaoRegistryChoice = "9. taobao registry";
 const cliChoice = "10. CLI";
+const babelChoice = "11. babel";
+const eslintChoice = "12. eslint";
+const standardLintChoice = "13. standard lint";
+const flowTypeChoice = "14. flow type";
+const lessChoice = "15. less";
+const stylelintChoice = "16. stylelint";
+const vueChoice = "17. vue";
+const reactChoice = "18. react";
+const angularChoice = "19. angular";
+const cleanCssCli = "20. clean-css-cli";
 
 async function run() {
     const answer = await libs.inquirer.prompt({
@@ -37,6 +47,16 @@ async function run() {
             webpackChoice,
             taobaoRegistryChoice,
             cliChoice,
+            babelChoice,
+            eslintChoice,
+            standardLintChoice,
+            flowTypeChoice,
+            lessChoice,
+            stylelintChoice,
+            vueChoice,
+            reactChoice,
+            angularChoice,
+            cleanCssCli,
         ],
     });
     const options: string[] = answer["options"];
@@ -99,6 +119,62 @@ async function run() {
         console.log("setting cli...");
         await libs.mkdir("bin");
         await libs.writeFile("bin/cli-name", config.cli);
+    }
+
+    if (options.find(o => o === babelChoice)) {
+        console.log("installing babel...");
+        await libs.exec(`npm i -DE ${registry} babel-cli babel-preset-env`);
+        console.log("setting .babelrc...");
+        await libs.writeFile(".babelrc", config.tslint);
+    }
+
+    if (options.find(o => o === eslintChoice)) {
+        console.log("installing eslint...");
+        await libs.exec(`npm i -DE ${registry} eslint`);
+        console.log("init eslint...");
+        await libs.exec("./node_modules/.bin/eslint --init");
+    }
+
+    if (options.find(o => o === standardLintChoice)) {
+        console.log("installing standard lint...");
+        await libs.exec(`npm i -DE ${registry} standard`);
+    }
+
+    if (options.find(o => o === flowTypeChoice)) {
+        console.log("installing flow type...");
+        await libs.exec(`npm i -DE ${registry} flow-bin`);
+    }
+
+    if (options.find(o => o === lessChoice)) {
+        console.log("installing less...");
+        await libs.exec(`npm i -DE ${registry} less`);
+    }
+
+    if (options.find(o => o === stylelintChoice)) {
+        console.log("installing stylelint...");
+        await libs.exec(`npm i -DE ${registry} stylelint stylelint-config-standard`);
+        console.log("setting .stylelintrc...");
+        await libs.writeFile(".stylelintrc", config.stylelint);
+    }
+
+    if (options.find(o => o === vueChoice)) {
+        console.log("installing vue...");
+        await libs.exec(`npm i -DE ${registry} vue vue-class-component`);
+    }
+
+    if (options.find(o => o === reactChoice)) {
+        console.log("installing react...");
+        await libs.exec(`npm i -DE ${registry} react react-dom`);
+    }
+
+    if (options.find(o => o === angularChoice)) {
+        console.log("installing angular...");
+        await libs.exec(`npm i -DE ${registry} @angular/common @angular/compiler @angular/core @angular/forms @angular/platform-browser @angular/platform-browser-dynamic core-js rxjs zone.js`);
+    }
+
+    if (options.find(o => o === cleanCssCli)) {
+        console.log("installing clean-css-cli...");
+        await libs.exec(`npm i -DE ${registry} clean-css-cli`);
     }
 
     console.log("success.");

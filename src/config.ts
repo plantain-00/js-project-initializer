@@ -134,3 +134,11 @@ module.exports = {
 
 export const cli = `#!/usr/bin/env node
 require("../dist/index.js");`;
+
+export const babel = `{
+  "presets": ["env"]
+}`;
+
+export const stylelint = `{
+  "extends": "stylelint-config-standard"
+}`;
