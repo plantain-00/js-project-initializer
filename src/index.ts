@@ -21,6 +21,7 @@ const vueChoice = "17. vue";
 const reactChoice = "18. react";
 const angularChoice = "19. angular";
 const cleanCssCli = "20. clean-css-cli";
+const htmlMinifier = "21. html-minifier";
 
 async function run() {
     const answer = await libs.inquirer.prompt({
@@ -57,6 +58,7 @@ async function run() {
             reactChoice,
             angularChoice,
             cleanCssCli,
+            htmlMinifier,
         ],
     });
     const options: string[] = answer["options"];
@@ -175,6 +177,11 @@ async function run() {
     if (options.find(o => o === cleanCssCli)) {
         console.log("installing clean-css-cli...");
         await libs.exec(`npm i -DE ${registry} clean-css-cli`);
+    }
+
+    if (options.find(o => o === htmlMinifier)) {
+        console.log("installing html-minifier...");
+        await libs.exec(`npm i -DE ${registry} html-minifier`);
     }
 
     console.log("success.");
