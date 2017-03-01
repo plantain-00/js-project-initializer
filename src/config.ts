@@ -13,7 +13,8 @@ export const tsconfig = `{
         "jsx": "react",
         "outDir": "./dist",
         "declaration": true,
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true
     }
 }`;
 

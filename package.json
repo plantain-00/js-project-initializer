@@ -21,16 +21,16 @@
   },
   "homepage": "https://github.com/plantain-00/js-project-initializer#readme",
   "dependencies": {
-    "inquirer": "3.0.1",
+    "inquirer": "3.0.5",
     "mkdirp": "0.5.1",
-    "tslib": "1.5.0"
+    "tslib": "1.6.0"
   },
   "devDependencies": {
     "@types/inquirer": "0.0.32",
-    "@types/jasmine": "2.5.41",
+    "@types/jasmine": "2.5.43",
     "@types/mkdirp": "0.3.29",
     "jasmine": "2.5.3",
-    "tslint": "4.4.2",
-    "typescript": "2.1.5"
+    "tslint": "4.5.1",
+    "typescript": "2.2.1"
   }
 }
