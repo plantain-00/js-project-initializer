@@ -1,6 +1,6 @@
 {
   "name": "js-project-initializer",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "An tool to initialize a nodejs project or frontend project.",
   "main": "index.js",
   "scripts": {

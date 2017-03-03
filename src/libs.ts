@@ -29,6 +29,18 @@ export function writeFile(filename: string, data: string) {
     });
 }
 
+export function readFile(filename: string) {
+    return new Promise<string>((resolve, reject) => {
+        fs.readFile(filename, "utf8", (error, data) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(data);
+            }
+        });
+    });
+}
+
 export function appendFile(filename: string, data: string) {
     return new Promise<void>((resolve, reject) => {
         fs.appendFile(filename, data, error => {

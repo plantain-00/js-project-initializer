@@ -24,6 +24,18 @@ const cleanCssCli = "20. clean-css-cli";
 const htmlMinifier = "21. html-minifier";
 
 async function run() {
+    const packages = await libs.readFile("package.json");
+    const packageJson = JSON.parse(packages);
+    const repositoryName: string = packageJson.name;
+
+    const authorAnswer = await libs.inquirer.prompt({
+        type: "input",
+        name: "author",
+        message: "Input author:",
+        default: packageJson.author || "plantain-00",
+    });
+    const author: string = authorAnswer.author;
+
     const answer = await libs.inquirer.prompt({
         type: "checkbox",
         name: "options",
@@ -62,9 +74,9 @@ async function run() {
         ],
     });
     const options: string[] = answer["options"];
-    const registry = options.find(o => o === taobaoRegistryChoice) ? "--registry=https://registry.npm.taobao.org" : "";
+    const registry = options.some(o => o === taobaoRegistryChoice) ? "--registry=https://registry.npm.taobao.org" : "";
 
-    if (options.find(o => o === typescriptChoice)) {
+    if (options.some(o => o === typescriptChoice)) {
         console.log("installing typescript...");
         await libs.exec(`npm i -DE ${registry} typescript`);
         console.log("setting tsconfig.json...");
@@ -74,112 +86,114 @@ async function run() {
         await libs.writeFile(".vscode/settings.json", config.tssdk);
     }
 
-    if (options.find(o => o === tslintChoice)) {
+    if (options.some(o => o === tslintChoice)) {
         console.log("installing tslint...");
         await libs.exec(`npm i -DE ${registry} tslint`);
         console.log("setting tslint.json...");
         await libs.writeFile("tslint.json", config.tslint);
     }
 
-    if (options.find(o => o === npmignoreChoice)) {
+    const hasNpm = options.some(o => o === npmignoreChoice);
+    if (hasNpm) {
         console.log("setting .npmignore...");
         await libs.writeFile(".npmignore", config.npmignore);
     }
 
-    if (options.find(o => o === travisCIChoice)) {
+    const hasTravis = options.some(o => o === travisCIChoice);
+    if (hasTravis) {
         console.log("setting .travis.yml...");
         await libs.writeFile(".travis.yml", config.travis);
     }
 
-    if (options.find(o => o === badgeChoice)) {
+    if (options.some(o => o === badgeChoice)) {
         console.log("setting badges...");
-        await libs.appendFile("README.md", config.badge);
+        await libs.appendFile("README.md", config.getBadge(repositoryName, author, hasTravis, hasNpm));
     }
 
-    if (options.find(o => o === jasmineChoice)) {
+    if (options.some(o => o === jasmineChoice)) {
         console.log("installing jasmine...");
         await libs.exec(`npm i -DE ${registry} jasmine @types/jasmine`);
         console.log("init jasmine...");
         await libs.exec("./node_modules/.bin/jasmine init");
     }
 
-    if (options.find(o => o === revStaticChoice)) {
+    if (options.some(o => o === revStaticChoice)) {
         console.log("installing rev-static...");
         await libs.exec(`npm i -DE ${registry} rev-static`);
         console.log("init rev-static...");
         await libs.exec("./node_modules/.bin/rev-static init");
     }
 
-    if (options.find(o => o === webpackChoice)) {
+    if (options.some(o => o === webpackChoice)) {
         console.log("installing webpack...");
         await libs.exec(`npm i -DE ${registry} webpack`);
         console.log("setting webpack.config.js...");
         await libs.writeFile("webpack.config.js", config.webpack);
     }
 
-    if (options.find(o => o === cliChoice)) {
+    if (options.some(o => o === cliChoice)) {
         console.log("setting cli...");
         await libs.mkdir("bin");
         await libs.writeFile("bin/cli-name", config.cli);
     }
 
-    if (options.find(o => o === babelChoice)) {
+    if (options.some(o => o === babelChoice)) {
         console.log("installing babel...");
         await libs.exec(`npm i -DE ${registry} babel-cli babel-preset-env`);
         console.log("setting .babelrc...");
         await libs.writeFile(".babelrc", config.tslint);
     }
 
-    if (options.find(o => o === eslintChoice)) {
+    if (options.some(o => o === eslintChoice)) {
         console.log("installing eslint...");
         await libs.exec(`npm i -DE ${registry} eslint`);
         console.log("init eslint...");
         await libs.exec("./node_modules/.bin/eslint --init");
     }
 
-    if (options.find(o => o === standardLintChoice)) {
+    if (options.some(o => o === standardLintChoice)) {
         console.log("installing standard lint...");
         await libs.exec(`npm i -DE ${registry} standard`);
     }
 
-    if (options.find(o => o === flowTypeChoice)) {
+    if (options.some(o => o === flowTypeChoice)) {
         console.log("installing flow type...");
         await libs.exec(`npm i -DE ${registry} flow-bin`);
     }
 
-    if (options.find(o => o === lessChoice)) {
+    if (options.some(o => o === lessChoice)) {
         console.log("installing less...");
         await libs.exec(`npm i -DE ${registry} less`);
     }
 
-    if (options.find(o => o === stylelintChoice)) {
+    if (options.some(o => o === stylelintChoice)) {
         console.log("installing stylelint...");
         await libs.exec(`npm i -DE ${registry} stylelint stylelint-config-standard`);
         console.log("setting .stylelintrc...");
         await libs.writeFile(".stylelintrc", config.stylelint);
     }
 
-    if (options.find(o => o === vueChoice)) {
+    if (options.some(o => o === vueChoice)) {
         console.log("installing vue...");
         await libs.exec(`npm i -DE ${registry} vue vue-class-component`);
     }
 
-    if (options.find(o => o === reactChoice)) {
+    if (options.some(o => o === reactChoice)) {
         console.log("installing react...");
         await libs.exec(`npm i -DE ${registry} react react-dom`);
     }
 
-    if (options.find(o => o === angularChoice)) {
+    if (options.some(o => o === angularChoice)) {
         console.log("installing angular...");
         await libs.exec(`npm i -DE ${registry} @angular/common @angular/compiler @angular/core @angular/forms @angular/platform-browser @angular/platform-browser-dynamic core-js rxjs zone.js`);
     }
 
-    if (options.find(o => o === cleanCssCli)) {
+    if (options.some(o => o === cleanCssCli)) {
         console.log("installing clean-css-cli...");
         await libs.exec(`npm i -DE ${registry} clean-css-cli`);
     }
 
-    if (options.find(o => o === htmlMinifier)) {
+    if (options.some(o => o === htmlMinifier)) {
         console.log("installing html-minifier...");
         await libs.exec(`npm i -DE ${registry} html-minifier`);
     }

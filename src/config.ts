@@ -89,11 +89,20 @@ addons:
     packages:
       - g++-4.8`;
 
-export const badge = `[![Dependency Status](https://david-dm.org/plantain-00/repository-name.svg)](https://david-dm.org/plantain-00/repository-name)
-[![devDependency Status](https://david-dm.org/plantain-00/repository-name/dev-status.svg)](https://david-dm.org/plantain-00/repository-name#info=devDependencies)
-[![Build Status](https://travis-ci.org/plantain-00/repository-name.svg?branch=master)](https://travis-ci.org/plantain-00/repository-name)
-[![npm version](https://badge.fury.io/js/repository-name.svg)](https://badge.fury.io/js/repository-name)
-[![Downloads](https://img.shields.io/npm/dm/repository-name.svg)](https://www.npmjs.com/package/repository-name)`;
+export function getBadge(repositoryName: string, author: string, hasTravis: boolean, hasNpm: boolean) {
+    let result = `[![Dependency Status](https://david-dm.org/${author}/${repositoryName}.svg)](https://david-dm.org/${author}/${repositoryName})
+[![devDependency Status](https://david-dm.org/${author}/${repositoryName}/dev-status.svg)](https://david-dm.org/${author}/${repositoryName}#info=devDependencies)`;
+    if (hasTravis) {
+        result += `
+[![Build Status](https://travis-ci.org/${author}/${repositoryName}.svg?branch=master)](https://travis-ci.org/${author}/${repositoryName})`;
+    }
+    if (hasNpm) {
+        result += `
+[![npm version](https://badge.fury.io/js/${repositoryName}.svg)](https://badge.fury.io/js/${repositoryName})
+[![Downloads](https://img.shields.io/npm/dm/${repositoryName}.svg)](https://www.npmjs.com/package/${repositoryName})`;
+    }
+    return result;
+}
 
 export const webpack = `const webpack = require("webpack");
 const path = require("path");
