@@ -79,6 +79,8 @@ async function run() {
     if (options.some(o => o === typescriptChoice)) {
         console.log("installing typescript...");
         await libs.exec(`npm i -DE ${registry} typescript`);
+        console.log("installing tslib...");
+        await libs.exec(`npm i -SE ${registry} tslib`);
         console.log("setting tsconfig.json...");
         await libs.writeFile("tsconfig.json", config.tsconfig);
         console.log("setting tssdk...");
