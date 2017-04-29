@@ -1,15 +1,13 @@
 export const tsconfig = `{
     "compilerOptions": {
         "target": "es5",
-        "module": "commonjs",
-
         "outDir": "./dist",
-        "declaration": false,
+        "declaration": true,
 
+        "module": "commonjs",
         "strict": true,
         "noUnusedLocals": true,
         "noImplicitReturns": true,
-
         "skipLibCheck": true,
         "importHelpers": true,
         "jsx": "react",
