@@ -2,17 +2,17 @@ export const tsconfig = `{
     "compilerOptions": {
         "target": "es5",
         "module": "commonjs",
-        "noImplicitAny": true,
-        "sourceMap": true,
+
+        "outDir": "./dist",
+        "declaration": false,
+
+        "strict": true,
         "noUnusedLocals": true,
-        "noImplicitThis": true,
-        "strictNullChecks": true,
         "noImplicitReturns": true,
+
         "skipLibCheck": true,
         "importHelpers": true,
         "jsx": "react",
-        "outDir": "./dist",
-        "declaration": true,
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true
     }

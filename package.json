@@ -1,11 +1,12 @@
 {
   "name": "js-project-initializer",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "An tool to initialize a nodejs project or frontend project.",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "lint": "tslint \"src/*.ts\""
+    "build": "npm run clean && tsc",
+    "lint": "tslint \"src/*.ts\"",
+    "clean": "rimraf dist/"
   },
   "repository": {
     "type": "git",
@@ -30,7 +31,8 @@
     "@types/jasmine": "2.5.47",
     "@types/mkdirp": "0.3.29",
     "jasmine": "2.5.3",
+    "rimraf": "2.6.1",
     "tslint": "5.0.0",
-    "typescript": "2.2.2"
+    "typescript": "2.3.2"
   }
 }
