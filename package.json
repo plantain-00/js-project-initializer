@@ -4,7 +4,7 @@
   "description": "A tool to initialize a nodejs project or frontend project.",
   "main": "index.js",
   "scripts": {
-    "build": "npm run clean && tsc",
+    "build": "npm run clean && tsc -p src",
     "lint": "tslint \"src/*.ts\"",
     "clean": "rimraf dist/"
   },
