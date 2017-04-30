@@ -1,8 +1,25 @@
 export const tsconfig = `{
     "compilerOptions": {
         "target": "es5",
-        "outDir": "./dist",
+        "outDir": "../dist",
         "declaration": true,
+
+        "module": "commonjs",
+        "strict": true,
+        "noUnusedLocals": true,
+        "noImplicitReturns": true,
+        "skipLibCheck": true,
+        "importHelpers": true,
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true
+    }
+}`;
+
+export const jasmineTsconfig = `{
+    "compilerOptions": {
+        "target": "es5",
+        "declaration": false,
 
         "module": "commonjs",
         "strict": true,
