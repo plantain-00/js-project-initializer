@@ -1,30 +1,38 @@
 import * as libs from "./libs";
 import * as config from "./config";
 
-const typescriptChoice = "1. typescript";
-const tslintChoice = "2. tslint";
-const npmignoreChoice = "3. .npmignore";
-const travisCIChoice = "4. travis CI";
-const badgeChoice = "5. badge";
-const jasmineChoice = "6. jasmine";
-const revStaticChoice = "7. rev-static";
-const webpackChoice = "8. webpack";
-const taobaoRegistryChoice = "9. taobao registry";
-const cliChoice = "10. CLI";
-const babelChoice = "11. babel";
-const eslintChoice = "12. eslint";
-const standardLintChoice = "13. standard lint";
-const flowTypeChoice = "14. flow type";
-const lessChoice = "15. less";
-const stylelintChoice = "16. stylelint";
-const vueChoice = "17. vue";
-const reactChoice = "18. react";
-const angularChoice = "19. angular";
-const cleanCssCliChoice = "20. clean-css-cli";
-const htmlMinifierChoice = "21. html-minifier";
-const rimrafChoice = "22. rimraf";
-const image2base64Choice = "23. image2base64-cli";
-const file2variableChoice = "24. file2variable-cli";
+const typescriptChoice = "transform: typescript";
+const flowTypeChoice = "transform: flow type";
+const babelChoice = "transform: babel";
+const lessChoice = "transform: less";
+
+const tslintChoice = "lint: tslint";
+const eslintChoice = "lint: eslint";
+const standardLintChoice = "lint: standard";
+const stylelintChoice = "lint: stylelint";
+
+const npmignoreChoice = "npm: .npmignore";
+const taobaoRegistryChoice = "npm: taobao registry";
+const cliChoice = "npm: CLI";
+
+const travisCIChoice = "CI: travis CI";
+
+const badgeChoice = "doc: badge";
+
+const jasmineChoice = "test: jasmine";
+
+const webpackChoice = "bundle: webpack";
+
+const vueChoice = "UI: vue";
+const reactChoice = "UI: react";
+const angularChoice = "UI: angular";
+
+const rimrafChoice = "script: rimraf";
+const revStaticChoice = "script: rev-static";
+const cleanCssCliChoice = "script: clean-css-cli";
+const htmlMinifierChoice = "script: html-minifier";
+const image2base64Choice = "script: image2base64-cli";
+const file2variableChoice = "script: file2variable-cli";
 
 async function run() {
     const packages = await libs.readFile("package.json");
@@ -61,27 +69,27 @@ async function run() {
         ],
         choices: [
             typescriptChoice,
+            flowTypeChoice,
+            babelChoice,
+            lessChoice,
             tslintChoice,
+            eslintChoice,
+            standardLintChoice,
+            stylelintChoice,
             npmignoreChoice,
+            taobaoRegistryChoice,
+            cliChoice,
             travisCIChoice,
             badgeChoice,
             jasmineChoice,
-            revStaticChoice,
             webpackChoice,
-            taobaoRegistryChoice,
-            cliChoice,
-            babelChoice,
-            eslintChoice,
-            standardLintChoice,
-            flowTypeChoice,
-            lessChoice,
-            stylelintChoice,
             vueChoice,
             reactChoice,
             angularChoice,
+            rimrafChoice,
+            revStaticChoice,
             cleanCssCliChoice,
             htmlMinifierChoice,
-            rimrafChoice,
             image2base64Choice,
             file2variableChoice,
         ],
