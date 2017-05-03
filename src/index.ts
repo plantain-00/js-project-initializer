@@ -28,6 +28,8 @@ const reactChoice = "UI: react";
 const angularChoice = "UI: angular";
 
 const rimrafChoice = "script: rimraf";
+const cpyChoice = "script: cpy-cli";
+const mkdirpChoice = "script: mkdirp";
 const revStaticChoice = "script: rev-static";
 const cleanCssCliChoice = "script: clean-css-cli";
 const htmlMinifierChoice = "script: html-minifier";
@@ -87,6 +89,8 @@ async function run() {
             reactChoice,
             angularChoice,
             rimrafChoice,
+            cpyChoice,
+            mkdirpChoice,
             revStaticChoice,
             cleanCssCliChoice,
             htmlMinifierChoice,
@@ -272,6 +276,18 @@ async function run() {
         console.log("installing file2variable-cli...");
         await libs.exec(`npm i -DE ${registry} file2variable-cli`);
         packageJson.scripts.file2variable = "file2variable-cli src/index.html -o src/variables.ts";
+    }
+
+    if (options.some(o => o === cpyChoice)) {
+        console.log("installing cpy-cli...");
+        await libs.exec(`npm i -DE ${registry} cpy-cli`);
+        packageJson.scripts.cpy = "cpy src/index.html dist/";
+    }
+
+    if (options.some(o => o === mkdirpChoice)) {
+        console.log("installing mkdirp...");
+        await libs.exec(`npm i -DE ${registry} mkdirp`);
+        packageJson.scripts.cpy = "mkdirp foo/bar";
     }
 
     packageJson.scripts.build = buildScripts.join(" && ");
