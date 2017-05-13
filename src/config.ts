@@ -119,6 +119,15 @@ export function getBadge(repositoryName: string, author: string, hasTravis: bool
     return result;
 }
 
+export const gitIgnore = `
+# Custom
+.vscode
+dist
+demo/**/*.js
+demo/**/index.html
+!*.config.js
+`;
+
 export const webpack = `const webpack = require("webpack");
 const path = require("path");
 

@@ -15,6 +15,8 @@ const npmignoreChoice = "npm: .npmignore";
 const taobaoRegistryChoice = "npm: taobao registry";
 const cliChoice = "npm: CLI";
 
+const gitIgnoreChoice = "git: ignore";
+
 const travisCIChoice = "CI: travis CI";
 
 const badgeChoice = "doc: badge";
@@ -68,6 +70,7 @@ async function run() {
             jasmineChoice,
             taobaoRegistryChoice,
             rimrafChoice,
+            gitIgnoreChoice,
         ],
         choices: [
             typescriptChoice,
@@ -81,6 +84,7 @@ async function run() {
             npmignoreChoice,
             taobaoRegistryChoice,
             cliChoice,
+            gitIgnoreChoice,
             travisCIChoice,
             badgeChoice,
             jasmineChoice,
@@ -131,6 +135,11 @@ async function run() {
     if (hasNpm) {
         console.log("setting .npmignore...");
         await libs.writeFile(".npmignore", config.npmignore);
+    }
+
+    if (options.some(o => o === gitIgnoreChoice)) {
+        console.log("setting .gitignore...");
+        await libs.appendFile(".gitignore", config.gitIgnore);
     }
 
     const hasTravis = options.some(o => o === travisCIChoice);
