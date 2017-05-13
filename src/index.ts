@@ -37,15 +37,15 @@ const image2base64Choice = "script: image2base64-cli";
 const file2variableChoice = "script: file2variable-cli";
 
 async function run() {
-    const packages = await libs.readFile("package.json");
-    const packageJson: {
+    let packages = await libs.readFile("package.json");
+    let packageJson: {
         name: string;
         author: string;
         scripts: { [key: string]: string };
     } = JSON.parse(packages);
     const repositoryName = packageJson.name;
 
-    packageJson.scripts = {};
+    const scripts: { [name: string]: string } = {};
 
     const authorAnswer = await libs.inquirer.prompt({
         type: "input",
@@ -114,7 +114,7 @@ async function run() {
         console.log("setting tssdk...");
         await libs.mkdir(".vscode");
         await libs.writeFile(".vscode/settings.json", config.tssdk);
-        packageJson.scripts.tsc = "tsc -p src";
+        scripts.tsc = "tsc -p src";
         buildScripts.push("npm run tsc");
     }
 
@@ -123,7 +123,7 @@ async function run() {
         await libs.exec(`npm i -DE ${registry} tslint`);
         console.log("setting tslint.json...");
         await libs.writeFile("tslint.json", config.tslint);
-        packageJson.scripts.tslint = "tslint \"src/**/*.ts\" \"src/**/*.tsx\"";
+        scripts.tslint = "tslint \"src/**/*.ts\" \"src/**/*.tsx\"";
         lintScripts.push("npm run tslint");
     }
 
@@ -156,9 +156,9 @@ async function run() {
         if (options.some(o => o === typescriptChoice)) {
             console.log("setting spec/tsconfig.json...");
             await libs.writeFile("spec/tsconfig.json", config.jasmineTsconfig);
-            packageJson.scripts.test = "tsc -p spec && jasmine";
+            scripts.test = "tsc -p spec && jasmine";
         } else {
-            packageJson.scripts.test = "jasmine";
+            scripts.test = "jasmine";
         }
     }
 
@@ -167,7 +167,7 @@ async function run() {
         await libs.exec(`npm i -DE ${registry} rev-static`);
         console.log("init rev-static...");
         await libs.exec("./node_modules/.bin/rev-static init");
-        packageJson.scripts["rev-static"] = "rev-static --config rev-static.config.js";
+        scripts["rev-static"] = "rev-static --config rev-static.config.js";
     }
 
     if (options.some(o => o === webpackChoice)) {
@@ -175,7 +175,7 @@ async function run() {
         await libs.exec(`npm i -DE ${registry} webpack`);
         console.log("setting webpack.config.js...");
         await libs.writeFile("webpack.config.js", config.webpack);
-        packageJson.scripts.webpack = "webpack --config webpack.config.js";
+        scripts.webpack = "webpack --config webpack.config.js";
     }
 
     if (options.some(o => o === cliChoice)) {
@@ -189,7 +189,7 @@ async function run() {
         await libs.exec(`npm i -DE ${registry} babel-cli babel-preset-env`);
         console.log("setting .babelrc...");
         await libs.writeFile(".babelrc", config.tslint);
-        packageJson.scripts.babel = "babel src";
+        scripts.babel = "babel src";
         buildScripts.push("npm run babel");
     }
 
@@ -198,28 +198,28 @@ async function run() {
         await libs.exec(`npm i -DE ${registry} eslint`);
         console.log("init eslint...");
         await libs.exec("./node_modules/.bin/eslint --init");
-        packageJson.scripts.eslint = "eslint \"src/**/*.js\"";
+        scripts.eslint = "eslint \"src/**/*.js\"";
         lintScripts.push("npm run eslint");
     }
 
     if (options.some(o => o === standardLintChoice)) {
         console.log("installing standard lint...");
         await libs.exec(`npm i -DE ${registry} standard`);
-        packageJson.scripts.standard = "standard \"src/**/*.js\"";
+        scripts.standard = "standard \"src/**/*.js\"";
         lintScripts.push("npm run standard");
     }
 
     if (options.some(o => o === flowTypeChoice)) {
         console.log("installing flow type...");
         await libs.exec(`npm i -DE ${registry} flow-bin`);
-        packageJson.scripts.flow = "flow";
+        scripts.flow = "flow";
         lintScripts.push("npm run flow");
     }
 
     if (options.some(o => o === lessChoice)) {
         console.log("installing less...");
         await libs.exec(`npm i -DE ${registry} less`);
-        packageJson.scripts.lessc = "lessc \"src/**/*.less\"";
+        scripts.lessc = "lessc \"src/**/*.less\"";
         buildScripts.push("npm run lessc");
     }
 
@@ -228,7 +228,7 @@ async function run() {
         await libs.exec(`npm i -DE ${registry} stylelint stylelint-config-standard`);
         console.log("setting .stylelintrc...");
         await libs.writeFile(".stylelintrc", config.stylelint);
-        packageJson.scripts.stylelint = "stylelint \"src/**/*.less\"";
+        scripts.stylelint = "stylelint \"src/**/*.less\"";
         lintScripts.push("npm run stylelint");
     }
 
@@ -250,49 +250,52 @@ async function run() {
     if (options.some(o => o === cleanCssCliChoice)) {
         console.log("installing clean-css-cli...");
         await libs.exec(`npm i -DE ${registry} clean-css-cli`);
-        packageJson.scripts.cleancss = `cleancss -o dist/${packageJson.name}.min.css src/${packageJson.name}.css`;
+        scripts.cleancss = `cleancss -o dist/${packageJson.name}.min.css src/${packageJson.name}.css`;
     }
 
     if (options.some(o => o === htmlMinifierChoice)) {
         console.log("installing html-minifier...");
         await libs.exec(`npm i -DE ${registry} html-minifier`);
-        packageJson.scripts["html-minifier"] = "html-minifier --collapse-whitespace --case-sensitive --collapse-inline-tag-whitespace src/index.html -o dist/index.html";
+        scripts["html-minifier"] = "html-minifier --collapse-whitespace --case-sensitive --collapse-inline-tag-whitespace src/index.html -o dist/index.html";
     }
 
     if (options.some(o => o === rimrafChoice)) {
         console.log("installing rimraf...");
         await libs.exec(`npm i -DE ${registry} rimraf`);
-        packageJson.scripts.clean = "rimraf dist";
+        scripts.clean = "rimraf dist";
         buildScripts.unshift("npm run clean");
     }
 
     if (options.some(o => o === image2base64Choice)) {
         console.log("installing image2base64-cli...");
         await libs.exec(`npm i -DE ${registry} image2base64-cli`);
-        packageJson.scripts.image2base64 = "image2base64-cli images/*.png --less src/variables.less";
+        scripts.image2base64 = "image2base64-cli images/*.png --less src/variables.less";
     }
 
     if (options.some(o => o === file2variableChoice)) {
         console.log("installing file2variable-cli...");
         await libs.exec(`npm i -DE ${registry} file2variable-cli`);
-        packageJson.scripts.file2variable = "file2variable-cli src/index.html -o src/variables.ts";
+        scripts.file2variable = "file2variable-cli src/index.html -o src/variables.ts";
     }
 
     if (options.some(o => o === cpyChoice)) {
         console.log("installing cpy-cli...");
         await libs.exec(`npm i -DE ${registry} cpy-cli`);
-        packageJson.scripts.cpy = "cpy src/index.html dist/";
+        scripts.cpy = "cpy src/index.html dist/";
     }
 
     if (options.some(o => o === mkdirpChoice)) {
         console.log("installing mkdirp...");
         await libs.exec(`npm i -DE ${registry} mkdirp`);
-        packageJson.scripts.cpy = "mkdirp foo/bar";
+        scripts.cpy = "mkdirp foo/bar";
     }
 
-    packageJson.scripts.build = buildScripts.join(" && ");
-    packageJson.scripts.lint = lintScripts.join(" && ");
+    scripts.build = buildScripts.join(" && ");
+    scripts.lint = lintScripts.join(" && ");
 
+    packages = await libs.readFile("package.json");
+    packageJson = JSON.parse(packages);
+    packageJson.scripts = scripts;
     await libs.writeFile("package.json", JSON.stringify(packageJson, null, "  ") + "\n");
 
     console.log("success.");
