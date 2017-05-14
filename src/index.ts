@@ -108,7 +108,9 @@ async function run() {
     const buildScripts: string[] = [];
     const lintScripts: string[] = [];
 
-    if (options.some(o => o === typescriptChoice)) {
+    const hasTypescript = options.some(o => o === typescriptChoice);
+
+    if (hasTypescript) {
         console.log("installing typescript...");
         await libs.exec(`npm i -DE ${registry} typescript`);
         console.log("installing tslib...");
@@ -156,13 +158,13 @@ async function run() {
     if (options.some(o => o === jasmineChoice)) {
         console.log("installing jasmine...");
         await libs.exec(`npm i -DE ${registry} jasmine`);
-        if (options.some(o => o === typescriptChoice)) {
+        if (hasTypescript) {
             console.log("installing @types/jasmine...");
             await libs.exec(`npm i -DE ${registry} @types/jasmine`);
         }
         console.log("init jasmine...");
         await libs.exec("./node_modules/.bin/jasmine init");
-        if (options.some(o => o === typescriptChoice)) {
+        if (hasTypescript) {
             console.log("setting spec/tsconfig.json...");
             await libs.writeFile("spec/tsconfig.json", config.jasmineTsconfig);
             scripts.test = "tsc -p spec && jasmine";
@@ -249,6 +251,10 @@ async function run() {
     if (options.some(o => o === reactChoice)) {
         console.log("installing react...");
         await libs.exec(`npm i -DE ${registry} react react-dom`);
+        if (hasTypescript) {
+            console.log("installing @types/react @types/react-dom...");
+            await libs.exec(`npm i -DE ${registry} @types/react @types/react-dom`);
+        }
     }
 
     if (options.some(o => o === angularChoice)) {
