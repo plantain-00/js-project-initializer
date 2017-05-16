@@ -116,6 +116,7 @@ async function run() {
         console.log("installing tslib...");
         await libs.exec(`npm i -SE ${registry} tslib`);
         console.log("setting src/tsconfig.json...");
+        await libs.mkdir("src");
         await libs.writeFile("src/tsconfig.json", config.tsconfig);
         console.log("setting tssdk...");
         await libs.mkdir(".vscode");
