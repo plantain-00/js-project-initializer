@@ -47,7 +47,7 @@ async function run() {
     } = JSON.parse(packages);
     const repositoryName = packageJson.name;
 
-    const scripts: { [name: string]: string } = {};
+    const scripts: { [name: string]: string } = packageJson.scripts;
 
     const authorAnswer = await libs.inquirer.prompt({
         type: "input",
@@ -231,7 +231,7 @@ async function run() {
     if (options.some(o => o === lessChoice)) {
         console.log("installing less...");
         await libs.exec(`npm i -DE ${registry} less`);
-        scripts.lessc = "lessc \"src/**/*.less\"";
+        scripts.lessc = `lessc src/${packageJson.name}.less > dist/${packageJson.name}.css`;
         buildScripts.push("npm run lessc");
     }
 
@@ -266,7 +266,7 @@ async function run() {
     if (options.some(o => o === cleanCssCliChoice)) {
         console.log("installing clean-css-cli...");
         await libs.exec(`npm i -DE ${registry} clean-css-cli`);
-        scripts.cleancss = `cleancss -o dist/${packageJson.name}.min.css src/${packageJson.name}.css`;
+        scripts.cleancss = `cleancss -o dist/${packageJson.name}.min.css dist/${packageJson.name}.css`;
     }
 
     if (options.some(o => o === htmlMinifierChoice)) {
