@@ -317,8 +317,6 @@ async function run() {
     console.log("success.");
 }
 
-try {
-    run();
-} catch (error) {
+run().catch(error => {
     console.log(error);
-}
+});
