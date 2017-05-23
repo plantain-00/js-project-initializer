@@ -37,6 +37,8 @@ const cleanCssCliChoice = "script: clean-css-cli";
 const htmlMinifierChoice = "script: html-minifier";
 const image2base64Choice = "script: image2base64-cli";
 const file2variableChoice = "script: file2variable-cli";
+const swPrecacheChoice = "script: sw-precache";
+const uglifyjsChoice = "script: uglify-js";
 
 async function run() {
     let packages = await libs.readFile("package.json");
@@ -100,6 +102,8 @@ async function run() {
             htmlMinifierChoice,
             image2base64Choice,
             file2variableChoice,
+            swPrecacheChoice,
+            uglifyjsChoice,
         ],
     });
     const options: string[] = answer["options"];
@@ -304,6 +308,20 @@ async function run() {
         console.log("installing mkdirp...");
         await libs.exec(`npm i -DE ${registry} mkdirp`);
         scripts.cpy = "mkdirp foo/bar";
+    }
+
+    if (options.some(o => o === swPrecacheChoice)) {
+        console.log("installing sw-precache...");
+        await libs.exec(`npm i -DE ${registry} sw-precache`);
+        console.log("setting sw-precache.config.js...");
+        await libs.writeFile("sw-precache.config.js", config.swPrecache);
+        scripts["sw-precache"] = "sw-precache --config sw-precache.config.js";
+    }
+
+    if (options.some(o => o === uglifyjsChoice)) {
+        console.log("installing uglify-js...");
+        await libs.exec(`npm i -DE ${registry} uglify-js`);
+        scripts.uglifyjs = "uglifyjs index.js -o index.min.js";
     }
 
     scripts.build = buildScripts.join(" && ");
