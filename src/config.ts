@@ -182,12 +182,13 @@ export const swPrecache = `module.exports = {
     'app/css/**.css',
     'app/**.html',
     'app/images/**.*',
-    'app/js/**.js'
+    'app/js/**.js',
   ],
   stripPrefix: 'app/',
   runtimeCaching: [{
     urlPattern: /this\\.is\\.a\\.regex/,
     handler: 'networkFirst'
-  }]
+  }],
+  root: 'static/',
 };
 `;
