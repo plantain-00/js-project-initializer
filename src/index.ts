@@ -324,8 +324,12 @@ async function run() {
         scripts.uglifyjs = "uglifyjs index.js -o index.min.js";
     }
 
-    scripts.build = buildScripts.join(" && ");
-    scripts.lint = lintScripts.join(" && ");
+    if (!scripts.build) {
+        scripts.build = buildScripts.join(" && ");
+    }
+    if (!scripts.lint) {
+        scripts.lint = lintScripts.join(" && ");
+    }
 
     packages = await libs.readFile("package.json");
     packageJson = JSON.parse(packages);
