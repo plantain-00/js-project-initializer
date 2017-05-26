@@ -192,3 +192,21 @@ export const swPrecache = `module.exports = {
   root: 'static/',
 };
 `;
+
+export const githubIssueTemplate = `## Version(if relevant): 1.0.0
+
+## Environment(if relevant):
+
+## Code(if relevant):
+
+\`\`\`
+// code here
+\`\`\`
+
+## Expected:
+
+## Actual:
+`;
+
+export const githubPullRequestTemplate = `## Fixed(if relevant): #1
+`;

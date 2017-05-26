@@ -16,6 +16,7 @@ const taobaoRegistryChoice = "npm: taobao registry";
 const cliChoice = "npm: CLI";
 
 const gitIgnoreChoice = "git: ignore";
+const githubTemplate = "git: github issue/pull request template";
 
 const travisCIChoice = "CI: travis CI";
 
@@ -322,6 +323,13 @@ async function run() {
         console.log("installing uglify-js...");
         await libs.exec(`npm i -DE ${registry} uglify-js`);
         scripts.uglifyjs = "uglifyjs index.js -o index.min.js";
+    }
+
+    if (options.some(o => o === githubTemplate)) {
+        console.log("setting github issue/pull request template...");
+        await libs.mkdir(".github");
+        await libs.writeFile(".github/ISSUE_TEMPLATE.md", config.githubIssueTemplate);
+        await libs.writeFile(".github/PULL_REQUEST_TEMPLATE.md", config.githubPullRequestTemplate);
     }
 
     if (!scripts.build) {
