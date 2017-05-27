@@ -76,6 +76,7 @@ export const tslint = `{
 }`;
 
 export const npmignore = `.vscode
+.github
 tslint.json
 .travis.yml
 tsconfig.json
@@ -193,20 +194,20 @@ export const swPrecache = `module.exports = {
 };
 `;
 
-export const githubIssueTemplate = `## Version(if relevant): 1.0.0
+export const githubIssueTemplate = `#### Version(if relevant): 1.0.0
 
-## Environment(if relevant):
+#### Environment(if relevant):
 
-## Code(if relevant):
+#### Code(if relevant):
 
 \`\`\`
 // code here
 \`\`\`
 
-## Expected:
+#### Expected:
 
-## Actual:
+#### Actual:
 `;
 
-export const githubPullRequestTemplate = `## Fixed(if relevant): #1
+export const githubPullRequestTemplate = `#### Fixes(if relevant): #1
 `;

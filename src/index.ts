@@ -74,6 +74,7 @@ async function run() {
             taobaoRegistryChoice,
             rimrafChoice,
             gitIgnoreChoice,
+            githubTemplate,
         ],
         choices: [
             typescriptChoice,
@@ -105,6 +106,7 @@ async function run() {
             file2variableChoice,
             swPrecacheChoice,
             uglifyjsChoice,
+            githubTemplate,
         ],
     });
     const options: string[] = answer["options"];
