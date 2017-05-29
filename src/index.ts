@@ -298,7 +298,7 @@ async function run() {
     if (options.some(o => o === file2variableChoice)) {
         console.log("installing file2variable-cli...");
         await libs.exec(`npm i -DE ${registry} file2variable-cli`);
-        scripts.file2variable = "file2variable-cli src/index.html -o src/variables.ts";
+        scripts.file2variable = "file2variable-cli src/index.html -o src/variables.ts --html-minify";
     }
 
     if (options.some(o => o === cpyChoice)) {
