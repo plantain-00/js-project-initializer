@@ -312,6 +312,13 @@ async function run() {
         await libs.writeFile("demo/angular/index.ejs.html", config.getAngularStarterDemoHtml(repositoryName));
     }
 
+    if (options.some(o => o === vueStarterChoice)
+        || options.some(o => o === reactStarterChoice)
+        || options.some(o => o === angularStarterChoice)) {
+        console.log("setting starter common.ts...");
+        await libs.writeFile("src/common.ts", config.getStarterCommonSource(repositoryName));
+    }
+
     if (options.some(o => o === cleanCssCliChoice)) {
         console.log("installing clean-css-cli...");
         await libs.exec(`npm i -DE ${registry} clean-css-cli`);

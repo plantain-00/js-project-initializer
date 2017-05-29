@@ -245,7 +245,7 @@ import "${componentName}/dist/vue";
 \`\`\`
 
 \`\`\`html
-<${componentShortName} :data="data"
+<${componentShortName} :data="data">
 </${componentShortName}>
 \`\`\`
 
@@ -260,7 +260,7 @@ import { ${componentTypeName} } from "${componentName}/dist/react";
 \`\`\`
 
 \`\`\`jsx
-<${componentTypeName} data={this.data}
+<${componentTypeName} data={this.data}>
 </${componentTypeName}>
 \`\`\`
 
@@ -490,4 +490,15 @@ export function getAngularStarterDemoHtml(componentName: string) {
 <app></app>
 <script src="../<%=demoAngularBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.demoAngularBundleJs %>"></script>
 `;
+}
+
+export function getStarterCommonSource(componentName: string) {
+    const componentShortName = getComponentShortName(componentName);
+    const componentTypeName = getComponentTypeName(componentShortName);
+    return `type ${componentTypeName}Data = {
+    /* tslint:disable:ban-types */
+    component: string | Function;
+    /* tslint:enable:ban-types */
+    data: any;
+};`;
 }
