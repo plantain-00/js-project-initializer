@@ -21,6 +21,7 @@ const githubTemplate = "git: github issue/pull request template";
 const travisCIChoice = "CI: travis CI";
 
 const badgeChoice = "doc: badge";
+const UIComponentUsageChoice = "doc: UI component usage";
 
 const jasmineChoice = "test: jasmine";
 
@@ -29,6 +30,10 @@ const webpackChoice = "bundle: webpack";
 const vueChoice = "UI: vue";
 const reactChoice = "UI: react";
 const angularChoice = "UI: angular";
+
+const vueStarterChoice = "UI: vue starter";
+const reactStarterChoice = "UI: react starter";
+const angularStarterChoice = "UI: angular starter";
 
 const rimrafChoice = "script: rimraf";
 const cpyChoice = "script: cpy-cli";
@@ -70,6 +75,7 @@ async function run() {
             npmignoreChoice,
             travisCIChoice,
             badgeChoice,
+            UIComponentUsageChoice,
             jasmineChoice,
             taobaoRegistryChoice,
             rimrafChoice,
@@ -91,11 +97,15 @@ async function run() {
             gitIgnoreChoice,
             travisCIChoice,
             badgeChoice,
+            UIComponentUsageChoice,
             jasmineChoice,
             webpackChoice,
             vueChoice,
             reactChoice,
             angularChoice,
+            vueStarterChoice,
+            reactStarterChoice,
+            angularStarterChoice,
             rimrafChoice,
             cpyChoice,
             mkdirpChoice,
@@ -161,6 +171,11 @@ async function run() {
     if (options.some(o => o === badgeChoice)) {
         console.log("setting badges...");
         await libs.appendFile("README.md", config.getBadge(repositoryName, author, hasTravis, hasNpm));
+    }
+
+    if (options.some(o => o === UIComponentUsageChoice)) {
+        console.log("setting UI component usage choice");
+        await libs.appendFile("README.md", config.getUIComponentUsage(author, repositoryName));
     }
 
     if (options.some(o => o === jasmineChoice)) {
@@ -268,6 +283,33 @@ async function run() {
     if (options.some(o => o === angularChoice)) {
         console.log("installing angular...");
         await libs.exec(`npm i -DE ${registry} @angular/common @angular/compiler @angular/core @angular/forms @angular/platform-browser @angular/platform-browser-dynamic core-js rxjs zone.js`);
+    }
+
+    if (options.some(o => o === vueStarterChoice)) {
+        console.log("setting vue starter...");
+        await libs.mkdir("src");
+        await libs.writeFile("src/vue.ts", config.getVueStarter(repositoryName));
+        await libs.mkdir("demo/vue");
+        await libs.writeFile("demo/vue/index.ts", config.getVueStarterDemoSource(repositoryName));
+        await libs.writeFile("demo/vue/index.ejs.html", config.getVueStarterDemoHtml(repositoryName));
+    }
+
+    if (options.some(o => o === reactStarterChoice)) {
+        console.log("setting react starter...");
+        await libs.mkdir("src");
+        await libs.writeFile("src/react.tsx", config.getReactStarter(repositoryName));
+        await libs.mkdir("demo/react");
+        await libs.writeFile("demo/react/index.ts", config.getReactStarterDemoSource(repositoryName));
+        await libs.writeFile("demo/react/index.ejs.html", config.getReactStarterDemoHtml(repositoryName));
+    }
+
+    if (options.some(o => o === angularStarterChoice)) {
+        console.log("setting angular starter...");
+        await libs.mkdir("src");
+        await libs.writeFile("src/angular.ts", config.getAngularStarter(repositoryName));
+        await libs.mkdir("demo/angular");
+        await libs.writeFile("demo/angular/index.ts", config.getAngularStarterDemoSource(repositoryName));
+        await libs.writeFile("demo/angular/index.ejs.html", config.getAngularStarterDemoHtml(repositoryName));
     }
 
     if (options.some(o => o === cleanCssCliChoice)) {

@@ -211,3 +211,283 @@ export const githubIssueTemplate = `#### Version(if relevant): 1.0.0
 
 export const githubPullRequestTemplate = `#### Fixes(if relevant): #1
 `;
+
+function getComponentShortName(componentName: string) {
+    return (componentName.endsWith("component") && componentName.length - "component".length - 1 > 0)
+        ? componentName.substring(0, componentName.length - "component".length - 1)
+        : componentName;
+}
+
+function getComponentTypeName(componentShortName: string) {
+    return componentShortName[0].toUpperCase() + componentShortName.substring(1);
+}
+
+export function getUIComponentUsage(authorName: string, componentName: string) {
+    const componentShortName = getComponentShortName(componentName);
+    const componentTypeName = getComponentTypeName(componentShortName);
+    return `
+#### install
+
+\`npm i ${componentName}\`
+
+#### link css
+
+\`\`\`html
+<link rel="stylesheet" href="./node_modules/${componentName}/dist/${componentShortName}.min.css" />
+\`\`\`
+
+#### vuejs component demo
+
+\`npm i vue vue-class-component\`
+
+\`\`\`ts
+import "${componentName}/dist/vue";
+\`\`\`
+
+\`\`\`html
+<${componentShortName} :data="data"
+</${componentShortName}>
+\`\`\`
+
+the online demo: https://${authorName}.github.io/${componentName}/demo/vue/index.html
+
+the source code of the demo: https://github.com/${authorName}/${componentName}/tree/master/demo/vue
+
+#### reactjs component demo
+
+\`\`\`ts
+import { ${componentTypeName} } from "${componentName}/dist/react";
+\`\`\`
+
+\`\`\`jsx
+<${componentTypeName} data={this.data}
+</${componentTypeName}>
+\`\`\`
+
+the online demo: https://${authorName}.github.io/${componentName}/demo/react/index.html
+
+the source code of the demo: https://github.com/${authorName}/${componentName}/tree/master/demo/react
+
+#### angular component demo
+
+\`\`\`ts
+import { ${componentTypeName}Component } from "${componentName}/dist/angular";
+
+@NgModule({
+    imports: [BrowserModule, FormsModule],
+    declarations: [MainComponent, ${componentTypeName}Component],
+    bootstrap: [MainComponent],
+})
+class MainModule { }
+\`\`\`
+
+\`\`\`html
+<${componentShortName} [data]="data">
+</${componentShortName}>
+\`\`\`
+
+the online demo: https://${authorName}.github.io/${componentName}/demo/angular/index.html
+
+the source code of the demo: https://github.com/${authorName}/${componentName}/tree/master/demo/angular
+
+#### properties and events of the component
+
+name | type | description
+--- | --- | ---
+data | [${componentTypeName}Data](#${componentShortName}-data-structure)[] | the data of the ${componentShortName}
+
+#### ${componentShortName} data structure
+
+\`\`\`ts
+type ${componentTypeName}Data = {
+    component: string | Function; // the item component, for vuejs, it is the component name, for reactjs, it is the class object
+    data: any; // the data will be passed to the component as \`data\` props
+};
+\`\`\`
+
+#### features
+
++ vuejs component
++ reactjs component
++ angular component
++ commonjs module
++ custom component
+`;
+}
+
+export function getVueStarter(componentName: string) {
+    const componentShortName = getComponentShortName(componentName);
+    const componentTypeName = getComponentTypeName(componentShortName);
+    return `import * as Vue from "vue";
+import Component from "vue-class-component";
+import * as common from "./common";
+import { srcVueTemplateHtml } from "./vue-variables";
+
+@Component({
+    template: srcVueTemplateHtml,
+    props: ["data"],
+})
+class ${componentTypeName} extends Vue {
+    data: common.${componentTypeName}Data;
+}
+
+Vue.component("${componentShortName}", ${componentTypeName});
+`;
+}
+
+export function getVueStarterDemoSource(componentName: string) {
+    const componentShortName = getComponentShortName(componentName);
+    const componentTypeName = getComponentTypeName(componentShortName);
+    return `import * as Vue from "vue";
+import Component from "vue-class-component";
+import "../../dist/vue";
+import * as common from "../../dist/common";
+
+@Component({
+    template: \`
+    <${componentShortName} :data="data">
+    </${componentShortName}>
+    \`,
+})
+class App extends Vue {
+    data: common.${componentTypeName}Data;
+}
+
+/* tslint:disable:no-unused-expression */
+new App({ el: "#container" });
+/* tslint:enable:no-unused-expression */
+`;
+}
+
+export function getVueStarterDemoHtml(componentName: string) {
+    const componentShortName = getComponentShortName(componentName);
+    return `<!DOCTYPE html>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../dist/${componentShortName}.min.css" />
+<div id="container"></div>
+<script src="../<%=demoVueBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.demoVueBundleJs %>"></script>
+`;
+}
+
+export function getReactStarter(componentName: string) {
+    const componentShortName = getComponentShortName(componentName);
+    const componentTypeName = getComponentTypeName(componentShortName);
+    return `import * as React from "react";
+import * as common from "./common";
+
+export class ${componentTypeName} extends React.PureComponent<{
+    data: common.${componentTypeName}Data[];
+}, { }> {
+    render() {
+        return (
+            <div>
+            </div>
+        );
+    }
+}
+`;
+}
+
+export function getReactStarterDemoSource(componentName: string) {
+    const componentShortName = getComponentShortName(componentName);
+    const componentTypeName = getComponentTypeName(componentShortName);
+    return `import * as React from "react";
+import * as ReactDOM from "react-dom";
+import { ${componentTypeName} } from "../../dist/react";
+import * as common from "../../dist/common";
+
+class Main extends React.Component<{}, {}> {
+    data: common.${componentTypeName}Data;
+
+    render() {
+        return (
+            <${componentTypeName} data={this.data}>
+            </${componentTypeName}>
+        );
+    }
+}
+
+ReactDOM.render(<Main />, document.getElementById("container"));
+`;
+}
+
+export function getReactStarterDemoHtml(componentName: string) {
+    const componentShortName = getComponentShortName(componentName);
+    return `<!DOCTYPE html>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../dist/${componentShortName}.min.css" />
+<div id="container"></div>
+<script src="../<%=demoReactBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.demoReactBundleJs %>"></script>
+`;
+}
+
+export function getAngularStarter(componentName: string) {
+    const componentShortName = getComponentShortName(componentName);
+    const componentTypeName = getComponentTypeName(componentShortName);
+    return `import { Component, Input, Output, EventEmitter } from "@angular/core";
+import * as common from "./common";
+import { srcAngularTemplateHtml } from "./angular-variables";
+
+@Component({
+    selector: "${componentShortName}",
+    template: srcAngularTemplateHtml,
+})
+export class ${componentTypeName}Component {
+    @Input()
+    data: common.${componentTypeName}Data;
+}
+`;
+}
+
+export function getAngularStarterDemoSource(componentName: string) {
+    const componentShortName = getComponentShortName(componentName);
+    const componentTypeName = getComponentTypeName(componentShortName);
+    return `import "core-js/es6";
+import "core-js/es7/reflect";
+import "zone.js/dist/zone";
+
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
+import { enableProdMode } from "@angular/core";
+
+enableProdMode();
+
+import { Component } from "@angular/core";
+
+import * as common from "../../dist/common";
+
+@Component({
+    selector: "app",
+    template: \`
+    <${componentShortName} [data]="data">
+    </${componentShortName}>
+    \`,
+})
+export class MainComponent {
+    data: common.${componentTypeName}Data;
+}
+
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { FormsModule } from "@angular/forms";
+import { ${componentTypeName}Component } from "../../dist/angular";
+
+@NgModule({
+    imports: [BrowserModule, FormsModule],
+    declarations: [MainComponent, ${componentTypeName}Component],
+    bootstrap: [MainComponent],
+})
+class MainModule { }
+
+platformBrowserDynamic().bootstrapModule(MainModule);
+`;
+}
+
+export function getAngularStarterDemoHtml(componentName: string) {
+    const componentShortName = getComponentShortName(componentName);
+    return `<!DOCTYPE html>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../dist/${componentShortName}.min.css" />
+<app></app>
+<script src="../<%=demoAngularBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.demoAngularBundleJs %>"></script>
+`;
+}
