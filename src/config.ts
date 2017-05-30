@@ -212,19 +212,17 @@ export const githubIssueTemplate = `#### Version(if relevant): 1.0.0
 export const githubPullRequestTemplate = `#### Fixes(if relevant): #1
 `;
 
-function getComponentShortName(componentName: string) {
+export function getComponentShortName(componentName: string) {
     return (componentName.endsWith("component") && componentName.length - "component".length - 1 > 0)
         ? componentName.substring(0, componentName.length - "component".length - 1)
         : componentName;
 }
 
-function getComponentTypeName(componentShortName: string) {
+export function getComponentTypeName(componentShortName: string) {
     return componentShortName[0].toUpperCase() + componentShortName.substring(1);
 }
 
-export function getUIComponentUsage(authorName: string, componentName: string) {
-    const componentShortName = getComponentShortName(componentName);
-    const componentTypeName = getComponentTypeName(componentShortName);
+export function getUIComponentUsage(authorName: string, componentName: string, componentShortName: string, componentTypeName: string) {
     return `
 #### install
 
@@ -315,9 +313,7 @@ type ${componentTypeName}Data = {
 `;
 }
 
-export function getVueStarter(componentName: string) {
-    const componentShortName = getComponentShortName(componentName);
-    const componentTypeName = getComponentTypeName(componentShortName);
+export function getVueStarter(componentName: string, componentShortName: string, componentTypeName: string) {
     return `import * as Vue from "vue";
 import Component from "vue-class-component";
 import * as common from "./common";
@@ -335,9 +331,7 @@ Vue.component("${componentShortName}", ${componentTypeName});
 `;
 }
 
-export function getVueStarterDemoSource(componentName: string) {
-    const componentShortName = getComponentShortName(componentName);
-    const componentTypeName = getComponentTypeName(componentShortName);
+export function getVueStarterDemoSource(componentName: string, componentShortName: string, componentTypeName: string) {
     return `import * as Vue from "vue";
 import Component from "vue-class-component";
 import "../../dist/vue";
@@ -359,8 +353,7 @@ new App({ el: "#container" });
 `;
 }
 
-export function getVueStarterDemoHtml(componentName: string) {
-    const componentShortName = getComponentShortName(componentName);
+export function getVueStarterDemoHtml(componentName: string, componentShortName: string) {
     return `<!DOCTYPE html>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="../../dist/${componentShortName}.min.css" />
@@ -369,9 +362,7 @@ export function getVueStarterDemoHtml(componentName: string) {
 `;
 }
 
-export function getReactStarter(componentName: string) {
-    const componentShortName = getComponentShortName(componentName);
-    const componentTypeName = getComponentTypeName(componentShortName);
+export function getReactStarter(componentName: string, componentShortName: string, componentTypeName: string) {
     return `import * as React from "react";
 import * as common from "./common";
 
@@ -388,9 +379,7 @@ export class ${componentTypeName} extends React.PureComponent<{
 `;
 }
 
-export function getReactStarterDemoSource(componentName: string) {
-    const componentShortName = getComponentShortName(componentName);
-    const componentTypeName = getComponentTypeName(componentShortName);
+export function getReactStarterDemoSource(componentName: string, componentShortName: string, componentTypeName: string) {
     return `import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { ${componentTypeName} } from "../../dist/react";
@@ -411,8 +400,7 @@ ReactDOM.render(<Main />, document.getElementById("container"));
 `;
 }
 
-export function getReactStarterDemoHtml(componentName: string) {
-    const componentShortName = getComponentShortName(componentName);
+export function getReactStarterDemoHtml(componentName: string, componentShortName: string) {
     return `<!DOCTYPE html>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="../../dist/${componentShortName}.min.css" />
@@ -421,9 +409,7 @@ export function getReactStarterDemoHtml(componentName: string) {
 `;
 }
 
-export function getAngularStarter(componentName: string) {
-    const componentShortName = getComponentShortName(componentName);
-    const componentTypeName = getComponentTypeName(componentShortName);
+export function getAngularStarter(componentName: string, componentShortName: string, componentTypeName: string) {
     return `import { Component, Input, Output, EventEmitter } from "@angular/core";
 import * as common from "./common";
 import { srcAngularTemplateHtml } from "./angular-variables";
@@ -439,9 +425,7 @@ export class ${componentTypeName}Component {
 `;
 }
 
-export function getAngularStarterDemoSource(componentName: string) {
-    const componentShortName = getComponentShortName(componentName);
-    const componentTypeName = getComponentTypeName(componentShortName);
+export function getAngularStarterDemoSource(componentName: string, componentShortName: string, componentTypeName: string) {
     return `import "core-js/es6";
 import "core-js/es7/reflect";
 import "zone.js/dist/zone";
@@ -482,8 +466,7 @@ platformBrowserDynamic().bootstrapModule(MainModule);
 `;
 }
 
-export function getAngularStarterDemoHtml(componentName: string) {
-    const componentShortName = getComponentShortName(componentName);
+export function getAngularStarterDemoHtml(componentName: string, componentShortName: string) {
     return `<!DOCTYPE html>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="../../dist/${componentShortName}.min.css" />
@@ -492,10 +475,8 @@ export function getAngularStarterDemoHtml(componentName: string) {
 `;
 }
 
-export function getStarterCommonSource(componentName: string) {
-    const componentShortName = getComponentShortName(componentName);
-    const componentTypeName = getComponentTypeName(componentShortName);
-    return `type ${componentTypeName}Data = {
+export function getStarterCommonSource(componentName: string, componentShortName: string, componentTypeName: string) {
+    return `export type ${componentTypeName}Data = {
     /* tslint:disable:ban-types */
     component: string | Function;
     /* tslint:enable:ban-types */

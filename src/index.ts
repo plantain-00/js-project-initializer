@@ -54,6 +54,8 @@ async function run() {
         scripts: { [key: string]: string };
     } = JSON.parse(packages);
     const repositoryName = packageJson.name;
+    const componentShortName = config.getComponentShortName(repositoryName);
+    const componentTypeName = config.getComponentTypeName(componentShortName);
 
     const scripts: { [name: string]: string } = packageJson.scripts;
 
@@ -175,7 +177,7 @@ async function run() {
 
     if (options.some(o => o === UIComponentUsageChoice)) {
         console.log("setting UI component usage choice");
-        await libs.appendFile("README.md", config.getUIComponentUsage(author, repositoryName));
+        await libs.appendFile("README.md", config.getUIComponentUsage(author, repositoryName, componentShortName, componentTypeName));
     }
 
     if (options.some(o => o === jasmineChoice)) {
@@ -253,7 +255,7 @@ async function run() {
     if (options.some(o => o === lessChoice)) {
         console.log("installing less...");
         await libs.exec(`npm i -DE ${registry} less`);
-        scripts.lessc = `lessc src/${packageJson.name}.less > dist/${packageJson.name}.css`;
+        scripts.lessc = `lessc src/${componentShortName}.less > dist/${componentShortName}.css`;
         buildScripts.push("npm run lessc");
     }
 
@@ -288,41 +290,41 @@ async function run() {
     if (options.some(o => o === vueStarterChoice)) {
         console.log("setting vue starter...");
         await libs.mkdir("src");
-        await libs.writeFile("src/vue.ts", config.getVueStarter(repositoryName));
+        await libs.writeFile("src/vue.ts", config.getVueStarter(repositoryName, componentShortName, componentTypeName));
         await libs.mkdir("demo/vue");
-        await libs.writeFile("demo/vue/index.ts", config.getVueStarterDemoSource(repositoryName));
-        await libs.writeFile("demo/vue/index.ejs.html", config.getVueStarterDemoHtml(repositoryName));
+        await libs.writeFile("demo/vue/index.ts", config.getVueStarterDemoSource(repositoryName, componentShortName, componentTypeName));
+        await libs.writeFile("demo/vue/index.ejs.html", config.getVueStarterDemoHtml(repositoryName, componentShortName));
     }
 
     if (options.some(o => o === reactStarterChoice)) {
         console.log("setting react starter...");
         await libs.mkdir("src");
-        await libs.writeFile("src/react.tsx", config.getReactStarter(repositoryName));
+        await libs.writeFile("src/react.tsx", config.getReactStarter(repositoryName, componentShortName, componentTypeName));
         await libs.mkdir("demo/react");
-        await libs.writeFile("demo/react/index.ts", config.getReactStarterDemoSource(repositoryName));
-        await libs.writeFile("demo/react/index.ejs.html", config.getReactStarterDemoHtml(repositoryName));
+        await libs.writeFile("demo/react/index.ts", config.getReactStarterDemoSource(repositoryName, componentShortName, componentTypeName));
+        await libs.writeFile("demo/react/index.ejs.html", config.getReactStarterDemoHtml(repositoryName, componentShortName));
     }
 
     if (options.some(o => o === angularStarterChoice)) {
         console.log("setting angular starter...");
         await libs.mkdir("src");
-        await libs.writeFile("src/angular.ts", config.getAngularStarter(repositoryName));
+        await libs.writeFile("src/angular.ts", config.getAngularStarter(repositoryName, componentShortName, componentTypeName));
         await libs.mkdir("demo/angular");
-        await libs.writeFile("demo/angular/index.ts", config.getAngularStarterDemoSource(repositoryName));
-        await libs.writeFile("demo/angular/index.ejs.html", config.getAngularStarterDemoHtml(repositoryName));
+        await libs.writeFile("demo/angular/index.ts", config.getAngularStarterDemoSource(repositoryName, componentShortName, componentTypeName));
+        await libs.writeFile("demo/angular/index.ejs.html", config.getAngularStarterDemoHtml(repositoryName, componentShortName));
     }
 
     if (options.some(o => o === vueStarterChoice)
         || options.some(o => o === reactStarterChoice)
         || options.some(o => o === angularStarterChoice)) {
         console.log("setting starter common.ts...");
-        await libs.writeFile("src/common.ts", config.getStarterCommonSource(repositoryName));
+        await libs.writeFile("src/common.ts", config.getStarterCommonSource(repositoryName, componentShortName, componentTypeName));
     }
 
     if (options.some(o => o === cleanCssCliChoice)) {
         console.log("installing clean-css-cli...");
         await libs.exec(`npm i -DE ${registry} clean-css-cli`);
-        scripts.cleancss = `cleancss -o dist/${packageJson.name}.min.css dist/${packageJson.name}.css`;
+        scripts.cleancss = `cleancss -o dist/${componentShortName}.min.css dist/${componentShortName}.css`;
     }
 
     if (options.some(o => o === htmlMinifierChoice)) {
