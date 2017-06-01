@@ -40,28 +40,13 @@ export const tssdk = `{
 export const tslint = `{
     "extends": "tslint:latest",
     "rules": {
-        "forin": false,
-        "interface-name": [
-            false
-        ],
         "max-line-length": [
             false
         ],
-        "no-var-requires": false,
-        "no-console": [
-            false
-        ],
-        "no-string-literal": false,
-        "no-reference": false,
         "ordered-imports": [
             false
         ],
         "object-literal-sort-keys": false,
-        "variable-name": [
-            true,
-            "ban-keywords"
-        ],
-        "no-bitwise": false,
         "member-access": false,
         "arrow-parens": false,
         "array-type": [
@@ -347,9 +332,8 @@ class App extends Vue {
     data: common.${componentTypeName}Data;
 }
 
-/* tslint:disable:no-unused-expression */
+// tslint:disable-next-line:no-unused-expression
 new App({ el: "#container" });
-/* tslint:enable:no-unused-expression */
 `;
 }
 
@@ -477,9 +461,8 @@ export function getAngularStarterDemoHtml(componentName: string, componentShortN
 
 export function getStarterCommonSource(componentName: string, componentShortName: string, componentTypeName: string) {
     return `export type ${componentTypeName}Data = {
-    /* tslint:disable:ban-types */
+    // tslint:disable-next-line:ban-types
     component: string | Function;
-    /* tslint:enable:ban-types */
     data: any;
 };`;
 }

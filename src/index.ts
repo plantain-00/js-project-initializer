@@ -46,6 +46,11 @@ const file2variableChoice = "script: file2variable-cli";
 const swPrecacheChoice = "script: sw-precache";
 const uglifyjsChoice = "script: uglify-js";
 
+function printInConsole(message: string) {
+    // tslint:disable-next-line:no-console
+    console.log(message);
+}
+
 async function run() {
     let packages = await libs.readFile("package.json");
     let packageJson: {
@@ -121,7 +126,7 @@ async function run() {
             githubTemplate,
         ],
     });
-    const options: string[] = answer["options"];
+    const options: string[] = answer.options;
     const registry = options.some(o => o === taobaoRegistryChoice) ? "--registry=https://registry.npm.taobao.org" : "";
 
     const buildScripts: string[] = [];
@@ -130,14 +135,14 @@ async function run() {
     const hasTypescript = options.some(o => o === typescriptChoice);
 
     if (hasTypescript) {
-        console.log("installing typescript...");
+        printInConsole("installing typescript...");
         await libs.exec(`npm i -DE ${registry} typescript`);
-        console.log("installing tslib...");
+        printInConsole("installing tslib...");
         await libs.exec(`npm i -SE ${registry} tslib`);
-        console.log("setting src/tsconfig.json...");
+        printInConsole("setting src/tsconfig.json...");
         await libs.mkdir("src");
         await libs.writeFile("src/tsconfig.json", config.tsconfig);
-        console.log("setting tssdk...");
+        printInConsole("setting tssdk...");
         await libs.mkdir(".vscode");
         await libs.writeFile(".vscode/settings.json", config.tssdk);
         scripts.tsc = "tsc -p src";
@@ -145,9 +150,9 @@ async function run() {
     }
 
     if (options.some(o => o === tslintChoice)) {
-        console.log("installing tslint...");
+        printInConsole("installing tslint...");
         await libs.exec(`npm i -DE ${registry} tslint`);
-        console.log("setting tslint.json...");
+        printInConsole("setting tslint.json...");
         await libs.writeFile("tslint.json", config.tslint);
         scripts.tslint = "tslint \"src/**/*.ts\" \"src/**/*.tsx\"";
         lintScripts.push("npm run tslint");
@@ -155,42 +160,42 @@ async function run() {
 
     const hasNpm = options.some(o => o === npmignoreChoice);
     if (hasNpm) {
-        console.log("setting .npmignore...");
+        printInConsole("setting .npmignore...");
         await libs.writeFile(".npmignore", config.npmignore);
     }
 
     if (options.some(o => o === gitIgnoreChoice)) {
-        console.log("setting .gitignore...");
+        printInConsole("setting .gitignore...");
         await libs.appendFile(".gitignore", config.gitIgnore);
     }
 
     const hasTravis = options.some(o => o === travisCIChoice);
     if (hasTravis) {
-        console.log("setting .travis.yml...");
+        printInConsole("setting .travis.yml...");
         await libs.writeFile(".travis.yml", config.travis);
     }
 
     if (options.some(o => o === badgeChoice)) {
-        console.log("setting badges...");
+        printInConsole("setting badges...");
         await libs.appendFile("README.md", config.getBadge(repositoryName, author, hasTravis, hasNpm));
     }
 
     if (options.some(o => o === UIComponentUsageChoice)) {
-        console.log("setting UI component usage choice");
+        printInConsole("setting UI component usage choice");
         await libs.appendFile("README.md", config.getUIComponentUsage(author, repositoryName, componentShortName, componentTypeName));
     }
 
     if (options.some(o => o === jasmineChoice)) {
-        console.log("installing jasmine...");
+        printInConsole("installing jasmine...");
         await libs.exec(`npm i -DE ${registry} jasmine`);
         if (hasTypescript) {
-            console.log("installing @types/jasmine...");
+            printInConsole("installing @types/jasmine...");
             await libs.exec(`npm i -DE ${registry} @types/jasmine`);
         }
-        console.log("init jasmine...");
+        printInConsole("init jasmine...");
         await libs.exec("./node_modules/.bin/jasmine init");
         if (hasTypescript) {
-            console.log("setting spec/tsconfig.json...");
+            printInConsole("setting spec/tsconfig.json...");
             await libs.writeFile("spec/tsconfig.json", config.jasmineTsconfig);
             scripts.test = "tsc -p spec && jasmine";
         } else {
@@ -199,96 +204,96 @@ async function run() {
     }
 
     if (options.some(o => o === revStaticChoice)) {
-        console.log("installing rev-static...");
+        printInConsole("installing rev-static...");
         await libs.exec(`npm i -DE ${registry} rev-static`);
-        console.log("init rev-static...");
+        printInConsole("init rev-static...");
         await libs.exec("./node_modules/.bin/rev-static init");
         scripts["rev-static"] = "rev-static --config rev-static.config.js";
     }
 
     if (options.some(o => o === webpackChoice)) {
-        console.log("installing webpack...");
+        printInConsole("installing webpack...");
         await libs.exec(`npm i -DE ${registry} webpack`);
-        console.log("setting webpack.config.js...");
+        printInConsole("setting webpack.config.js...");
         await libs.writeFile("webpack.config.js", config.webpack);
         scripts.webpack = "webpack --config webpack.config.js";
     }
 
     if (options.some(o => o === cliChoice)) {
-        console.log("setting cli...");
+        printInConsole("setting cli...");
         await libs.mkdir("bin");
         await libs.writeFile("bin/cli-name", config.cli);
     }
 
     if (options.some(o => o === babelChoice)) {
-        console.log("installing babel...");
+        printInConsole("installing babel...");
         await libs.exec(`npm i -DE ${registry} babel-cli babel-preset-env`);
-        console.log("setting .babelrc...");
+        printInConsole("setting .babelrc...");
         await libs.writeFile(".babelrc", config.tslint);
         scripts.babel = "babel src";
         buildScripts.push("npm run babel");
     }
 
     if (options.some(o => o === eslintChoice)) {
-        console.log("installing eslint...");
+        printInConsole("installing eslint...");
         await libs.exec(`npm i -DE ${registry} eslint`);
-        console.log("init eslint...");
+        printInConsole("init eslint...");
         await libs.exec("./node_modules/.bin/eslint --init");
         scripts.eslint = "eslint \"src/**/*.js\"";
         lintScripts.push("npm run eslint");
     }
 
     if (options.some(o => o === standardLintChoice)) {
-        console.log("installing standard lint...");
+        printInConsole("installing standard lint...");
         await libs.exec(`npm i -DE ${registry} standard`);
         scripts.standard = "standard \"src/**/*.js\"";
         lintScripts.push("npm run standard");
     }
 
     if (options.some(o => o === flowTypeChoice)) {
-        console.log("installing flow type...");
+        printInConsole("installing flow type...");
         await libs.exec(`npm i -DE ${registry} flow-bin`);
         scripts.flow = "flow";
         lintScripts.push("npm run flow");
     }
 
     if (options.some(o => o === lessChoice)) {
-        console.log("installing less...");
+        printInConsole("installing less...");
         await libs.exec(`npm i -DE ${registry} less`);
         scripts.lessc = `lessc src/${componentShortName}.less > dist/${componentShortName}.css`;
         buildScripts.push("npm run lessc");
     }
 
     if (options.some(o => o === stylelintChoice)) {
-        console.log("installing stylelint...");
+        printInConsole("installing stylelint...");
         await libs.exec(`npm i -DE ${registry} stylelint stylelint-config-standard`);
-        console.log("setting .stylelintrc...");
+        printInConsole("setting .stylelintrc...");
         await libs.writeFile(".stylelintrc", config.stylelint);
         scripts.stylelint = "stylelint \"src/**/*.less\"";
         lintScripts.push("npm run stylelint");
     }
 
     if (options.some(o => o === vueChoice)) {
-        console.log("installing vue...");
+        printInConsole("installing vue...");
         await libs.exec(`npm i -DE ${registry} vue vue-class-component`);
     }
 
     if (options.some(o => o === reactChoice)) {
-        console.log("installing react...");
+        printInConsole("installing react...");
         await libs.exec(`npm i -DE ${registry} react react-dom`);
         if (hasTypescript) {
-            console.log("installing @types/react @types/react-dom...");
+            printInConsole("installing @types/react @types/react-dom...");
             await libs.exec(`npm i -DE ${registry} @types/react @types/react-dom`);
         }
     }
 
     if (options.some(o => o === angularChoice)) {
-        console.log("installing angular...");
+        printInConsole("installing angular...");
         await libs.exec(`npm i -DE ${registry} @angular/common @angular/compiler @angular/core @angular/forms @angular/platform-browser @angular/platform-browser-dynamic core-js rxjs zone.js`);
     }
 
     if (options.some(o => o === vueStarterChoice)) {
-        console.log("setting vue starter...");
+        printInConsole("setting vue starter...");
         await libs.mkdir("src");
         await libs.writeFile("src/vue.ts", config.getVueStarter(repositoryName, componentShortName, componentTypeName));
         await libs.mkdir("demo/vue");
@@ -297,7 +302,7 @@ async function run() {
     }
 
     if (options.some(o => o === reactStarterChoice)) {
-        console.log("setting react starter...");
+        printInConsole("setting react starter...");
         await libs.mkdir("src");
         await libs.writeFile("src/react.tsx", config.getReactStarter(repositoryName, componentShortName, componentTypeName));
         await libs.mkdir("demo/react");
@@ -306,7 +311,7 @@ async function run() {
     }
 
     if (options.some(o => o === angularStarterChoice)) {
-        console.log("setting angular starter...");
+        printInConsole("setting angular starter...");
         await libs.mkdir("src");
         await libs.writeFile("src/angular.ts", config.getAngularStarter(repositoryName, componentShortName, componentTypeName));
         await libs.mkdir("demo/angular");
@@ -317,69 +322,69 @@ async function run() {
     if (options.some(o => o === vueStarterChoice)
         || options.some(o => o === reactStarterChoice)
         || options.some(o => o === angularStarterChoice)) {
-        console.log("setting starter common.ts...");
+        printInConsole("setting starter common.ts...");
         await libs.writeFile("src/common.ts", config.getStarterCommonSource(repositoryName, componentShortName, componentTypeName));
     }
 
     if (options.some(o => o === cleanCssCliChoice)) {
-        console.log("installing clean-css-cli...");
+        printInConsole("installing clean-css-cli...");
         await libs.exec(`npm i -DE ${registry} clean-css-cli`);
         scripts.cleancss = `cleancss -o dist/${componentShortName}.min.css dist/${componentShortName}.css`;
     }
 
     if (options.some(o => o === htmlMinifierChoice)) {
-        console.log("installing html-minifier...");
+        printInConsole("installing html-minifier...");
         await libs.exec(`npm i -DE ${registry} html-minifier`);
         scripts["html-minifier"] = "html-minifier --collapse-whitespace --case-sensitive --collapse-inline-tag-whitespace src/index.html -o dist/index.html";
     }
 
     if (options.some(o => o === rimrafChoice)) {
-        console.log("installing rimraf...");
+        printInConsole("installing rimraf...");
         await libs.exec(`npm i -DE ${registry} rimraf`);
         scripts.clean = "rimraf dist";
         buildScripts.unshift("npm run clean");
     }
 
     if (options.some(o => o === image2base64Choice)) {
-        console.log("installing image2base64-cli...");
+        printInConsole("installing image2base64-cli...");
         await libs.exec(`npm i -DE ${registry} image2base64-cli`);
         scripts.image2base64 = "image2base64-cli images/*.png --less src/variables.less";
     }
 
     if (options.some(o => o === file2variableChoice)) {
-        console.log("installing file2variable-cli...");
+        printInConsole("installing file2variable-cli...");
         await libs.exec(`npm i -DE ${registry} file2variable-cli`);
         scripts.file2variable = "file2variable-cli src/index.html -o src/variables.ts --html-minify";
     }
 
     if (options.some(o => o === cpyChoice)) {
-        console.log("installing cpy-cli...");
+        printInConsole("installing cpy-cli...");
         await libs.exec(`npm i -DE ${registry} cpy-cli`);
         scripts.cpy = "cpy src/index.html dist/";
     }
 
     if (options.some(o => o === mkdirpChoice)) {
-        console.log("installing mkdirp...");
+        printInConsole("installing mkdirp...");
         await libs.exec(`npm i -DE ${registry} mkdirp`);
         scripts.cpy = "mkdirp foo/bar";
     }
 
     if (options.some(o => o === swPrecacheChoice)) {
-        console.log("installing sw-precache...");
+        printInConsole("installing sw-precache...");
         await libs.exec(`npm i -DE ${registry} sw-precache`);
-        console.log("setting sw-precache.config.js...");
+        printInConsole("setting sw-precache.config.js...");
         await libs.writeFile("sw-precache.config.js", config.swPrecache);
         scripts["sw-precache"] = "sw-precache --config sw-precache.config.js";
     }
 
     if (options.some(o => o === uglifyjsChoice)) {
-        console.log("installing uglify-js...");
+        printInConsole("installing uglify-js...");
         await libs.exec(`npm i -DE ${registry} uglify-js`);
         scripts.uglifyjs = "uglifyjs index.js -o index.min.js";
     }
 
     if (options.some(o => o === githubTemplate)) {
-        console.log("setting github issue/pull request template...");
+        printInConsole("setting github issue/pull request template...");
         await libs.mkdir(".github");
         await libs.writeFile(".github/ISSUE_TEMPLATE.md", config.githubIssueTemplate);
         await libs.writeFile(".github/PULL_REQUEST_TEMPLATE.md", config.githubPullRequestTemplate);
@@ -397,9 +402,9 @@ async function run() {
     packageJson.scripts = scripts;
     await libs.writeFile("package.json", JSON.stringify(packageJson, null, "  ") + "\n");
 
-    console.log("success.");
+    printInConsole("success.");
 }
 
 run().catch(error => {
-    console.log(error);
+    printInConsole(error);
 });
