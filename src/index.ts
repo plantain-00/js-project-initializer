@@ -306,7 +306,7 @@ async function run() {
         await libs.mkdir("src");
         await libs.writeFile("src/react.tsx", config.getReactStarter(repositoryName, componentShortName, componentTypeName));
         await libs.mkdir("demo/react");
-        await libs.writeFile("demo/react/index.ts", config.getReactStarterDemoSource(repositoryName, componentShortName, componentTypeName));
+        await libs.writeFile("demo/react/index.tsx", config.getReactStarterDemoSource(repositoryName, componentShortName, componentTypeName));
         await libs.writeFile("demo/react/index.ejs.html", config.getReactStarterDemoHtml(repositoryName, componentShortName));
     }
 
