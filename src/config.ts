@@ -68,7 +68,9 @@ tsconfig.json
 webpack.config.js
 src
 rev-static.config.js
-spec`;
+spec
+demo
+`;
 
 export const travis = `language: node_js
 node_js:
