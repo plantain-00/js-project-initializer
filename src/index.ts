@@ -84,7 +84,6 @@ async function run() {
             badgeChoice,
             UIComponentUsageChoice,
             jasmineChoice,
-            taobaoRegistryChoice,
             rimrafChoice,
             gitIgnoreChoice,
             githubTemplate,
