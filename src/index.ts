@@ -2,6 +2,7 @@ import * as libs from "./libs";
 import * as config from "./config";
 
 const typescriptChoice = "transform: typescript";
+const tslibChoice = "transform: tslib";
 const flowTypeChoice = "transform: flow type";
 const babelChoice = "transform: babel";
 const lessChoice = "transform: less";
@@ -62,7 +63,7 @@ async function run() {
     const componentShortName = config.getComponentShortName(repositoryName);
     const componentTypeName = config.getComponentTypeName(componentShortName);
 
-    const scripts: { [name: string]: string } = packageJson.scripts;
+    const scripts: { [name: string]: any } = packageJson.scripts;
 
     const authorAnswer = await libs.inquirer.prompt({
         type: "input",
@@ -78,6 +79,7 @@ async function run() {
         message: "Choose options:",
         default: [
             typescriptChoice,
+            tslibChoice,
             tslintChoice,
             npmignoreChoice,
             travisCIChoice,
@@ -90,6 +92,7 @@ async function run() {
         ],
         choices: [
             typescriptChoice,
+            tslibChoice,
             flowTypeChoice,
             babelChoice,
             lessChoice,
@@ -136,8 +139,6 @@ async function run() {
     if (hasTypescript) {
         printInConsole("installing typescript...");
         await libs.exec(`npm i -DE ${registry} typescript`);
-        printInConsole("installing tslib...");
-        await libs.exec(`npm i -SE ${registry} tslib`);
         printInConsole("setting src/tsconfig.json...");
         await libs.mkdir("src");
         await libs.writeFile("src/tsconfig.json", config.tsconfig);
@@ -146,6 +147,11 @@ async function run() {
         await libs.writeFile(".vscode/settings.json", config.tssdk);
         scripts.tsc = "tsc -p src";
         buildScripts.push("npm run tsc");
+    }
+
+    if (options.some(o => o === tslibChoice)) {
+        printInConsole("installing tslib...");
+        await libs.exec(`npm i -SE ${registry} tslib`);
     }
 
     if (options.some(o => o === tslintChoice)) {
@@ -221,7 +227,9 @@ async function run() {
     if (options.some(o => o === cliChoice)) {
         printInConsole("setting cli...");
         await libs.mkdir("bin");
-        await libs.writeFile("bin/cli-name", config.cli);
+        await libs.writeFile(`bin/${repositoryName}`, config.cli);
+        scripts.bin = {};
+        scripts.bin[repositoryName] = `bin/${repositoryName}`;
     }
 
     if (options.some(o => o === babelChoice)) {

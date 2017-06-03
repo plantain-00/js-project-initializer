@@ -1,6 +1,6 @@
 {
   "name": "js-project-initializer",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "description": "A tool to initialize a nodejs project or frontend project.",
   "main": "index.js",
   "scripts": {
@@ -25,8 +25,7 @@
   "homepage": "https://github.com/plantain-00/js-project-initializer#readme",
   "dependencies": {
     "inquirer": "3.0.6",
-    "mkdirp": "0.5.1",
-    "tslib": "1.7.1"
+    "mkdirp": "0.5.1"
   },
   "devDependencies": {
     "@types/inquirer": "0.0.34",
