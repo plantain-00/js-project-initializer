@@ -1,6 +1,6 @@
 {
   "name": "js-project-initializer",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "description": "A tool to initialize a nodejs project or frontend project.",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,8 @@
     "tslint": "tslint \"src/**/*.ts\" \"src/**/*.tsx\"",
     "clean": "rimraf dist/",
     "build": "npm run clean && npm run tsc",
-    "lint": "npm run tslint"
+    "lint": "npm run tslint",
+    "local": "node dist/index.js"
   },
   "repository": {
     "type": "git",

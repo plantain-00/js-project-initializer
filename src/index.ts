@@ -58,12 +58,13 @@ async function run() {
         name: string;
         author: string;
         scripts: { [key: string]: string };
+        bin: { [key: string]: string };
     } = JSON.parse(packages);
     const repositoryName = packageJson.name;
     const componentShortName = config.getComponentShortName(repositoryName);
     const componentTypeName = config.getComponentTypeName(componentShortName);
 
-    const scripts: { [name: string]: any } = packageJson.scripts;
+    const scripts: { [name: string]: string } = packageJson.scripts;
 
     const authorAnswer = await libs.inquirer.prompt({
         type: "input",
@@ -224,12 +225,14 @@ async function run() {
         scripts.webpack = "webpack --config webpack.config.js";
     }
 
+    let bin: { [key: string]: string } | undefined;
     if (options.some(o => o === cliChoice)) {
         printInConsole("setting cli...");
         await libs.mkdir("bin");
         await libs.writeFile(`bin/${repositoryName}`, config.cli);
-        scripts.bin = {};
-        scripts.bin[repositoryName] = `bin/${repositoryName}`;
+        bin = {
+            [repositoryName]: `bin/${repositoryName}`,
+        };
     }
 
     if (options.some(o => o === babelChoice)) {
@@ -407,6 +410,9 @@ async function run() {
     packages = await libs.readFile("package.json");
     packageJson = JSON.parse(packages);
     packageJson.scripts = scripts;
+    if (bin) {
+        packageJson.bin = bin;
+    }
     await libs.writeFile("package.json", JSON.stringify(packageJson, null, "  ") + "\n");
 
     printInConsole("success.");
