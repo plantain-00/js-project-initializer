@@ -211,6 +211,14 @@ export function getComponentTypeName(componentShortName: string) {
 
 export function getUIComponentUsage(authorName: string, componentName: string, componentShortName: string, componentTypeName: string) {
     return `
+#### features
+
++ vuejs component
++ reactjs component
++ angular component
++ commonjs module
++ custom component
+
 #### install
 
 \`npm i ${componentName}\`
@@ -236,8 +244,6 @@ import "${componentName}/dist/vue";
 
 the online demo: https://${authorName}.github.io/${componentName}/demo/vue/index.html
 
-the source code of the demo: https://github.com/${authorName}/${componentName}/tree/master/demo/vue
-
 #### reactjs component demo
 
 \`\`\`ts
@@ -250,8 +256,6 @@ import { ${componentTypeName} } from "${componentName}/dist/react";
 \`\`\`
 
 the online demo: https://${authorName}.github.io/${componentName}/demo/react/index.html
-
-the source code of the demo: https://github.com/${authorName}/${componentName}/tree/master/demo/react
 
 #### angular component demo
 
@@ -273,8 +277,6 @@ class MainModule { }
 
 the online demo: https://${authorName}.github.io/${componentName}/demo/angular/index.html
 
-the source code of the demo: https://github.com/${authorName}/${componentName}/tree/master/demo/angular
-
 #### properties and events of the component
 
 name | type | description
@@ -289,14 +291,6 @@ type ${componentTypeName}Data = {
     data: any; // the data will be passed to the component as \`data\` props
 };
 \`\`\`
-
-#### features
-
-+ vuejs component
-+ reactjs component
-+ angular component
-+ commonjs module
-+ custom component
 `;
 }
 
@@ -318,7 +312,7 @@ Vue.component("${componentShortName}", ${componentTypeName});
 `;
 }
 
-export function getVueStarterDemoSource(componentName: string, componentShortName: string, componentTypeName: string) {
+export function getVueStarterDemoSource(authorName: string, componentName: string, componentShortName: string, componentTypeName: string) {
     return `import * as Vue from "vue";
 import Component from "vue-class-component";
 import "../../dist/vue";
@@ -326,8 +320,12 @@ import * as common from "../../dist/common";
 
 @Component({
     template: \`
-    <${componentShortName} :data="data">
-    </${componentShortName}>
+    <div>
+        <a href="https://github.com/${authorName}/${componentName}/tree/master/demo/vue/index.ts" target="_blank">the source code of the demo</a>
+        <br/>
+        <${componentShortName} :data="data">
+        </${componentShortName}>
+    </div>
     \`,
 })
 class App extends Vue {
@@ -365,7 +363,7 @@ export class ${componentTypeName} extends React.PureComponent<{
 `;
 }
 
-export function getReactStarterDemoSource(componentName: string, componentShortName: string, componentTypeName: string) {
+export function getReactStarterDemoSource(authorName: string, componentName: string, componentShortName: string, componentTypeName: string) {
     return `import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { ${componentTypeName} } from "../../dist/react";
@@ -376,8 +374,12 @@ class Main extends React.Component<{}, {}> {
 
     render() {
         return (
-            <${componentTypeName} data={this.data}>
-            </${componentTypeName}>
+            <div>
+                <a href="https://github.com/${authorName}/${componentName}/tree/master/demo/react/index.tsx" target="_blank">the source code of the demo</a>
+                <br/>
+                <${componentTypeName} data={this.data}>
+                </${componentTypeName}>
+            </div>
         );
     }
 }
@@ -411,7 +413,7 @@ export class ${componentTypeName}Component {
 `;
 }
 
-export function getAngularStarterDemoSource(componentName: string, componentShortName: string, componentTypeName: string) {
+export function getAngularStarterDemoSource(authorName: string, componentName: string, componentShortName: string, componentTypeName: string) {
     return `import "core-js/es6";
 import "core-js/es7/reflect";
 import "zone.js/dist/zone";
@@ -428,8 +430,12 @@ import * as common from "../../dist/common";
 @Component({
     selector: "app",
     template: \`
-    <${componentShortName} [data]="data">
-    </${componentShortName}>
+    <div>
+        <a href="https://github.com/${authorName}/${componentName}/tree/master/demo/angular/index.ts" target="_blank">the source code of the demo</a>
+        <br/>
+        <${componentShortName} [data]="data">
+        </${componentShortName}>
+    </div>
     \`,
 })
 export class MainComponent {

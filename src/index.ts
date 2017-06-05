@@ -307,7 +307,7 @@ async function run() {
         await libs.mkdir("src");
         await libs.writeFile("src/vue.ts", config.getVueStarter(repositoryName, componentShortName, componentTypeName));
         await libs.mkdir("demo/vue");
-        await libs.writeFile("demo/vue/index.ts", config.getVueStarterDemoSource(repositoryName, componentShortName, componentTypeName));
+        await libs.writeFile("demo/vue/index.ts", config.getVueStarterDemoSource(author, repositoryName, componentShortName, componentTypeName));
         await libs.writeFile("demo/vue/index.ejs.html", config.getVueStarterDemoHtml(repositoryName, componentShortName));
     }
 
@@ -316,7 +316,7 @@ async function run() {
         await libs.mkdir("src");
         await libs.writeFile("src/react.tsx", config.getReactStarter(repositoryName, componentShortName, componentTypeName));
         await libs.mkdir("demo/react");
-        await libs.writeFile("demo/react/index.tsx", config.getReactStarterDemoSource(repositoryName, componentShortName, componentTypeName));
+        await libs.writeFile("demo/react/index.tsx", config.getReactStarterDemoSource(author, repositoryName, componentShortName, componentTypeName));
         await libs.writeFile("demo/react/index.ejs.html", config.getReactStarterDemoHtml(repositoryName, componentShortName));
     }
 
@@ -325,7 +325,7 @@ async function run() {
         await libs.mkdir("src");
         await libs.writeFile("src/angular.ts", config.getAngularStarter(repositoryName, componentShortName, componentTypeName));
         await libs.mkdir("demo/angular");
-        await libs.writeFile("demo/angular/index.ts", config.getAngularStarterDemoSource(repositoryName, componentShortName, componentTypeName));
+        await libs.writeFile("demo/angular/index.ts", config.getAngularStarterDemoSource(author, repositoryName, componentShortName, componentTypeName));
         await libs.writeFile("demo/angular/index.ejs.html", config.getAngularStarterDemoHtml(repositoryName, componentShortName));
     }
 
