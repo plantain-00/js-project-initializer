@@ -112,6 +112,7 @@ export const gitIgnore = `
 .vscode
 dist
 demo/**/*.js
+demo/**/*.css
 demo/**/index.html
 !*.config.js
 `;
@@ -473,4 +474,14 @@ export function getStarterCommonSource(componentName: string, componentShortName
     component: string | Function;
     data: any;
 };`;
+}
+
+export function getRevStaticHtml(hasForkMeOnGithubChoice: boolean, authorName: string, repositoryName: string) {
+    return `<!DOCTYPE html>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="<%=indexMinCss %>" crossOrigin="anonymous" integrity="<%=sri.indexMinCss %>" />
+<a class="github-fork-ribbon right-bottom" href="https://github.com/${authorName}/${repositoryName}" title="Fork me on GitHub" target="_blank">Fork me on GitHub</a>
+<div id="container"></div>
+<script src="<%=indexJs %>" crossOrigin="anonymous" integrity="<%=sri.indexJs %>"></script>
+`;
 }

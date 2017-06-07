@@ -23,6 +23,7 @@ const travisCIChoice = "CI: travis CI";
 
 const badgeChoice = "doc: badge";
 const UIComponentUsageChoice = "doc: UI component usage";
+const forkMeOnGithubChoice = "doc: fork me on Github";
 
 const jasmineChoice = "test: jasmine";
 
@@ -90,6 +91,7 @@ async function run() {
             rimrafChoice,
             gitIgnoreChoice,
             githubTemplate,
+            forkMeOnGithubChoice,
         ],
         choices: [
             typescriptChoice,
@@ -108,6 +110,7 @@ async function run() {
             travisCIChoice,
             badgeChoice,
             UIComponentUsageChoice,
+            forkMeOnGithubChoice,
             jasmineChoice,
             webpackChoice,
             vueChoice,
@@ -209,12 +212,20 @@ async function run() {
         }
     }
 
+    const hasForkMeOnGithubChoice = options.some(o => o === forkMeOnGithubChoice);
+    if (hasForkMeOnGithubChoice) {
+        printInConsole("installing github-fork-ribbon-css...");
+        await libs.exec(`npm i -DE ${registry} github-fork-ribbon-css`);
+    }
+
     if (options.some(o => o === revStaticChoice)) {
         printInConsole("installing rev-static...");
         await libs.exec(`npm i -DE ${registry} rev-static`);
         printInConsole("init rev-static...");
         await libs.exec("./node_modules/.bin/rev-static init");
         scripts["rev-static"] = "rev-static --config rev-static.config.js";
+        printInConsole("setting index.ejs.html...");
+        await libs.writeFile("index.ejs.html", config.getRevStaticHtml(hasForkMeOnGithubChoice, author, repositoryName));
     }
 
     if (options.some(o => o === webpackChoice)) {
@@ -339,7 +350,8 @@ async function run() {
     if (options.some(o => o === cleanCssCliChoice)) {
         printInConsole("installing clean-css-cli...");
         await libs.exec(`npm i -DE ${registry} clean-css-cli`);
-        scripts.cleancss = `cleancss -o dist/${componentShortName}.min.css dist/${componentShortName}.css`;
+        const forkMeOnGithubPart = hasForkMeOnGithubChoice ? " ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css" : "";
+        scripts.cleancss = `cleancss -o dist/${componentShortName}.min.css dist/${componentShortName}.css` + forkMeOnGithubPart;
     }
 
     if (options.some(o => o === htmlMinifierChoice)) {
