@@ -113,13 +113,10 @@ export const gitIgnore = `
 dist
 demo/**/*.js
 demo/**/*.css
-demo/**/index.html
 !*.config.js
-
-# Pages
-src
-!demo/*.bundle-*.js
-!demo/*.bundle-*.css
+!demo/*-*.js
+!demo/*-*.css
+spec/**/*.js
 `;
 
 export const webpack = `const webpack = require("webpack");
