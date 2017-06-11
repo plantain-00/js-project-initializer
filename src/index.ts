@@ -139,6 +139,7 @@ async function run() {
     const lintScripts: string[] = [];
 
     const hasTypescript = options.some(o => o === typescriptChoice);
+    const hasUIConponentChoice = options.some(o => o === UIComponentUsageChoice);
 
     if (hasTypescript) {
         printInConsole("installing typescript...");
@@ -149,8 +150,12 @@ async function run() {
         printInConsole("setting tssdk...");
         await libs.mkdir(".vscode");
         await libs.writeFile(".vscode/settings.json", config.tssdk);
-        scripts.tsc = "tsc -p src";
+        scripts.tsc = hasUIConponentChoice ? "tsc -p src && tsc -p demo" : "tsc -p src";
         buildScripts.push("npm run tsc");
+        if (hasUIConponentChoice) {
+            await libs.mkdir("demo");
+            await libs.writeFile("demo/tsconfig.json", config.tsconfigDemo);
+        }
     }
 
     if (options.some(o => o === tslibChoice)) {
@@ -189,7 +194,7 @@ async function run() {
         await libs.appendFile("README.md", config.getBadge(repositoryName, author, hasTravis, hasNpm));
     }
 
-    if (options.some(o => o === UIComponentUsageChoice)) {
+    if (hasUIConponentChoice) {
         printInConsole("setting UI component usage choice");
         await libs.appendFile("README.md", config.getUIComponentUsage(author, repositoryName, componentShortName, componentTypeName));
     }
@@ -216,24 +221,6 @@ async function run() {
     if (hasForkMeOnGithubChoice) {
         printInConsole("installing github-fork-ribbon-css...");
         await libs.exec(`npm i -DE ${registry} github-fork-ribbon-css`);
-    }
-
-    if (options.some(o => o === revStaticChoice)) {
-        printInConsole("installing rev-static...");
-        await libs.exec(`npm i -DE ${registry} rev-static`);
-        printInConsole("init rev-static...");
-        await libs.exec("./node_modules/.bin/rev-static init");
-        scripts["rev-static"] = "rev-static --config rev-static.config.js";
-        printInConsole("setting index.ejs.html...");
-        await libs.writeFile("index.ejs.html", config.getRevStaticHtml(hasForkMeOnGithubChoice, author, repositoryName));
-    }
-
-    if (options.some(o => o === webpackChoice)) {
-        printInConsole("installing webpack...");
-        await libs.exec(`npm i -DE ${registry} webpack`);
-        printInConsole("setting webpack.config.js...");
-        await libs.writeFile("webpack.config.js", config.webpack);
-        scripts.webpack = "webpack --config webpack.config.js";
     }
 
     let bin: { [key: string]: string } | undefined;
@@ -313,31 +300,36 @@ async function run() {
         await libs.exec(`npm i -DE ${registry} @angular/common @angular/compiler @angular/core @angular/forms @angular/platform-browser @angular/platform-browser-dynamic core-js rxjs zone.js`);
     }
 
-    if (options.some(o => o === vueStarterChoice)) {
+    const hasVueStarter = options.some(o => o === vueStarterChoice);
+    if (hasVueStarter) {
         printInConsole("setting vue starter...");
         await libs.mkdir("src");
         await libs.writeFile("src/vue.ts", config.getVueStarter(repositoryName, componentShortName, componentTypeName));
+        await libs.writeFile("src/vue.template.html", "<div></div>");
         await libs.mkdir("demo/vue");
         await libs.writeFile("demo/vue/index.ts", config.getVueStarterDemoSource(author, repositoryName, componentShortName, componentTypeName));
-        await libs.writeFile("demo/vue/index.ejs.html", config.getVueStarterDemoHtml(repositoryName, componentShortName));
+        await libs.writeFile("demo/vue/index.ejs.html", config.getVueStarterDemoHtml(repositoryName));
     }
 
-    if (options.some(o => o === reactStarterChoice)) {
+    const hasReactStarter = options.some(o => o === reactStarterChoice);
+    if (hasReactStarter) {
         printInConsole("setting react starter...");
         await libs.mkdir("src");
         await libs.writeFile("src/react.tsx", config.getReactStarter(repositoryName, componentShortName, componentTypeName));
         await libs.mkdir("demo/react");
         await libs.writeFile("demo/react/index.tsx", config.getReactStarterDemoSource(author, repositoryName, componentShortName, componentTypeName));
-        await libs.writeFile("demo/react/index.ejs.html", config.getReactStarterDemoHtml(repositoryName, componentShortName));
+        await libs.writeFile("demo/react/index.ejs.html", config.getReactStarterDemoHtml(repositoryName));
     }
 
-    if (options.some(o => o === angularStarterChoice)) {
+    const hasAngularStarter = options.some(o => o === angularStarterChoice);
+    if (hasAngularStarter) {
         printInConsole("setting angular starter...");
         await libs.mkdir("src");
         await libs.writeFile("src/angular.ts", config.getAngularStarter(repositoryName, componentShortName, componentTypeName));
+        await libs.writeFile("src/angular.template.html", "<div></div>");
         await libs.mkdir("demo/angular");
         await libs.writeFile("demo/angular/index.ts", config.getAngularStarterDemoSource(author, repositoryName, componentShortName, componentTypeName));
-        await libs.writeFile("demo/angular/index.ejs.html", config.getAngularStarterDemoHtml(repositoryName, componentShortName));
+        await libs.writeFile("demo/angular/index.ejs.html", config.getAngularStarterDemoHtml(repositoryName));
     }
 
     if (options.some(o => o === vueStarterChoice)
@@ -351,7 +343,12 @@ async function run() {
         printInConsole("installing clean-css-cli...");
         await libs.exec(`npm i -DE ${registry} clean-css-cli`);
         const forkMeOnGithubPart = hasForkMeOnGithubChoice ? " ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css" : "";
-        scripts.cleancss = `cleancss -o dist/${componentShortName}.min.css dist/${componentShortName}.css` + forkMeOnGithubPart;
+        scripts.cleancss = `cleancss -o dist/${componentShortName}.min.css dist/${componentShortName}.css`;
+        buildScripts.push("npm run cleancss");
+        if (hasUIConponentChoice) {
+            scripts["cleancss-demo"] = `cleancss -o demo/index.bundle.css dist/${componentShortName}.min.css` + forkMeOnGithubPart;
+            buildScripts.push("npm run cleancss-demo");
+        }
     }
 
     if (options.some(o => o === htmlMinifierChoice)) {
@@ -376,7 +373,17 @@ async function run() {
     if (options.some(o => o === file2variableChoice)) {
         printInConsole("installing file2variable-cli...");
         await libs.exec(`npm i -DE ${registry} file2variable-cli`);
-        scripts.file2variable = "file2variable-cli src/index.html -o src/variables.ts --html-minify";
+        const commands: string[] = [];
+        if (hasVueStarter) {
+            commands.push("file2variable-cli src/vue.template.html -o src/vue-variables.ts --html-minify");
+        }
+        if (hasAngularStarter) {
+            commands.push("file2variable-cli src/angular.template.html -o src/angular-variables.ts --html-minify");
+        }
+        if (commands.length === 0) {
+            commands.push("file2variable-cli src/index.html -o src/variables.ts --html-minify");
+        }
+        scripts.file2variable = commands.join(" && ");
     }
 
     if (options.some(o => o === cpyChoice)) {
@@ -410,6 +417,35 @@ async function run() {
         await libs.mkdir(".github");
         await libs.writeFile(".github/ISSUE_TEMPLATE.md", config.githubIssueTemplate);
         await libs.writeFile(".github/PULL_REQUEST_TEMPLATE.md", config.githubPullRequestTemplate);
+    }
+
+    if (options.some(o => o === webpackChoice)) {
+        printInConsole("installing webpack...");
+        await libs.exec(`npm i -DE ${registry} webpack`);
+        printInConsole("setting webpack.config.js...");
+        const webpackConfig = config.getWebpackConfig(hasUIConponentChoice);
+        if (hasUIConponentChoice) {
+            await libs.mkdir("demo");
+            await libs.writeFile("demo/webpack.config.js", webpackConfig);
+            scripts.webpack = "webpack --config demo/webpack.config.js";
+        } else {
+            await libs.writeFile("webpack.config.js", webpackConfig);
+            scripts.webpack = "webpack --config webpack.config.js";
+        }
+        buildScripts.push("npm run webpack");
+    }
+
+    if (options.some(o => o === revStaticChoice)) {
+        printInConsole("installing rev-static...");
+        await libs.exec(`npm i -DE ${registry} rev-static`);
+        printInConsole("init rev-static...");
+        await libs.exec("./node_modules/.bin/rev-static init");
+        scripts["rev-static"] = hasUIConponentChoice ? "rev-static --config demo/rev-static.config.js" : "rev-static --config rev-static.config.js";
+        buildScripts.push("npm run rev-static");
+        printInConsole("setting index.ejs.html...");
+        await libs.writeFile("index.ejs.html", config.getRevStaticHtml(hasForkMeOnGithubChoice, author, repositoryName));
+        scripts["clean-rev"] = "rimraf demo/*.bundle-*.js demo/*.bundle-*.css";
+        buildScripts.unshift("npm run clean-rev");
     }
 
     if (!scripts.build) {

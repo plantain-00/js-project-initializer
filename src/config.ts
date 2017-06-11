@@ -16,6 +16,22 @@ export const tsconfig = `{
     }
 }`;
 
+export const tsconfigDemo = `{
+    "compilerOptions": {
+        "target": "es5",
+
+        "module": "commonjs",
+        "strict": true,
+        "noUnusedLocals": true,
+        "noImplicitReturns": true,
+        "skipLibCheck": true,
+        "importHelpers": true,
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true
+    }
+}`;
+
 export const jasmineTsconfig = `{
     "compilerOptions": {
         "target": "es5",
@@ -119,13 +135,48 @@ demo/**/*.css
 spec/**/*.js
 `;
 
-export const webpack = `const webpack = require("webpack");
+export function getWebpackConfig(hasUIStarter: boolean) {
+    return hasUIStarter ? `const webpack = require("webpack");
+const path = require("path");
+
+module.exports = {
+    entry: {
+        vue: "./demo/vue/index",
+        react: "./demo/react/index",
+        angular: "./demo/angular/index",
+    },
+    output: {
+        path: __dirname,
+        filename: "[name].bundle.js"
+    },
+    plugins: [
+        new webpack.DefinePlugin({
+            "process.env": {
+                "NODE_ENV": JSON.stringify("production")
+            }
+        }),
+        new webpack.NoEmitOnErrorsPlugin(),
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false,
+            },
+            output: {
+                comments: false,
+            },
+        }),
+    ],
+    resolve: {
+        alias: {
+            "vue$": "vue/dist/vue.min.js"
+        }
+    }
+};` : `const webpack = require("webpack");
 const path = require("path");
 
 module.exports = {
     entry: {
         index: "./index",
-        vendor: "./vendor"
+        vendor: "./vendor",
     },
     output: {
         path: path.join(__dirname, "static/"),
@@ -156,6 +207,7 @@ module.exports = {
         }
     }
 };`;
+}
 
 export const cli = `#!/usr/bin/env node
 require("../dist/index.js");`;
@@ -340,10 +392,10 @@ new App({ el: "#container" });
 `;
 }
 
-export function getVueStarterDemoHtml(componentName: string, componentShortName: string) {
+export function getVueStarterDemoHtml(componentName: string) {
     return `<!DOCTYPE html>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="../../dist/${componentShortName}.min.css" />
+<link rel="stylesheet" href="../<%=demoIndexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.demoIndexBundleCss %>" />
 <div id="container"></div>
 <script src="../<%=demoVueBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.demoVueBundleJs %>"></script>
 `;
@@ -354,7 +406,7 @@ export function getReactStarter(componentName: string, componentShortName: strin
 import * as common from "./common";
 
 export class ${componentTypeName} extends React.PureComponent<{
-    data: common.${componentTypeName}Data[];
+    data: common.${componentTypeName}Data;
 }, { }> {
     render() {
         return (
@@ -391,10 +443,10 @@ ReactDOM.render(<Main />, document.getElementById("container"));
 `;
 }
 
-export function getReactStarterDemoHtml(componentName: string, componentShortName: string) {
+export function getReactStarterDemoHtml(componentName: string) {
     return `<!DOCTYPE html>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="../../dist/${componentShortName}.min.css" />
+<link rel="stylesheet" href="../<%=demoIndexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.demoIndexBundleCss %>" />
 <div id="container"></div>
 <script src="../<%=demoReactBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.demoReactBundleJs %>"></script>
 `;
@@ -461,10 +513,10 @@ platformBrowserDynamic().bootstrapModule(MainModule);
 `;
 }
 
-export function getAngularStarterDemoHtml(componentName: string, componentShortName: string) {
+export function getAngularStarterDemoHtml(componentName: string) {
     return `<!DOCTYPE html>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="../../dist/${componentShortName}.min.css" />
+<link rel="stylesheet" href="../<%=demoIndexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.demoIndexBundleCss %>" />
 <app></app>
 <script src="../<%=demoAngularBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.demoAngularBundleJs %>"></script>
 `;
@@ -475,7 +527,8 @@ export function getStarterCommonSource(componentName: string, componentShortName
     // tslint:disable-next-line:ban-types
     component: string | Function;
     data: any;
-};`;
+};
+`;
 }
 
 export function getRevStaticHtml(hasForkMeOnGithubChoice: boolean, authorName: string, repositoryName: string) {
