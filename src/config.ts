@@ -1,10 +1,11 @@
-export const tsconfig = `{
+export const tsconfigFrontEnd = `{
     "compilerOptions": {
         "target": "es5",
         "outDir": "../dist",
         "declaration": true,
 
-        "module": "commonjs",
+        "module": "esnext",
+        "moduleResolution": "node",
         "strict": true,
         "noUnusedLocals": true,
         "noImplicitReturns": true,
@@ -20,7 +21,8 @@ export const tsconfigDemo = `{
     "compilerOptions": {
         "target": "es5",
 
-        "module": "commonjs",
+        "module": "esnext",
+        "moduleResolution": "node",
         "strict": true,
         "noUnusedLocals": true,
         "noImplicitReturns": true,
@@ -29,6 +31,18 @@ export const tsconfigDemo = `{
         "jsx": "react",
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true
+    }
+}`;
+
+export const tsconfigNodejs = `{
+    "compilerOptions": {
+        "target": "esnext",
+
+        "module": "commonjs",
+        "strict": true,
+        "noUnusedLocals": true,
+        "noImplicitReturns": true,
+        "skipLibCheck": true
     }
 }`;
 
@@ -48,6 +62,39 @@ export const jasmineTsconfig = `{
         "allowSyntheticDefaultImports": true
     }
 }`;
+export const revStaticConfig = `module.exports = {
+    inputFiles: [
+        "index.min.js",
+        "index.min.css",
+        "index.ejs.html",
+    ],
+    outputFiles: file => file.replace(".ejs", ""),
+    ejsOptions: {
+        rmWhitespace: true
+    },
+    sha: 256,
+    customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + "-" + md5String + extensionName,
+};
+`;
+
+export const revStaticConfigDemo = `module.exports = {
+    inputFiles: [
+        "demo/*.bundle.js",
+        "demo/*.bundle.css",
+        "demo/**/index.ejs.html",
+    ],
+    excludeFiles: [
+        "demo/*-*.*",
+        "demo/*.config.js",
+    ],
+    outputFiles: file => file.replace(".ejs", ""),
+    ejsOptions: {
+        rmWhitespace: true
+    },
+    sha: 256,
+    customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + "-" + md5String + extensionName,
+};
+`;
 
 export const tssdk = `{
     "typescript.tsdk": "./node_modules/typescript/lib"
@@ -180,7 +227,7 @@ module.exports = {
     },
     output: {
         path: path.join(__dirname, "static/"),
-        filename: "[name].js"
+        filename: "[name].min.js"
     },
     plugins: [
         new webpack.DefinePlugin({
@@ -271,7 +318,6 @@ export function getUIComponentUsage(authorName: string, componentName: string, c
 + vuejs component
 + reactjs component
 + angular component
-+ commonjs module
 + custom component
 
 #### install
@@ -537,6 +583,6 @@ export function getRevStaticHtml(hasForkMeOnGithubChoice: boolean, authorName: s
 <link rel="stylesheet" href="<%=indexMinCss %>" crossOrigin="anonymous" integrity="<%=sri.indexMinCss %>" />
 <a class="github-fork-ribbon right-bottom" href="https://github.com/${authorName}/${repositoryName}" title="Fork me on GitHub" target="_blank">Fork me on GitHub</a>
 <div id="container"></div>
-<script src="<%=indexJs %>" crossOrigin="anonymous" integrity="<%=sri.indexJs %>"></script>
+<script src="<%=indexMinJs %>" crossOrigin="anonymous" integrity="<%=sri.indexMinJs %>"></script>
 `;
 }

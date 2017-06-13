@@ -146,7 +146,7 @@ async function run() {
         await libs.exec(`npm i -DE ${registry} typescript`);
         printInConsole("setting src/tsconfig.json...");
         await libs.mkdir("src");
-        await libs.writeFile("src/tsconfig.json", config.tsconfig);
+        await libs.writeFile("src/tsconfig.json", hasUIConponentChoice ? config.tsconfigFrontEnd : config.tsconfigNodejs);
         printInConsole("setting tssdk...");
         await libs.mkdir(".vscode");
         await libs.writeFile(".vscode/settings.json", config.tssdk);
@@ -438,8 +438,13 @@ async function run() {
     if (options.some(o => o === revStaticChoice)) {
         printInConsole("installing rev-static...");
         await libs.exec(`npm i -DE ${registry} rev-static`);
-        printInConsole("init rev-static...");
-        await libs.exec("./node_modules/.bin/rev-static init");
+        printInConsole("setting rev-static.config.js...");
+        if (hasUIConponentChoice) {
+            await libs.mkdir("demo");
+            await libs.writeFile("demo/rev-static.config.js", config.revStaticConfigDemo);
+        } else {
+            await libs.writeFile("demo/rev-static.config.js", config.revStaticConfig);
+        }
         scripts["rev-static"] = hasUIConponentChoice ? "rev-static --config demo/rev-static.config.js" : "rev-static --config rev-static.config.js";
         buildScripts.push("npm run rev-static");
         printInConsole("setting index.ejs.html...");
