@@ -37,6 +37,9 @@ const vueStarterChoice = "UI: vue starter";
 const reactStarterChoice = "UI: react starter";
 const angularStarterChoice = "UI: angular starter";
 
+const vuexChoice = "UI: vuex";
+const vueRouterChoice = "UI: vue-router";
+
 const rimrafChoice = "script: rimraf";
 const cpyChoice = "script: cpy-cli";
 const mkdirpChoice = "script: mkdirp";
@@ -119,6 +122,8 @@ async function run() {
             vueStarterChoice,
             reactStarterChoice,
             angularStarterChoice,
+            vueChoice,
+            vueRouterChoice,
             rimrafChoice,
             cpyChoice,
             mkdirpChoice,
@@ -330,6 +335,18 @@ async function run() {
         await libs.mkdir("demo/angular");
         await libs.writeFile("demo/angular/index.ts", config.getAngularStarterDemoSource(author, repositoryName, componentShortName, componentTypeName));
         await libs.writeFile("demo/angular/index.ejs.html", config.getAngularStarterDemoHtml(repositoryName));
+    }
+
+    const hasVuex = options.some(o => o === vuexChoice);
+    if (hasVuex) {
+        printInConsole("installing vuex...");
+        await libs.exec(`npm i -DE ${registry} vuex`);
+    }
+
+    const hasVueRouter = options.some(o => o === vueRouterChoice);
+    if (hasVueRouter) {
+        printInConsole("installing vue-router...");
+        await libs.exec(`npm i -DE ${registry} vue-router`);
     }
 
     if (options.some(o => o === vueStarterChoice)
