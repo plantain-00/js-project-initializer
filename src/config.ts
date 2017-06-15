@@ -79,13 +79,9 @@ export const revStaticConfig = `module.exports = {
 
 export const revStaticConfigDemo = `module.exports = {
     inputFiles: [
-        "demo/*.bundle.js",
+        "demo/**/index.bundle.js",
         "demo/*.bundle.css",
         "demo/**/index.ejs.html",
-    ],
-    excludeFiles: [
-        "demo/*-*.*",
-        "demo/*.config.js",
     ],
     outputFiles: file => file.replace(".ejs", ""),
     ejsOptions: {
@@ -174,17 +170,15 @@ export const gitIgnore = `
 # Source
 .vscode
 dist
-demo/**/*.js
-demo/**/*.css
+**/*.js
+**/*.css
 !*.config.js
-!demo/*-*.js
-!demo/*-*.css
-spec/**/*.js
+!**/*-*.js
+!**/*-*.css
 `;
 
 export function getWebpackConfig(hasUIStarter: boolean) {
     return hasUIStarter ? `const webpack = require("webpack");
-const path = require("path");
 
 module.exports = {
     entry: {
@@ -193,8 +187,7 @@ module.exports = {
         angular: "./demo/angular/index",
     },
     output: {
-        path: __dirname,
-        filename: "[name].bundle.js"
+        filename: "[name]/index.bundle.js"
     },
     plugins: [
         new webpack.DefinePlugin({
@@ -443,7 +436,7 @@ export function getVueStarterDemoHtml(componentName: string) {
 <meta charset="UTF-8">
 <link rel="stylesheet" href="../<%=demoIndexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.demoIndexBundleCss %>" />
 <div id="container"></div>
-<script src="../<%=demoVueBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.demoVueBundleJs %>"></script>
+<script src="./<%=demoVueIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.demoVueIndexBundleJs %>"></script>
 `;
 }
 
@@ -494,7 +487,7 @@ export function getReactStarterDemoHtml(componentName: string) {
 <meta charset="UTF-8">
 <link rel="stylesheet" href="../<%=demoIndexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.demoIndexBundleCss %>" />
 <div id="container"></div>
-<script src="../<%=demoReactBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.demoReactBundleJs %>"></script>
+<script src="./<%=demoReactIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.demoReactIndexBundleJs %>"></script>
 `;
 }
 
@@ -564,7 +557,7 @@ export function getAngularStarterDemoHtml(componentName: string) {
 <meta charset="UTF-8">
 <link rel="stylesheet" href="../<%=demoIndexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.demoIndexBundleCss %>" />
 <app></app>
-<script src="../<%=demoAngularBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.demoAngularBundleJs %>"></script>
+<script src="./<%=demoAngularIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.demoAngularIndexBundleJs %>"></script>
 `;
 }
 
@@ -578,10 +571,11 @@ export function getStarterCommonSource(componentName: string, componentShortName
 }
 
 export function getRevStaticHtml(hasForkMeOnGithubChoice: boolean, authorName: string, repositoryName: string) {
+    const forkMeOnGithub = hasForkMeOnGithubChoice ? `<a class="github-fork-ribbon right-bottom" href="https://github.com/${authorName}/${repositoryName}" title="Fork me on GitHub" target="_blank">Fork me on GitHub</a>` : "";
     return `<!DOCTYPE html>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="<%=indexMinCss %>" crossOrigin="anonymous" integrity="<%=sri.indexMinCss %>" />
-<a class="github-fork-ribbon right-bottom" href="https://github.com/${authorName}/${repositoryName}" title="Fork me on GitHub" target="_blank">Fork me on GitHub</a>
+${forkMeOnGithub}
 <div id="container"></div>
 <script src="<%=indexMinJs %>" crossOrigin="anonymous" integrity="<%=sri.indexMinJs %>"></script>
 `;

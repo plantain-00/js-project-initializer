@@ -122,7 +122,7 @@ async function run() {
             vueStarterChoice,
             reactStarterChoice,
             angularStarterChoice,
-            vueChoice,
+            vuexChoice,
             vueRouterChoice,
             rimrafChoice,
             cpyChoice,
@@ -145,6 +145,11 @@ async function run() {
 
     const hasTypescript = options.some(o => o === typescriptChoice);
     const hasUIConponentChoice = options.some(o => o === UIComponentUsageChoice);
+    const hasFile2Variable = options.some(o => o === file2variableChoice);
+
+    if (hasFile2Variable) {
+        buildScripts.push("npm run file2variable");
+    }
 
     if (hasTypescript) {
         printInConsole("installing typescript...");
@@ -387,7 +392,7 @@ async function run() {
         scripts.image2base64 = "image2base64-cli images/*.png --less src/variables.less";
     }
 
-    if (options.some(o => o === file2variableChoice)) {
+    if (hasFile2Variable) {
         printInConsole("installing file2variable-cli...");
         await libs.exec(`npm i -DE ${registry} file2variable-cli`);
         const commands: string[] = [];
@@ -466,7 +471,7 @@ async function run() {
         buildScripts.push("npm run rev-static");
         printInConsole("setting index.ejs.html...");
         await libs.writeFile("index.ejs.html", config.getRevStaticHtml(hasForkMeOnGithubChoice, author, repositoryName));
-        scripts["clean-rev"] = "rimraf demo/*.bundle-*.js demo/*.bundle-*.css";
+        scripts["clean-rev"] = "rimraf demo/**/index.bundle-*.js demo/*.bundle-*.css";
         buildScripts.unshift("npm run clean-rev");
     }
 
