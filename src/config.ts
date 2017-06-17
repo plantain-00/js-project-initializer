@@ -175,6 +175,7 @@ dist
 !*.config.js
 !**/*-*.js
 !**/*-*.css
+service-worker.js
 `;
 
 export function getWebpackConfig(hasUIStarter: boolean) {
