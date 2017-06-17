@@ -40,6 +40,9 @@ const angularStarterChoice = "UI: angular starter";
 const vuexChoice = "UI: vuex";
 const vueRouterChoice = "UI: vue-router";
 
+const mobxChoice = "UI: mobx";
+const reactRouterChoice = "UI: react-router";
+
 const rimrafChoice = "script: rimraf";
 const cpyChoice = "script: cpy-cli";
 const mkdirpChoice = "script: mkdirp";
@@ -124,6 +127,8 @@ async function run() {
             angularStarterChoice,
             vuexChoice,
             vueRouterChoice,
+            mobxChoice,
+            reactRouterChoice,
             rimrafChoice,
             cpyChoice,
             mkdirpChoice,
@@ -352,6 +357,18 @@ async function run() {
     if (hasVueRouter) {
         printInConsole("installing vue-router...");
         await libs.exec(`npm i -DE ${registry} vue-router`);
+    }
+
+    const hasMobx = options.some(o => o === mobxChoice);
+    if (hasMobx) {
+        printInConsole("installing mobx mobx-react...");
+        await libs.exec(`npm i -DE ${registry} mobx mobx-react`);
+    }
+
+    const hasReactRouter = options.some(o => o === reactRouterChoice);
+    if (hasReactRouter) {
+        printInConsole("installing react-router-dom @types/react-router-dom...");
+        await libs.exec(`npm i -DE ${registry} react-router-dom @types/react-router-dom`);
     }
 
     if (options.some(o => o === vueStarterChoice)

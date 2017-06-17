@@ -389,7 +389,7 @@ type ${componentTypeName}Data = {
 }
 
 export function getVueStarter(componentName: string, componentShortName: string, componentTypeName: string) {
-    return `import * as Vue from "vue";
+    return `import Vue from "vue";
 import Component from "vue-class-component";
 import * as common from "./common";
 import { srcVueTemplateHtml } from "./vue-variables";
@@ -407,7 +407,7 @@ Vue.component("${componentShortName}", ${componentTypeName});
 }
 
 export function getVueStarterDemoSource(authorName: string, componentName: string, componentShortName: string, componentTypeName: string) {
-    return `import * as Vue from "vue";
+    return `import Vue from "vue";
 import Component from "vue-class-component";
 import "../../dist/vue";
 import * as common from "../../dist/common";
