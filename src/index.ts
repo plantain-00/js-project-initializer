@@ -437,14 +437,6 @@ async function run() {
         scripts.cpy = "mkdirp foo/bar";
     }
 
-    if (options.some(o => o === swPrecacheChoice)) {
-        printInConsole("installing sw-precache...");
-        await libs.exec(`npm i -DE ${registry} sw-precache`);
-        printInConsole("setting sw-precache.config.js...");
-        await libs.writeFile("sw-precache.config.js", config.swPrecache);
-        scripts["sw-precache"] = "sw-precache --config sw-precache.config.js";
-    }
-
     if (options.some(o => o === uglifyjsChoice)) {
         printInConsole("installing uglify-js...");
         await libs.exec(`npm i -DE ${registry} uglify-js`);
@@ -490,6 +482,15 @@ async function run() {
         await libs.writeFile("index.ejs.html", config.getRevStaticHtml(hasForkMeOnGithubChoice, author, repositoryName));
         scripts["clean-rev"] = "rimraf demo/**/index.bundle-*.js demo/*.bundle-*.css";
         buildScripts.unshift("npm run clean-rev");
+    }
+
+    if (options.some(o => o === swPrecacheChoice)) {
+        printInConsole("installing sw-precache uglify-js...");
+        await libs.exec(`npm i -DE ${registry} sw-precache uglify-js`);
+        printInConsole("setting sw-precache.config.js...");
+        await libs.writeFile("sw-precache.config.js", config.swPrecache);
+        scripts["sw-precache"] = "sw-precache --config sw-precache.config.js --verbose && uglifyjs service-worker.js -o service-worker.bundle.js";
+        buildScripts.push("npm run sw-precache");
     }
 
     if (!scripts.build) {
