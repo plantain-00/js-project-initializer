@@ -13,7 +13,8 @@ export const tsconfigFrontEnd = `{
         "importHelpers": true,
         "jsx": "react",
         "experimentalDecorators": true,
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "downlevelIteration": true
     }
 }`;
 
@@ -30,7 +31,8 @@ export const tsconfigDemo = `{
         "importHelpers": true,
         "jsx": "react",
         "experimentalDecorators": true,
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "downlevelIteration": true
     }
 }`;
 
@@ -59,7 +61,8 @@ export const jasmineTsconfig = `{
         "importHelpers": true,
         "jsx": "react",
         "experimentalDecorators": true,
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "downlevelIteration": true
     }
 }`;
 export const revStaticConfig = `module.exports = {
