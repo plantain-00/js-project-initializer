@@ -181,8 +181,8 @@ dist
 service-worker.js
 `;
 
-export function getWebpackConfig(hasUIStarter: boolean) {
-    return hasUIStarter ? `const webpack = require("webpack");
+export function getWebpackConfig(isFrontEndProject: boolean) {
+    return isFrontEndProject ? `const webpack = require("webpack");
 
 module.exports = {
     entry: {
@@ -191,6 +191,7 @@ module.exports = {
         angular: "./demo/angular/index",
     },
     output: {
+        path: __dirname,
         filename: "[name]/index.bundle.js"
     },
     plugins: [
@@ -302,10 +303,6 @@ export function getComponentShortName(componentName: string) {
     return (componentName.endsWith("component") && componentName.length - "component".length - 1 > 0)
         ? componentName.substring(0, componentName.length - "component".length - 1)
         : componentName;
-}
-
-export function getComponentTypeName(componentShortName: string) {
-    return componentShortName[0].toUpperCase() + componentShortName.substring(1);
 }
 
 export function getUIComponentUsage(authorName: string, componentName: string, componentShortName: string, componentTypeName: string) {
@@ -583,4 +580,17 @@ ${forkMeOnGithub}
 <div id="container"></div>
 <script src="<%=indexMinJs %>" crossOrigin="anonymous" integrity="<%=sri.indexMinJs %>"></script>
 `;
+}
+
+export function getLessConfig(componentShortName: string) {
+    return `.${componentShortName} {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Lucida Grande", "Lucida Sans Unicode", "Hiragino Sans GB", "WenQuanYi Micro Hei", "Verdana,Aril", "sans-serif";
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+  }
+}`;
 }

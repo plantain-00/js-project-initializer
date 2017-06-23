@@ -2,8 +2,9 @@ import * as inquirer from "inquirer";
 import * as childProcess from "child_process";
 import * as fs from "fs";
 import * as mkdirp from "mkdirp";
+import upperCamelCase = require("uppercamelcase");
 
-export { inquirer };
+export { inquirer, upperCamelCase };
 
 export function exec(command: string) {
     return new Promise<void>((resolve, reject) => {

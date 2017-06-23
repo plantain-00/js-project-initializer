@@ -1,0 +1,18 @@
+{
+  "name": "tab-container-component",
+  "version": "1.0.0",
+  "description": "A vuejs and reactjs tab container component.",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plantain-00/tab-container-component.git"
+  },
+  "author": "York Yao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/plantain-00/tab-container-component/issues"
+  },
+  "homepage": "https://github.com/plantain-00/tab-container-component#readme"
+}
