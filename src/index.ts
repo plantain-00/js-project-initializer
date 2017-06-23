@@ -159,7 +159,7 @@ async function run() {
 
     if (options.some(o => o === Choices.badgeChoice)) {
         printInConsole("setting badges...");
-        await libs.appendFile("README.md", config.getBadge(repositoryName, author, hasTravis, hasNpm));
+        await libs.appendFile("README.md", config.getBadge(repositoryName, author, hasNpm));
     }
 
     if (kind === ProjectKind.UIComponent) {

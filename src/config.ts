@@ -169,13 +169,11 @@ addons:
     packages:
       - g++-4.8`;
 
-export function getBadge(repositoryName: string, author: string, hasTravis: boolean, hasNpm: boolean) {
+export function getBadge(repositoryName: string, author: string, hasNpm: boolean) {
     let result = `[![Dependency Status](https://david-dm.org/${author}/${repositoryName}.svg)](https://david-dm.org/${author}/${repositoryName})
 [![devDependency Status](https://david-dm.org/${author}/${repositoryName}/dev-status.svg)](https://david-dm.org/${author}/${repositoryName}#info=devDependencies)`;
-    if (hasTravis) {
-        result += `
+    result += `
 [![Build Status](https://travis-ci.org/${author}/${repositoryName}.svg?branch=master)](https://travis-ci.org/${author}/${repositoryName})`;
-    }
     if (hasNpm) {
         result += `
 [![npm version](https://badge.fury.io/js/${repositoryName}.svg)](https://badge.fury.io/js/${repositoryName})
