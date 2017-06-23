@@ -67,10 +67,39 @@ export function mkdir(dir: string) {
 }
 
 export const enum ProjectKind {
-    CLI,
-    UIComponent,
-    frontend,
-    backend,
-    backendWithFrontend,
-    library,
+    CLI = "CLI",
+    UIComponent = "UI Component",
+    frontend = "frontend",
+    backend = "backend",
+    backendWithFrontend = "backend with frontend",
+    library = "library",
+}
+
+export const enum Choices {
+    lessChoice = "css: less",
+    stylelintChoice = "css: stylelint",
+    cleanCssCliChoice = "css: clean-css-cli",
+
+    publishToNpmChoice = "npm: publish to npm",
+
+    badgeChoice = "doc: badge",
+    forkMeOnGithubChoice = "doc: fork me on Github",
+
+    jasmineChoice = "test: jasmine",
+
+    webpackChoice = "bundle: webpack",
+
+    vueChoice = "UI: vue",
+    reactChoice = "UI: react",
+    angularChoice = "UI: angular",
+
+    rimrafChoice = "script: rimraf",
+    cpyChoice = "script: cpy-cli",
+    mkdirpChoice = "script: mkdirp",
+    revStaticChoice = "script: rev-static",
+    htmlMinifierChoice = "script: html-minifier",
+    image2base64Choice = "script: image2base64-cli",
+    file2variableChoice = "script: file2variable-cli",
+    swPrecacheChoice = "script: sw-precache",
+    uglifyjsChoice = "script: uglify-js",
 }
