@@ -37,10 +37,6 @@ const vueChoice = "UI: vue";
 const reactChoice = "UI: react";
 const angularChoice = "UI: angular";
 
-const vueStarterChoice = "UI: vue starter";
-const reactStarterChoice = "UI: react starter";
-const angularStarterChoice = "UI: angular starter";
-
 const vuexChoice = "UI: vuex";
 const vueRouterChoice = "UI: vue-router";
 
@@ -145,10 +141,6 @@ async function run() {
             reactChoice,
             angularChoice,
 
-            vueStarterChoice,
-            reactStarterChoice,
-            angularStarterChoice,
-
             vuexChoice,
             vueRouterChoice,
 
@@ -177,6 +169,7 @@ async function run() {
     const hasReactChoice = options.some(o => o === reactChoice);
     const hasAngularChoice = options.some(o => o === angularChoice);
     const hasFile2Variable = options.some(o => o === file2variableChoice);
+    const hasLessChoice = options.some(o => o === lessChoice);
 
     let kind: ProjectKind;
     if (options.some(o => o === UIComponentChoice)) {
@@ -185,19 +178,17 @@ async function run() {
         kind = ProjectKind.CLI;
     } else {
         kind = options.some(o => o === nodejsChoice)
-            ? (hasVueChoice || hasReactChoice || hasAngularChoice ? ProjectKind.backendWithFrontend : ProjectKind.backend)
-            : (hasVueChoice || hasReactChoice || hasAngularChoice ? ProjectKind.frontend : ProjectKind.library);
+            ? (hasVueChoice || hasReactChoice || hasAngularChoice || hasLessChoice ? ProjectKind.backendWithFrontend : ProjectKind.backend)
+            : (hasVueChoice || hasReactChoice || hasAngularChoice || hasLessChoice ? ProjectKind.frontend : ProjectKind.library);
     }
 
     const demoDirectory = kind === ProjectKind.UIComponent ? "demo" : ".";
+    await libs.mkdir(demoDirectory);
     const distDirectory = kind === ProjectKind.UIComponent ? "dist" : ".";
-    if (demoDirectory) {
-        await libs.mkdir(demoDirectory);
-    }
     const srcDirectory = (kind === ProjectKind.UIComponent || kind === ProjectKind.backendWithFrontend || kind === ProjectKind.CLI) ? "src" : ".";
-    if (srcDirectory) {
-        await libs.mkdir(srcDirectory);
-    }
+    await libs.mkdir(srcDirectory);
+    const staticDirectory = kind === ProjectKind.backendWithFrontend ? "static" : ".";
+    await libs.mkdir(staticDirectory);
 
     if (hasFile2Variable) {
         buildScripts.push("npm run file2variable");
@@ -207,6 +198,8 @@ async function run() {
         if (hasTypescript) {
             printInConsole("installing @types/node...");
             await libs.exec(`npm i -DE ${registry} @types/node`);
+            printInConsole(`setting ${srcDirectory}/index.ts...`);
+            await libs.writeFile(`${srcDirectory}/index.ts`, config.backendConfig);
         }
     }
 
@@ -334,12 +327,18 @@ async function run() {
         lintScripts.push("npm run flow");
     }
 
-    if (options.some(o => o === lessChoice)) {
+    if (hasLessChoice) {
         printInConsole("installing less...");
         await libs.exec(`npm i -DE ${registry} less`);
-        printInConsole(`setting ${srcDirectory}/${componentShortName}.less...`);
-        await libs.writeFile(`${srcDirectory}/${componentShortName}.less`, config.getLessConfig(componentShortName));
-        scripts.lessc = `lessc ${srcDirectory}/${componentShortName}.less > ${distDirectory}/${componentShortName}.css`;
+        if (kind === ProjectKind.backendWithFrontend) {
+            printInConsole(`setting ${staticDirectory}/${componentShortName}.less...`);
+            await libs.writeFile(`${staticDirectory}/${componentShortName}.less`, config.getLessConfig(componentShortName));
+            scripts.lessc = `lessc ${staticDirectory}/${componentShortName}.less > ${staticDirectory}/${componentShortName}.css`;
+        } else {
+            printInConsole(`setting ${srcDirectory}/${componentShortName}.less...`);
+            await libs.writeFile(`${srcDirectory}/${componentShortName}.less`, config.getLessConfig(componentShortName));
+            scripts.lessc = `lessc ${srcDirectory}/${componentShortName}.less > ${distDirectory}/${componentShortName}.css`;
+        }
         buildScripts.push("npm run lessc");
     }
 
@@ -355,6 +354,17 @@ async function run() {
     if (hasVueChoice) {
         printInConsole("installing vue vue-class-component...");
         await libs.exec(`npm i -DE ${registry} vue vue-class-component`);
+        if (kind === ProjectKind.UIComponent) {
+            printInConsole(`setting ${srcDirectory}/vue.ts`);
+            await libs.writeFile(`${srcDirectory}/vue.ts`, config.getVueStarter(repositoryName, componentShortName, componentTypeName));
+            printInConsole(`setting ${srcDirectory}/vue.template.html`);
+            await libs.writeFile(`${srcDirectory}/vue.template.html`, "<div></div>");
+            await libs.mkdir(`${demoDirectory}/vue`);
+            printInConsole(`setting ${demoDirectory}/vue/index.ts`);
+            await libs.writeFile(`${demoDirectory}/vue/index.ts`, config.getVueStarterDemoSource(author, repositoryName, componentShortName, componentTypeName));
+            printInConsole(`setting ${demoDirectory}/vue/index.ejs.html`);
+            await libs.writeFile(`${demoDirectory}/vue/index.ejs.html`, config.getVueStarterDemoHtml(repositoryName));
+        }
     }
 
     if (hasReactChoice) {
@@ -364,40 +374,31 @@ async function run() {
             printInConsole("installing @types/react @types/react-dom...");
             await libs.exec(`npm i -DE ${registry} @types/react @types/react-dom`);
         }
+        if (kind === ProjectKind.UIComponent) {
+            printInConsole(`setting ${srcDirectory}/react.tsx`);
+            await libs.writeFile(`${srcDirectory}/react.tsx`, config.getReactStarter(repositoryName, componentShortName, componentTypeName));
+            await libs.mkdir(`${demoDirectory}/react`);
+            printInConsole(`setting ${demoDirectory}/react/index.tsx`);
+            await libs.writeFile(`${demoDirectory}/react/index.tsx`, config.getReactStarterDemoSource(author, repositoryName, componentShortName, componentTypeName));
+            printInConsole(`setting ${demoDirectory}/react/index.ejs.html`);
+            await libs.writeFile(`${demoDirectory}/react/index.ejs.html`, config.getReactStarterDemoHtml(repositoryName));
+        }
     }
 
     if (hasAngularChoice) {
         printInConsole("installing @angular/common @angular/compiler @angular/core @angular/forms @angular/platform-browser @angular/platform-browser-dynamic core-js rxjs zone.js...");
         await libs.exec(`npm i -DE ${registry} @angular/common @angular/compiler @angular/core @angular/forms @angular/platform-browser @angular/platform-browser-dynamic core-js rxjs zone.js`);
-    }
-
-    const hasVueStarter = options.some(o => o === vueStarterChoice);
-    if (hasVueStarter) {
-        printInConsole("setting vue starter...");
-        await libs.writeFile(`${srcDirectory}/vue.ts`, config.getVueStarter(repositoryName, componentShortName, componentTypeName));
-        await libs.writeFile(`${srcDirectory}/vue.template.html`, "<div></div>");
-        await libs.mkdir(`${demoDirectory}/vue`);
-        await libs.writeFile(`${demoDirectory}/vue/index.ts`, config.getVueStarterDemoSource(author, repositoryName, componentShortName, componentTypeName));
-        await libs.writeFile(`${demoDirectory}/vue/index.ejs.html`, config.getVueStarterDemoHtml(repositoryName));
-    }
-
-    const hasReactStarter = options.some(o => o === reactStarterChoice);
-    if (hasReactStarter) {
-        printInConsole("setting react starter...");
-        await libs.writeFile(`${srcDirectory}/react.tsx`, config.getReactStarter(repositoryName, componentShortName, componentTypeName));
-        await libs.mkdir(`${demoDirectory}/react`);
-        await libs.writeFile(`${demoDirectory}/react/index.tsx`, config.getReactStarterDemoSource(author, repositoryName, componentShortName, componentTypeName));
-        await libs.writeFile(`${demoDirectory}/react/index.ejs.html`, config.getReactStarterDemoHtml(repositoryName));
-    }
-
-    const hasAngularStarter = options.some(o => o === angularStarterChoice);
-    if (hasAngularStarter) {
-        printInConsole("setting angular starter...");
-        await libs.writeFile(`${srcDirectory}/angular.ts`, config.getAngularStarter(repositoryName, componentShortName, componentTypeName));
-        await libs.writeFile(`${srcDirectory}/angular.template.html`, "<div></div>");
-        await libs.mkdir(`${demoDirectory}/angular`);
-        await libs.writeFile(`${demoDirectory}/angular/index.ts`, config.getAngularStarterDemoSource(author, repositoryName, componentShortName, componentTypeName));
-        await libs.writeFile(`${demoDirectory}/angular/index.ejs.html`, config.getAngularStarterDemoHtml(repositoryName));
+        if (kind === ProjectKind.UIComponent) {
+            printInConsole(`setting ${srcDirectory}/angular.ts`);
+            await libs.writeFile(`${srcDirectory}/angular.ts`, config.getAngularStarter(repositoryName, componentShortName, componentTypeName));
+            printInConsole(`setting ${srcDirectory}/angular.template.html`);
+            await libs.writeFile(`${srcDirectory}/angular.template.html`, "<div></div>");
+            await libs.mkdir(`${demoDirectory}/angular`);
+            printInConsole(`setting ${demoDirectory}/angular/index.ts`);
+            await libs.writeFile(`${demoDirectory}/angular/index.ts`, config.getAngularStarterDemoSource(author, repositoryName, componentShortName, componentTypeName));
+            printInConsole(`setting ${demoDirectory}/angular/index.ejs.html`);
+            await libs.writeFile(`${demoDirectory}/angular/index.ejs.html`, config.getAngularStarterDemoHtml(repositoryName));
+        }
     }
 
     const hasVuex = options.some(o => o === vuexChoice);
@@ -424,9 +425,7 @@ async function run() {
         await libs.exec(`npm i -DE ${registry} react-router-dom @types/react-router-dom`);
     }
 
-    if (options.some(o => o === vueStarterChoice)
-        || options.some(o => o === reactStarterChoice)
-        || options.some(o => o === angularStarterChoice)) {
+    if (kind === ProjectKind.UIComponent) {
         printInConsole("setting starter common.ts...");
         await libs.writeFile(`${srcDirectory}/common.ts`, config.getStarterCommonSource(repositoryName, componentShortName, componentTypeName));
     }
@@ -468,10 +467,10 @@ async function run() {
         printInConsole("installing file2variable-cli...");
         await libs.exec(`npm i -DE ${registry} file2variable-cli`);
         const commands: string[] = [];
-        if (hasVueStarter) {
+        if (kind === ProjectKind.UIComponent && hasVueChoice) {
             commands.push(`file2variable-cli ${srcDirectory}/vue.template.html -o ${srcDirectory}/vue-variables.ts --html-minify`);
         }
-        if (hasAngularStarter) {
+        if (kind === ProjectKind.UIComponent && hasAngularChoice) {
             commands.push(`file2variable-cli ${srcDirectory}/angular.template.html -o ${srcDirectory}/angular-variables.ts --html-minify`);
         }
         if (commands.length === 0) {

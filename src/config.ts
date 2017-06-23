@@ -629,3 +629,11 @@ executeCommandLine().catch(error => {
     console.log(error);
 });
 `;
+
+export const backendConfig = `function print(message: any) {
+    // tslint:disable-next-line:no-console
+    console.log(message);
+}
+
+print("app started!");
+`;
