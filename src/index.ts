@@ -1,11 +1,7 @@
 import * as libs from "./libs";
-import { ProjectKind, Choices } from "./libs";
+import { ProjectKind, Choices, printInConsole } from "./libs";
 import * as config from "./config";
-
-function printInConsole(message: string) {
-    // tslint:disable-next-line:no-console
-    console.log(message);
-}
+import { runUIComponent } from "./uiComponent";
 
 async function selectProjectKind() {
     const projectKindAnswer = await libs.inquirer.prompt({
@@ -52,13 +48,39 @@ async function run() {
 
     const kind = await selectProjectKind();
 
+    printInConsole("installing typescript...");
+    await libs.exec(`npm i -DE typescript@rc`);
+
+    printInConsole("setting .gitignore...");
+    await libs.appendFile(".gitignore", config.gitIgnore);
+
+    printInConsole("setting .travis.yml...");
+    await libs.writeFile(".travis.yml", config.travis);
+
+    printInConsole("setting tssdk...");
+    await libs.mkdir(".vscode");
+    await libs.writeFile(".vscode/settings.json", config.tssdk);
+
+    printInConsole("installing tslint...");
+    await libs.exec(`npm i -DE tslint`);
+    printInConsole("setting tslint.json...");
+    await libs.writeFile("tslint.json", config.tslint);
+
+    printInConsole("setting github issue/pull request template...");
+    await libs.mkdir(".github");
+    await libs.writeFile(".github/ISSUE_TEMPLATE.md", config.githubIssueTemplate);
+    await libs.writeFile(".github/PULL_REQUEST_TEMPLATE.md", config.githubPullRequestTemplate);
+
+    if (kind === ProjectKind.UIComponent) {
+        await runUIComponent(scripts, repositoryName, author, componentShortName, componentTypeName);
+        return;
+    }
+
     const answer = await libs.inquirer.prompt({
         type: "checkbox",
         name: "options",
         message: "Choose options:",
         default: [
-            Choices.badgeChoice,
-            Choices.rimrafChoice,
         ],
         choices: [
             Choices.lessChoice,
@@ -67,7 +89,6 @@ async function run() {
 
             Choices.publishToNpmChoice,
 
-            Choices.badgeChoice,
             Choices.forkMeOnGithubChoice,
 
             Choices.jasmineChoice,
@@ -78,7 +99,6 @@ async function run() {
             Choices.reactChoice,
             Choices.angularChoice,
 
-            Choices.rimrafChoice,
             Choices.cpyChoice,
             Choices.mkdirpChoice,
             Choices.revStaticChoice,
@@ -100,10 +120,10 @@ async function run() {
     const hasFile2Variable = options.some(o => o === Choices.file2variableChoice);
     const hasLessChoice = options.some(o => o === Choices.lessChoice);
 
-    const demoDirectory = kind === ProjectKind.UIComponent ? "demo" : ".";
+    const demoDirectory = ".";
     await libs.mkdir(demoDirectory);
-    const distDirectory = kind === ProjectKind.UIComponent ? "dist" : ".";
-    const srcDirectory = (kind === ProjectKind.UIComponent || kind === ProjectKind.backendWithFrontend || kind === ProjectKind.CLI) ? "src" : ".";
+    const distDirectory = ".";
+    const srcDirectory = (kind === ProjectKind.backendWithFrontend || kind === ProjectKind.CLI) ? "src" : ".";
     await libs.mkdir(srcDirectory);
     const staticDirectory = kind === ProjectKind.backendWithFrontend ? "static" : ".";
     await libs.mkdir(staticDirectory);
@@ -119,29 +139,15 @@ async function run() {
         await libs.writeFile(`${srcDirectory}/index.ts`, config.backendConfig);
     }
 
-    printInConsole("installing typescript...");
-    await libs.exec(`npm i -DE typescript@rc`);
     printInConsole(`setting ${srcDirectory}/tsconfig.json...`);
-    await libs.writeFile(`${srcDirectory}/tsconfig.json`, kind === ProjectKind.UIComponent
-        ? config.tsconfigFrontEnd
-        : (kind === ProjectKind.CLI ? config.tsconfigCLI : config.tsconfigNodejs));
-    printInConsole("setting tssdk...");
-    await libs.mkdir(".vscode");
-    await libs.writeFile(".vscode/settings.json", config.tssdk);
-    scripts.tsc = kind === ProjectKind.UIComponent ? `tsc -p ${srcDirectory}/ && tsc -p ${demoDirectory}/` : `tsc -p ${srcDirectory}/`;
+    await libs.writeFile(`${srcDirectory}/tsconfig.json`, kind === ProjectKind.CLI ? config.tsconfigCLI : config.tsconfigNodejs);
+    scripts.tsc = `tsc -p ${srcDirectory}/`;
     buildScripts.push("npm run tsc");
-    if (kind === ProjectKind.UIComponent) {
-        await libs.writeFile(`${demoDirectory}/tsconfig.json`, config.tsconfigDemo);
-    }
-    if (kind === ProjectKind.UIComponent || kind === ProjectKind.frontend || kind === ProjectKind.backendWithFrontend) {
+    if (kind === ProjectKind.frontend || kind === ProjectKind.backendWithFrontend) {
         printInConsole("installing tslib...");
         await libs.exec(`npm i -SE tslib`);
     }
 
-    printInConsole("installing tslint...");
-    await libs.exec(`npm i -DE tslint`);
-    printInConsole("setting tslint.json...");
-    await libs.writeFile("tslint.json", config.tslint);
     scripts.tslint = `tslint "${srcDirectory}/**/*.ts" "${srcDirectory}/**/*.tsx"`;
     lintScripts.push("npm run tslint");
 
@@ -151,21 +157,8 @@ async function run() {
         await libs.writeFile(".npmignore", config.npmignore);
     }
 
-    printInConsole("setting .gitignore...");
-    await libs.appendFile(".gitignore", config.gitIgnore);
-
-    printInConsole("setting .travis.yml...");
-    await libs.writeFile(".travis.yml", config.travis);
-
-    if (options.some(o => o === Choices.badgeChoice)) {
-        printInConsole("setting badges...");
-        await libs.appendFile("README.md", config.getBadge(repositoryName, author, hasNpm));
-    }
-
-    if (kind === ProjectKind.UIComponent) {
-        printInConsole("setting UI component usage choice...");
-        await libs.appendFile("README.md", config.getUIComponentUsage(author, repositoryName, componentShortName, componentTypeName, hasVueChoice, hasReactChoice, hasAngularChoice));
-    }
+    printInConsole("setting badges...");
+    await libs.appendFile("README.md", config.getBadge(repositoryName, author, hasNpm));
 
     if (options.some(o => o === Choices.jasmineChoice)) {
         printInConsole("installing jasmine...");
@@ -223,17 +216,6 @@ async function run() {
     if (hasVueChoice) {
         printInConsole("installing vue vue-class-component...");
         await libs.exec(`npm i -DE vue vue-class-component`);
-        if (kind === ProjectKind.UIComponent) {
-            printInConsole(`setting ${srcDirectory}/vue.ts`);
-            await libs.writeFile(`${srcDirectory}/vue.ts`, config.getVueStarter(repositoryName, componentShortName, componentTypeName));
-            printInConsole(`setting ${srcDirectory}/vue.template.html`);
-            await libs.writeFile(`${srcDirectory}/vue.template.html`, "<div></div>");
-            await libs.mkdir(`${demoDirectory}/vue`);
-            printInConsole(`setting ${demoDirectory}/vue/index.ts`);
-            await libs.writeFile(`${demoDirectory}/vue/index.ts`, config.getVueStarterDemoSource(author, repositoryName, componentShortName, componentTypeName));
-            printInConsole(`setting ${demoDirectory}/vue/index.ejs.html`);
-            await libs.writeFile(`${demoDirectory}/vue/index.ejs.html`, config.getVueStarterDemoHtml(repositoryName));
-        }
     }
 
     if (hasReactChoice) {
@@ -241,48 +223,19 @@ async function run() {
         await libs.exec(`npm i -DE react react-dom`);
         printInConsole("installing @types/react @types/react-dom...");
         await libs.exec(`npm i -DE @types/react @types/react-dom`);
-        if (kind === ProjectKind.UIComponent) {
-            printInConsole(`setting ${srcDirectory}/react.tsx`);
-            await libs.writeFile(`${srcDirectory}/react.tsx`, config.getReactStarter(repositoryName, componentShortName, componentTypeName));
-            await libs.mkdir(`${demoDirectory}/react`);
-            printInConsole(`setting ${demoDirectory}/react/index.tsx`);
-            await libs.writeFile(`${demoDirectory}/react/index.tsx`, config.getReactStarterDemoSource(author, repositoryName, componentShortName, componentTypeName));
-            printInConsole(`setting ${demoDirectory}/react/index.ejs.html`);
-            await libs.writeFile(`${demoDirectory}/react/index.ejs.html`, config.getReactStarterDemoHtml(repositoryName));
-        }
     }
 
     if (hasAngularChoice) {
         printInConsole("installing @angular/common @angular/compiler @angular/core @angular/forms @angular/platform-browser @angular/platform-browser-dynamic core-js rxjs zone.js...");
         await libs.exec(`npm i -DE @angular/common @angular/compiler @angular/core @angular/forms @angular/platform-browser @angular/platform-browser-dynamic core-js rxjs zone.js`);
-        if (kind === ProjectKind.UIComponent) {
-            printInConsole(`setting ${srcDirectory}/angular.ts`);
-            await libs.writeFile(`${srcDirectory}/angular.ts`, config.getAngularStarter(repositoryName, componentShortName, componentTypeName));
-            printInConsole(`setting ${srcDirectory}/angular.template.html`);
-            await libs.writeFile(`${srcDirectory}/angular.template.html`, "<div></div>");
-            await libs.mkdir(`${demoDirectory}/angular`);
-            printInConsole(`setting ${demoDirectory}/angular/index.ts`);
-            await libs.writeFile(`${demoDirectory}/angular/index.ts`, config.getAngularStarterDemoSource(author, repositoryName, componentShortName, componentTypeName));
-            printInConsole(`setting ${demoDirectory}/angular/index.ejs.html`);
-            await libs.writeFile(`${demoDirectory}/angular/index.ejs.html`, config.getAngularStarterDemoHtml(repositoryName));
-        }
-    }
-
-    if (kind === ProjectKind.UIComponent) {
-        printInConsole("setting starter common.ts...");
-        await libs.writeFile(`${srcDirectory}/common.ts`, config.getStarterCommonSource(repositoryName, componentShortName, componentTypeName));
     }
 
     if (options.some(o => o === Choices.cleanCssCliChoice)) {
         printInConsole("installing clean-css-cli...");
         await libs.exec(`npm i -DE clean-css-cli`);
-        const forkMeOnGithubPart = hasForkMeOnGithubChoice ? " ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css" : "";
+        // const forkMeOnGithubPart = hasForkMeOnGithubChoice ? " ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css" : "";
         scripts.cleancss = `cleancss -o ${distDirectory}/${componentShortName}.min.css ${distDirectory}/${componentShortName}.css`;
         buildScripts.push("npm run cleancss");
-        if (kind === ProjectKind.UIComponent) {
-            scripts["cleancss-demo"] = `cleancss -o ${demoDirectory}/index.bundle.css ${distDirectory}/${componentShortName}.min.css` + forkMeOnGithubPart;
-            buildScripts.push("npm run cleancss-demo");
-        }
     }
 
     if (options.some(o => o === Choices.htmlMinifierChoice)) {
@@ -291,14 +244,8 @@ async function run() {
         scripts["html-minifier"] = `html-minifier --collapse-whitespace --case-sensitive --collapse-inline-tag-whitespace ${srcDirectory}/index.html -o ${distDirectory}/index.html`;
     }
 
-    if (options.some(o => o === Choices.rimrafChoice)) {
-        printInConsole("installing rimraf...");
-        await libs.exec(`npm i -DE rimraf`);
-        if (kind === ProjectKind.UIComponent) {
-            scripts.clean = `rimraf ${distDirectory}/`;
-            buildScripts.unshift("npm run clean");
-        }
-    }
+    printInConsole("installing rimraf...");
+    await libs.exec(`npm i -DE rimraf`);
 
     if (options.some(o => o === Choices.image2base64Choice)) {
         printInConsole("installing image2base64-cli...");
@@ -310,12 +257,6 @@ async function run() {
         printInConsole("installing file2variable-cli...");
         await libs.exec(`npm i -DE file2variable-cli`);
         const commands: string[] = [];
-        if (kind === ProjectKind.UIComponent && hasVueChoice) {
-            commands.push(`file2variable-cli ${srcDirectory}/vue.template.html -o ${srcDirectory}/vue-variables.ts --html-minify`);
-        }
-        if (kind === ProjectKind.UIComponent && hasAngularChoice) {
-            commands.push(`file2variable-cli ${srcDirectory}/angular.template.html -o ${srcDirectory}/angular-variables.ts --html-minify`);
-        }
         if (commands.length === 0) {
             commands.push(`file2variable-cli ${srcDirectory}/index.html -o ${srcDirectory}/variables.ts --html-minify`);
         }
@@ -340,11 +281,6 @@ async function run() {
         scripts.uglifyjs = "uglifyjs index.js -o index.min.js";
     }
 
-    printInConsole("setting github issue/pull request template...");
-    await libs.mkdir(".github");
-    await libs.writeFile(".github/ISSUE_TEMPLATE.md", config.githubIssueTemplate);
-    await libs.writeFile(".github/PULL_REQUEST_TEMPLATE.md", config.githubPullRequestTemplate);
-
     if (options.some(o => o === Choices.webpackChoice)) {
         printInConsole("installing webpack...");
         await libs.exec(`npm i -DE webpack`);
@@ -359,7 +295,7 @@ async function run() {
         printInConsole("installing rev-static...");
         await libs.exec(`npm i -DE rev-static`);
         printInConsole("setting rev-static.config.js...");
-        await libs.writeFile(`${demoDirectory}/rev-static.config.js`, kind === ProjectKind.UIComponent ? config.revStaticConfigDemo : config.revStaticConfig);
+        await libs.writeFile(`${demoDirectory}/rev-static.config.js`, config.revStaticConfig);
         scripts["rev-static"] = `rev-static --config ${demoDirectory}/rev-static.config.js`;
         buildScripts.push("npm run rev-static");
         printInConsole("setting index.ejs.html...");

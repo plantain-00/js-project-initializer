@@ -66,6 +66,11 @@ export function mkdir(dir: string) {
     });
 }
 
+export function printInConsole(message: string) {
+    // tslint:disable-next-line:no-console
+    console.log(message);
+}
+
 export const enum ProjectKind {
     CLI = "CLI",
     UIComponent = "UI Component",
@@ -82,7 +87,6 @@ export const enum Choices {
 
     publishToNpmChoice = "npm: publish to npm",
 
-    badgeChoice = "doc: badge",
     forkMeOnGithubChoice = "doc: fork me on Github",
 
     jasmineChoice = "test: jasmine",
@@ -93,7 +97,6 @@ export const enum Choices {
     reactChoice = "UI: react",
     angularChoice = "UI: angular",
 
-    rimrafChoice = "script: rimraf",
     cpyChoice = "script: cpy-cli",
     mkdirpChoice = "script: mkdirp",
     revStaticChoice = "script: rev-static",
