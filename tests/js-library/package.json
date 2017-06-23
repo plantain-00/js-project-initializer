@@ -1,0 +1,18 @@
+{
+  "name": "rpc-on-ws",
+  "version": "3.1.1",
+  "description": "A lightweight RPC library on websocket connection.",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plantain-00/rpc-on-ws.git"
+  },
+  "author": "York Yao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/plantain-00/rpc-on-ws/issues"
+  },
+  "homepage": "https://github.com/plantain-00/rpc-on-ws#readme"
+}

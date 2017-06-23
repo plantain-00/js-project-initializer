@@ -9,7 +9,8 @@
     "clean": "rimraf dist/",
     "build": "npm run clean && npm run tsc",
     "lint": "npm run tslint",
-    "test:ui-component": "cd tests/ui-component/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../"
+    "test:ui-component": "cd tests/ui-component/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
+    "test:js-library": "cd tests/js-library/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../"
   },
   "repository": {
     "type": "git",
@@ -37,5 +38,6 @@
     "rimraf": "2.6.1",
     "tslint": "5.4.0",
     "typescript": "2.4.0"
-  }
+  },
+  "preferGlobal": true
 }

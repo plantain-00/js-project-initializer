@@ -99,14 +99,11 @@ async function run() {
         default: [
             typescriptChoice,
             tslintChoice,
-            npmignoreChoice,
             travisCIChoice,
             badgeChoice,
-            UIComponentUsageChoice,
             rimrafChoice,
             gitIgnoreChoice,
             githubTemplate,
-            forkMeOnGithubChoice,
         ],
         choices: [
             typescriptChoice,
