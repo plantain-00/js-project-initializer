@@ -230,7 +230,7 @@ async function run() {
 
     if (hasUIConponentChoice) {
         printInConsole("setting UI component usage choice...");
-        await libs.appendFile("README.md", config.getUIComponentUsage(author, repositoryName, componentShortName, componentTypeName));
+        await libs.appendFile("README.md", config.getUIComponentUsage(author, repositoryName, componentShortName, componentTypeName, hasVueChoice, hasReactChoice, hasAngularChoice));
     }
 
     if (options.some(o => o === jasmineChoice)) {
@@ -474,7 +474,7 @@ async function run() {
         printInConsole("installing webpack...");
         await libs.exec(`npm i -DE ${registry} webpack`);
         printInConsole("setting webpack.config.js...");
-        const webpackConfig = config.getWebpackConfig(isFrontEndProject);
+        const webpackConfig = config.getWebpackConfig(isFrontEndProject, hasVueChoice, hasReactChoice, hasAngularChoice);
         await libs.writeFile(`${demoDirectory}/webpack.config.js`, webpackConfig);
         scripts.webpack = `webpack --config ${demoDirectory}/webpack.config.js`;
         buildScripts.push("npm run webpack");

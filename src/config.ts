@@ -181,14 +181,17 @@ dist
 service-worker.js
 `;
 
-export function getWebpackConfig(isFrontEndProject: boolean) {
+export function getWebpackConfig(isFrontEndProject: boolean, hasVueChoice: boolean, hasReactChoice: boolean, hasAngularChoice: boolean) {
+    const vueEntry = hasVueChoice ? `
+        vue: "./demo/vue/index",` : "";
+    const reactEntry = hasReactChoice ? `
+        react: "./demo/react/index",` : "";
+    const angularEntry = hasAngularChoice ? `
+        angular: "./demo/angular/index",` : "";
     return isFrontEndProject ? `const webpack = require("webpack");
 
 module.exports = {
-    entry: {
-        vue: "./demo/vue/index",
-        react: "./demo/react/index",
-        angular: "./demo/angular/index",
+    entry: {${vueEntry}${reactEntry}${angularEntry}
     },
     output: {
         path: __dirname,
@@ -305,26 +308,14 @@ export function getComponentShortName(componentName: string) {
         : componentName;
 }
 
-export function getUIComponentUsage(authorName: string, componentName: string, componentShortName: string, componentTypeName: string) {
-    return `
-#### features
-
-+ vuejs component
-+ reactjs component
-+ angular component
-+ custom component
-
-#### install
-
-\`npm i ${componentName}\`
-
-#### link css
-
-\`\`\`html
-<link rel="stylesheet" href="./node_modules/${componentName}/dist/${componentShortName}.min.css" />
-\`\`\`
-
-#### vuejs component demo
+export function getUIComponentUsage(authorName: string, componentName: string, componentShortName: string, componentTypeName: string, hasVueChoice: boolean, hasReactChoice: boolean, hasAngularChoice: boolean) {
+    const vueFeature = hasVueChoice ? `
++ vuejs component` : "";
+    const reactFeature = hasReactChoice ? `
++ reactjs component` : "";
+    const angularFeature = hasAngularChoice ? `
++ angular component` : "";
+    const vueComponentDemo = hasVueChoice ? `#### vuejs component demo
 
 \`npm i vue vue-class-component\`
 
@@ -337,9 +328,8 @@ import "${componentName}/dist/vue";
 </${componentShortName}>
 \`\`\`
 
-the online demo: https://${authorName}.github.io/${componentName}/demo/vue/index.html
-
-#### reactjs component demo
+the online demo: https://${authorName}.github.io/${componentName}/demo/vue/index.html` : "";
+    const reactComponentDemo = hasReactChoice ? `#### reactjs component demo
 
 \`\`\`ts
 import { ${componentTypeName} } from "${componentName}/dist/react";
@@ -350,9 +340,8 @@ import { ${componentTypeName} } from "${componentName}/dist/react";
 </${componentTypeName}>
 \`\`\`
 
-the online demo: https://${authorName}.github.io/${componentName}/demo/react/index.html
-
-#### angular component demo
+the online demo: https://${authorName}.github.io/${componentName}/demo/react/index.html` : "";
+    const angularComponentDemo = hasAngularChoice ? `#### angular component demo
 
 \`\`\`ts
 import { ${componentTypeName}Component } from "${componentName}/dist/angular";
@@ -370,7 +359,27 @@ class MainModule { }
 </${componentShortName}>
 \`\`\`
 
-the online demo: https://${authorName}.github.io/${componentName}/demo/angular/index.html
+the online demo: https://${authorName}.github.io/${componentName}/demo/angular/index.html` : "";
+    return `
+#### features
+${vueFeature}${reactFeature}${angularFeature}
++ custom component
+
+#### install
+
+\`npm i ${componentName}\`
+
+#### link css
+
+\`\`\`html
+<link rel="stylesheet" href="./node_modules/${componentName}/dist/${componentShortName}.min.css" />
+\`\`\`
+
+${vueComponentDemo}
+
+${reactComponentDemo}
+
+${angularComponentDemo}
 
 #### properties and events of the component
 
@@ -592,5 +601,6 @@ export function getLessConfig(componentShortName: string) {
     -webkit-font-smoothing: antialiased;
     user-select: none;
   }
-}`;
+}
+`;
 }
