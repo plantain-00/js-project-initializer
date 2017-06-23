@@ -10,7 +10,11 @@
     "build": "npm run clean && npm run tsc",
     "lint": "npm run tslint",
     "test:ui-component": "cd tests/ui-component/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
-    "test:js-library": "cd tests/js-library/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../"
+    "test:js-library": "cd tests/js-library/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
+    "test:backend-app": "cd tests/backend-app/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
+    "test:frontend-app": "cd tests/frontend-app/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
+    "test:app": "cd tests/app/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
+    "test:cli": "cd tests/cli/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../"
   },
   "repository": {
     "type": "git",

@@ -18,6 +18,19 @@ export const tsconfigFrontEnd = `{
     }
 }`;
 
+export const tsconfigCLI = `{
+    "compilerOptions": {
+        "target": "esnext",
+        "outDir": "../dist",
+
+        "module": "commonjs",
+        "strict": true,
+        "noUnusedLocals": true,
+        "noImplicitReturns": true,
+        "skipLibCheck": true
+    }
+}`;
+
 export const tsconfigDemo = `{
     "compilerOptions": {
         "target": "es5",
@@ -604,3 +617,13 @@ export function getLessConfig(componentShortName: string) {
 }
 `;
 }
+
+export const cliSource = `async function executeCommandLine() {
+    // todo
+}
+
+executeCommandLine().catch(error => {
+    // tslint:disable-next-line:no-console
+    console.log(error);
+});
+`;

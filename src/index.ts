@@ -163,10 +163,11 @@ async function run() {
     const isFrontEndProject = hasUIConponentChoice || hasVueChoice || hasReactChoice || hasAngularChoice;
     const demoDirectory = hasUIConponentChoice ? "demo" : ".";
     const distDirectory = hasUIConponentChoice ? "dist" : ".";
+    const isCLIProject = options.some(o => o === cliChoice);
     if (demoDirectory) {
         await libs.mkdir(demoDirectory);
     }
-    const srcDirectory = isFrontEndProject ? "src" : ".";
+    const srcDirectory = (isFrontEndProject || isCLIProject) ? "src" : ".";
     if (srcDirectory) {
         await libs.mkdir(srcDirectory);
     }
@@ -179,7 +180,7 @@ async function run() {
         printInConsole("installing typescript...");
         await libs.exec(`npm i -DE ${registry} typescript@rc`);
         printInConsole(`setting ${srcDirectory}/tsconfig.json...`);
-        await libs.writeFile(`${srcDirectory}/tsconfig.json`, hasUIConponentChoice ? config.tsconfigFrontEnd : config.tsconfigNodejs);
+        await libs.writeFile(`${srcDirectory}/tsconfig.json`, hasUIConponentChoice ? config.tsconfigFrontEnd : (isCLIProject ? config.tsconfigCLI : config.tsconfigNodejs));
         printInConsole("setting tssdk...");
         await libs.mkdir(".vscode");
         await libs.writeFile(".vscode/settings.json", config.tssdk);
@@ -255,13 +256,14 @@ async function run() {
     }
 
     let bin: { [key: string]: string } | undefined;
-    if (options.some(o => o === cliChoice)) {
+    if (isCLIProject) {
         printInConsole("setting cli...");
         await libs.mkdir("bin");
         await libs.writeFile(`bin/${repositoryName}`, config.cli);
         bin = {
             [repositoryName]: `bin/${repositoryName}`,
         };
+        await libs.writeFile(`${srcDirectory}/index.ts`, config.cliSource);
     }
 
     if (options.some(o => o === babelChoice)) {
