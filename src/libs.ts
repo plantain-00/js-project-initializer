@@ -65,3 +65,12 @@ export function mkdir(dir: string) {
         });
     });
 }
+
+export const enum ProjectKind {
+    CLI,
+    UIComponent,
+    frontend,
+    backend,
+    backendWithFrontend,
+    library,
+}

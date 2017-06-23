@@ -1,3 +1,5 @@
+import { ProjectKind } from "./libs";
+
 export const tsconfigFrontEnd = `{
     "compilerOptions": {
         "target": "es5",
@@ -194,14 +196,14 @@ dist
 service-worker.js
 `;
 
-export function getWebpackConfig(isFrontEndProject: boolean, hasVueChoice: boolean, hasReactChoice: boolean, hasAngularChoice: boolean) {
+export function getWebpackConfig(kind: ProjectKind, hasVueChoice: boolean, hasReactChoice: boolean, hasAngularChoice: boolean) {
     const vueEntry = hasVueChoice ? `
         vue: "./demo/vue/index",` : "";
     const reactEntry = hasReactChoice ? `
         react: "./demo/react/index",` : "";
     const angularEntry = hasAngularChoice ? `
         angular: "./demo/angular/index",` : "";
-    return isFrontEndProject ? `const webpack = require("webpack");
+    return kind === ProjectKind.UIComponent ? `const webpack = require("webpack");
 
 module.exports = {
     entry: {${vueEntry}${reactEntry}${angularEntry}
