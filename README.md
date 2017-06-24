@@ -17,10 +17,10 @@ run `js-project-initialize`
 
 #### features
 
-- [x] UI component
+- [x] UI Component
 - [x] Js Library
-- [x] Nodejs Backend
-- [x] Frontend
-- [x] Nodejs Backend with Frontend
-- [x] CLI
-- [ ] electron project
+- [x] Nodejs Backend Program
+- [x] Frontend Program
+- [x] Nodejs Backend Program(with Frontend)
+- [x] CLI Program
+- [ ] Electron Program
