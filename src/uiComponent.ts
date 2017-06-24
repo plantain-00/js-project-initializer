@@ -1,6 +1,179 @@
 import * as libs from "./libs";
 import { Choices, ProjectKind, printInConsole } from "./libs";
 
+export async function runUIComponent(scripts: { [name: string]: string }, repositoryName: string, author: string, componentShortName: string, componentTypeName: string) {
+    const answer = await libs.inquirer.prompt({
+        type: "checkbox",
+        name: "options",
+        message: "Choose options:",
+        default: [
+        ],
+        choices: [
+            Choices.angularChoice,
+        ],
+    });
+    const options: Choices[] = answer.options;
+
+    const buildScripts: string[] = [];
+    const lintScripts: string[] = [];
+
+    const hasAngularChoice = options.some(o => o === Choices.angularChoice);
+
+    await libs.mkdir("demo");
+    await libs.mkdir("src");
+
+    buildScripts.push("npm run file2variable");
+
+    printInConsole(`setting src/tsconfig.json...`);
+    await libs.writeFile(`src/tsconfig.json`, srcTsconfig);
+    scripts.tsc = `tsc -p src/ && tsc -p demo/`;
+    buildScripts.push("npm run tsc");
+    await libs.writeFile(`demo/tsconfig.json`, demoTsconfig);
+    printInConsole("installing tslib...");
+    await libs.exec(`npm i -SE tslib`);
+
+    scripts.tslint = `tslint "src/**/*.ts" "src/**/*.tsx"`;
+    lintScripts.push("npm run tslint");
+
+    printInConsole("setting .npmignore...");
+    await libs.writeFile(".npmignore", npmignore);
+
+    printInConsole("setting badges...");
+    await libs.prependFile("README.md", getBadge(repositoryName, author));
+
+    printInConsole("setting UI component usage choice...");
+    await libs.appendFile("README.md", getUIComponentUsage(author, repositoryName, componentShortName, componentTypeName, hasAngularChoice));
+
+    printInConsole("installing github-fork-ribbon-css...");
+    await libs.exec(`npm i -DE github-fork-ribbon-css`);
+
+    printInConsole("installing less...");
+    await libs.exec(`npm i -DE less`);
+    printInConsole(`setting src/${componentShortName}.less...`);
+    await libs.writeFile(`src/${componentShortName}.less`, getLessConfig(componentShortName));
+    scripts.lessc = `lessc src/${componentShortName}.less > dist/${componentShortName}.css`;
+    buildScripts.push("npm run lessc");
+
+    printInConsole("installing stylelint stylelint-config-standard...");
+    await libs.exec(`npm i -DE stylelint stylelint-config-standard`);
+    printInConsole("setting .stylelintrc...");
+    await libs.writeFile(".stylelintrc", stylelint);
+    scripts.stylelint = `stylelint "src/**/*.less"`;
+    lintScripts.push("npm run stylelint");
+
+    printInConsole("installing vue vue-class-component...");
+    await libs.exec(`npm i -DE vue vue-class-component`);
+    printInConsole(`setting src/vue.ts`);
+    await libs.writeFile(`src/vue.ts`, getVueStarter(repositoryName, componentShortName, componentTypeName));
+    printInConsole(`setting src/vue.template.html`);
+    await libs.writeFile(`src/vue.template.html`, `<div class="${componentShortName}"></div>`);
+    await libs.mkdir(`demo/vue`);
+    printInConsole(`setting demo/vue/index.ts`);
+    await libs.writeFile(`demo/vue/index.ts`, getVueStarterDemoSource(author, repositoryName, componentShortName, componentTypeName));
+    printInConsole(`setting demo/vue/index.ejs.html`);
+    await libs.writeFile(`demo/vue/index.ejs.html`, getVueStarterDemoHtml(repositoryName));
+
+    printInConsole("installing react react-dom...");
+    await libs.exec(`npm i -DE react react-dom`);
+    printInConsole("installing @types/react @types/react-dom...");
+    await libs.exec(`npm i -DE @types/react @types/react-dom`);
+    printInConsole(`setting src/react.tsx`);
+    await libs.writeFile(`src/react.tsx`, getReactStarter(repositoryName, componentShortName, componentTypeName));
+    await libs.mkdir(`demo/react`);
+    printInConsole(`setting demo/react/index.tsx`);
+    await libs.writeFile(`demo/react/index.tsx`, getReactStarterDemoSource(author, repositoryName, componentShortName, componentTypeName));
+    printInConsole(`setting demo/react/index.ejs.html`);
+    await libs.writeFile(`demo/react/index.ejs.html`, getReactStarterDemoHtml(repositoryName));
+
+    if (hasAngularChoice) {
+        printInConsole("installing @angular/common @angular/compiler @angular/core @angular/forms @angular/platform-browser @angular/platform-browser-dynamic core-js rxjs zone.js...");
+        await libs.exec(`npm i -DE @angular/common @angular/compiler @angular/core @angular/forms @angular/platform-browser @angular/platform-browser-dynamic core-js rxjs zone.js`);
+        printInConsole(`setting src/angular.ts`);
+        await libs.writeFile(`src/angular.ts`, getAngularStarter(repositoryName, componentShortName, componentTypeName));
+        printInConsole(`setting src/angular.template.html`);
+        await libs.writeFile(`src/angular.template.html`, `<div class="${componentShortName}"></div>`);
+        await libs.mkdir(`demo/angular`);
+        printInConsole(`setting demo/angular/index.ts`);
+        await libs.writeFile(`demo/angular/index.ts`, getAngularStarterDemoSource(author, repositoryName, componentShortName, componentTypeName));
+        printInConsole(`setting demo/angular/index.ejs.html`);
+        await libs.writeFile(`demo/angular/index.ejs.html`, getAngularStarterDemoHtml(repositoryName));
+    }
+
+    printInConsole("setting starter common.ts...");
+    await libs.writeFile(`src/common.ts`, getStarterCommonSource(repositoryName, componentShortName, componentTypeName));
+
+    printInConsole("installing clean-css-cli...");
+    await libs.exec(`npm i -DE clean-css-cli`);
+    scripts.cleancss = `cleancss -o dist/${componentShortName}.min.css dist/${componentShortName}.css`;
+    buildScripts.push("npm run cleancss");
+    scripts["cleancss-demo"] = `cleancss -o demo/index.bundle.css dist/${componentShortName}.min.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css`;
+    buildScripts.push("npm run cleancss-demo");
+
+    scripts.clean = `rimraf dist/`;
+    buildScripts.unshift("npm run clean");
+
+    printInConsole("installing file2variable-cli...");
+    await libs.exec(`npm i -DE file2variable-cli`);
+    const commands: string[] = [];
+    commands.push(`file2variable-cli src/vue.template.html -o src/vue-variables.ts --html-minify`);
+    if (hasAngularChoice) {
+        commands.push(`file2variable-cli src/angular.template.html -o src/angular-variables.ts --html-minify`);
+    }
+    if (commands.length === 0) {
+        commands.push(`file2variable-cli src/index.html -o src/variables.ts --html-minify`);
+    }
+    scripts.file2variable = commands.join(" && ");
+
+    printInConsole("installing webpack...");
+    await libs.exec(`npm i -DE webpack`);
+    printInConsole("setting webpack.config.js...");
+    const webpackConfig = getWebpackConfig(ProjectKind.UIComponent, hasAngularChoice);
+    await libs.writeFile(`demo/webpack.config.js`, webpackConfig);
+    scripts.webpack = `webpack --config demo/webpack.config.js`;
+    buildScripts.push("npm run webpack");
+
+    printInConsole("installing rev-static...");
+    await libs.exec(`npm i -DE rev-static`);
+    printInConsole("setting rev-static.config.js...");
+    await libs.writeFile(`demo/rev-static.config.js`, revStaticConfig);
+    scripts["rev-static"] = `rev-static --config demo/rev-static.config.js`;
+    buildScripts.push("npm run rev-static");
+    printInConsole("setting index.ejs.html...");
+    await libs.writeFile("index.ejs.html", getRevStaticHtml(author, repositoryName));
+    scripts["clean-rev"] = `rimraf demo/**/index.bundle-*.js demo/*.bundle-*.css`;
+    buildScripts.unshift("npm run clean-rev");
+
+    if (!scripts.build) {
+        scripts.build = buildScripts.join(" && ");
+    }
+    if (!scripts.lint) {
+        scripts.lint = lintScripts.join(" && ");
+    }
+
+    const packages = await libs.readFile("package.json");
+    const packageJson = JSON.parse(packages);
+    packageJson.scripts = scripts;
+    packageJson.dependencies.tslib = "1";
+    await libs.writeFile("package.json", JSON.stringify(packageJson, null, "  ") + "\n");
+
+    printInConsole("success.");
+}
+
+const revStaticConfig = `module.exports = {
+    inputFiles: [
+        "demo/**/index.bundle.js",
+        "demo/*.bundle.css",
+        "demo/**/index.ejs.html",
+    ],
+    outputFiles: file => file.replace(".ejs", ""),
+    ejsOptions: {
+        rmWhitespace: true
+    },
+    sha: 256,
+    customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + "-" + md5String + extensionName,
+};
+`;
+
 function getVueStarter(componentName: string, componentShortName: string, componentTypeName: string) {
     return `import Vue from "vue";
 import Component from "vue-class-component";
@@ -429,175 +602,4 @@ export function getAngularStarterDemoHtml(componentName: string) {
 <app></app>
 <script src="./<%=demoAngularIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.demoAngularIndexBundleJs %>"></script>
 `;
-}
-
-export async function runUIComponent(scripts: { [name: string]: string }, repositoryName: string, author: string, componentShortName: string, componentTypeName: string) {
-    const answer = await libs.inquirer.prompt({
-        type: "checkbox",
-        name: "options",
-        message: "Choose options:",
-        default: [
-        ],
-        choices: [
-            Choices.angularChoice,
-        ],
-    });
-    const options: Choices[] = answer.options;
-
-    const buildScripts: string[] = [];
-    const lintScripts: string[] = [];
-
-    const hasAngularChoice = options.some(o => o === Choices.angularChoice);
-
-    await libs.mkdir("demo");
-    await libs.mkdir("src");
-
-    buildScripts.push("npm run file2variable");
-
-    printInConsole(`setting src/tsconfig.json...`);
-    await libs.writeFile(`src/tsconfig.json`, srcTsconfig);
-    scripts.tsc = `tsc -p src/ && tsc -p demo/`;
-    buildScripts.push("npm run tsc");
-    await libs.writeFile(`demo/tsconfig.json`, demoTsconfig);
-    printInConsole("installing tslib...");
-    await libs.exec(`npm i -SE tslib`);
-
-    scripts.tslint = `tslint "src/**/*.ts" "src/**/*.tsx"`;
-    lintScripts.push("npm run tslint");
-
-    printInConsole("setting .npmignore...");
-    await libs.writeFile(".npmignore", npmignore);
-
-    printInConsole("setting badges...");
-    await libs.prependFile("README.md", getBadge(repositoryName, author));
-
-    printInConsole("setting UI component usage choice...");
-    await libs.appendFile("README.md", getUIComponentUsage(author, repositoryName, componentShortName, componentTypeName, hasAngularChoice));
-
-    printInConsole("installing github-fork-ribbon-css...");
-    await libs.exec(`npm i -DE github-fork-ribbon-css`);
-
-    printInConsole("installing less...");
-    await libs.exec(`npm i -DE less`);
-    printInConsole(`setting src/${componentShortName}.less...`);
-    await libs.writeFile(`src/${componentShortName}.less`, getLessConfig(componentShortName));
-    scripts.lessc = `lessc src/${componentShortName}.less > dist/${componentShortName}.css`;
-    buildScripts.push("npm run lessc");
-
-    printInConsole("installing stylelint stylelint-config-standard...");
-    await libs.exec(`npm i -DE stylelint stylelint-config-standard`);
-    printInConsole("setting .stylelintrc...");
-    await libs.writeFile(".stylelintrc", stylelint);
-    scripts.stylelint = `stylelint "src/**/*.less"`;
-    lintScripts.push("npm run stylelint");
-
-    printInConsole("installing vue vue-class-component...");
-    await libs.exec(`npm i -DE vue vue-class-component`);
-    printInConsole(`setting src/vue.ts`);
-    await libs.writeFile(`src/vue.ts`, getVueStarter(repositoryName, componentShortName, componentTypeName));
-    printInConsole(`setting src/vue.template.html`);
-    await libs.writeFile(`src/vue.template.html`, `<div class="${componentShortName}"></div>`);
-    await libs.mkdir(`demo/vue`);
-    printInConsole(`setting demo/vue/index.ts`);
-    await libs.writeFile(`demo/vue/index.ts`, getVueStarterDemoSource(author, repositoryName, componentShortName, componentTypeName));
-    printInConsole(`setting demo/vue/index.ejs.html`);
-    await libs.writeFile(`demo/vue/index.ejs.html`, getVueStarterDemoHtml(repositoryName));
-
-    printInConsole("installing react react-dom...");
-    await libs.exec(`npm i -DE react react-dom`);
-    printInConsole("installing @types/react @types/react-dom...");
-    await libs.exec(`npm i -DE @types/react @types/react-dom`);
-    printInConsole(`setting src/react.tsx`);
-    await libs.writeFile(`src/react.tsx`, getReactStarter(repositoryName, componentShortName, componentTypeName));
-    await libs.mkdir(`demo/react`);
-    printInConsole(`setting demo/react/index.tsx`);
-    await libs.writeFile(`demo/react/index.tsx`, getReactStarterDemoSource(author, repositoryName, componentShortName, componentTypeName));
-    printInConsole(`setting demo/react/index.ejs.html`);
-    await libs.writeFile(`demo/react/index.ejs.html`, getReactStarterDemoHtml(repositoryName));
-
-    if (hasAngularChoice) {
-        printInConsole("installing @angular/common @angular/compiler @angular/core @angular/forms @angular/platform-browser @angular/platform-browser-dynamic core-js rxjs zone.js...");
-        await libs.exec(`npm i -DE @angular/common @angular/compiler @angular/core @angular/forms @angular/platform-browser @angular/platform-browser-dynamic core-js rxjs zone.js`);
-        printInConsole(`setting src/angular.ts`);
-        await libs.writeFile(`src/angular.ts`, getAngularStarter(repositoryName, componentShortName, componentTypeName));
-        printInConsole(`setting src/angular.template.html`);
-        await libs.writeFile(`src/angular.template.html`, `<div class="${componentShortName}"></div>`);
-        await libs.mkdir(`demo/angular`);
-        printInConsole(`setting demo/angular/index.ts`);
-        await libs.writeFile(`demo/angular/index.ts`, getAngularStarterDemoSource(author, repositoryName, componentShortName, componentTypeName));
-        printInConsole(`setting demo/angular/index.ejs.html`);
-        await libs.writeFile(`demo/angular/index.ejs.html`, getAngularStarterDemoHtml(repositoryName));
-    }
-
-    printInConsole("setting starter common.ts...");
-    await libs.writeFile(`src/common.ts`, getStarterCommonSource(repositoryName, componentShortName, componentTypeName));
-
-    printInConsole("installing clean-css-cli...");
-    await libs.exec(`npm i -DE clean-css-cli`);
-    scripts.cleancss = `cleancss -o dist/${componentShortName}.min.css dist/${componentShortName}.css`;
-    buildScripts.push("npm run cleancss");
-    scripts["cleancss-demo"] = `cleancss -o demo/index.bundle.css dist/${componentShortName}.min.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css`;
-    buildScripts.push("npm run cleancss-demo");
-
-    scripts.clean = `rimraf dist/`;
-    buildScripts.unshift("npm run clean");
-
-    printInConsole("installing file2variable-cli...");
-    await libs.exec(`npm i -DE file2variable-cli`);
-    const commands: string[] = [];
-    commands.push(`file2variable-cli src/vue.template.html -o src/vue-variables.ts --html-minify`);
-    if (hasAngularChoice) {
-        commands.push(`file2variable-cli src/angular.template.html -o src/angular-variables.ts --html-minify`);
-    }
-    if (commands.length === 0) {
-        commands.push(`file2variable-cli src/index.html -o src/variables.ts --html-minify`);
-    }
-    scripts.file2variable = commands.join(" && ");
-
-    printInConsole("installing webpack...");
-    await libs.exec(`npm i -DE webpack`);
-    printInConsole("setting webpack.config.js...");
-    const webpackConfig = getWebpackConfig(ProjectKind.UIComponent, hasAngularChoice);
-    await libs.writeFile(`demo/webpack.config.js`, webpackConfig);
-    scripts.webpack = `webpack --config demo/webpack.config.js`;
-    buildScripts.push("npm run webpack");
-
-    printInConsole("installing rev-static...");
-    await libs.exec(`npm i -DE rev-static`);
-    printInConsole("setting rev-static.config.js...");
-    await libs.writeFile(`demo/rev-static.config.js`, `module.exports = {
-    inputFiles: [
-        "demo/**/index.bundle.js",
-        "demo/*.bundle.css",
-        "demo/**/index.ejs.html",
-    ],
-    outputFiles: file => file.replace(".ejs", ""),
-    ejsOptions: {
-        rmWhitespace: true
-    },
-    sha: 256,
-    customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + "-" + md5String + extensionName,
-};
-`);
-    scripts["rev-static"] = `rev-static --config demo/rev-static.config.js`;
-    buildScripts.push("npm run rev-static");
-    printInConsole("setting index.ejs.html...");
-    await libs.writeFile("index.ejs.html", getRevStaticHtml(author, repositoryName));
-    scripts["clean-rev"] = `rimraf demo/**/index.bundle-*.js demo/*.bundle-*.css`;
-    buildScripts.unshift("npm run clean-rev");
-
-    if (!scripts.build) {
-        scripts.build = buildScripts.join(" && ");
-    }
-    if (!scripts.lint) {
-        scripts.lint = lintScripts.join(" && ");
-    }
-
-    const packages = await libs.readFile("package.json");
-    const packageJson = JSON.parse(packages);
-    packageJson.scripts = scripts;
-    packageJson.dependencies.tslib = "1";
-    await libs.writeFile("package.json", JSON.stringify(packageJson, null, "  ") + "\n");
-
-    printInConsole("success.");
 }

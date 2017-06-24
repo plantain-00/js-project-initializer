@@ -224,10 +224,10 @@ export function getLessConfig(componentShortName: string) {
 `;
 }
 
-export const backendConfig = `function print(message: any) {
+export const backendConfig = `function printInConsole(message: any) {
     // tslint:disable-next-line:no-console
     console.log(message);
 }
 
-print("app started!");
+printInConsole("app started!");
 `;
