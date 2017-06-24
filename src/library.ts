@@ -23,34 +23,38 @@ function getBadge(repositoryName: string, author: string) {
 `;
 }
 
-export async function runCLI(scripts: { [name: string]: string }, repositoryName: string, author: string, componentShortName: string, componentTypeName: string) {
+const jasmineTsconfig = `{
+    "compilerOptions": {
+        "target": "es5",
+        "declaration": false,
+
+        "module": "commonjs",
+        "strict": true,
+        "noUnusedLocals": true,
+        "noImplicitReturns": true,
+        "skipLibCheck": true,
+        "importHelpers": true,
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "downlevelIteration": true
+    }
+}`;
+
+export async function runLibrary(scripts: { [name: string]: string }, repositoryName: string, author: string, componentShortName: string, componentTypeName: string) {
     const buildScripts: string[] = [];
     const lintScripts: string[] = [];
 
-    await libs.mkdir("src");
-
-    printInConsole("installing @types/node...");
-    await libs.exec(`npm i -DE @types/node`);
-    printInConsole(`setting src/index.ts...`);
-    await libs.writeFile(`src/index.ts`, `function printInConsole(message: any) {
-    // tslint:disable-next-line:no-console
-    console.log(message);
+    printInConsole(`setting index.ts...`);
+    await libs.writeFile(`index.ts`, `export class ${componentTypeName} {
 }
-
-async function executeCommandLine() {
-    // todo
-}
-
-executeCommandLine().catch(error => {
-    printInConsole(error);
-});
 `);
 
-    printInConsole(`setting src/tsconfig.json...`);
-    await libs.writeFile(`src/tsconfig.json`, `{
+    printInConsole(`setting tsconfig.json...`);
+    await libs.writeFile(`tsconfig.json`, `{
     "compilerOptions": {
-        "target": "esnext",
-        "outDir": "../dist",
+        "target": "es5",
+        "declaration": true,
 
         "module": "commonjs",
         "strict": true,
@@ -59,10 +63,10 @@ executeCommandLine().catch(error => {
         "skipLibCheck": true
     }
 }`);
-    scripts.tsc = `tsc -p src/`;
+    scripts.tsc = `tsc`;
     buildScripts.push("npm run tsc");
 
-    scripts.tslint = `tslint "src/**/*.ts"`;
+    scripts.tslint = `tslint "*.ts"`;
     lintScripts.push("npm run tslint");
 
     printInConsole("setting .npmignore...");
@@ -75,23 +79,18 @@ executeCommandLine().catch(error => {
     await libs.appendFile("README.md", `
 #### install
 
-\`npm i ${repositoryName} -g\`
+\`npm i ${repositoryName}\`
+`);
 
-#### usage
-
-run \`${repositoryName}\``);
-
-    let bin: { [key: string]: string } | undefined;
-    printInConsole("setting cli...");
-    await libs.mkdir("bin");
-    await libs.writeFile(`bin/${repositoryName}`, `#!/usr/bin/env node
-require("../dist/index.js");`);
-    bin = {
-        [repositoryName]: `bin/${repositoryName}`,
-    };
-
-    scripts.clean = `rimraf dist/`;
-    buildScripts.unshift("npm run clean");
+    printInConsole("installing jasmine...");
+    await libs.exec(`npm i -DE jasmine`);
+    printInConsole("installing @types/jasmine...");
+    await libs.exec(`npm i -DE @types/jasmine`);
+    printInConsole("init jasmine...");
+    await libs.exec("./node_modules/.bin/jasmine init");
+    printInConsole("setting spec/tsconfig.json...");
+    await libs.writeFile("spec/tsconfig.json", jasmineTsconfig);
+    scripts.test = "tsc -p spec && jasmine";
 
     if (!scripts.build) {
         scripts.build = buildScripts.join(" && ");
@@ -103,9 +102,6 @@ require("../dist/index.js");`);
     const packages = await libs.readFile("package.json");
     const packageJson = JSON.parse(packages);
     packageJson.scripts = scripts;
-    if (bin) {
-        packageJson.bin = bin;
-    }
     await libs.writeFile("package.json", JSON.stringify(packageJson, null, "  ") + "\n");
 
     printInConsole("success.");

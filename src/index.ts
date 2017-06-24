@@ -3,6 +3,7 @@ import { ProjectKind, Choices, printInConsole } from "./libs";
 import * as config from "./config";
 import { runUIComponent } from "./uiComponent";
 import { runCLI } from "./cli";
+import { runLibrary } from "./library";
 
 async function selectProjectKind() {
     const projectKindAnswer = await libs.inquirer.prompt({
@@ -125,6 +126,10 @@ addons:
     }
     if (kind === ProjectKind.CLI) {
         await runCLI(scripts, repositoryName, author, componentShortName, componentTypeName);
+        return;
+    }
+    if (kind === ProjectKind.library) {
+        await runLibrary(scripts, repositoryName, author, componentShortName, componentTypeName);
         return;
     }
 
@@ -284,9 +289,6 @@ addons:
         await libs.exec(`npm i -DE html-minifier`);
         scripts["html-minifier"] = `html-minifier --collapse-whitespace --case-sensitive --collapse-inline-tag-whitespace ${srcDirectory}/index.html -o ${distDirectory}/index.html`;
     }
-
-    printInConsole("installing rimraf...");
-    await libs.exec(`npm i -DE rimraf`);
 
     if (options.some(o => o === Choices.image2base64Choice)) {
         printInConsole("installing image2base64-cli...");
