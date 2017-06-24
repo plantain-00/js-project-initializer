@@ -1,6 +1,6 @@
 {
   "name": "js-project-initializer",
-  "version": "1.11.1",
+  "version": "2.0.0",
   "description": "A tool to initialize a nodejs project or frontend project.",
   "main": "index.js",
   "scripts": {
@@ -10,10 +10,10 @@
     "build": "npm run clean && npm run tsc",
     "lint": "npm run tslint",
     "test:ui-component": "cd tests/ui-component/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
-    "test:js-library": "cd tests/js-library/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
-    "test:backend-app": "cd tests/backend-app/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
-    "test:frontend-app": "cd tests/frontend-app/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
-    "test:app": "cd tests/app/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
+    "test:library": "cd tests/library/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
+    "test:backend": "cd tests/backend/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
+    "test:frontend": "cd tests/frontend/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
+    "test:backend-with-frontend": "cd tests/backend-with-frontend/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
     "test:cli": "cd tests/cli/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../"
   },
   "repository": {
