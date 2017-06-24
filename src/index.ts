@@ -8,30 +8,7 @@ import { runFrontend } from "./frontend";
 import { runBackendWithFrontend } from "./backend-with-frontend";
 
 async function run() {
-    const packages = await libs.readFile("package.json");
-    const packageJson: {
-        name: string;
-        repository: {
-            type: string;
-            url: string;
-        }
-        author: string;
-        scripts: { [key: string]: string };
-        bin: { [key: string]: string };
-    } = JSON.parse(packages);
-    const repositoryName = packageJson.name;
-    const componentShortName = libs.getComponentShortName(repositoryName);
-    const componentTypeName = libs.upperCamelCase(componentShortName);
-
-    const scripts: { [name: string]: string } = {};
-
-    let author = packageJson.author;
-    if (packageJson.repository && packageJson.repository.url) {
-        const items = packageJson.repository.url.split("/");
-        if (items.length >= 4) {
-            author = items[3];
-        }
-    }
+    const context = await getContext();
 
     const kind = await selectProjectKind();
 
@@ -61,26 +38,47 @@ async function run() {
     printInConsole("installing rimraf...");
     await libs.exec(`npm i -DE rimraf`);
 
+    let newPackageJson: {
+        scripts?: { [key: string]: string };
+        bin?: { [key: string]: string };
+        dependencies?: {
+            tslib?: string;
+        };
+    } = {};
+
     switch (kind) {
         case ProjectKind.UIComponent:
-            await runUIComponent(scripts, repositoryName, author, componentShortName, componentTypeName);
+            newPackageJson = await runUIComponent(context);
             break;
         case ProjectKind.CLI:
-            await runCLI(scripts, repositoryName, author, componentShortName, componentTypeName);
+            newPackageJson = await runCLI(context);
             break;
         case ProjectKind.library:
-            await runLibrary(scripts, repositoryName, author, componentShortName, componentTypeName);
+            newPackageJson = await runLibrary(context);
             break;
         case ProjectKind.backend:
-            await runBackend(scripts, repositoryName, author, componentShortName, componentTypeName);
+            newPackageJson = await runBackend(context);
             break;
         case ProjectKind.frontend:
-            await runFrontend(scripts, repositoryName, author, componentShortName, componentTypeName);
+            newPackageJson = await runFrontend(context);
             break;
         case ProjectKind.backendWithFrontend:
-            await runBackendWithFrontend(scripts, repositoryName, author, componentShortName, componentTypeName);
+            newPackageJson = await runBackendWithFrontend(context);
             break;
     }
+
+    const packages = await libs.readFile("package.json");
+    const packageJson = JSON.parse(packages);
+    if (newPackageJson.scripts) {
+        packageJson.scripts = newPackageJson.scripts;
+    }
+    if (newPackageJson.bin) {
+        packageJson.bin = newPackageJson.bin;
+    }
+    if (newPackageJson.dependencies && newPackageJson.dependencies.tslib) {
+        packageJson.dependencies.tslib = newPackageJson.dependencies.tslib;
+    }
+    await libs.writeFile("package.json", JSON.stringify(packageJson, null, "  ") + "\n");
 
     printInConsole("success.");
 }
@@ -88,6 +86,31 @@ async function run() {
 run().catch(error => {
     printInConsole(error);
 });
+
+async function getContext(): Promise<libs.Context> {
+    const packages = await libs.readFile("package.json");
+    const packageJson: {
+        name: string;
+        repository: {
+            type: string;
+            url: string;
+        }
+        author: string;
+        scripts: { [key: string]: string };
+        bin: { [key: string]: string };
+    } = JSON.parse(packages);
+    const repositoryName = packageJson.name;
+    const componentShortName = libs.getComponentShortName(repositoryName);
+    const componentTypeName = libs.upperCamelCase(componentShortName);
+    let author = packageJson.author;
+    if (packageJson.repository && packageJson.repository.url) {
+        const items = packageJson.repository.url.split("/");
+        if (items.length >= 4) {
+            author = items[3];
+        }
+    }
+    return { repositoryName, componentShortName, componentTypeName, author };
+}
 
 async function selectProjectKind() {
     const projectKindAnswer = await libs.inquirer.prompt({

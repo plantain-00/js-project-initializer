@@ -1,107 +1,61 @@
 import * as libs from "./libs";
-import { printInConsole } from "./libs";
 
-export async function runBackendWithFrontend(scripts: { [name: string]: string }, repositoryName: string, author: string, componentShortName: string, componentTypeName: string) {
-    const buildScripts: string[] = [];
-    const lintScripts: string[] = [];
-
+export async function runBackendWithFrontend(context: libs.Context) {
     await libs.mkdir("src");
     await libs.mkdir("static");
 
-    buildScripts.push("npm run file2variable");
-
-    printInConsole("installing @types/node...");
     await libs.exec(`npm i -DE @types/node`);
-    printInConsole(`setting src/index.ts...`);
-    await libs.writeFile(`src/index.ts`, source);
-
-    printInConsole(`setting src/tsconfig.json...`);
-    await libs.writeFile(`src/tsconfig.json`, backendTsconfig);
-    scripts.tsc = `tsc -p src/ && tsc -p static/`;
-    buildScripts.push("npm run tsc");
-    printInConsole("installing tslib...");
     await libs.exec(`npm i -SE tslib`);
-
-    printInConsole(`setting static/tsconfig.json...`);
-    await libs.writeFile(`static/tsconfig.json`, staticTsconfig);
-
-    scripts.tslint = `tslint "src/**/*.ts" "static/**/*.ts"`;
-    lintScripts.push("npm run tslint");
-
-    printInConsole("setting badges...");
-    await libs.prependFile("README.md", getBadge(repositoryName, author));
-
-    printInConsole(`setting static/index.ts...`);
-    await libs.writeFile(`static/index.ts`, staticSource);
-
-    printInConsole(`setting static/vendor.ts...`);
-    await libs.writeFile(`static/vendor.ts`, vendorSource);
-
-    printInConsole(`setting static/index.template.html...`);
-    await libs.writeFile(`static/index.template.html`, getTemplate(author, repositoryName));
-
-    printInConsole("installing github-fork-ribbon-css...");
     await libs.exec(`npm i -DE github-fork-ribbon-css`);
-
-    printInConsole("installing less...");
     await libs.exec(`npm i -DE less`);
-    printInConsole(`setting static/index.less...`);
-    await libs.writeFile(`static/index.less`, getLessConfig(componentShortName));
-    scripts.lessc = `lessc static/index.less > static/index.css`;
-    buildScripts.push("npm run lessc");
-
-    printInConsole("installing stylelint stylelint-config-standard...");
     await libs.exec(`npm i -DE stylelint stylelint-config-standard`);
-    printInConsole("setting .stylelintrc...");
-    await libs.writeFile(".stylelintrc", stylelint);
-    scripts.stylelint = `stylelint "static/**/*.less"`;
-    lintScripts.push("npm run stylelint");
-
-    printInConsole("installing vue vue-class-component...");
     await libs.exec(`npm i -DE vue vue-class-component`);
-
-    printInConsole("installing clean-css-cli...");
     await libs.exec(`npm i -DE clean-css-cli`);
-    scripts.cleancss = `cleancss -o static/index.bundle.css static/index.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css`;
-    buildScripts.push("npm run cleancss");
-
-    printInConsole("installing file2variable-cli...");
     await libs.exec(`npm i -DE file2variable-cli`);
-    const commands: string[] = [];
-    if (commands.length === 0) {
-        commands.push(`file2variable-cli static/index.template.html -o static/variables.ts --html-minify`);
-    }
-    scripts.file2variable = commands.join(" && ");
-
-    printInConsole("installing webpack...");
     await libs.exec(`npm i -DE webpack`);
-    printInConsole("setting webpack.config.js...");
-    await libs.writeFile(`static/webpack.config.js`, webpackConfig);
-    scripts.webpack = `webpack --config static/webpack.config.js`;
-    buildScripts.push("npm run webpack");
-
-    printInConsole("installing rev-static...");
     await libs.exec(`npm i -DE rev-static`);
-    printInConsole("setting rev-static.config.js...");
+
+    await libs.writeFile(`src/index.ts`, source);
+    await libs.writeFile(`src/tsconfig.json`, backendTsconfig);
+
+    await libs.writeFile(`static/tsconfig.json`, staticTsconfig);
+    await libs.writeFile(`static/index.ts`, staticSource);
+    await libs.writeFile(`static/vendor.ts`, vendorSource);
+    await libs.writeFile(`static/index.template.html`, getTemplate(context.author, context.repositoryName));
+    await libs.writeFile(`static/index.less`, getLessConfig(context.componentShortName));
+    await libs.writeFile(`static/webpack.config.js`, webpackConfig);
     await libs.writeFile(`static/rev-static.config.js`, revStaticConfig);
-    scripts["rev-static"] = `rev-static --config static/rev-static.config.js`;
-    buildScripts.push("npm run rev-static");
-    printInConsole("setting static/index.ejs.html...");
-    await libs.writeFile("static/index.ejs.html", getHtml(author, repositoryName));
-    scripts["clean-rev"] = `rimraf static/**/index.bundle-*.js static/*.bundle-*.css`;
-    buildScripts.unshift("npm run clean-rev");
+    await libs.writeFile("static/index.ejs.html", getHtml(context.author, context.repositoryName));
 
-    if (!scripts.build) {
-        scripts.build = buildScripts.join(" && ");
-    }
-    if (!scripts.lint) {
-        scripts.lint = lintScripts.join(" && ");
-    }
+    await libs.prependFile("README.md", getBadge(context.repositoryName, context.author));
+    await libs.writeFile(".stylelintrc", stylelint);
 
-    const packages = await libs.readFile("package.json");
-    const packageJson = JSON.parse(packages);
-    packageJson.scripts = scripts;
-    await libs.writeFile("package.json", JSON.stringify(packageJson, null, "  ") + "\n");
+    return {
+        scripts: {
+            cleanRev: `rimraf static/**/index.bundle-*.js static/*.bundle-*.css`,
+            file2variable: `file2variable-cli static/index.template.html -o static/variables.ts --html-minify`,
+            tsc: `tsc -p src/ && tsc -p static/`,
+            lessc: `lessc static/index.less > static/index.css`,
+            cleancss: `cleancss -o static/index.bundle.css static/index.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css`,
+            webpack: `webpack --config static/webpack.config.js`,
+            revStatic: `rev-static --config static/rev-static.config.js`,
+            tslint: `tslint "src/**/*.ts" "static/**/*.ts"`,
+            stylelint: `stylelint "static/**/*.less"`,
+            build: [
+                "npm run cleanRev",
+                "npm run file2variable",
+                "npm run tsc",
+                "npm run lessc",
+                "npm run cleancss",
+                "npm run webpack",
+                "npm run revStatic",
+            ].join(" && "),
+            lint: [
+                "npm run tslint",
+                "npm run stylelint",
+            ].join(" && "),
+        },
+    };
 }
 
 const source = `function printInConsole(message: any) {

@@ -1,59 +1,37 @@
 import * as libs from "./libs";
-import { printInConsole } from "./libs";
 
-export async function runCLI(scripts: { [name: string]: string }, repositoryName: string, author: string, componentShortName: string, componentTypeName: string) {
-    const buildScripts: string[] = [];
-    const lintScripts: string[] = [];
-
+export async function runCLI(context: libs.Context) {
     await libs.mkdir("src");
-
-    printInConsole("installing @types/node...");
-    await libs.exec(`npm i -DE @types/node`);
-    printInConsole(`setting src/index.ts...`);
-    await libs.writeFile(`src/index.ts`, source);
-
-    printInConsole(`setting src/tsconfig.json...`);
-    await libs.writeFile(`src/tsconfig.json`, tsconfig);
-    scripts.tsc = `tsc -p src/`;
-    buildScripts.push("npm run tsc");
-
-    scripts.tslint = `tslint "src/**/*.ts"`;
-    lintScripts.push("npm run tslint");
-
-    printInConsole("setting .npmignore...");
-    await libs.writeFile(".npmignore", npmignore);
-
-    printInConsole("setting badges...");
-    await libs.prependFile("README.md", getBadge(repositoryName, author));
-
-    printInConsole("setting doc...");
-    await libs.appendFile("README.md", getDocument(repositoryName));
-
-    let bin: { [key: string]: string } | undefined;
-    printInConsole("setting cli...");
     await libs.mkdir("bin");
-    await libs.writeFile(`bin/${repositoryName}`, binConfig);
-    bin = {
-        [repositoryName]: `bin/${repositoryName}`,
+
+    await libs.exec(`npm i -DE @types/node`);
+
+    await libs.writeFile(`src/index.ts`, source);
+    await libs.writeFile(`src/tsconfig.json`, tsconfig);
+
+    await libs.writeFile(".npmignore", npmignore);
+    await libs.prependFile("README.md", getBadge(context.repositoryName, context.author));
+    await libs.appendFile("README.md", getDocument(context.repositoryName));
+
+    await libs.writeFile(`bin/${context.repositoryName}`, binConfig);
+
+    return {
+        scripts: {
+            clean: `rimraf dist/`,
+            tsc: `tsc -p src/`,
+            tslint: `tslint "src/**/*.ts"`,
+            build: [
+                "npm run clean",
+                "npm run tsc",
+            ].join(" && "),
+            lint: [
+                "npm run tslint",
+            ].join(" && "),
+        },
+        bin: {
+            [context.repositoryName]: `bin/${context.repositoryName}`,
+        },
     };
-
-    scripts.clean = `rimraf dist/`;
-    buildScripts.unshift("npm run clean");
-
-    if (!scripts.build) {
-        scripts.build = buildScripts.join(" && ");
-    }
-    if (!scripts.lint) {
-        scripts.lint = lintScripts.join(" && ");
-    }
-
-    const packages = await libs.readFile("package.json");
-    const packageJson = JSON.parse(packages);
-    packageJson.scripts = scripts;
-    if (bin) {
-        packageJson.bin = bin;
-    }
-    await libs.writeFile("package.json", JSON.stringify(packageJson, null, "  ") + "\n");
 }
 
 const binConfig = `#!/usr/bin/env node

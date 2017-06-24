@@ -1,42 +1,29 @@
 import * as libs from "./libs";
-import { printInConsole } from "./libs";
 
-export async function runBackend(scripts: { [name: string]: string }, repositoryName: string, author: string, componentShortName: string, componentTypeName: string) {
-    const buildScripts: string[] = [];
-    const lintScripts: string[] = [];
-
+export async function runBackend(context: libs.Context) {
     await libs.mkdir("src");
 
-    printInConsole("installing @types/node...");
     await libs.exec(`npm i -DE @types/node`);
-    printInConsole(`setting src/index.ts...`);
+
     await libs.writeFile(`src/index.ts`, source);
-
-    printInConsole(`setting src/tsconfig.json...`);
     await libs.writeFile(`src/tsconfig.json`, tsconfig);
-    scripts.tsc = `tsc -p src/`;
-    buildScripts.push("npm run tsc");
 
-    scripts.tslint = `tslint "src/**/*.ts" "src/**/*.tsx"`;
-    lintScripts.push("npm run tslint");
+    await libs.prependFile("README.md", getBadge(context.repositoryName, context.author));
 
-    printInConsole("setting badges...");
-    await libs.prependFile("README.md", getBadge(repositoryName, author));
-
-    scripts.clean = `rimraf dist/`;
-    buildScripts.unshift("npm run clean");
-
-    if (!scripts.build) {
-        scripts.build = buildScripts.join(" && ");
-    }
-    if (!scripts.lint) {
-        scripts.lint = lintScripts.join(" && ");
-    }
-
-    const packages = await libs.readFile("package.json");
-    const packageJson = JSON.parse(packages);
-    packageJson.scripts = scripts;
-    await libs.writeFile("package.json", JSON.stringify(packageJson, null, "  ") + "\n");
+    return {
+        scripts: {
+            clean: `rimraf dist/`,
+            tsc: `tsc -p src/`,
+            tslint: `tslint "src/**/*.ts" "src/**/*.tsx"`,
+            build: [
+                "npm run clean",
+                "npm run tsc",
+            ].join(" && "),
+            lint: [
+                "npm run tslint",
+            ].join(" && "),
+        },
+    };
 }
 
 const source = `function printInConsole(message: any) {

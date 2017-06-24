@@ -8,6 +8,7 @@ export { inquirer, upperCamelCase };
 
 export function exec(command: string) {
     return new Promise<void>((resolve, reject) => {
+        printInConsole(`${command}...`);
         childProcess.exec(command, (error, stdout, stderr) => {
             if (error) {
                 reject(error);
@@ -20,6 +21,7 @@ export function exec(command: string) {
 
 export function writeFile(filename: string, data: string) {
     return new Promise<void>((resolve, reject) => {
+        printInConsole(`setting ${filename}...`);
         fs.writeFile(filename, data, error => {
             if (error) {
                 reject(error);
@@ -44,6 +46,7 @@ export function readFile(filename: string) {
 
 export function appendFile(filename: string, data: string) {
     return new Promise<void>((resolve, reject) => {
+        printInConsole(`setting ${filename}...`);
         fs.appendFile(filename, data, error => {
             if (error) {
                 reject(error);
@@ -112,3 +115,10 @@ export const tslint = `{
         "interface-over-type-literal": false
     }
 }`;
+
+export type Context = {
+    repositoryName: string;
+    componentShortName: string;
+    componentTypeName: string;
+    author: string;
+};

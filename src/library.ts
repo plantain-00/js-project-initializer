@@ -1,51 +1,30 @@
 import * as libs from "./libs";
-import { printInConsole } from "./libs";
 
-export async function runLibrary(scripts: { [name: string]: string }, repositoryName: string, author: string, componentShortName: string, componentTypeName: string) {
-    const buildScripts: string[] = [];
-    const lintScripts: string[] = [];
-
-    printInConsole(`setting index.ts...`);
-    await libs.writeFile(`index.ts`, getSource(componentTypeName));
-
-    printInConsole(`setting tsconfig.json...`);
-    await libs.writeFile(`tsconfig.json`, tsconfig);
-    scripts.tsc = `tsc`;
-    buildScripts.push("npm run tsc");
-
-    scripts.tslint = `tslint "*.ts"`;
-    lintScripts.push("npm run tslint");
-
-    printInConsole("setting .npmignore...");
-    await libs.writeFile(".npmignore", npmignore);
-
-    printInConsole("setting badges...");
-    await libs.prependFile("README.md", getBadge(repositoryName, author));
-
-    printInConsole("setting doc...");
-    await libs.appendFile("README.md", getDocument(repositoryName));
-
-    printInConsole("installing jasmine...");
+export async function runLibrary(context: libs.Context) {
     await libs.exec(`npm i -DE jasmine`);
-    printInConsole("installing @types/jasmine...");
     await libs.exec(`npm i -DE @types/jasmine`);
-    printInConsole("init jasmine...");
     await libs.exec("./node_modules/.bin/jasmine init");
-    printInConsole("setting spec/tsconfig.json...");
+
+    await libs.writeFile(`index.ts`, getSource(context.componentTypeName));
+    await libs.writeFile(`tsconfig.json`, tsconfig);
+    await libs.writeFile(".npmignore", npmignore);
+    await libs.prependFile("README.md", getBadge(context.repositoryName, context.author));
+    await libs.appendFile("README.md", getDocument(context.repositoryName));
     await libs.writeFile("spec/tsconfig.json", jasmineTsconfig);
-    scripts.test = "tsc -p spec && jasmine";
 
-    if (!scripts.build) {
-        scripts.build = buildScripts.join(" && ");
-    }
-    if (!scripts.lint) {
-        scripts.lint = lintScripts.join(" && ");
-    }
-
-    const packages = await libs.readFile("package.json");
-    const packageJson = JSON.parse(packages);
-    packageJson.scripts = scripts;
-    await libs.writeFile("package.json", JSON.stringify(packageJson, null, "  ") + "\n");
+    return {
+        scripts: {
+            tsc: `tsc`,
+            tslint: `tslint "*.ts"`,
+            test: "tsc -p spec && jasmine",
+            build: [
+                "npm run tsc",
+            ].join(" && "),
+            lint: [
+                "npm run tslint",
+            ].join(" && "),
+        },
+    };
 }
 
 function getDocument(repositoryName: string) {
