@@ -37,8 +37,6 @@ export async function runBackend(scripts: { [name: string]: string }, repository
     const packageJson = JSON.parse(packages);
     packageJson.scripts = scripts;
     await libs.writeFile("package.json", JSON.stringify(packageJson, null, "  ") + "\n");
-
-    printInConsole("success.");
 }
 
 const source = `function printInConsole(message: any) {

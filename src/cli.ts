@@ -54,8 +54,6 @@ export async function runCLI(scripts: { [name: string]: string }, repositoryName
         packageJson.bin = bin;
     }
     await libs.writeFile("package.json", JSON.stringify(packageJson, null, "  ") + "\n");
-
-    printInConsole("success.");
 }
 
 const binConfig = `#!/usr/bin/env node

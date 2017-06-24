@@ -46,8 +46,6 @@ export async function runLibrary(scripts: { [name: string]: string }, repository
     const packageJson = JSON.parse(packages);
     packageJson.scripts = scripts;
     await libs.writeFile("package.json", JSON.stringify(packageJson, null, "  ") + "\n");
-
-    printInConsole("success.");
 }
 
 function getDocument(repositoryName: string) {

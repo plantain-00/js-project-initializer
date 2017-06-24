@@ -1,5 +1,5 @@
 import * as libs from "./libs";
-import { Choices, ProjectKind, printInConsole } from "./libs";
+import { ProjectKind, printInConsole } from "./libs";
 
 export async function runUIComponent(scripts: { [name: string]: string }, repositoryName: string, author: string, componentShortName: string, componentTypeName: string) {
     const answer = await libs.inquirer.prompt({
@@ -9,15 +9,15 @@ export async function runUIComponent(scripts: { [name: string]: string }, reposi
         default: [
         ],
         choices: [
-            Choices.angularChoice,
+            "angular",
         ],
     });
-    const options: Choices[] = answer.options;
+    const options: string[] = answer.options;
 
     const buildScripts: string[] = [];
     const lintScripts: string[] = [];
 
-    const hasAngularChoice = options.some(o => o === Choices.angularChoice);
+    const hasAngularChoice = options.some(o => o === "angular");
 
     await libs.mkdir("demo");
     await libs.mkdir("src");
@@ -155,8 +155,6 @@ export async function runUIComponent(scripts: { [name: string]: string }, reposi
     packageJson.scripts = scripts;
     packageJson.dependencies.tslib = "1";
     await libs.writeFile("package.json", JSON.stringify(packageJson, null, "  ") + "\n");
-
-    printInConsole("success.");
 }
 
 const revStaticConfig = `module.exports = {

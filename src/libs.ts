@@ -84,29 +84,31 @@ export const enum ProjectKind {
     library = "library",
 }
 
-export const enum Choices {
-    lessChoice = "css: less",
-    stylelintChoice = "css: stylelint",
-    cleanCssCliChoice = "css: clean-css-cli",
-
-    publishToNpmChoice = "npm: publish to npm",
-
-    forkMeOnGithubChoice = "doc: fork me on Github",
-
-    jasmineChoice = "test: jasmine",
-
-    webpackChoice = "bundle: webpack",
-
-    vueChoice = "UI: vue",
-    reactChoice = "UI: react",
-    angularChoice = "UI: angular",
-
-    cpyChoice = "script: cpy-cli",
-    mkdirpChoice = "script: mkdirp",
-    revStaticChoice = "script: rev-static",
-    htmlMinifierChoice = "script: html-minifier",
-    image2base64Choice = "script: image2base64-cli",
-    file2variableChoice = "script: file2variable-cli",
-    swPrecacheChoice = "script: sw-precache",
-    uglifyjsChoice = "script: uglify-js",
+export function getComponentShortName(componentName: string) {
+    return (componentName.endsWith("component") && componentName.length - "component".length - 1 > 0)
+        ? componentName.substring(0, componentName.length - "component".length - 1)
+        : componentName;
 }
+
+export const tslint = `{
+    "extends": "tslint:latest",
+    "rules": {
+        "max-line-length": [
+            false
+        ],
+        "ordered-imports": [
+            false
+        ],
+        "object-literal-sort-keys": false,
+        "member-access": false,
+        "arrow-parens": false,
+        "array-type": [
+            true,
+            "array"
+        ],
+        "max-classes-per-file": [
+            false
+        ],
+        "interface-over-type-literal": false
+    }
+}`;
