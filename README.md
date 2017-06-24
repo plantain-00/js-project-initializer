@@ -14,3 +14,13 @@ An tool to initialize a nodejs project or frontend project.
 #### usage
 
 run `js-project-initialize`
+
+#### features
+
+- [x] UI component
+- [x] Js Library
+- [x] Nodejs Backend
+- [x] Frontend
+- [x] Nodejs Backend with Frontend
+- [x] CLI
+- [ ] electron project
