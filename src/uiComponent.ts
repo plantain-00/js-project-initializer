@@ -539,8 +539,6 @@ export async function runUIComponent(scripts: { [name: string]: string }, reposi
     scripts["cleancss-demo"] = `cleancss -o demo/index.bundle.css dist/${componentShortName}.min.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css`;
     buildScripts.push("npm run cleancss-demo");
 
-    printInConsole("installing rimraf...");
-    await libs.exec(`npm i -DE rimraf`);
     scripts.clean = `rimraf dist/`;
     buildScripts.unshift("npm run clean");
 

@@ -13,4 +13,4 @@ An tool to initialize a nodejs project or frontend project.
 
 #### usage
 
-run `js-project-initializer`
+run `js-project-initialize`

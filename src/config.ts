@@ -1,18 +1,5 @@
 import { ProjectKind } from "./libs";
 
-export const tsconfigCLI = `{
-    "compilerOptions": {
-        "target": "esnext",
-        "outDir": "../dist",
-
-        "module": "commonjs",
-        "strict": true,
-        "noUnusedLocals": true,
-        "noImplicitReturns": true,
-        "skipLibCheck": true
-    }
-}`;
-
 export const tsconfigNodejs = `{
     "compilerOptions": {
         "target": "esnext",
@@ -57,10 +44,6 @@ export const revStaticConfig = `module.exports = {
 };
 `;
 
-export const tssdk = `{
-    "typescript.tsdk": "./node_modules/typescript/lib"
-}`;
-
 export const tslint = `{
     "extends": "tslint:latest",
     "rules": {
@@ -96,26 +79,6 @@ spec
 demo
 `;
 
-export const travis = `language: node_js
-node_js:
-  - "8"
-before_install:
-  - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
-before_script:
-  - npm i
-script:
-  - npm run build
-  - npm run lint
-  - npm run test
-env:
-  - CXX=g++-4.8
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8`;
-
 export function getBadge(repositoryName: string, author: string, hasNpm: boolean) {
     let result = `[![Dependency Status](https://david-dm.org/${author}/${repositoryName}.svg)](https://david-dm.org/${author}/${repositoryName})
 [![devDependency Status](https://david-dm.org/${author}/${repositoryName}/dev-status.svg)](https://david-dm.org/${author}/${repositoryName}#info=devDependencies)
@@ -133,18 +96,6 @@ export function getBadge(repositoryName: string, author: string, hasNpm: boolean
     }
     return result;
 }
-
-export const gitIgnore = `
-# Source
-.vscode
-dist
-**/*.js
-**/*.css
-!*.config.js
-!**/*-*.js
-!**/*-*.css
-service-worker.js
-`;
 
 export function getWebpackConfig(kind: ProjectKind, hasVueChoice: boolean, hasReactChoice: boolean, hasAngularChoice: boolean) {
     const vueEntry = hasVueChoice ? `
@@ -222,13 +173,6 @@ module.exports = {
 };`;
 }
 
-export const cli = `#!/usr/bin/env node
-require("../dist/index.js");`;
-
-export const babel = `{
-  "presets": ["env"]
-}`;
-
 export const stylelint = `{
   "extends": "stylelint-config-standard"
 }`;
@@ -247,24 +191,6 @@ export const swPrecache = `module.exports = {
   }],
   root: 'static/',
 };
-`;
-
-export const githubIssueTemplate = `#### Version(if relevant): 1.0.0
-
-#### Environment(if relevant):
-
-#### Code(if relevant):
-
-\`\`\`
-// code here
-\`\`\`
-
-#### Expected:
-
-#### Actual:
-`;
-
-export const githubPullRequestTemplate = `#### Fixes(if relevant): #1
 `;
 
 export function getComponentShortName(componentName: string) {
@@ -297,16 +223,6 @@ export function getLessConfig(componentShortName: string) {
 }
 `;
 }
-
-export const cliSource = `async function executeCommandLine() {
-    // todo
-}
-
-executeCommandLine().catch(error => {
-    // tslint:disable-next-line:no-console
-    console.log(error);
-});
-`;
 
 export const backendConfig = `function print(message: any) {
     // tslint:disable-next-line:no-console

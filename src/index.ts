@@ -2,6 +2,7 @@ import * as libs from "./libs";
 import { ProjectKind, Choices, printInConsole } from "./libs";
 import * as config from "./config";
 import { runUIComponent } from "./uiComponent";
+import { runCLI } from "./cli";
 
 async function selectProjectKind() {
     const projectKindAnswer = await libs.inquirer.prompt({
@@ -52,14 +53,44 @@ async function run() {
     await libs.exec(`npm i -DE typescript@rc`);
 
     printInConsole("setting .gitignore...");
-    await libs.appendFile(".gitignore", config.gitIgnore);
+    await libs.appendFile(".gitignore", `
+# Source
+.vscode
+dist
+**/*.js
+**/*.css
+!*.config.js
+!**/*-*.js
+!**/*-*.css
+service-worker.js
+`);
 
     printInConsole("setting .travis.yml...");
-    await libs.writeFile(".travis.yml", config.travis);
+    await libs.writeFile(".travis.yml", `language: node_js
+node_js:
+  - "8"
+before_install:
+  - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
+before_script:
+  - npm i
+script:
+  - npm run build
+  - npm run lint
+  - npm run test
+env:
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8`);
 
     printInConsole("setting tssdk...");
     await libs.mkdir(".vscode");
-    await libs.writeFile(".vscode/settings.json", config.tssdk);
+    await libs.writeFile(".vscode/settings.json", `{
+    "typescript.tsdk": "./node_modules/typescript/lib"
+}`);
 
     printInConsole("installing tslint...");
     await libs.exec(`npm i -DE tslint`);
@@ -68,11 +99,32 @@ async function run() {
 
     printInConsole("setting github issue/pull request template...");
     await libs.mkdir(".github");
-    await libs.writeFile(".github/ISSUE_TEMPLATE.md", config.githubIssueTemplate);
-    await libs.writeFile(".github/PULL_REQUEST_TEMPLATE.md", config.githubPullRequestTemplate);
+    await libs.writeFile(".github/ISSUE_TEMPLATE.md", `#### Version(if relevant): 1.0.0
+
+#### Environment(if relevant):
+
+#### Code(if relevant):
+
+\`\`\`
+// code here
+\`\`\`
+
+#### Expected:
+
+#### Actual:
+`);
+    await libs.writeFile(".github/PULL_REQUEST_TEMPLATE.md", `#### Fixes(if relevant): #1
+`);
+
+    printInConsole("installing rimraf...");
+    await libs.exec(`npm i -DE rimraf`);
 
     if (kind === ProjectKind.UIComponent) {
         await runUIComponent(scripts, repositoryName, author, componentShortName, componentTypeName);
+        return;
+    }
+    if (kind === ProjectKind.CLI) {
+        await runCLI(scripts, repositoryName, author, componentShortName, componentTypeName);
         return;
     }
 
@@ -123,7 +175,7 @@ async function run() {
     const demoDirectory = ".";
     await libs.mkdir(demoDirectory);
     const distDirectory = ".";
-    const srcDirectory = (kind === ProjectKind.backendWithFrontend || kind === ProjectKind.CLI) ? "src" : ".";
+    const srcDirectory = kind === ProjectKind.backendWithFrontend ? "src" : ".";
     await libs.mkdir(srcDirectory);
     const staticDirectory = kind === ProjectKind.backendWithFrontend ? "static" : ".";
     await libs.mkdir(staticDirectory);
@@ -140,7 +192,7 @@ async function run() {
     }
 
     printInConsole(`setting ${srcDirectory}/tsconfig.json...`);
-    await libs.writeFile(`${srcDirectory}/tsconfig.json`, kind === ProjectKind.CLI ? config.tsconfigCLI : config.tsconfigNodejs);
+    await libs.writeFile(`${srcDirectory}/tsconfig.json`, config.tsconfigNodejs);
     scripts.tsc = `tsc -p ${srcDirectory}/`;
     buildScripts.push("npm run tsc");
     if (kind === ProjectKind.frontend || kind === ProjectKind.backendWithFrontend) {
@@ -176,17 +228,6 @@ async function run() {
     if (hasForkMeOnGithubChoice) {
         printInConsole("installing github-fork-ribbon-css...");
         await libs.exec(`npm i -DE github-fork-ribbon-css`);
-    }
-
-    let bin: { [key: string]: string } | undefined;
-    if (kind === ProjectKind.CLI) {
-        printInConsole("setting cli...");
-        await libs.mkdir("bin");
-        await libs.writeFile(`bin/${repositoryName}`, config.cli);
-        bin = {
-            [repositoryName]: `bin/${repositoryName}`,
-        };
-        await libs.writeFile(`${srcDirectory}/index.ts`, config.cliSource);
     }
 
     if (hasLessChoice) {
@@ -323,9 +364,6 @@ async function run() {
     packages = await libs.readFile("package.json");
     packageJson = JSON.parse(packages);
     packageJson.scripts = scripts;
-    if (bin) {
-        packageJson.bin = bin;
-    }
     await libs.writeFile("package.json", JSON.stringify(packageJson, null, "  ") + "\n");
 
     printInConsole("success.");
