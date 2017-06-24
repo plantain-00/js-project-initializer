@@ -5,6 +5,7 @@ import { runUIComponent } from "./uiComponent";
 import { runCLI } from "./cli";
 import { runLibrary } from "./library";
 import { runBackend } from "./backend";
+import { runFrontend } from "./frontend";
 
 async function run() {
     let packages = await libs.readFile("package.json");
@@ -76,6 +77,10 @@ async function run() {
         await runBackend(scripts, repositoryName, author, componentShortName, componentTypeName);
         return;
     }
+    if (kind === ProjectKind.frontend) {
+        await runFrontend(scripts, repositoryName, author, componentShortName, componentTypeName);
+        return;
+    }
 
     const answer = await libs.inquirer.prompt({
         type: "checkbox",
@@ -144,7 +149,7 @@ async function run() {
     await libs.writeFile(`${srcDirectory}/tsconfig.json`, config.tsconfigNodejs);
     scripts.tsc = `tsc -p ${srcDirectory}/`;
     buildScripts.push("npm run tsc");
-    if (kind === ProjectKind.frontend || kind === ProjectKind.backendWithFrontend) {
+    if (kind === ProjectKind.backendWithFrontend) {
         printInConsole("installing tslib...");
         await libs.exec(`npm i -SE tslib`);
     }

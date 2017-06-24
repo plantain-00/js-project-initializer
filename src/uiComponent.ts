@@ -401,7 +401,7 @@ const stylelint = `{
 function getWebpackConfig(kind: ProjectKind, hasAngularChoice: boolean) {
     const angularEntry = hasAngularChoice ? `
         angular: "./demo/angular/index",` : "";
-    return kind === ProjectKind.UIComponent ? `const webpack = require("webpack");
+    return `const webpack = require("webpack");
 
 module.exports = {
     entry: {
@@ -433,48 +433,15 @@ module.exports = {
             "vue$": "vue/dist/vue.min.js"
         }
     }
-};` : `const webpack = require("webpack");
-const path = require("path");
-
-module.exports = {
-    entry: {
-        index: "./index",
-        vendor: "./vendor",
-    },
-    output: {
-        path: path.join(__dirname, "static/"),
-        filename: "[name].min.js"
-    },
-    plugins: [
-        new webpack.DefinePlugin({
-            "process.env": {
-                "NODE_ENV": JSON.stringify("production")
-            }
-        }),
-        new webpack.NoEmitOnErrorsPlugin(),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false,
-            },
-            output: {
-                comments: false,
-            },
-        }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: ["index", "vendor"]
-        }),
-    ],
-    resolve: {
-        alias: {
-            "vue$": "vue/dist/vue.min.js"
-        }
-    }
 };`;
 }
 
 function getRevStaticHtml(authorName: string, repositoryName: string) {
     return `<!DOCTYPE html>
 <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="<%=indexMinCss %>" crossOrigin="anonymous" integrity="<%=sri.indexMinCss %>" />
 <a class="github-fork-ribbon right-bottom" href="https://github.com/${authorName}/${repositoryName}" title="Fork me on GitHub" target="_blank">Fork me on GitHub</a>
 <div id="container"></div>
@@ -482,7 +449,7 @@ function getRevStaticHtml(authorName: string, repositoryName: string) {
 `;
 }
 
-export function getVueStarterDemoSource(authorName: string, componentName: string, componentShortName: string, componentTypeName: string) {
+function getVueStarterDemoSource(authorName: string, componentName: string, componentShortName: string, componentTypeName: string) {
     return `import Vue from "vue";
 import Component from "vue-class-component";
 import "../../dist/vue";
@@ -507,16 +474,19 @@ new App({ el: "#container" });
 `;
 }
 
-export function getVueStarterDemoHtml(componentName: string) {
+function getVueStarterDemoHtml(componentName: string) {
     return `<!DOCTYPE html>
 <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="../<%=demoIndexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.demoIndexBundleCss %>" />
 <div id="container"></div>
 <script src="./<%=demoVueIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.demoVueIndexBundleJs %>"></script>
 `;
 }
 
-export function getReactStarterDemoSource(authorName: string, componentName: string, componentShortName: string, componentTypeName: string) {
+function getReactStarterDemoSource(authorName: string, componentName: string, componentShortName: string, componentTypeName: string) {
     return `import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { ${componentTypeName} } from "../../dist/react";
@@ -541,16 +511,19 @@ ReactDOM.render(<Main />, document.getElementById("container"));
 `;
 }
 
-export function getReactStarterDemoHtml(componentName: string) {
+function getReactStarterDemoHtml(componentName: string) {
     return `<!DOCTYPE html>
 <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="../<%=demoIndexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.demoIndexBundleCss %>" />
 <div id="container"></div>
 <script src="./<%=demoReactIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.demoReactIndexBundleJs %>"></script>
 `;
 }
 
-export function getAngularStarterDemoSource(authorName: string, componentName: string, componentShortName: string, componentTypeName: string) {
+function getAngularStarterDemoSource(authorName: string, componentName: string, componentShortName: string, componentTypeName: string) {
     return `import "core-js/es6";
 import "core-js/es7/reflect";
 import "zone.js/dist/zone";
@@ -595,9 +568,12 @@ platformBrowserDynamic().bootstrapModule(MainModule);
 `;
 }
 
-export function getAngularStarterDemoHtml(componentName: string) {
+function getAngularStarterDemoHtml(componentName: string) {
     return `<!DOCTYPE html>
 <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="../<%=demoIndexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.demoIndexBundleCss %>" />
 <app></app>
 <script src="./<%=demoAngularIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.demoAngularIndexBundleJs %>"></script>

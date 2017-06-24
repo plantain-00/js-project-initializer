@@ -203,6 +203,9 @@ export function getRevStaticHtml(hasForkMeOnGithubChoice: boolean, authorName: s
     const forkMeOnGithub = hasForkMeOnGithubChoice ? `<a class="github-fork-ribbon right-bottom" href="https://github.com/${authorName}/${repositoryName}" title="Fork me on GitHub" target="_blank">Fork me on GitHub</a>` : "";
     return `<!DOCTYPE html>
 <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="<%=indexMinCss %>" crossOrigin="anonymous" integrity="<%=sri.indexMinCss %>" />
 ${forkMeOnGithub}
 <div id="container"></div>
