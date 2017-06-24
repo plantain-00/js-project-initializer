@@ -36,7 +36,7 @@ async function run() {
     const componentShortName = config.getComponentShortName(repositoryName);
     const componentTypeName = libs.upperCamelCase(componentShortName);
 
-    const scripts: { [name: string]: string } = packageJson.scripts;
+    const scripts: { [name: string]: string } = {};
 
     let author = packageJson.author;
     if (packageJson.repository && packageJson.repository.url) {
@@ -158,7 +158,7 @@ async function run() {
     }
 
     printInConsole("setting badges...");
-    await libs.appendFile("README.md", config.getBadge(repositoryName, author, hasNpm));
+    await libs.prependFile("README.md", config.getBadge(repositoryName, author, hasNpm));
 
     if (options.some(o => o === Choices.jasmineChoice)) {
         printInConsole("installing jasmine...");

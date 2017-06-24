@@ -54,6 +54,10 @@ export function appendFile(filename: string, data: string) {
     });
 }
 
+export function prependFile(filename: string, data: string) {
+    return readFile(filename).then(context => writeFile(filename, data + context));
+}
+
 export function mkdir(dir: string) {
     return new Promise<void>((resolve, reject) => {
         mkdirp(dir, error => {

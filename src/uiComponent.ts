@@ -28,7 +28,7 @@ export class ${componentTypeName} extends React.PureComponent<{
 }, { }> {
     render() {
         return (
-            <div>
+            <div className="${componentShortName}">
             </div>
         );
     }
@@ -190,7 +190,9 @@ function getBadge(repositoryName: string, author: string) {
 [![devDependency Status](https://david-dm.org/${author}/${repositoryName}/dev-status.svg)](https://david-dm.org/${author}/${repositoryName}#info=devDependencies)
 [![Build Status](https://travis-ci.org/${author}/${repositoryName}.svg?branch=master)](https://travis-ci.org/${author}/${repositoryName})
 [![npm version](https://badge.fury.io/js/${repositoryName}.svg)](https://badge.fury.io/js/${repositoryName})
-[![Downloads](https://img.shields.io/npm/dm/${repositoryName}.svg)](https://www.npmjs.com/package/${repositoryName})`;
+[![Downloads](https://img.shields.io/npm/dm/${repositoryName}.svg)](https://www.npmjs.com/package/${repositoryName})
+
+`;
 }
 
 const npmignore = `.vscode
@@ -297,12 +299,11 @@ module.exports = {
 };`;
 }
 
-function getRevStaticHtml(hasForkMeOnGithubChoice: boolean, authorName: string, repositoryName: string) {
-    const forkMeOnGithub = hasForkMeOnGithubChoice ? `<a class="github-fork-ribbon right-bottom" href="https://github.com/${authorName}/${repositoryName}" title="Fork me on GitHub" target="_blank">Fork me on GitHub</a>` : "";
+function getRevStaticHtml(authorName: string, repositoryName: string) {
     return `<!DOCTYPE html>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="<%=indexMinCss %>" crossOrigin="anonymous" integrity="<%=sri.indexMinCss %>" />
-${forkMeOnGithub}
+<a class="github-fork-ribbon right-bottom" href="https://github.com/${authorName}/${repositoryName}" title="Fork me on GitHub" target="_blank">Fork me on GitHub</a>
 <div id="container"></div>
 <script src="<%=indexMinJs %>" crossOrigin="anonymous" integrity="<%=sri.indexMinJs %>"></script>
 `;
@@ -436,7 +437,6 @@ export async function runUIComponent(scripts: { [name: string]: string }, reposi
         name: "options",
         message: "Choose options:",
         default: [
-            Choices.angularChoice,
         ],
         choices: [
             Choices.angularChoice,
@@ -469,16 +469,13 @@ export async function runUIComponent(scripts: { [name: string]: string }, reposi
     await libs.writeFile(".npmignore", npmignore);
 
     printInConsole("setting badges...");
-    await libs.appendFile("README.md", getBadge(repositoryName, author));
+    await libs.prependFile("README.md", getBadge(repositoryName, author));
 
     printInConsole("setting UI component usage choice...");
     await libs.appendFile("README.md", getUIComponentUsage(author, repositoryName, componentShortName, componentTypeName, hasAngularChoice));
 
-    const hasForkMeOnGithubChoice = options.some(o => o === Choices.forkMeOnGithubChoice);
-    if (hasForkMeOnGithubChoice) {
-        printInConsole("installing github-fork-ribbon-css...");
-        await libs.exec(`npm i -DE github-fork-ribbon-css`);
-    }
+    printInConsole("installing github-fork-ribbon-css...");
+    await libs.exec(`npm i -DE github-fork-ribbon-css`);
 
     printInConsole("installing less...");
     await libs.exec(`npm i -DE less`);
@@ -499,7 +496,7 @@ export async function runUIComponent(scripts: { [name: string]: string }, reposi
     printInConsole(`setting src/vue.ts`);
     await libs.writeFile(`src/vue.ts`, getVueStarter(repositoryName, componentShortName, componentTypeName));
     printInConsole(`setting src/vue.template.html`);
-    await libs.writeFile(`src/vue.template.html`, "<div></div>");
+    await libs.writeFile(`src/vue.template.html`, `<div class="${componentShortName}"></div>`);
     await libs.mkdir(`demo/vue`);
     printInConsole(`setting demo/vue/index.ts`);
     await libs.writeFile(`demo/vue/index.ts`, getVueStarterDemoSource(author, repositoryName, componentShortName, componentTypeName));
@@ -524,7 +521,7 @@ export async function runUIComponent(scripts: { [name: string]: string }, reposi
         printInConsole(`setting src/angular.ts`);
         await libs.writeFile(`src/angular.ts`, getAngularStarter(repositoryName, componentShortName, componentTypeName));
         printInConsole(`setting src/angular.template.html`);
-        await libs.writeFile(`src/angular.template.html`, "<div></div>");
+        await libs.writeFile(`src/angular.template.html`, `<div class="${componentShortName}"></div>`);
         await libs.mkdir(`demo/angular`);
         printInConsole(`setting demo/angular/index.ts`);
         await libs.writeFile(`demo/angular/index.ts`, getAngularStarterDemoSource(author, repositoryName, componentShortName, componentTypeName));
@@ -535,32 +532,17 @@ export async function runUIComponent(scripts: { [name: string]: string }, reposi
     printInConsole("setting starter common.ts...");
     await libs.writeFile(`src/common.ts`, getStarterCommonSource(repositoryName, componentShortName, componentTypeName));
 
-    if (options.some(o => o === Choices.cleanCssCliChoice)) {
-        printInConsole("installing clean-css-cli...");
-        await libs.exec(`npm i -DE clean-css-cli`);
-        const forkMeOnGithubPart = hasForkMeOnGithubChoice ? " ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css" : "";
-        scripts.cleancss = `cleancss -o dist/${componentShortName}.min.css dist/${componentShortName}.css`;
-        buildScripts.push("npm run cleancss");
-        scripts["cleancss-demo"] = `cleancss -o demo/index.bundle.css dist/${componentShortName}.min.css` + forkMeOnGithubPart;
-        buildScripts.push("npm run cleancss-demo");
-    }
-
-    if (options.some(o => o === Choices.htmlMinifierChoice)) {
-        printInConsole("installing html-minifier...");
-        await libs.exec(`npm i -DE html-minifier`);
-        scripts["html-minifier"] = `html-minifier --collapse-whitespace --case-sensitive --collapse-inline-tag-whitespace src/index.html -o dist/index.html`;
-    }
+    printInConsole("installing clean-css-cli...");
+    await libs.exec(`npm i -DE clean-css-cli`);
+    scripts.cleancss = `cleancss -o dist/${componentShortName}.min.css dist/${componentShortName}.css`;
+    buildScripts.push("npm run cleancss");
+    scripts["cleancss-demo"] = `cleancss -o demo/index.bundle.css dist/${componentShortName}.min.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css`;
+    buildScripts.push("npm run cleancss-demo");
 
     printInConsole("installing rimraf...");
     await libs.exec(`npm i -DE rimraf`);
     scripts.clean = `rimraf dist/`;
     buildScripts.unshift("npm run clean");
-
-    if (options.some(o => o === Choices.image2base64Choice)) {
-        printInConsole("installing image2base64-cli...");
-        await libs.exec(`npm i -DE image2base64-cli`);
-        scripts.image2base64 = `image2base64-cli images/*.png --less src/variables.less`;
-    }
 
     printInConsole("installing file2variable-cli...");
     await libs.exec(`npm i -DE file2variable-cli`);
@@ -574,39 +556,18 @@ export async function runUIComponent(scripts: { [name: string]: string }, reposi
     }
     scripts.file2variable = commands.join(" && ");
 
-    if (options.some(o => o === Choices.cpyChoice)) {
-        printInConsole("installing cpy-cli...");
-        await libs.exec(`npm i -DE cpy-cli`);
-        scripts.cpy = `cpy src/index.html dist/`;
-    }
+    printInConsole("installing webpack...");
+    await libs.exec(`npm i -DE webpack`);
+    printInConsole("setting webpack.config.js...");
+    const webpackConfig = getWebpackConfig(ProjectKind.UIComponent, hasAngularChoice);
+    await libs.writeFile(`demo/webpack.config.js`, webpackConfig);
+    scripts.webpack = `webpack --config demo/webpack.config.js`;
+    buildScripts.push("npm run webpack");
 
-    if (options.some(o => o === Choices.mkdirpChoice)) {
-        printInConsole("installing mkdirp...");
-        await libs.exec(`npm i -DE mkdirp`);
-        scripts.cpy = "mkdirp foo/bar";
-    }
-
-    if (options.some(o => o === Choices.uglifyjsChoice)) {
-        printInConsole("installing uglify-js...");
-        await libs.exec(`npm i -DE uglify-js`);
-        scripts.uglifyjs = "uglifyjs index.js -o index.min.js";
-    }
-
-    if (options.some(o => o === Choices.webpackChoice)) {
-        printInConsole("installing webpack...");
-        await libs.exec(`npm i -DE webpack`);
-        printInConsole("setting webpack.config.js...");
-        const webpackConfig = getWebpackConfig(ProjectKind.UIComponent, hasAngularChoice);
-        await libs.writeFile(`demo/webpack.config.js`, webpackConfig);
-        scripts.webpack = `webpack --config demo/webpack.config.js`;
-        buildScripts.push("npm run webpack");
-    }
-
-    if (options.some(o => o === Choices.revStaticChoice)) {
-        printInConsole("installing rev-static...");
-        await libs.exec(`npm i -DE rev-static`);
-        printInConsole("setting rev-static.config.js...");
-        await libs.writeFile(`demo/rev-static.config.js`, `module.exports = {
+    printInConsole("installing rev-static...");
+    await libs.exec(`npm i -DE rev-static`);
+    printInConsole("setting rev-static.config.js...");
+    await libs.writeFile(`demo/rev-static.config.js`, `module.exports = {
     inputFiles: [
         "demo/**/index.bundle.js",
         "demo/*.bundle.css",
@@ -620,13 +581,12 @@ export async function runUIComponent(scripts: { [name: string]: string }, reposi
     customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + "-" + md5String + extensionName,
 };
 `);
-        scripts["rev-static"] = `rev-static --config demo/rev-static.config.js`;
-        buildScripts.push("npm run rev-static");
-        printInConsole("setting index.ejs.html...");
-        await libs.writeFile("index.ejs.html", getRevStaticHtml(hasForkMeOnGithubChoice, author, repositoryName));
-        scripts["clean-rev"] = `rimraf demo/**/index.bundle-*.js demo/*.bundle-*.css`;
-        buildScripts.unshift("npm run clean-rev");
-    }
+    scripts["rev-static"] = `rev-static --config demo/rev-static.config.js`;
+    buildScripts.push("npm run rev-static");
+    printInConsole("setting index.ejs.html...");
+    await libs.writeFile("index.ejs.html", getRevStaticHtml(author, repositoryName));
+    scripts["clean-rev"] = `rimraf demo/**/index.bundle-*.js demo/*.bundle-*.css`;
+    buildScripts.unshift("npm run clean-rev");
 
     if (!scripts.build) {
         scripts.build = buildScripts.join(" && ");
@@ -638,6 +598,7 @@ export async function runUIComponent(scripts: { [name: string]: string }, reposi
     const packages = await libs.readFile("package.json");
     const packageJson = JSON.parse(packages);
     packageJson.scripts = scripts;
+    packageJson.dependencies.tslib = "1";
     await libs.writeFile("package.json", JSON.stringify(packageJson, null, "  ") + "\n");
 
     printInConsole("success.");
