@@ -1,16 +1,18 @@
 import * as libs from "./libs";
 
 export async function runLibrary(context: libs.Context) {
+    context.isNpmPackage = true;
+
     await libs.exec(`npm i -DE jasmine`);
     await libs.exec(`npm i -DE @types/jasmine`);
     await libs.exec("./node_modules/.bin/jasmine init");
 
-    await libs.writeFile(`index.ts`, getSource(context.componentTypeName));
+    await libs.writeFile(`index.ts`, index(context));
     await libs.writeFile(`tsconfig.json`, tsconfig);
-    await libs.writeFile(".npmignore", npmignore);
-    await libs.prependFile("README.md", getBadge(context.repositoryName, context.author));
-    await libs.appendFile("README.md", getDocument(context.repositoryName));
-    await libs.writeFile("spec/tsconfig.json", jasmineTsconfig);
+    await libs.writeFile(".npmignore", libs.npmignore);
+    await libs.prependFile("README.md", libs.readMeBadge(context));
+    await libs.appendFile("README.md", readMeDocument(context));
+    await libs.writeFile("spec/tsconfig.json", specTsconfig);
 
     return {
         scripts: {
@@ -27,11 +29,11 @@ export async function runLibrary(context: libs.Context) {
     };
 }
 
-function getDocument(repositoryName: string) {
+function readMeDocument(context: libs.Context) {
     return `
 #### install
 
-\`npm i ${repositoryName}\`
+\`npm i ${context.repositoryName}\`
 `;
 }
 
@@ -48,35 +50,13 @@ const tsconfig = `{
     }
 }`;
 
-function getSource(componentTypeName: string) {
-    return `export class ${componentTypeName} {
+function index(context: libs.Context) {
+    return `export class ${context.componentTypeName} {
 }
 `;
 }
 
-const npmignore = `.vscode
-.github
-tslint.json
-.travis.yml
-tsconfig.json
-webpack.config.js
-src
-rev-static.config.js
-spec
-demo
-`;
-
-function getBadge(repositoryName: string, author: string) {
-    return `[![Dependency Status](https://david-dm.org/${author}/${repositoryName}.svg)](https://david-dm.org/${author}/${repositoryName})
-[![devDependency Status](https://david-dm.org/${author}/${repositoryName}/dev-status.svg)](https://david-dm.org/${author}/${repositoryName}#info=devDependencies)
-[![Build Status](https://travis-ci.org/${author}/${repositoryName}.svg?branch=master)](https://travis-ci.org/${author}/${repositoryName})
-[![npm version](https://badge.fury.io/js/${repositoryName}.svg)](https://badge.fury.io/js/${repositoryName})
-[![Downloads](https://img.shields.io/npm/dm/${repositoryName}.svg)](https://www.npmjs.com/package/${repositoryName})
-
-`;
-}
-
-const jasmineTsconfig = `{
+const specTsconfig = `{
     "compilerOptions": {
         "target": "es5",
         "declaration": false,

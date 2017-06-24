@@ -5,10 +5,10 @@ export async function runBackend(context: libs.Context) {
 
     await libs.exec(`npm i -DE @types/node`);
 
-    await libs.writeFile(`src/index.ts`, source);
-    await libs.writeFile(`src/tsconfig.json`, tsconfig);
+    await libs.writeFile(`src/index.ts`, srcIndex);
+    await libs.writeFile(`src/tsconfig.json`, srcTsconfig);
 
-    await libs.prependFile("README.md", getBadge(context.repositoryName, context.author));
+    await libs.prependFile("README.md", libs.readMeBadge(context));
 
     return {
         scripts: {
@@ -26,7 +26,7 @@ export async function runBackend(context: libs.Context) {
     };
 }
 
-const source = `function printInConsole(message: any) {
+const srcIndex = `function printInConsole(message: any) {
     // tslint:disable-next-line:no-console
     console.log(message);
 }
@@ -34,7 +34,7 @@ const source = `function printInConsole(message: any) {
 printInConsole("app started!");
 `;
 
-const tsconfig = `{
+const srcTsconfig = `{
     "compilerOptions": {
         "target": "esnext",
         "outDir": "../dist",
@@ -46,11 +46,3 @@ const tsconfig = `{
         "skipLibCheck": true
     }
 }`;
-
-function getBadge(repositoryName: string, author: string) {
-    return `[![Dependency Status](https://david-dm.org/${author}/${repositoryName}.svg)](https://david-dm.org/${author}/${repositoryName})
-[![devDependency Status](https://david-dm.org/${author}/${repositoryName}/dev-status.svg)](https://david-dm.org/${author}/${repositoryName}#info=devDependencies)
-[![Build Status](https://travis-ci.org/${author}/${repositoryName}.svg?branch=master)](https://travis-ci.org/${author}/${repositoryName})
-
-`;
-}

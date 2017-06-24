@@ -1,6 +1,8 @@
 import * as libs from "./libs";
 
 export async function runUIComponent(context: libs.Context) {
+    context.isNpmPackage = true;
+
     const answer = await libs.inquirer.prompt({
         type: "checkbox",
         name: "options",
@@ -15,8 +17,8 @@ export async function runUIComponent(context: libs.Context) {
 
     const hasAngularChoice = options.some(o => o === "angular");
 
-    await libs.mkdir("demo");
     await libs.mkdir("src");
+    await libs.mkdir("demo");
     await libs.mkdir(`demo/vue`);
     await libs.mkdir(`demo/react`);
     if (hasAngularChoice) {
@@ -39,32 +41,32 @@ export async function runUIComponent(context: libs.Context) {
     }
 
     await libs.writeFile(`src/tsconfig.json`, srcTsconfig);
-    await libs.writeFile(`src/${context.componentShortName}.less`, getLessConfig(context.componentShortName));
-    await libs.writeFile(`src/common.ts`, getStarterCommonSource(context.repositoryName, context.componentShortName, context.componentTypeName));
-    await libs.writeFile(`src/vue.ts`, getVueStarter(context.repositoryName, context.componentShortName, context.componentTypeName));
+    await libs.writeFile(`src/${context.componentShortName}.less`, srcLess(context));
+    await libs.writeFile(`src/common.ts`, srcCommon(context));
+    await libs.writeFile(`src/vue.ts`, srcVue(context));
     await libs.writeFile(`src/vue.template.html`, `<div class="${context.componentShortName}"></div>`);
-    await libs.writeFile(`src/react.tsx`, getReactStarter(context.repositoryName, context.componentShortName, context.componentTypeName));
+    await libs.writeFile(`src/react.tsx`, srcReact(context));
     if (hasAngularChoice) {
-        await libs.writeFile(`src/angular.ts`, getAngularStarter(context.repositoryName, context.componentShortName, context.componentTypeName));
+        await libs.writeFile(`src/angular.ts`, srcAngular(context));
         await libs.writeFile(`src/angular.template.html`, `<div class="${context.componentShortName}"></div>`);
     }
 
     await libs.writeFile(`demo/tsconfig.json`, demoTsconfig);
-    await libs.writeFile(`demo/webpack.config.js`, getWebpackConfig(hasAngularChoice));
-    await libs.writeFile(`demo/rev-static.config.js`, revStaticConfig);
-    await libs.writeFile(`demo/vue/index.ts`, getVueStarterDemoSource(context.author, context.repositoryName, context.componentShortName, context.componentTypeName));
-    await libs.writeFile(`demo/vue/index.ejs.html`, getVueStarterDemoHtml(context.repositoryName));
-    await libs.writeFile(`demo/react/index.tsx`, getReactStarterDemoSource(context.author, context.repositoryName, context.componentShortName, context.componentTypeName));
-    await libs.writeFile(`demo/react/index.ejs.html`, getReactStarterDemoHtml(context.repositoryName));
+    await libs.writeFile(`demo/webpack.config.js`, demoWebpackConfig(hasAngularChoice));
+    await libs.writeFile(`demo/rev-static.config.js`, demoRevStaticConfig);
+    await libs.writeFile(`demo/vue/index.ts`, demoVueIndex(context));
+    await libs.writeFile(`demo/vue/index.ejs.html`, demoVueIndexEjsHtml);
+    await libs.writeFile(`demo/react/index.tsx`, demoReactIndex(context));
+    await libs.writeFile(`demo/react/index.ejs.html`, demoReactIndexEjsHtml);
     if (hasAngularChoice) {
-        await libs.writeFile(`demo/angular/index.ts`, getAngularStarterDemoSource(context.author, context.repositoryName, context.componentShortName, context.componentTypeName));
-        await libs.writeFile(`demo/angular/index.ejs.html`, getAngularStarterDemoHtml(context.repositoryName));
+        await libs.writeFile(`demo/angular/index.ts`, demoAngularIndex(context));
+        await libs.writeFile(`demo/angular/index.ejs.html`, demoAngularIndexEjsHtml);
     }
 
-    await libs.writeFile(".npmignore", npmignore);
-    await libs.prependFile("README.md", getBadge(context.repositoryName, context.author));
-    await libs.appendFile("README.md", getUIComponentUsage(context.author, context.repositoryName, context.componentShortName, context.componentTypeName, hasAngularChoice));
-    await libs.writeFile(".stylelintrc", stylelint);
+    await libs.writeFile(".npmignore", libs.npmignore);
+    await libs.prependFile("README.md", libs.readMeBadge(context));
+    await libs.appendFile("README.md", readMeDocument(context, hasAngularChoice));
+    await libs.writeFile(".stylelintrc", libs.stylelint);
 
     const commands = [
         `file2variable-cli src/vue.template.html -o src/vue-variables.ts --html-minify`,
@@ -108,7 +110,7 @@ export async function runUIComponent(context: libs.Context) {
     };
 }
 
-const revStaticConfig = `module.exports = {
+const demoRevStaticConfig = `module.exports = {
     inputFiles: [
         "demo/**/index.bundle.js",
         "demo/*.bundle.css",
@@ -123,7 +125,7 @@ const revStaticConfig = `module.exports = {
 };
 `;
 
-function getVueStarter(componentName: string, componentShortName: string, componentTypeName: string) {
+function srcVue(context: libs.Context) {
     return `import Vue from "vue";
 import Component from "vue-class-component";
 import * as common from "./common";
@@ -133,24 +135,24 @@ import { srcVueTemplateHtml } from "./vue-variables";
     template: srcVueTemplateHtml,
     props: ["data"],
 })
-class ${componentTypeName} extends Vue {
-    data: common.${componentTypeName}Data;
+class ${context.componentTypeName} extends Vue {
+    data: common.${context.componentTypeName}Data;
 }
 
-Vue.component("${componentShortName}", ${componentTypeName});
+Vue.component("${context.componentShortName}", ${context.componentTypeName});
 `;
 }
 
-function getReactStarter(componentName: string, componentShortName: string, componentTypeName: string) {
+function srcReact(context: libs.Context) {
     return `import * as React from "react";
 import * as common from "./common";
 
-export class ${componentTypeName} extends React.PureComponent<{
-    data: common.${componentTypeName}Data;
+export class ${context.componentTypeName} extends React.PureComponent<{
+    data: common.${context.componentTypeName}Data;
 }, { }> {
     render() {
         return (
-            <div className="${componentShortName}">
+            <div className="${context.componentShortName}">
             </div>
         );
     }
@@ -158,24 +160,24 @@ export class ${componentTypeName} extends React.PureComponent<{
 `;
 }
 
-function getAngularStarter(componentName: string, componentShortName: string, componentTypeName: string) {
+function srcAngular(context: libs.Context) {
     return `import { Component, Input } from "@angular/core";
 import * as common from "./common";
 import { srcAngularTemplateHtml } from "./angular-variables";
 
 @Component({
-    selector: "${componentShortName}",
+    selector: "${context.componentShortName}",
     template: srcAngularTemplateHtml,
 })
-export class ${componentTypeName}Component {
+export class ${context.componentTypeName}Component {
     @Input()
-    data: common.${componentTypeName}Data;
+    data: common.${context.componentTypeName}Data;
 }
 `;
 }
 
-function getStarterCommonSource(componentName: string, componentShortName: string, componentTypeName: string) {
-    return `export type ${componentTypeName}Data = {
+function srcCommon(context: libs.Context) {
+    return `export type ${context.componentTypeName}Data = {
     // tslint:disable-next-line:ban-types
     component: string | Function;
     data: any;
@@ -183,28 +185,28 @@ function getStarterCommonSource(componentName: string, componentShortName: strin
 `;
 }
 
-function getUIComponentUsage(authorName: string, componentName: string, componentShortName: string, componentTypeName: string, hasAngularChoice: boolean) {
+function readMeDocument(context: libs.Context, hasAngularChoice: boolean) {
     const angularFeature = hasAngularChoice ? `
 + angular component` : "";
     const angularComponentDemo = hasAngularChoice ? `#### angular component demo
 
 \`\`\`ts
-import { ${componentTypeName}Component } from "${componentName}/dist/angular";
+import { ${context.componentTypeName}Component } from "${context.repositoryName}/dist/angular";
 
 @NgModule({
     imports: [BrowserModule, FormsModule],
-    declarations: [MainComponent, ${componentTypeName}Component],
+    declarations: [MainComponent, ${context.componentTypeName}Component],
     bootstrap: [MainComponent],
 })
 class MainModule { }
 \`\`\`
 
 \`\`\`html
-<${componentShortName} [data]="data">
-</${componentShortName}>
+<${context.componentShortName} [data]="data">
+</${context.componentShortName}>
 \`\`\`
 
-the online demo: https://${authorName}.github.io/${componentName}/demo/angular/index.html` : "";
+the online demo: https://${context.author}.github.io/${context.repositoryName}/demo/angular/index.html` : "";
     return `
 #### features
 
@@ -214,12 +216,12 @@ the online demo: https://${authorName}.github.io/${componentName}/demo/angular/i
 
 #### install
 
-\`npm i ${componentName}\`
+\`npm i ${context.repositoryName}\`
 
 #### link css
 
 \`\`\`html
-<link rel="stylesheet" href="./node_modules/${componentName}/dist/${componentShortName}.min.css" />
+<link rel="stylesheet" href="./node_modules/${context.repositoryName}/dist/${context.componentShortName}.min.css" />
 \`\`\`
 
 #### vuejs component demo
@@ -227,28 +229,28 @@ the online demo: https://${authorName}.github.io/${componentName}/demo/angular/i
 \`npm i vue vue-class-component\`
 
 \`\`\`ts
-import "${componentName}/dist/vue";
+import "${context.repositoryName}/dist/vue";
 \`\`\`
 
 \`\`\`html
-<${componentShortName} :data="data">
-</${componentShortName}>
+<${context.componentShortName} :data="data">
+</${context.componentShortName}>
 \`\`\`
 
-the online demo: https://${authorName}.github.io/${componentName}/demo/vue/index.html
+the online demo: https://${context.author}.github.io/${context.repositoryName}/demo/vue/index.html
 
 #### reactjs component demo
 
 \`\`\`ts
-import { ${componentTypeName} } from "${componentName}/dist/react";
+import { ${context.componentTypeName} } from "${context.repositoryName}/dist/react";
 \`\`\`
 
 \`\`\`jsx
-<${componentTypeName} data={this.data}>
-</${componentTypeName}>
+<${context.componentTypeName} data={this.data}>
+</${context.componentTypeName}>
 \`\`\`
 
-the online demo: https://${authorName}.github.io/${componentName}/demo/react/index.html
+the online demo: https://${context.author}.github.io/${context.repositoryName}/demo/react/index.html
 
 ${angularComponentDemo}
 
@@ -256,12 +258,12 @@ ${angularComponentDemo}
 
 name | type | description
 --- | --- | ---
-data | [${componentTypeName}Data](#${componentShortName}-data-structure)[] | the data of the ${componentShortName}
+data | [${context.componentTypeName}Data](#${context.componentShortName}-data-structure)[] | the data of the ${context.componentShortName}
 
-#### ${componentShortName} data structure
+#### ${context.componentShortName} data structure
 
 \`\`\`ts
-type ${componentTypeName}Data = {
+type ${context.componentTypeName}Data = {
     component: string | Function; // the item component, for vuejs, it is the component name, for reactjs, it is the class object
     data: any; // the data will be passed to the component as \`data\` props
 };
@@ -307,30 +309,8 @@ const demoTsconfig = `{
     }
 }`;
 
-function getBadge(repositoryName: string, author: string) {
-    return `[![Dependency Status](https://david-dm.org/${author}/${repositoryName}.svg)](https://david-dm.org/${author}/${repositoryName})
-[![devDependency Status](https://david-dm.org/${author}/${repositoryName}/dev-status.svg)](https://david-dm.org/${author}/${repositoryName}#info=devDependencies)
-[![Build Status](https://travis-ci.org/${author}/${repositoryName}.svg?branch=master)](https://travis-ci.org/${author}/${repositoryName})
-[![npm version](https://badge.fury.io/js/${repositoryName}.svg)](https://badge.fury.io/js/${repositoryName})
-[![Downloads](https://img.shields.io/npm/dm/${repositoryName}.svg)](https://www.npmjs.com/package/${repositoryName})
-
-`;
-}
-
-const npmignore = `.vscode
-.github
-tslint.json
-.travis.yml
-tsconfig.json
-webpack.config.js
-src
-rev-static.config.js
-spec
-demo
-`;
-
-function getLessConfig(componentShortName: string) {
-    return `.${componentShortName} {
+function srcLess(context: libs.Context) {
+    return `.${context.componentShortName} {
   * {
     box-sizing: border-box;
     margin: 0;
@@ -343,11 +323,7 @@ function getLessConfig(componentShortName: string) {
 `;
 }
 
-const stylelint = `{
-  "extends": "stylelint-config-standard"
-}`;
-
-function getWebpackConfig(hasAngularChoice: boolean) {
+function demoWebpackConfig(hasAngularChoice: boolean) {
     const angularEntry = hasAngularChoice ? `
         angular: "./demo/angular/index",` : "";
     return `const webpack = require("webpack");
@@ -385,7 +361,7 @@ module.exports = {
 };`;
 }
 
-function getVueStarterDemoSource(authorName: string, componentName: string, componentShortName: string, componentTypeName: string) {
+function demoVueIndex(context: libs.Context) {
     return `import Vue from "vue";
 import Component from "vue-class-component";
 import "../../dist/vue";
@@ -394,15 +370,15 @@ import * as common from "../../dist/common";
 @Component({
     template: \`
     <div>
-        <a href="https://github.com/${authorName}/${componentName}/tree/master/demo/vue/index.ts" target="_blank">the source code of the demo</a>
+        <a href="https://github.com/${context.author}/${context.repositoryName}/tree/master/demo/vue/index.ts" target="_blank">the source code of the demo</a>
         <br/>
-        <${componentShortName} :data="data">
-        </${componentShortName}>
+        <${context.componentShortName} :data="data">
+        </${context.componentShortName}>
     </div>
     \`,
 })
 class App extends Vue {
-    data: common.${componentTypeName}Data;
+    data: common.${context.componentTypeName}Data;
 }
 
 // tslint:disable-next-line:no-unused-expression
@@ -410,8 +386,7 @@ new App({ el: "#container" });
 `;
 }
 
-function getVueStarterDemoHtml(componentName: string) {
-    return `<!DOCTYPE html>
+const demoVueIndexEjsHtml = `<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="renderer" content="webkit" />
@@ -420,24 +395,23 @@ function getVueStarterDemoHtml(componentName: string) {
 <div id="container"></div>
 <script src="./<%=demoVueIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.demoVueIndexBundleJs %>"></script>
 `;
-}
 
-function getReactStarterDemoSource(authorName: string, componentName: string, componentShortName: string, componentTypeName: string) {
+function demoReactIndex(context: libs.Context) {
     return `import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { ${componentTypeName} } from "../../dist/react";
+import { ${context.componentTypeName} } from "../../dist/react";
 import * as common from "../../dist/common";
 
 class Main extends React.Component<{}, {}> {
-    data: common.${componentTypeName}Data;
+    data: common.${context.componentTypeName}Data;
 
     render() {
         return (
             <div>
-                <a href="https://github.com/${authorName}/${componentName}/tree/master/demo/react/index.tsx" target="_blank">the source code of the demo</a>
+                <a href="https://github.com/${context.author}/${context.repositoryName}/tree/master/demo/react/index.tsx" target="_blank">the source code of the demo</a>
                 <br/>
-                <${componentTypeName} data={this.data}>
-                </${componentTypeName}>
+                <${context.componentTypeName} data={this.data}>
+                </${context.componentTypeName}>
             </div>
         );
     }
@@ -447,8 +421,7 @@ ReactDOM.render(<Main />, document.getElementById("container"));
 `;
 }
 
-function getReactStarterDemoHtml(componentName: string) {
-    return `<!DOCTYPE html>
+const demoReactIndexEjsHtml = `<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="renderer" content="webkit" />
@@ -457,9 +430,8 @@ function getReactStarterDemoHtml(componentName: string) {
 <div id="container"></div>
 <script src="./<%=demoReactIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.demoReactIndexBundleJs %>"></script>
 `;
-}
 
-function getAngularStarterDemoSource(authorName: string, componentName: string, componentShortName: string, componentTypeName: string) {
+function demoAngularIndex(context: libs.Context) {
     return `import "core-js/es6";
 import "core-js/es7/reflect";
 import "zone.js/dist/zone";
@@ -477,25 +449,25 @@ import * as common from "../../dist/common";
     selector: "app",
     template: \`
     <div>
-        <a href="https://github.com/${authorName}/${componentName}/tree/master/demo/angular/index.ts" target="_blank">the source code of the demo</a>
+        <a href="https://github.com/${context.author}/${context.repositoryName}/tree/master/demo/angular/index.ts" target="_blank">the source code of the demo</a>
         <br/>
-        <${componentShortName} [data]="data">
-        </${componentShortName}>
+        <${context.componentShortName} [data]="data">
+        </${context.componentShortName}>
     </div>
     \`,
 })
 export class MainComponent {
-    data: common.${componentTypeName}Data;
+    data: common.${context.componentTypeName}Data;
 }
 
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
-import { ${componentTypeName}Component } from "../../dist/angular";
+import { ${context.componentTypeName}Component } from "../../dist/angular";
 
 @NgModule({
     imports: [BrowserModule, FormsModule],
-    declarations: [MainComponent, ${componentTypeName}Component],
+    declarations: [MainComponent, ${context.componentTypeName}Component],
     bootstrap: [MainComponent],
 })
 class MainModule { }
@@ -504,8 +476,7 @@ platformBrowserDynamic().bootstrapModule(MainModule);
 `;
 }
 
-function getAngularStarterDemoHtml(componentName: string) {
-    return `<!DOCTYPE html>
+const demoAngularIndexEjsHtml = `<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="renderer" content="webkit" />
@@ -514,4 +485,3 @@ function getAngularStarterDemoHtml(componentName: string) {
 <app></app>
 <script src="./<%=demoAngularIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.demoAngularIndexBundleJs %>"></script>
 `;
-}

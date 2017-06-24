@@ -1,6 +1,8 @@
 import * as libs from "./libs";
 
 export async function runCLI(context: libs.Context) {
+    context.isNpmPackage = true;
+
     await libs.mkdir("src");
     await libs.mkdir("bin");
 
@@ -9,9 +11,9 @@ export async function runCLI(context: libs.Context) {
     await libs.writeFile(`src/index.ts`, source);
     await libs.writeFile(`src/tsconfig.json`, tsconfig);
 
-    await libs.writeFile(".npmignore", npmignore);
-    await libs.prependFile("README.md", getBadge(context.repositoryName, context.author));
-    await libs.appendFile("README.md", getDocument(context.repositoryName));
+    await libs.writeFile(".npmignore", libs.npmignore);
+    await libs.prependFile("README.md", libs.readMeBadge(context));
+    await libs.appendFile("README.md", readMeDocument(context));
 
     await libs.writeFile(`bin/${context.repositoryName}`, binConfig);
 
@@ -37,15 +39,15 @@ export async function runCLI(context: libs.Context) {
 const binConfig = `#!/usr/bin/env node
 require("../dist/index.js");`;
 
-function getDocument(repositoryName: string) {
+function readMeDocument(context: libs.Context) {
     return `
 #### install
 
-\`npm i ${repositoryName} -g\`
+\`npm i ${context.repositoryName} -g\`
 
 #### usage
 
-run \`${repositoryName}\``;
+run \`${context.repositoryName}\``;
 }
 
 const tsconfig = `{
@@ -74,25 +76,3 @@ executeCommandLine().catch(error => {
     printInConsole(error);
 });
 `;
-
-const npmignore = `.vscode
-.github
-tslint.json
-.travis.yml
-tsconfig.json
-webpack.config.js
-src
-rev-static.config.js
-spec
-demo
-`;
-
-function getBadge(repositoryName: string, author: string) {
-    return `[![Dependency Status](https://david-dm.org/${author}/${repositoryName}.svg)](https://david-dm.org/${author}/${repositoryName})
-[![devDependency Status](https://david-dm.org/${author}/${repositoryName}/dev-status.svg)](https://david-dm.org/${author}/${repositoryName}#info=devDependencies)
-[![Build Status](https://travis-ci.org/${author}/${repositoryName}.svg?branch=master)](https://travis-ci.org/${author}/${repositoryName})
-[![npm version](https://badge.fury.io/js/${repositoryName}.svg)](https://badge.fury.io/js/${repositoryName})
-[![Downloads](https://img.shields.io/npm/dm/${repositoryName}.svg)](https://www.npmjs.com/package/${repositoryName})
-
-`;
-}

@@ -5,7 +5,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
     await libs.mkdir("static");
 
     await libs.exec(`npm i -DE @types/node`);
-    await libs.exec(`npm i -SE tslib`);
+    await libs.exec(`npm i -DE tslib`);
     await libs.exec(`npm i -DE github-fork-ribbon-css`);
     await libs.exec(`npm i -DE less`);
     await libs.exec(`npm i -DE stylelint stylelint-config-standard`);
@@ -15,20 +15,20 @@ export async function runBackendWithFrontend(context: libs.Context) {
     await libs.exec(`npm i -DE webpack`);
     await libs.exec(`npm i -DE rev-static`);
 
-    await libs.writeFile(`src/index.ts`, source);
-    await libs.writeFile(`src/tsconfig.json`, backendTsconfig);
+    await libs.writeFile(`src/index.ts`, srcIndex);
+    await libs.writeFile(`src/tsconfig.json`, srcTsconfig);
 
     await libs.writeFile(`static/tsconfig.json`, staticTsconfig);
-    await libs.writeFile(`static/index.ts`, staticSource);
-    await libs.writeFile(`static/vendor.ts`, vendorSource);
-    await libs.writeFile(`static/index.template.html`, getTemplate(context.author, context.repositoryName));
-    await libs.writeFile(`static/index.less`, getLessConfig(context.componentShortName));
-    await libs.writeFile(`static/webpack.config.js`, webpackConfig);
-    await libs.writeFile(`static/rev-static.config.js`, revStaticConfig);
-    await libs.writeFile("static/index.ejs.html", getHtml(context.author, context.repositoryName));
+    await libs.writeFile(`static/index.ts`, staticIndex);
+    await libs.writeFile(`static/vendor.ts`, staticVendor);
+    await libs.writeFile(`static/index.template.html`, staticIndexTemplateHtml);
+    await libs.writeFile(`static/index.less`, staticIndexLess);
+    await libs.writeFile(`static/webpack.config.js`, staticWebpackConfig);
+    await libs.writeFile(`static/rev-static.config.js`, staticRevStaticConfig);
+    await libs.writeFile("static/index.ejs.html", staticIndexEjsHtml(context));
 
-    await libs.prependFile("README.md", getBadge(context.repositoryName, context.author));
-    await libs.writeFile(".stylelintrc", stylelint);
+    await libs.prependFile("README.md", libs.readMeBadge(context));
+    await libs.writeFile(".stylelintrc", libs.stylelint);
 
     return {
         scripts: {
@@ -58,7 +58,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
     };
 }
 
-const source = `function printInConsole(message: any) {
+const srcIndex = `function printInConsole(message: any) {
     // tslint:disable-next-line:no-console
     console.log(message);
 }
@@ -66,7 +66,7 @@ const source = `function printInConsole(message: any) {
 printInConsole("app started!");
 `;
 
-const backendTsconfig = `{
+const srcTsconfig = `{
     "compilerOptions": {
         "target": "esnext",
         "outDir": "../dist",
@@ -79,33 +79,17 @@ const backendTsconfig = `{
     }
 }`;
 
-function getBadge(repositoryName: string, author: string) {
-    return `[![Dependency Status](https://david-dm.org/${author}/${repositoryName}.svg)](https://david-dm.org/${author}/${repositoryName})
-[![devDependency Status](https://david-dm.org/${author}/${repositoryName}/dev-status.svg)](https://david-dm.org/${author}/${repositoryName}#info=devDependencies)
-[![Build Status](https://travis-ci.org/${author}/${repositoryName}.svg?branch=master)](https://travis-ci.org/${author}/${repositoryName})
-
-`;
-}
-
-function getLessConfig(componentShortName: string) {
-    return `.${componentShortName} {
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: "Lucida Grande", "Lucida Sans Unicode", "Hiragino Sans GB", "WenQuanYi Micro Hei", "Verdana,Aril", "sans-serif";
-    -webkit-font-smoothing: antialiased;
-    user-select: none;
-  }
+const staticIndexLess = `* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Lucida Grande", "Lucida Sans Unicode", "Hiragino Sans GB", "WenQuanYi Micro Hei", "Verdana,Aril", "sans-serif";
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
 }
 `;
-}
 
-const stylelint = `{
-  "extends": "stylelint-config-standard"
-}`;
-
-const webpackConfig = `const webpack = require("webpack");
+const staticWebpackConfig = `const webpack = require("webpack");
 const path = require("path");
 
 module.exports = {
@@ -143,7 +127,7 @@ module.exports = {
     }
 };`;
 
-const revStaticConfig = `module.exports = {
+const staticRevStaticConfig = `module.exports = {
     inputFiles: [
         "static/index.bundle.js",
         "static/vendor.bundle.js",
@@ -159,21 +143,21 @@ const revStaticConfig = `module.exports = {
 };
 `;
 
-function getHtml(authorName: string, repositoryName: string) {
+function staticIndexEjsHtml(context: libs.Context) {
     return `<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="<%=staticIndexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.staticIndexBundleCss %>" />
-<a class="github-fork-ribbon right-bottom" href="https://github.com/${authorName}/${repositoryName}" title="Fork me on GitHub" target="_blank">Fork me on GitHub</a>
+<a class="github-fork-ribbon right-bottom" href="https://github.com/${context.author}/${context.repositoryName}" title="Fork me on GitHub" target="_blank">Fork me on GitHub</a>
 <div id="container"></div>
 <script src="<%=staticVendorBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.staticVendorBundleJs %>"></script>
 <script src="<%=staticIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.staticIndexBundleJs %>"></script>
 `;
 }
 
-const staticSource = `import Vue from "vue";
+const staticIndex = `import Vue from "vue";
 import Component from "vue-class-component";
 import { staticIndexTemplateHtml } from "./variables";
 
@@ -187,7 +171,7 @@ class App extends Vue {
 new App({ el: "#container" });
 `;
 
-const vendorSource = `import "vue";
+const staticVendor = `import "vue";
 import "vue-class-component";
 `;
 
@@ -209,7 +193,5 @@ const staticTsconfig = `{
     }
 }`;
 
-function getTemplate(authorName: string, componentName: string) {
-    return `<div>
+const staticIndexTemplateHtml = `<div>
 </div>`;
-}

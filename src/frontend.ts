@@ -12,17 +12,17 @@ export async function runFrontend(context: libs.Context) {
     await libs.exec(`npm i -DE rev-static`);
     await libs.exec(`npm i -DE sw-precache uglify-js@2`);
 
-    await libs.writeFile(`index.ts`, source);
-    await libs.writeFile(`index.template.html`, getTemplate(context.author, context.repositoryName));
-    await libs.writeFile(`vendor.ts`, vendorSource);
+    await libs.writeFile(`index.ts`, index);
+    await libs.writeFile(`index.template.html`, indexTemplateHtml);
+    await libs.writeFile(`vendor.ts`, vendor);
     await libs.writeFile(`tsconfig.json`, tsconfig);
-    await libs.prependFile("README.md", getBadge(context.repositoryName, context.author));
-    await libs.writeFile(`index.less`, getLessConfig(context.componentShortName));
-    await libs.writeFile(".stylelintrc", stylelint);
+    await libs.prependFile("README.md", libs.readMeBadge(context));
+    await libs.writeFile(`index.less`, indexLess);
+    await libs.writeFile(".stylelintrc", libs.stylelint);
     await libs.writeFile(`webpack.config.js`, webpackConfig);
     await libs.writeFile(`rev-static.config.js`, revStaticConfig);
-    await libs.writeFile("index.ejs.html", getHtml(context.author, context.repositoryName));
-    await libs.writeFile("sw-precache.config.js", swPrecache);
+    await libs.writeFile("index.ejs.html", indexEjsHtml(context));
+    await libs.writeFile("sw-precache.config.js", swPrecacheConfig);
 
     return {
         scripts: {
@@ -54,7 +54,7 @@ export async function runFrontend(context: libs.Context) {
     };
 }
 
-const source = `import Vue from "vue";
+const index = `import Vue from "vue";
 import Component from "vue-class-component";
 import { indexTemplateHtml } from "./variables";
 
@@ -68,10 +68,8 @@ class App extends Vue {
 new App({ el: "#container" });
 `;
 
-function getTemplate(authorName: string, componentName: string) {
-    return `<div>
+const indexTemplateHtml = `<div>
 </div>`;
-}
 
 const tsconfig = `{
     "compilerOptions": {
@@ -91,31 +89,15 @@ const tsconfig = `{
     }
 }`;
 
-function getBadge(repositoryName: string, author: string) {
-    return `[![Dependency Status](https://david-dm.org/${author}/${repositoryName}.svg)](https://david-dm.org/${author}/${repositoryName})
-[![devDependency Status](https://david-dm.org/${author}/${repositoryName}/dev-status.svg)](https://david-dm.org/${author}/${repositoryName}#info=devDependencies)
-[![Build Status](https://travis-ci.org/${author}/${repositoryName}.svg?branch=master)](https://travis-ci.org/${author}/${repositoryName})
-
-`;
-}
-
-function getLessConfig(componentShortName: string) {
-    return `.${componentShortName} {
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: "Lucida Grande", "Lucida Sans Unicode", "Hiragino Sans GB", "WenQuanYi Micro Hei", "Verdana,Aril", "sans-serif";
-    -webkit-font-smoothing: antialiased;
-    user-select: none;
-  }
+const indexLess = `* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Lucida Grande", "Lucida Sans Unicode", "Hiragino Sans GB", "WenQuanYi Micro Hei", "Verdana,Aril", "sans-serif";
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
 }
 `;
-}
-
-const stylelint = `{
-  "extends": "stylelint-config-standard"
-}`;
 
 const webpackConfig = `const webpack = require("webpack");
 const path = require("path");
@@ -171,21 +153,21 @@ const revStaticConfig = `module.exports = {
 };
 `;
 
-function getHtml(authorName: string, repositoryName: string) {
+function indexEjsHtml(context: libs.Context) {
     return `<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="<%=indexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.indexBundleCss %>" />
-<a class="github-fork-ribbon right-bottom" href="https://github.com/${authorName}/${repositoryName}" title="Fork me on GitHub" target="_blank">Fork me on GitHub</a>
+<a class="github-fork-ribbon right-bottom" href="https://github.com/${context.author}/${context.repositoryName}" title="Fork me on GitHub" target="_blank">Fork me on GitHub</a>
 <div id="container"></div>
 <script src="<%=vendorBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.vendorBundleJs %>"></script>
 <script src="<%=indexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.indexBundleJs %>"></script>
 `;
 }
 
-const swPrecache = `module.exports = {
+const swPrecacheConfig = `module.exports = {
   staticFileGlobs: [
     'index.bundle-*.css',
     'index.bundle-*.js',
@@ -196,6 +178,6 @@ const swPrecache = `module.exports = {
 };
 `;
 
-const vendorSource = `import "vue";
+const vendor = `import "vue";
 import "vue-class-component";
 `;

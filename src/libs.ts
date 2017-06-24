@@ -121,4 +121,35 @@ export type Context = {
     componentShortName: string;
     componentTypeName: string;
     author: string;
+    isNpmPackage?: boolean;
 };
+
+export function readMeBadge(context: Context) {
+    const npmBadge = context.isNpmPackage
+        ? `[![npm version](https://badge.fury.io/js/${context.repositoryName}.svg)](https://badge.fury.io/js/${context.repositoryName})
+[![Downloads](https://img.shields.io/npm/dm/${context.repositoryName}.svg)](https://www.npmjs.com/package/${context.repositoryName})
+`
+        : "";
+    return `[![Dependency Status](https://david-dm.org/${context.author}/${context.repositoryName}.svg)](https://david-dm.org/${context.author}/${context.repositoryName})
+[![devDependency Status](https://david-dm.org/${context.author}/${context.repositoryName}/dev-status.svg)](https://david-dm.org/${context.author}/${context.repositoryName}#info=devDependencies)
+[![Build Status](https://travis-ci.org/${context.author}/${context.repositoryName}.svg?branch=master)](https://travis-ci.org/${context.author}/${context.repositoryName})
+${npmBadge}
+
+`;
+}
+
+export const npmignore = `.vscode
+.github
+tslint.json
+.travis.yml
+tsconfig.json
+webpack.config.js
+src
+rev-static.config.js
+spec
+demo
+`;
+
+export const stylelint = `{
+  "extends": "stylelint-config-standard"
+}`;
