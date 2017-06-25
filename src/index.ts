@@ -6,6 +6,7 @@ import { runLibrary } from "./library";
 import { runBackend } from "./backend";
 import { runFrontend } from "./frontend";
 import { runBackendWithFrontend } from "./backend-with-frontend";
+import { runElectron } from "./electron";
 
 async function run() {
     const context = await getContext();
@@ -64,6 +65,9 @@ async function run() {
             break;
         case ProjectKind.backendWithFrontend:
             newPackageJson = await runBackendWithFrontend(context);
+            break;
+        case ProjectKind.electron:
+            newPackageJson = await runElectron(context);
             break;
     }
 
@@ -124,6 +128,7 @@ async function selectProjectKind() {
             ProjectKind.CLI,
             ProjectKind.library,
             ProjectKind.UIComponent,
+            ProjectKind.electron,
         ],
     });
     return projectKindAnswer.projectKind as ProjectKind;

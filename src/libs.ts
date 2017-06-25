@@ -85,6 +85,7 @@ export const enum ProjectKind {
     backend = "backend",
     backendWithFrontend = "backend with frontend",
     library = "library",
+    electron = "electron",
 }
 
 export function getComponentShortName(componentName: string) {

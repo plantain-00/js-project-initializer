@@ -14,7 +14,8 @@
     "test:backend": "cd tests/backend/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
     "test:frontend": "cd tests/frontend/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
     "test:backend-with-frontend": "cd tests/backend-with-frontend/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
-    "test:cli": "cd tests/cli/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../"
+    "test:cli": "cd tests/cli/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
+    "test:electron": "cd tests/electron/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../"
   },
   "repository": {
     "type": "git",

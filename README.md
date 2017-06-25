@@ -23,4 +23,4 @@ run `js-project-initialize`
 - [x] Frontend Program
 - [x] Nodejs Backend Program(with Frontend)
 - [x] CLI Program
-- [ ] Electron Program
+- [x] Electron Program

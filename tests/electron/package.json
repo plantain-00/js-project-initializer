@@ -1,0 +1,18 @@
+{
+  "name": "news-fetcher-client",
+  "version": "1.2.1",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plantain-00/news-fetcher-client.git"
+  },
+  "author": "York Yao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/plantain-00/news-fetcher-client/issues"
+  },
+  "homepage": "https://github.com/plantain-00/news-fetcher-client#readme"
+}
