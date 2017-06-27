@@ -147,7 +147,7 @@ function srcReact(context: libs.Context) {
     return `import * as React from "react";
 import * as common from "./common";
 
-export class ${context.componentTypeName} extends React.PureComponent<{
+export class ${context.componentTypeName} extends React.Component<{
     data: common.${context.componentTypeName}Data;
 }, { }> {
     render() {
@@ -324,41 +324,62 @@ function srcLess(context: libs.Context) {
 }
 
 function demoWebpackConfig(hasAngularChoice: boolean) {
-    const angularEntry = hasAngularChoice ? `
-        angular: "./demo/angular/index",` : "";
+    const angularExport = hasAngularChoice ? `
+    {
+        entry: "./demo/angular/index",
+        output: {
+            path: path.resolve(__dirname, "angular"),
+            filename: "index.bundle.js"
+        },
+        plugins,
+        resolve,
+    },` : "";
     return `const webpack = require("webpack");
+const path = require("path");
 
-module.exports = {
-    entry: {
-        vue: "./demo/vue/index",
-        react: "./demo/react/index",${angularEntry}
-    },
-    output: {
-        path: __dirname,
-        filename: "[name]/index.bundle.js"
-    },
-    plugins: [
-        new webpack.DefinePlugin({
-            "process.env": {
-                "NODE_ENV": JSON.stringify("production")
-            }
-        }),
-        new webpack.NoEmitOnErrorsPlugin(),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false,
-            },
-            output: {
-                comments: false,
-            },
-        }),
-    ],
-    resolve: {
-        alias: {
-            "vue$": "vue/dist/vue.min.js"
+const plugins = [
+    new webpack.DefinePlugin({
+        "process.env": {
+            "NODE_ENV": JSON.stringify("production")
         }
+    }),
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+        compress: {
+            warnings: false,
+        },
+        output: {
+            comments: false,
+        },
+    }),
+];
+
+const resolve = {
+    alias: {
+        "vue$": "vue/dist/vue.min.js"
     }
-};`;
+};
+
+module.exports = [
+    {
+        entry: "./demo/vue/index",
+        output: {
+            path: path.resolve(__dirname, "vue"),
+            filename: "index.bundle.js"
+        },
+        plugins,
+        resolve,
+    },
+    {
+        entry: "./demo/react/index",
+        output: {
+            path: path.resolve(__dirname, "react"),
+            filename: "index.bundle.js"
+        },
+        plugins,
+        resolve,
+    },${angularExport}
+];`;
 }
 
 function demoVueIndex(context: libs.Context) {
@@ -409,7 +430,7 @@ class Main extends React.Component<{}, {}> {
         return (
             <div>
                 <a href="https://github.com/${context.author}/${context.repositoryName}/tree/master/demo/react/index.tsx" target="_blank">the source code of the demo</a>
-                <br/>
+                <br />
                 <${context.componentTypeName} data={this.data}>
                 </${context.componentTypeName}>
             </div>

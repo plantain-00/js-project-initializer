@@ -144,6 +144,7 @@ dist
 !**/*-*.js
 !**/*-*.css
 service-worker.js
+!*.index.bundle.js
 `;
 
 const travisYml = `language: node_js

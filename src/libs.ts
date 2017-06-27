@@ -2,7 +2,7 @@ import * as inquirer from "inquirer";
 import * as childProcess from "child_process";
 import * as fs from "fs";
 import * as mkdirp from "mkdirp";
-import upperCamelCase = require("uppercamelcase");
+import * as upperCamelCase from "uppercamelcase";
 
 export { inquirer, upperCamelCase };
 
@@ -135,7 +135,6 @@ export function readMeBadge(context: Context) {
 [![devDependency Status](https://david-dm.org/${context.author}/${context.repositoryName}/dev-status.svg)](https://david-dm.org/${context.author}/${context.repositoryName}#info=devDependencies)
 [![Build Status](https://travis-ci.org/${context.author}/${context.repositoryName}.svg?branch=master)](https://travis-ci.org/${context.author}/${context.repositoryName})
 ${npmBadge}
-
 `;
 }
 
