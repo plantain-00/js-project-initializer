@@ -33,7 +33,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
     return {
         scripts: {
             cleanRev: `rimraf static/**/index.bundle-*.js static/*.bundle-*.css`,
-            file2variable: `file2variable-cli static/index.template.html -o static/variables.ts --html-minify`,
+            file2variable: `file2variable-cli static/*.template.html -o static/variables.ts --html-minify`,
             tsc: `tsc -p src/ && tsc -p static/`,
             lessc: `lessc static/index.less > static/index.css`,
             cleancss: `cleancss -o static/index.bundle.css static/index.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css`,

@@ -27,7 +27,7 @@ export async function runFrontend(context: libs.Context) {
     return {
         scripts: {
             cleanRev: `rimraf **/index.bundle-*.js *.bundle-*.css`,
-            file2variable: `file2variable-cli index.template.html -o variables.ts --html-minify`,
+            file2variable: `file2variable-cli *.template.html -o variables.ts --html-minify`,
             tsc: `tsc`,
             lessc: `lessc index.less > index.css`,
             cleancss: `cleancss -o index.bundle.css index.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css`,
