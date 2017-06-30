@@ -135,11 +135,9 @@ import { srcVueTemplateHtml } from "./vue-variables";
     template: srcVueTemplateHtml,
     props: ["data"],
 })
-class ${context.componentTypeName} extends Vue {
+export class ${context.componentTypeName} extends Vue {
     data: common.${context.componentTypeName}Data;
 }
-
-Vue.component("${context.componentShortName}", ${context.componentTypeName});
 `;
 }
 
@@ -229,7 +227,9 @@ the online demo: https://${context.author}.github.io/${context.repositoryName}/d
 \`npm i vue vue-class-component\`
 
 \`\`\`ts
-import "${context.repositoryName}/dist/vue";
+import { ${context.componentTypeName} } from "${context.repositoryName}/dist/vue";
+
+Vue.component("${context.componentShortName}", ${context.componentTypeName});
 \`\`\`
 
 \`\`\`html
@@ -385,7 +385,8 @@ module.exports = [
 function demoVueIndex(context: libs.Context) {
     return `import Vue from "vue";
 import Component from "vue-class-component";
-import "../../dist/vue";
+import { ${context.componentTypeName} } from "../../dist/vue";
+Vue.component("${context.componentShortName}", ${context.componentTypeName});
 import * as common from "../../dist/common";
 
 @Component({

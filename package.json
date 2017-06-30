@@ -37,10 +37,8 @@
   },
   "devDependencies": {
     "@types/inquirer": "0.0.34",
-    "@types/jasmine": "2.5.47",
     "@types/mkdirp": "0.3.29",
     "@types/uppercamelcase": "0.0.1",
-    "jasmine": "2.6.0",
     "rimraf": "2.6.1",
     "tslint": "5.4.0",
     "typescript": "2.4.0"
