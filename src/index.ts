@@ -13,30 +13,20 @@ async function run() {
 
     const kind = await selectProjectKind();
 
-    printInConsole("installing typescript...");
     await libs.exec(`npm i -DE typescript@rc`);
 
-    printInConsole("setting .gitignore...");
     await libs.appendFile(".gitignore", gitignore);
 
-    printInConsole("setting .travis.yml...");
-    await libs.writeFile(".travis.yml", travisYml);
-
-    printInConsole("setting tssdk...");
     await libs.mkdir(".vscode");
     await libs.writeFile(".vscode/settings.json", vscodeSetting);
 
-    printInConsole("installing tslint...");
     await libs.exec(`npm i -DE tslint`);
-    printInConsole("setting tslint.json...");
     await libs.writeFile("tslint.json", libs.tslint);
 
-    printInConsole("setting github issue/pull request template...");
     await libs.mkdir(".github");
     await libs.writeFile(".github/ISSUE_TEMPLATE.md", issueTemplate);
     await libs.writeFile(".github/PULL_REQUEST_TEMPLATE.md", pullRequestTemplate);
 
-    printInConsole("installing rimraf...");
     await libs.exec(`npm i -DE rimraf`);
 
     let newPackageJson: {
@@ -146,26 +136,6 @@ dist
 service-worker.js
 !*.index.bundle.js
 `;
-
-const travisYml = `language: node_js
-node_js:
-  - "8"
-before_install:
-  - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
-before_script:
-  - npm i
-script:
-  - npm run build
-  - npm run lint
-  - npm run test
-env:
-  - CXX=g++-4.8
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8`;
 
 const vscodeSetting = `{
     "typescript.tsdk": "./node_modules/typescript/lib"

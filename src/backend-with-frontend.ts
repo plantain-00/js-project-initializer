@@ -30,6 +30,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
 
     await libs.prependFile("README.md", libs.readMeBadge(context));
     await libs.writeFile(".stylelintrc", libs.stylelint);
+    await libs.writeFile(".travis.yml", libs.travisYml);
 
     return {
         scripts: {

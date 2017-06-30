@@ -14,6 +14,7 @@ export async function runCLI(context: libs.Context) {
     await libs.writeFile(".npmignore", libs.npmignore);
     await libs.prependFile("README.md", libs.readMeBadge(context));
     await libs.appendFile("README.md", readMeDocument(context));
+    await libs.writeFile(".travis.yml", libs.travisYml);
 
     await libs.writeFile(`bin/${context.repositoryName}`, binConfig);
 

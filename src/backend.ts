@@ -9,6 +9,7 @@ export async function runBackend(context: libs.Context) {
     await libs.writeFile(`src/tsconfig.json`, srcTsconfig);
 
     await libs.prependFile("README.md", libs.readMeBadge(context));
+    await libs.writeFile(".travis.yml", libs.travisYml);
 
     return {
         scripts: {

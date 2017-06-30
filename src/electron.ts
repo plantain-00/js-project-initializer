@@ -20,6 +20,7 @@ export async function runElectron(context: libs.Context) {
     await libs.writeFile(`tsconfig.json`, tsconfig);
     await libs.prependFile("README.md", libs.readMeBadge(context));
     await libs.writeFile(".stylelintrc", libs.stylelint);
+    await libs.writeFile(".travis.yml", libs.travisYml);
 
     await libs.writeFile("scripts/index.ts", scriptsIndex);
     await libs.writeFile(`scripts/index.less`, scriptsIndexLess);

@@ -24,6 +24,7 @@ export async function runFrontend(context: libs.Context) {
     await libs.writeFile(`rev-static.config.js`, revStaticConfig);
     await libs.writeFile("index.ejs.html", indexEjsHtml(context));
     await libs.writeFile("sw-precache.config.js", swPrecacheConfig);
+    await libs.writeFile(".travis.yml", libs.travisYml);
 
     return {
         scripts: {

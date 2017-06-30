@@ -153,3 +153,24 @@ demo
 export const stylelint = `{
   "extends": "stylelint-config-standard"
 }`;
+
+export const travisYml = `language: node_js
+node_js:
+  - "8"
+before_install:
+  - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
+before_script:
+  - npm i
+script:
+  - npm run build
+  - npm run lint
+  - npm run test
+env:
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
+`;

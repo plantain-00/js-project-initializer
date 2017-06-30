@@ -11,11 +11,13 @@ export async function runUIComponent(context: libs.Context) {
         ],
         choices: [
             "angular",
+            "jasmine + karma",
         ],
     });
     const options: string[] = answer.options;
 
     const hasAngularChoice = options.some(o => o === "angular");
+    const hasJasmineAndKarmaChoice = options.some(o => o === "jasmine + karma");
 
     await libs.mkdir("src");
     await libs.mkdir("demo");
@@ -23,6 +25,9 @@ export async function runUIComponent(context: libs.Context) {
     await libs.mkdir(`demo/react`);
     if (hasAngularChoice) {
         await libs.mkdir(`demo/angular`);
+    }
+    if (hasJasmineAndKarmaChoice) {
+        await libs.mkdir(`spec`);
     }
 
     await libs.exec(`npm i -SE tslib`);
@@ -40,6 +45,9 @@ export async function runUIComponent(context: libs.Context) {
         await libs.exec(`npm i -DE @angular/common @angular/compiler @angular/core @angular/forms @angular/platform-browser @angular/platform-browser-dynamic core-js rxjs zone.js`);
     }
     await libs.exec(`npm i -DE standard`);
+    if (hasJasmineAndKarmaChoice) {
+        await libs.exec(`npm i -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
+    }
 
     await libs.writeFile(`src/tsconfig.json`, srcTsconfig);
     await libs.writeFile(`src/${context.componentShortName}.less`, srcLess(context));
@@ -64,10 +72,22 @@ export async function runUIComponent(context: libs.Context) {
         await libs.writeFile(`demo/angular/index.ejs.html`, demoAngularIndexEjsHtml);
     }
 
+    if (hasJasmineAndKarmaChoice) {
+        await libs.writeFile(`spec/karma.config.js`, specKarmaConfigJs);
+        await libs.writeFile(`spec/tsconfig.json`, specTsconfig);
+        await libs.writeFile(`spec/webpack.config.js`, specWebpackConfigJs);
+        await libs.writeFile(`spec/indexSpec.ts`, specIndexSpecTs);
+    }
+
     await libs.writeFile(".npmignore", libs.npmignore);
     await libs.prependFile("README.md", libs.readMeBadge(context));
     await libs.appendFile("README.md", readMeDocument(context, hasAngularChoice));
     await libs.writeFile(".stylelintrc", libs.stylelint);
+    if (hasJasmineAndKarmaChoice) {
+        await libs.writeFile(".travis.yml", travisYml);
+    } else {
+        await libs.writeFile(".travis.yml", libs.travisYml);
+    }
 
     const commands = [
         `file2variable-cli src/vue.template.html -o src/vue-variables.ts --html-minify`,
@@ -91,6 +111,7 @@ export async function runUIComponent(context: libs.Context) {
             stylelint: `stylelint "src/**/*.less"`,
             standard: `standard "**/*.config.js"`,
             fix: `standard --fix "**/*.config.js"`,
+            test: "tsc -p src && tsc -p spec && karma start spec/karma.config.js",
             build: [
                 "npm run cleanRev",
                 "npm run clean",
@@ -296,6 +317,24 @@ const srcTsconfig = `{
 }`;
 
 const demoTsconfig = `{
+    "compilerOptions": {
+        "target": "es5",
+
+        "module": "esnext",
+        "moduleResolution": "node",
+        "strict": true,
+        "noUnusedLocals": true,
+        "noImplicitReturns": true,
+        "skipLibCheck": true,
+        "importHelpers": true,
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "downlevelIteration": true
+    }
+}`;
+
+const specTsconfig = `{
     "compilerOptions": {
         "target": "es5",
 
@@ -556,4 +595,101 @@ const demoAngularIndexEjsHtml = `<!DOCTYPE html>
 <link rel="stylesheet" href="../<%=demoIndexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.demoIndexBundleCss %>" />
 <app></app>
 <script src="./<%=demoAngularIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.demoAngularIndexBundleJs %>"></script>
+`;
+
+const specKarmaConfigJs = `const webpackConfig = require('./webpack.config.js')
+
+module.exports = function (karma) {
+  const config = {
+    basePath: '',
+    frameworks: ['jasmine'],
+    files: [
+      '**/*Spec.js'
+    ],
+    reporters: ['progress'],
+    port: 9876,
+    colors: true,
+    logLevel: karma.LOG_INFO,
+    autoWatch: true,
+    browsers: ['Firefox'],
+    singleRun: true,
+    concurrency: Infinity,
+    webpack: webpackConfig,
+    preprocessors: {
+      '**/*Spec.js': ['webpack']
+    }
+  }
+
+  if (!process.env.TRAVIS) {
+    config.browsers.push('Chrome')
+  }
+
+  karma.set(config)
+}
+`;
+
+const specWebpackConfigJs = `const webpack = require('webpack')
+
+const plugins = [
+  new webpack.DefinePlugin({
+    'process.env': {
+      'NODE_ENV': JSON.stringify('production')
+    }
+  }),
+  new webpack.NoEmitOnErrorsPlugin(),
+  new webpack.optimize.UglifyJsPlugin({
+    compress: {
+      warnings: false
+    },
+    output: {
+      comments: false
+    }
+  })
+]
+
+const resolve = {
+  alias: {
+    'vue$': 'vue/dist/vue.js'
+  }
+}
+
+module.exports = {
+  plugins,
+  resolve
+}
+`;
+
+const specIndexSpecTs = `describe("todo", () => {
+    it("should be true", () => {
+        expect(true).toEqual(true);
+    });
+});
+`;
+
+const travisYml = `language: node_js
+node_js:
+  - "8"
+before_install:
+  - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+before_script:
+  - npm i
+script:
+  - npm run build
+  - npm run lint
+  - npm run test
+env:
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
+  firefox: latest
+branches:
+  except:
+    - gh-pages
+    - release
 `;
