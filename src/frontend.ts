@@ -11,6 +11,7 @@ export async function runFrontend(context: libs.Context) {
     await libs.exec(`npm i -DE webpack`);
     await libs.exec(`npm i -DE rev-static`);
     await libs.exec(`npm i -DE sw-precache uglify-js@2`);
+    await libs.exec(`npm i -DE standard`);
 
     await libs.writeFile(`index.ts`, index);
     await libs.writeFile(`index.template.html`, indexTemplateHtml);
@@ -36,6 +37,8 @@ export async function runFrontend(context: libs.Context) {
             swPrecache: "sw-precache --config sw-precache.config.js --verbose && uglifyjs service-worker.js -o service-worker.bundle.js",
             tslint: `tslint "*.ts"`,
             stylelint: `stylelint "**/*.less"`,
+            standard: `standard "**/*.config.js"`,
+            fix: `standard --fix "**/*.config.js"`,
             build: [
                 "npm run cleanRev",
                 "npm run file2variable",
@@ -49,6 +52,7 @@ export async function runFrontend(context: libs.Context) {
             lint: [
                 "npm run tslint",
                 "npm run stylelint",
+                "npm run standard",
             ].join(" && "),
         },
     };
@@ -99,62 +103,62 @@ const indexLess = `* {
 }
 `;
 
-const webpackConfig = `const webpack = require("webpack");
-const path = require("path");
+const webpackConfig = `const webpack = require('webpack')
 
 const plugins = [
-    new webpack.DefinePlugin({
-        "process.env": {
-            "NODE_ENV": JSON.stringify("production")
-        }
-    }),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-        compress: {
-            warnings: false,
-        },
-        output: {
-            comments: false,
-        },
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-        name: ["index", "vendor"]
-    }),
-];
-
-const resolve = {
-    alias: {
-        "vue$": "vue/dist/vue.min.js"
+  new webpack.DefinePlugin({
+    'process.env': {
+      'NODE_ENV': JSON.stringify('production')
     }
-};
-
-module.exports = {
-    entry: {
-        index: "./index",
-        vendor: "./vendor",
+  }),
+  new webpack.NoEmitOnErrorsPlugin(),
+  new webpack.optimize.UglifyJsPlugin({
+    compress: {
+      warnings: false
     },
     output: {
-        path: __dirname,
-        filename: "[name].bundle.js"
-    },
-    plugins,
-    resolve,
-};`;
+      comments: false
+    }
+  }),
+  new webpack.optimize.CommonsChunkPlugin({
+    name: ['index', 'vendor']
+  })
+]
+
+const resolve = {
+  alias: {
+    'vue$': 'vue/dist/vue.min.js'
+  }
+}
+
+module.exports = {
+  entry: {
+    index: './index',
+    vendor: './vendor'
+  },
+  output: {
+    path: __dirname,
+    filename: '[name].bundle.js'
+  },
+  plugins,
+  resolve
+}
+`;
 
 const revStaticConfig = `module.exports = {
-    inputFiles: [
-        "index.bundle.js",
-        "vendor.bundle.js",
-        "index.bundle.css",
-        "index.ejs.html",
-    ],
-    outputFiles: file => file.replace(".ejs", ""),
-    ejsOptions: {
-        rmWhitespace: true
-    },
-    sha: 256,
-    customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + "-" + md5String + extensionName,
-};
+  inputFiles: [
+    'index.bundle.js',
+    'vendor.bundle.js',
+    'index.bundle.css',
+    'index.ejs.html'
+  ],
+  outputFiles: file => file.replace('.ejs', ''),
+  ejsOptions: {
+    rmWhitespace: true
+  },
+  sha: 256,
+  customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + '-' + md5String + extensionName
+}
 `;
 
 function indexEjsHtml(context: libs.Context) {
@@ -177,9 +181,9 @@ const swPrecacheConfig = `module.exports = {
     'index.bundle-*.js',
     'vendor.bundle-*.css',
     'vendor.bundle-*.js',
-    'index.html',
-  ],
-};
+    'index.html'
+  ]
+}
 `;
 
 const vendor = `import "vue";

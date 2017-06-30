@@ -13,6 +13,7 @@ export async function runElectron(context: libs.Context) {
     await libs.exec(`npm i -DE clean-css-cli`);
     await libs.exec(`npm i -DE file2variable-cli`);
     await libs.exec(`npm i -DE webpack`);
+    await libs.exec(`npm i -DE standard`);
 
     await libs.writeFile(`main.ts`, main);
     await libs.writeFile(`index.html`, indexHtml);
@@ -35,6 +36,8 @@ export async function runElectron(context: libs.Context) {
             webpack: `webpack --config scripts/webpack.config.js`,
             tslint: `tslint "*.ts"`,
             stylelint: `stylelint "scripts/*.less"`,
+            standard: `standard "**/*.config.js"`,
+            fix: `standard --fix "**/*.config.js"`,
             osx: "rimraf dist/news-darwin-x64 && electron-packager . 'news' --out=dist --arch=x64 --version=1.2.1 --app-version='1.0.8' --platform=darwin --ignore='dist/'",
             win: "rimraf dist/news-win32-x64 && electron-packager . 'news' --out=dist --arch=x64 --version=1.2.1 --app-version='1.0.8' --platform=win32 --ignore='dist/'",
             start: "electron .",
@@ -48,6 +51,7 @@ export async function runElectron(context: libs.Context) {
             lint: [
                 "npm run tslint",
                 "npm run stylelint",
+                "npm run standard",
             ].join(" && "),
         },
     };
@@ -152,37 +156,36 @@ const scriptsTsconfig = `{
 const scriptsIndexTemplateHtml = `<div>
 </div>`;
 
-const scriptsWebpackConfig = `const webpack = require("webpack");
-const path = require("path");
+const scriptsWebpackConfig = `const webpack = require('webpack')
 
 module.exports = {
-    entry: {
-        index: "./scripts/index",
-    },
-    output: {
-        path: __dirname,
-        filename: "[name].bundle.js"
-    },
-    plugins: [
-        new webpack.DefinePlugin({
-            "process.env": {
-                "NODE_ENV": JSON.stringify("production")
-            }
-        }),
-        new webpack.NoEmitOnErrorsPlugin(),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false,
-            },
-            output: {
-                comments: false,
-            },
-        }),
-    ],
-    resolve: {
-        alias: {
-            "vue$": "vue/dist/vue.min.js"
-        }
+  entry: {
+    index: './scripts/index'
+  },
+  output: {
+    path: __dirname,
+    filename: '[name].bundle.js'
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      },
+      output: {
+        comments: false
+      }
+    })
+  ],
+  resolve: {
+    alias: {
+      'vue$': 'vue/dist/vue.min.js'
     }
-};
+  }
+}
 `;

@@ -14,6 +14,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
     await libs.exec(`npm i -DE file2variable-cli`);
     await libs.exec(`npm i -DE webpack`);
     await libs.exec(`npm i -DE rev-static`);
+    await libs.exec(`npm i -DE standard`);
 
     await libs.writeFile(`src/index.ts`, srcIndex);
     await libs.writeFile(`src/tsconfig.json`, srcTsconfig);
@@ -41,6 +42,8 @@ export async function runBackendWithFrontend(context: libs.Context) {
             revStatic: `rev-static --config static/rev-static.config.js`,
             tslint: `tslint "src/**/*.ts" "static/**/*.ts"`,
             stylelint: `stylelint "static/**/*.less"`,
+            standard: `standard "**/*.config.js"`,
+            fix: `standard --fix "**/*.config.js"`,
             build: [
                 "npm run cleanRev",
                 "npm run file2variable",
@@ -53,6 +56,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
             lint: [
                 "npm run tslint",
                 "npm run stylelint",
+                "npm run standard",
             ].join(" && "),
         },
     };
@@ -89,62 +93,62 @@ const staticIndexLess = `* {
 }
 `;
 
-const staticWebpackConfig = `const webpack = require("webpack");
-const path = require("path");
+const staticWebpackConfig = `const webpack = require('webpack')
 
 const plugins = [
-    new webpack.DefinePlugin({
-        "process.env": {
-            "NODE_ENV": JSON.stringify("production")
-        }
-    }),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-        compress: {
-            warnings: false,
-        },
-        output: {
-            comments: false,
-        },
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-        name: ["index", "vendor"]
-    }),
-];
-
-const resolve = {
-    alias: {
-        "vue$": "vue/dist/vue.min.js"
+  new webpack.DefinePlugin({
+    'process.env': {
+      'NODE_ENV': JSON.stringify('production')
     }
-};
-
-module.exports = {
-    entry: {
-        index: "./static/index",
-        vendor: "./static/vendor",
+  }),
+  new webpack.NoEmitOnErrorsPlugin(),
+  new webpack.optimize.UglifyJsPlugin({
+    compress: {
+      warnings: false
     },
     output: {
-        path: __dirname,
-        filename: "[name].bundle.js"
-    },
-    plugins,
-    resolve,
-};`;
+      comments: false
+    }
+  }),
+  new webpack.optimize.CommonsChunkPlugin({
+    name: ['index', 'vendor']
+  })
+]
+
+const resolve = {
+  alias: {
+    'vue$': 'vue/dist/vue.min.js'
+  }
+}
+
+module.exports = {
+  entry: {
+    index: './static/index',
+    vendor: './static/vendor'
+  },
+  output: {
+    path: __dirname,
+    filename: '[name].bundle.js'
+  },
+  plugins,
+  resolve
+}
+`;
 
 const staticRevStaticConfig = `module.exports = {
-    inputFiles: [
-        "static/index.bundle.js",
-        "static/vendor.bundle.js",
-        "static/index.bundle.css",
-        "static/index.ejs.html",
-    ],
-    outputFiles: file => file.replace(".ejs", ""),
-    ejsOptions: {
-        rmWhitespace: true
-    },
-    sha: 256,
-    customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + "-" + md5String + extensionName,
-};
+  inputFiles: [
+    'static/index.bundle.js',
+    'static/vendor.bundle.js',
+    'static/index.bundle.css',
+    'static/index.ejs.html'
+  ],
+  outputFiles: file => file.replace('.ejs', ''),
+  ejsOptions: {
+    rmWhitespace: true
+  },
+  sha: 256,
+  customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + '-' + md5String + extensionName
+}
 `;
 
 function staticIndexEjsHtml(context: libs.Context) {

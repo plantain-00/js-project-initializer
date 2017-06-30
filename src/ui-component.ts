@@ -39,6 +39,7 @@ export async function runUIComponent(context: libs.Context) {
     if (hasAngularChoice) {
         await libs.exec(`npm i -DE @angular/common @angular/compiler @angular/core @angular/forms @angular/platform-browser @angular/platform-browser-dynamic core-js rxjs zone.js`);
     }
+    await libs.exec(`npm i -DE standard`);
 
     await libs.writeFile(`src/tsconfig.json`, srcTsconfig);
     await libs.writeFile(`src/${context.componentShortName}.less`, srcLess(context));
@@ -88,6 +89,8 @@ export async function runUIComponent(context: libs.Context) {
             revStatic: `rev-static --config demo/rev-static.config.js`,
             tslint: `tslint "src/**/*.ts" "src/**/*.tsx"`,
             stylelint: `stylelint "src/**/*.less"`,
+            standard: `standard "**/*.config.js"`,
+            fix: `standard --fix "**/*.config.js"`,
             build: [
                 "npm run cleanRev",
                 "npm run clean",
@@ -102,6 +105,7 @@ export async function runUIComponent(context: libs.Context) {
             lint: [
                 "npm run tslint",
                 "npm run stylelint",
+                "npm run standard",
             ].join(" && "),
         },
         dependencies: {
@@ -111,18 +115,18 @@ export async function runUIComponent(context: libs.Context) {
 }
 
 const demoRevStaticConfig = `module.exports = {
-    inputFiles: [
-        "demo/**/index.bundle.js",
-        "demo/*.bundle.css",
-        "demo/**/index.ejs.html",
-    ],
-    outputFiles: file => file.replace(".ejs", ""),
-    ejsOptions: {
-        rmWhitespace: true
-    },
-    sha: 256,
-    customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + "-" + md5String + extensionName,
-};
+  inputFiles: [
+    'demo/**/index.bundle.js',
+    'demo/*.bundle.css',
+    'demo/**/index.ejs.html'
+  ],
+  outputFiles: file => file.replace('.ejs', ''),
+  ejsOptions: {
+    rmWhitespace: true
+  },
+  sha: 256,
+  customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + '-' + md5String + extensionName
+}
 `;
 
 function srcVue(context: libs.Context) {
@@ -324,62 +328,108 @@ function srcLess(context: libs.Context) {
 }
 
 function demoWebpackConfig(hasAngularChoice: boolean) {
-    const angularExport = hasAngularChoice ? `
-    {
-        entry: "./demo/angular/index",
-        output: {
-            path: path.resolve(__dirname, "angular"),
-            filename: "index.bundle.js"
-        },
-        plugins,
-        resolve,
-    },` : "";
-    return `const webpack = require("webpack");
-const path = require("path");
+    return hasAngularChoice ? `const webpack = require('webpack')
+const path = require('path')
 
 const plugins = [
-    new webpack.DefinePlugin({
-        "process.env": {
-            "NODE_ENV": JSON.stringify("production")
-        }
-    }),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-        compress: {
-            warnings: false,
-        },
-        output: {
-            comments: false,
-        },
-    }),
-];
+  new webpack.DefinePlugin({
+    'process.env': {
+      'NODE_ENV': JSON.stringify('production')
+    }
+  }),
+  new webpack.NoEmitOnErrorsPlugin(),
+  new webpack.optimize.UglifyJsPlugin({
+    compress: {
+      warnings: false
+    },
+    output: {
+      comments: false
+    }
+  })
+]
 
 const resolve = {
-    alias: {
-        "vue$": "vue/dist/vue.min.js"
-    }
-};
+  alias: {
+    'vue$': 'vue/dist/vue.min.js'
+  }
+}
 
 module.exports = [
-    {
-        entry: "./demo/vue/index",
-        output: {
-            path: path.resolve(__dirname, "vue"),
-            filename: "index.bundle.js"
-        },
-        plugins,
-        resolve,
+  {
+    entry: './demo/vue/index',
+    output: {
+      path: path.resolve(__dirname, 'vue'),
+      filename: 'index.bundle.js'
     },
-    {
-        entry: "./demo/react/index",
-        output: {
-            path: path.resolve(__dirname, "react"),
-            filename: "index.bundle.js"
-        },
-        plugins,
-        resolve,
-    },${angularExport}
-];`;
+    plugins,
+    resolve
+  },
+  {
+    entry: './demo/react/index',
+    output: {
+      path: path.resolve(__dirname, 'react'),
+      filename: 'index.bundle.js'
+    },
+    plugins,
+    resolve
+  },
+  {
+    entry: './demo/angular/index',
+    output: {
+      path: path.resolve(__dirname, 'angular'),
+      filename: 'index.bundle.js'
+    },
+    plugins,
+    resolve
+  }
+]
+` : `const webpack = require('webpack')
+const path = require('path')
+
+const plugins = [
+  new webpack.DefinePlugin({
+    'process.env': {
+      'NODE_ENV': JSON.stringify('production')
+    }
+  }),
+  new webpack.NoEmitOnErrorsPlugin(),
+  new webpack.optimize.UglifyJsPlugin({
+    compress: {
+      warnings: false
+    },
+    output: {
+      comments: false
+    }
+  })
+]
+
+const resolve = {
+  alias: {
+    'vue$': 'vue/dist/vue.min.js'
+  }
+}
+
+module.exports = [
+  {
+    entry: './demo/vue/index',
+    output: {
+      path: path.resolve(__dirname, 'vue'),
+      filename: 'index.bundle.js'
+    },
+    plugins,
+    resolve
+  },
+  {
+    entry: './demo/react/index',
+    output: {
+      path: path.resolve(__dirname, 'react'),
+      filename: 'index.bundle.js'
+    },
+    plugins,
+    resolve
+  }
+]
+`;
 }
 
 function demoVueIndex(context: libs.Context) {
