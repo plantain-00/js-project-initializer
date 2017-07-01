@@ -107,7 +107,7 @@ export async function runUIComponent(context: libs.Context) {
             cleancssDemo: `cleancss -o demo/index.bundle.css dist/${context.componentShortName}.min.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css`,
             webpack: `webpack --config demo/webpack.config.js`,
             revStatic: `rev-static --config demo/rev-static.config.js`,
-            tslint: `tslint "src/**/*.ts" "src/**/*.tsx"`,
+            tslint: `tslint "src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts"`,
             stylelint: `stylelint "src/**/*.less"`,
             standard: `standard "**/*.config.js"`,
             fix: `standard --fix "**/*.config.js"`,

@@ -19,7 +19,7 @@ export async function runLibrary(context: libs.Context) {
     return {
         scripts: {
             tsc: `tsc`,
-            tslint: `tslint "*.ts"`,
+            tslint: `tslint "*.ts" "spec/*.ts"`,
             test: "tsc -p spec && jasmine",
             build: [
                 "npm run tsc",
