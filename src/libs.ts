@@ -148,6 +148,8 @@ src
 rev-static.config.js
 spec
 demo
+**/*.ts
+!**/*.d.ts
 `;
 
 export const stylelint = `{
