@@ -11,13 +11,11 @@ export async function runUIComponent(context: libs.Context) {
         ],
         choices: [
             "angular",
-            "jasmine + karma",
         ],
     });
     const options: string[] = answer.options;
 
     const hasAngularChoice = options.some(o => o === "angular");
-    const hasJasmineAndKarmaChoice = options.some(o => o === "jasmine + karma");
 
     await libs.mkdir("src");
     await libs.mkdir("demo");
@@ -26,9 +24,7 @@ export async function runUIComponent(context: libs.Context) {
     if (hasAngularChoice) {
         await libs.mkdir(`demo/angular`);
     }
-    if (hasJasmineAndKarmaChoice) {
-        await libs.mkdir(`spec`);
-    }
+    await libs.mkdir(`spec`);
 
     await libs.exec(`npm i -SE tslib`);
     await libs.exec(`npm i -DE github-fork-ribbon-css`);
@@ -45,9 +41,7 @@ export async function runUIComponent(context: libs.Context) {
         await libs.exec(`npm i -DE @angular/common @angular/compiler @angular/core @angular/forms @angular/platform-browser @angular/platform-browser-dynamic core-js rxjs zone.js`);
     }
     await libs.exec(`npm i -DE standard`);
-    if (hasJasmineAndKarmaChoice) {
-        await libs.exec(`npm i -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
-    }
+    await libs.exec(`npm i -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
 
     await libs.writeFile(`src/tsconfig.json`, srcTsconfig);
     await libs.writeFile(`src/${context.componentShortName}.less`, srcLess(context));
@@ -72,22 +66,16 @@ export async function runUIComponent(context: libs.Context) {
         await libs.writeFile(`demo/angular/index.ejs.html`, demoAngularIndexEjsHtml);
     }
 
-    if (hasJasmineAndKarmaChoice) {
-        await libs.writeFile(`spec/karma.config.js`, specKarmaConfigJs);
-        await libs.writeFile(`spec/tsconfig.json`, specTsconfig);
-        await libs.writeFile(`spec/webpack.config.js`, specWebpackConfigJs);
-        await libs.writeFile(`spec/indexSpec.ts`, specIndexSpecTs);
-    }
+    await libs.writeFile(`spec/karma.config.js`, specKarmaConfigJs);
+    await libs.writeFile(`spec/tsconfig.json`, specTsconfig);
+    await libs.writeFile(`spec/webpack.config.js`, specWebpackConfigJs);
+    await libs.writeFile(`spec/indexSpec.ts`, specIndexSpecTs);
 
     await libs.writeFile(".npmignore", libs.npmignore);
     await libs.prependFile("README.md", libs.readMeBadge(context));
     await libs.appendFile("README.md", readMeDocument(context, hasAngularChoice));
     await libs.writeFile(".stylelintrc", libs.stylelint);
-    if (hasJasmineAndKarmaChoice) {
-        await libs.writeFile(".travis.yml", travisYml);
-    } else {
-        await libs.writeFile(".travis.yml", libs.travisYml);
-    }
+    await libs.writeFile(".travis.yml", travisYml);
 
     const commands = [
         `file2variable-cli src/vue.template.html -o src/vue-variables.ts --html-minify`,
@@ -111,7 +99,7 @@ export async function runUIComponent(context: libs.Context) {
             stylelint: `stylelint "src/**/*.less"`,
             standard: `standard "**/*.config.js"`,
             fix: `standard --fix "**/*.config.js"`,
-            test: "tsc -p src && tsc -p spec && karma start spec/karma.config.js",
+            test: "tsc -p spec && karma start spec/karma.config.js",
             build: [
                 "npm run cleanRev",
                 "npm run clean",
@@ -659,10 +647,10 @@ module.exports = {
 }
 `;
 
-const specIndexSpecTs = `describe("todo", () => {
-    it("should be true", () => {
-        expect(true).toEqual(true);
-    });
+const specIndexSpecTs = `import "../dist/common";
+
+it("", () => {
+    // expect(true).toEqual(true);
 });
 `;
 

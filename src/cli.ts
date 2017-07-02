@@ -7,6 +7,9 @@ export async function runCLI(context: libs.Context) {
     await libs.mkdir("bin");
 
     await libs.exec(`npm i -DE @types/node`);
+    await libs.exec(`npm i -DE jasmine @types/jasmine`);
+
+    await libs.exec("./node_modules/.bin/jasmine init");
 
     await libs.writeFile(`src/index.ts`, source);
     await libs.writeFile(`src/tsconfig.json`, tsconfig);
@@ -18,11 +21,15 @@ export async function runCLI(context: libs.Context) {
 
     await libs.writeFile(`bin/${context.repositoryName}`, binConfig);
 
+    await libs.writeFile("spec/tsconfig.json", libs.specTsconfig);
+    await libs.writeFile("spec/indexSpec.ts", libs.specIndexSpecTs);
+
     return {
         scripts: {
             clean: `rimraf dist/`,
             tsc: `tsc -p src/`,
             tslint: `tslint "src/**/*.ts"`,
+            test: "tsc -p spec && jasmine",
             build: [
                 "npm run clean",
                 "npm run tsc",

@@ -176,3 +176,26 @@ addons:
     packages:
       - g++-4.8
 `;
+
+export const specTsconfig = `{
+    "compilerOptions": {
+        "target": "es5",
+        "declaration": false,
+
+        "module": "commonjs",
+        "strict": true,
+        "noUnusedLocals": true,
+        "noImplicitReturns": true,
+        "skipLibCheck": true,
+        "importHelpers": true,
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "downlevelIteration": true
+    }
+}`;
+
+export const specIndexSpecTs = `it("", () => {
+    // expect(true).toEqual(true);
+});
+`;

@@ -3,8 +3,8 @@ import * as libs from "./libs";
 export async function runLibrary(context: libs.Context) {
     context.isNpmPackage = true;
 
-    await libs.exec(`npm i -DE jasmine`);
-    await libs.exec(`npm i -DE @types/jasmine`);
+    await libs.exec(`npm i -DE jasmine @types/jasmine`);
+
     await libs.exec("./node_modules/.bin/jasmine init");
 
     await libs.writeFile(`index.ts`, index(context));
@@ -14,7 +14,8 @@ export async function runLibrary(context: libs.Context) {
     await libs.appendFile("README.md", readMeDocument(context));
     await libs.writeFile(".travis.yml", libs.travisYml);
 
-    await libs.writeFile("spec/tsconfig.json", specTsconfig);
+    await libs.writeFile("spec/tsconfig.json", libs.specTsconfig);
+    await libs.writeFile("spec/indexSpec.ts", libs.specIndexSpecTs);
 
     return {
         scripts: {
@@ -57,21 +58,3 @@ function index(context: libs.Context) {
 }
 `;
 }
-
-const specTsconfig = `{
-    "compilerOptions": {
-        "target": "es5",
-        "declaration": false,
-
-        "module": "commonjs",
-        "strict": true,
-        "noUnusedLocals": true,
-        "noImplicitReturns": true,
-        "skipLibCheck": true,
-        "importHelpers": true,
-        "jsx": "react",
-        "experimentalDecorators": true,
-        "allowSyntheticDefaultImports": true,
-        "downlevelIteration": true
-    }
-}`;

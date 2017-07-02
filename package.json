@@ -9,6 +9,7 @@
     "clean": "rimraf dist/",
     "build": "npm run clean && npm run tsc",
     "lint": "npm run tslint",
+    "test": "tsc -p spec && jasmine",
     "test:ui-component": "cd tests/ui-component/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
     "test:library": "cd tests/library/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
     "test:backend": "cd tests/backend/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
@@ -37,8 +38,10 @@
   },
   "devDependencies": {
     "@types/inquirer": "0.0.35",
+    "@types/jasmine": "2.5.53",
     "@types/mkdirp": "0.3.29",
     "@types/uppercamelcase": "0.0.1",
+    "jasmine": "2.6.0",
     "rimraf": "2.6.1",
     "tslint": "5.4.3",
     "typescript": "2.4.1"
