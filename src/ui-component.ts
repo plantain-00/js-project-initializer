@@ -78,10 +78,10 @@ export async function runUIComponent(context: libs.Context) {
     await libs.writeFile(".travis.yml", travisYml);
 
     const commands = [
-        `file2variable-cli src/vue.template.html -o src/vue-variables.ts --html-minify`,
+        `file2variable-cli src/vue.template.html -o src/vue-variables.ts --html-minify --base src`,
     ];
     if (hasAngularChoice) {
-        commands.push(`file2variable-cli src/angular.template.html -o src/angular-variables.ts --html-minify`);
+        commands.push(`file2variable-cli src/angular.template.html -o src/angular-variables.ts --html-minify --base src`);
     }
 
     return {
@@ -134,7 +134,8 @@ const demoRevStaticConfig = `module.exports = {
     rmWhitespace: true
   },
   sha: 256,
-  customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + '-' + md5String + extensionName
+  customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + '-' + md5String + extensionName,
+  base: 'demo'
 }
 `;
 
@@ -142,15 +143,17 @@ function srcVue(context: libs.Context) {
     return `import Vue from "vue";
 import Component from "vue-class-component";
 import * as common from "./common";
-import { srcVueTemplateHtml } from "./vue-variables";
+import { vueTemplateHtml } from "./vue-variables";
 
 @Component({
-    template: srcVueTemplateHtml,
+    template: vueTemplateHtml,
     props: ["data"],
 })
-export class ${context.componentTypeName} extends Vue {
+class ${context.componentTypeName} extends Vue {
     data: common.${context.componentTypeName}Data;
 }
+
+Vue.component("${context.componentShortName}", ${context.componentTypeName});
 `;
 }
 
@@ -174,11 +177,11 @@ export class ${context.componentTypeName} extends React.Component<{
 function srcAngular(context: libs.Context) {
     return `import { Component, Input } from "@angular/core";
 import * as common from "./common";
-import { srcAngularTemplateHtml } from "./angular-variables";
+import { angularTemplateHtml } from "./angular-variables";
 
 @Component({
     selector: "${context.componentShortName}",
-    template: srcAngularTemplateHtml,
+    template: angularTemplateHtml,
 })
 export class ${context.componentTypeName}Component {
     @Input()
@@ -240,9 +243,7 @@ the online demo: https://${context.author}.github.io/${context.repositoryName}/d
 \`npm i vue vue-class-component\`
 
 \`\`\`ts
-import { ${context.componentTypeName} } from "${context.repositoryName}/dist/vue";
-
-Vue.component("${context.componentShortName}", ${context.componentTypeName});
+import "${context.repositoryName}/dist/vue";
 \`\`\`
 
 \`\`\`html
@@ -462,8 +463,7 @@ module.exports = [
 function demoVueIndex(context: libs.Context) {
     return `import Vue from "vue";
 import Component from "vue-class-component";
-import { ${context.componentTypeName} } from "../../dist/vue";
-Vue.component("${context.componentShortName}", ${context.componentTypeName});
+import "../../dist/vue";
 import * as common from "../../dist/common";
 
 @Component({
@@ -490,9 +490,9 @@ const demoVueIndexEjsHtml = `<!DOCTYPE html>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="../<%=demoIndexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.demoIndexBundleCss %>" />
+<link rel="stylesheet" href="../<%=indexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.indexBundleCss %>" />
 <div id="container"></div>
-<script src="./<%=demoVueIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.demoVueIndexBundleJs %>"></script>
+<script src="./<%=vueIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.vueIndexBundleJs %>"></script>
 `;
 
 function demoReactIndex(context: libs.Context) {
@@ -525,9 +525,9 @@ const demoReactIndexEjsHtml = `<!DOCTYPE html>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="../<%=demoIndexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.demoIndexBundleCss %>" />
+<link rel="stylesheet" href="../<%=indexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.indexBundleCss %>" />
 <div id="container"></div>
-<script src="./<%=demoReactIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.demoReactIndexBundleJs %>"></script>
+<script src="./<%=reactIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.reactIndexBundleJs %>"></script>
 `;
 
 function demoAngularIndex(context: libs.Context) {
@@ -580,9 +580,9 @@ const demoAngularIndexEjsHtml = `<!DOCTYPE html>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="../<%=demoIndexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.demoIndexBundleCss %>" />
+<link rel="stylesheet" href="../<%=indexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.indexBundleCss %>" />
 <app></app>
-<script src="./<%=demoAngularIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.demoAngularIndexBundleJs %>"></script>
+<script src="./<%=angularIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.angularIndexBundleJs %>"></script>
 `;
 
 const specKarmaConfigJs = `const webpackConfig = require('./webpack.config.js')

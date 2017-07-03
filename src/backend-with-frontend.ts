@@ -35,7 +35,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
     return {
         scripts: {
             cleanRev: `rimraf static/**/index.bundle-*.js static/*.bundle-*.css`,
-            file2variable: `file2variable-cli static/*.template.html -o static/variables.ts --html-minify`,
+            file2variable: `file2variable-cli static/*.template.html -o static/variables.ts --html-minify --base static`,
             tsc: `tsc -p src/ && tsc -p static/`,
             lessc: `lessc static/index.less > static/index.css`,
             cleancss: `cleancss -o static/index.bundle.css static/index.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css`,
@@ -148,7 +148,8 @@ const staticRevStaticConfig = `module.exports = {
     rmWhitespace: true
   },
   sha: 256,
-  customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + '-' + md5String + extensionName
+  customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + '-' + md5String + extensionName,
+  base: 'static'
 }
 `;
 
@@ -158,20 +159,20 @@ function staticIndexEjsHtml(context: libs.Context) {
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="<%=staticIndexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.staticIndexBundleCss %>" />
+<link rel="stylesheet" href="<%=indexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.indexBundleCss %>" />
 <a class="github-fork-ribbon right-bottom" href="https://github.com/${context.author}/${context.repositoryName}" title="Fork me on GitHub" target="_blank">Fork me on GitHub</a>
 <div id="container"></div>
-<script src="<%=staticVendorBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.staticVendorBundleJs %>"></script>
-<script src="<%=staticIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.staticIndexBundleJs %>"></script>
+<script src="<%=vendorBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.vendorBundleJs %>"></script>
+<script src="<%=indexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.indexBundleJs %>"></script>
 `;
 }
 
 const staticIndex = `import Vue from "vue";
 import Component from "vue-class-component";
-import { staticIndexTemplateHtml } from "./variables";
+import { indexTemplateHtml } from "./variables";
 
 @Component({
-    template: staticIndexTemplateHtml,
+    template: indexTemplateHtml,
 })
 class App extends Vue {
 }
