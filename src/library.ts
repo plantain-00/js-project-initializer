@@ -12,9 +12,9 @@ export async function runLibrary(context: libs.Context) {
     await libs.writeFile(".npmignore", libs.npmignore);
     await libs.prependFile("README.md", libs.readMeBadge(context));
     await libs.appendFile("README.md", readMeDocument(context));
-    await libs.writeFile(".travis.yml", libs.travisYml);
+    await libs.writeFile(".travis.yml", libs.getTravisYml(context));
 
-    await libs.writeFile("spec/tsconfig.json", libs.specTsconfig);
+    await libs.writeFile("spec/tsconfig.json", specTsconfig);
     await libs.writeFile("spec/indexSpec.ts", libs.specIndexSpecTs);
 
     return {
@@ -58,3 +58,21 @@ function index(context: libs.Context) {
 }
 `;
 }
+
+const specTsconfig = `{
+    "compilerOptions": {
+        "target": "es5",
+        "declaration": false,
+
+        "module": "commonjs",
+        "strict": true,
+        "noUnusedLocals": true,
+        "noImplicitReturns": true,
+        "skipLibCheck": true,
+        "importHelpers": true,
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "downlevelIteration": true
+    }
+}`;

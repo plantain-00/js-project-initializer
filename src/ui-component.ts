@@ -2,6 +2,7 @@ import * as libs from "./libs";
 
 export async function runUIComponent(context: libs.Context) {
     context.isNpmPackage = true;
+    context.hasKarma = true;
 
     const answer = await libs.inquirer.prompt({
         type: "checkbox",
@@ -66,16 +67,16 @@ export async function runUIComponent(context: libs.Context) {
         await libs.writeFile(`demo/angular/index.ejs.html`, demoAngularIndexEjsHtml);
     }
 
-    await libs.writeFile(`spec/karma.config.js`, specKarmaConfigJs);
+    await libs.writeFile(`spec/karma.config.js`, libs.specKarmaConfigJs);
     await libs.writeFile(`spec/tsconfig.json`, specTsconfig);
-    await libs.writeFile(`spec/webpack.config.js`, specWebpackConfigJs);
+    await libs.writeFile(`spec/webpack.config.js`, libs.specWebpackConfigJs);
     await libs.writeFile(`spec/indexSpec.ts`, specIndexSpecTs);
 
     await libs.writeFile(".npmignore", libs.npmignore);
     await libs.prependFile("README.md", libs.readMeBadge(context));
     await libs.appendFile("README.md", readMeDocument(context, hasAngularChoice));
     await libs.writeFile(".stylelintrc", libs.stylelint);
-    await libs.writeFile(".travis.yml", travisYml);
+    await libs.writeFile(".travis.yml", libs.getTravisYml(context));
 
     const commands = [
         `file2variable-cli src/vue.template.html -o src/vue-variables.ts --html-minify --base src`,
@@ -585,99 +586,9 @@ const demoAngularIndexEjsHtml = `<!DOCTYPE html>
 <script src="./<%=angularIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.angularIndexBundleJs %>"></script>
 `;
 
-const specKarmaConfigJs = `const webpackConfig = require('./webpack.config.js')
-
-module.exports = function (karma) {
-  const config = {
-    basePath: '',
-    frameworks: ['jasmine'],
-    files: [
-      '**/*Spec.js'
-    ],
-    reporters: ['progress'],
-    port: 9876,
-    colors: true,
-    logLevel: karma.LOG_INFO,
-    autoWatch: true,
-    browsers: ['Firefox'],
-    singleRun: true,
-    concurrency: Infinity,
-    webpack: webpackConfig,
-    preprocessors: {
-      '**/*Spec.js': ['webpack']
-    }
-  }
-
-  if (!process.env.TRAVIS) {
-    config.browsers.push('Chrome')
-  }
-
-  karma.set(config)
-}
-`;
-
-const specWebpackConfigJs = `const webpack = require('webpack')
-
-const plugins = [
-  new webpack.DefinePlugin({
-    'process.env': {
-      'NODE_ENV': JSON.stringify('production')
-    }
-  }),
-  new webpack.NoEmitOnErrorsPlugin(),
-  new webpack.optimize.UglifyJsPlugin({
-    compress: {
-      warnings: false
-    },
-    output: {
-      comments: false
-    }
-  })
-]
-
-const resolve = {
-  alias: {
-    'vue$': 'vue/dist/vue.js'
-  }
-}
-
-module.exports = {
-  plugins,
-  resolve
-}
-`;
-
 const specIndexSpecTs = `import "../dist/common";
 
 it("", () => {
     // expect(true).toEqual(true);
 });
-`;
-
-const travisYml = `language: node_js
-node_js:
-  - "8"
-before_install:
-  - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-before_script:
-  - npm i
-script:
-  - npm run build
-  - npm run lint
-  - npm run test
-env:
-  - CXX=g++-4.8
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8
-  firefox: latest
-branches:
-  except:
-    - gh-pages
-    - release
 `;

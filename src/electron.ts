@@ -1,7 +1,10 @@
 import * as libs from "./libs";
 
 export async function runElectron(context: libs.Context) {
+    context.hasKarma = true;
+
     await libs.mkdir("scripts");
+    await libs.mkdir("static_spec");
 
     await libs.exec(`npm i -SE electron`);
     await libs.exec(`npm i -DE electron-packager`);
@@ -14,19 +17,30 @@ export async function runElectron(context: libs.Context) {
     await libs.exec(`npm i -DE file2variable-cli`);
     await libs.exec(`npm i -DE webpack`);
     await libs.exec(`npm i -DE standard`);
+    await libs.exec(`npm i -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
+
+    await libs.exec("./node_modules/.bin/jasmine init");
 
     await libs.writeFile(`main.ts`, main);
     await libs.writeFile(`index.html`, indexHtml);
     await libs.writeFile(`tsconfig.json`, tsconfig);
     await libs.prependFile("README.md", libs.readMeBadge(context));
     await libs.writeFile(".stylelintrc", libs.stylelint);
-    await libs.writeFile(".travis.yml", libs.travisYml);
+    await libs.writeFile(".travis.yml", libs.getTravisYml(context));
 
     await libs.writeFile("scripts/index.ts", scriptsIndex);
     await libs.writeFile(`scripts/index.less`, scriptsIndexLess);
     await libs.writeFile("scripts/tsconfig.json", scriptsTsconfig);
     await libs.writeFile(`scripts/index.template.html`, scriptsIndexTemplateHtml);
     await libs.writeFile(`scripts/webpack.config.js`, scriptsWebpackConfig);
+
+    await libs.writeFile("spec/tsconfig.json", specTsconfig);
+    await libs.writeFile("spec/indexSpec.ts", libs.specIndexSpecTs);
+
+    await libs.writeFile(`static_spec/karma.config.js`, libs.specKarmaConfigJs);
+    await libs.writeFile(`static_spec/tsconfig.json`, staticSpecTsconfig);
+    await libs.writeFile(`static_spec/webpack.config.js`, libs.specWebpackConfigJs);
+    await libs.writeFile(`static_spec/indexSpec.ts`, libs.specIndexSpecTs);
 
     return {
         scripts: {
@@ -42,6 +56,7 @@ export async function runElectron(context: libs.Context) {
             osx: "rimraf dist/news-darwin-x64 && electron-packager . 'news' --out=dist --arch=x64 --version=1.2.1 --app-version='1.0.8' --platform=darwin --ignore='dist/'",
             win: "rimraf dist/news-win32-x64 && electron-packager . 'news' --out=dist --arch=x64 --version=1.2.1 --app-version='1.0.8' --platform=win32 --ignore='dist/'",
             start: "electron .",
+            test: "tsc -p spec && jasmine && tsc -p static_spec && karma start static_spec/karma.config.js",
             build: [
                 "npm run file2variable",
                 "npm run tsc",
@@ -190,3 +205,33 @@ module.exports = {
   }
 }
 `;
+
+const staticSpecTsconfig = `{
+    "compilerOptions": {
+        "target": "es5",
+
+        "module": "esnext",
+        "moduleResolution": "node",
+        "strict": true,
+        "noUnusedLocals": true,
+        "noImplicitReturns": true,
+        "skipLibCheck": true,
+        "importHelpers": true,
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "downlevelIteration": true
+    }
+}`;
+
+const specTsconfig = `{
+    "compilerOptions": {
+        "target": "esnext",
+
+        "module": "commonjs",
+        "strict": true,
+        "noUnusedLocals": true,
+        "noImplicitReturns": true,
+        "skipLibCheck": true
+    }
+}`;

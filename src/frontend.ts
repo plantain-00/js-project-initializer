@@ -1,6 +1,10 @@
 import * as libs from "./libs";
 
 export async function runFrontend(context: libs.Context) {
+    context.hasKarma = true;
+
+    await libs.mkdir(`spec`);
+
     await libs.exec(`npm i -DE tslib`);
     await libs.exec(`npm i -DE github-fork-ribbon-css`);
     await libs.exec(`npm i -DE less`);
@@ -12,6 +16,7 @@ export async function runFrontend(context: libs.Context) {
     await libs.exec(`npm i -DE rev-static`);
     await libs.exec(`npm i -DE sw-precache uglify-js@2`);
     await libs.exec(`npm i -DE standard`);
+    await libs.exec(`npm i -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
 
     await libs.writeFile(`index.ts`, index);
     await libs.writeFile(`index.template.html`, indexTemplateHtml);
@@ -24,7 +29,12 @@ export async function runFrontend(context: libs.Context) {
     await libs.writeFile(`rev-static.config.js`, revStaticConfig);
     await libs.writeFile("index.ejs.html", indexEjsHtml(context));
     await libs.writeFile("sw-precache.config.js", swPrecacheConfig);
-    await libs.writeFile(".travis.yml", libs.travisYml);
+    await libs.writeFile(".travis.yml", libs.getTravisYml(context));
+
+    await libs.writeFile(`spec/karma.config.js`, libs.specKarmaConfigJs);
+    await libs.writeFile(`spec/tsconfig.json`, specTsconfig);
+    await libs.writeFile(`spec/webpack.config.js`, libs.specWebpackConfigJs);
+    await libs.writeFile(`spec/indexSpec.ts`, libs.specIndexSpecTs);
 
     return {
         scripts: {
@@ -40,6 +50,7 @@ export async function runFrontend(context: libs.Context) {
             stylelint: `stylelint "**/*.less"`,
             standard: `standard "**/*.config.js"`,
             fix: `standard --fix "**/*.config.js"`,
+            test: "tsc -p spec && karma start spec/karma.config.js",
             build: [
                 "npm run cleanRev",
                 "npm run file2variable",
@@ -190,3 +201,21 @@ const swPrecacheConfig = `module.exports = {
 const vendor = `import "vue";
 import "vue-class-component";
 `;
+
+const specTsconfig = `{
+    "compilerOptions": {
+        "target": "es5",
+
+        "module": "esnext",
+        "moduleResolution": "node",
+        "strict": true,
+        "noUnusedLocals": true,
+        "noImplicitReturns": true,
+        "skipLibCheck": true,
+        "importHelpers": true,
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "downlevelIteration": true
+    }
+}`;

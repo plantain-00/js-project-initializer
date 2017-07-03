@@ -123,6 +123,7 @@ export type Context = {
     componentTypeName: string;
     author: string;
     isNpmPackage?: boolean;
+    hasKarma?: boolean;
 };
 
 export function readMeBadge(context: Context) {
@@ -156,7 +157,34 @@ export const stylelint = `{
   "extends": "stylelint-config-standard"
 }`;
 
-export const travisYml = `language: node_js
+export function getTravisYml(context: Context) {
+    return context.hasKarma ? `language: node_js
+node_js:
+  - "8"
+before_install:
+  - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+before_script:
+  - npm i
+script:
+  - npm run build
+  - npm run lint
+  - npm run test
+env:
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
+  firefox: latest
+branches:
+  except:
+    - gh-pages
+    - release
+` : `language: node_js
 node_js:
   - "8"
 before_install:
@@ -176,26 +204,71 @@ addons:
     packages:
       - g++-4.8
 `;
-
-export const specTsconfig = `{
-    "compilerOptions": {
-        "target": "es5",
-        "declaration": false,
-
-        "module": "commonjs",
-        "strict": true,
-        "noUnusedLocals": true,
-        "noImplicitReturns": true,
-        "skipLibCheck": true,
-        "importHelpers": true,
-        "jsx": "react",
-        "experimentalDecorators": true,
-        "allowSyntheticDefaultImports": true,
-        "downlevelIteration": true
-    }
-}`;
+}
 
 export const specIndexSpecTs = `it("", () => {
     // expect(true).toEqual(true);
 });
+`;
+
+export const specKarmaConfigJs = `const webpackConfig = require('./webpack.config.js')
+
+module.exports = function (karma) {
+  const config = {
+    basePath: '',
+    frameworks: ['jasmine'],
+    files: [
+      '**/*Spec.js'
+    ],
+    reporters: ['progress'],
+    port: 9876,
+    colors: true,
+    logLevel: karma.LOG_INFO,
+    autoWatch: true,
+    browsers: ['Firefox'],
+    singleRun: true,
+    concurrency: Infinity,
+    webpack: webpackConfig,
+    preprocessors: {
+      '**/*Spec.js': ['webpack']
+    }
+  }
+
+  if (!process.env.TRAVIS) {
+    config.browsers.push('Chrome')
+  }
+
+  karma.set(config)
+}
+`;
+
+export const specWebpackConfigJs = `const webpack = require('webpack')
+
+const plugins = [
+  new webpack.DefinePlugin({
+    'process.env': {
+      'NODE_ENV': JSON.stringify('production')
+    }
+  }),
+  new webpack.NoEmitOnErrorsPlugin(),
+  new webpack.optimize.UglifyJsPlugin({
+    compress: {
+      warnings: false
+    },
+    output: {
+      comments: false
+    }
+  })
+]
+
+const resolve = {
+  alias: {
+    'vue$': 'vue/dist/vue.js'
+  }
+}
+
+module.exports = {
+  plugins,
+  resolve
+}
 `;

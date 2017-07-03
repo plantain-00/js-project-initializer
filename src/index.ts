@@ -135,6 +135,9 @@ dist
 !**/*-*.css
 service-worker.js
 !*.index.bundle.js
+#**/*-*.png
+#index.html
+*.data
 `;
 
 const vscodeSetting = `{

@@ -1,8 +1,11 @@
 import * as libs from "./libs";
 
 export async function runBackendWithFrontend(context: libs.Context) {
+    context.hasKarma = true;
+
     await libs.mkdir("src");
     await libs.mkdir("static");
+    await libs.mkdir("static_spec");
 
     await libs.exec(`npm i -DE @types/node`);
     await libs.exec(`npm i -DE tslib`);
@@ -15,6 +18,9 @@ export async function runBackendWithFrontend(context: libs.Context) {
     await libs.exec(`npm i -DE webpack`);
     await libs.exec(`npm i -DE rev-static`);
     await libs.exec(`npm i -DE standard`);
+    await libs.exec(`npm i -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
+
+    await libs.exec("./node_modules/.bin/jasmine init");
 
     await libs.writeFile(`src/index.ts`, srcIndex);
     await libs.writeFile(`src/tsconfig.json`, srcTsconfig);
@@ -30,7 +36,15 @@ export async function runBackendWithFrontend(context: libs.Context) {
 
     await libs.prependFile("README.md", libs.readMeBadge(context));
     await libs.writeFile(".stylelintrc", libs.stylelint);
-    await libs.writeFile(".travis.yml", libs.travisYml);
+    await libs.writeFile(".travis.yml", libs.getTravisYml(context));
+
+    await libs.writeFile("spec/tsconfig.json", specTsconfig);
+    await libs.writeFile("spec/indexSpec.ts", libs.specIndexSpecTs);
+
+    await libs.writeFile(`static_spec/karma.config.js`, libs.specKarmaConfigJs);
+    await libs.writeFile(`static_spec/tsconfig.json`, staticSpecTsconfig);
+    await libs.writeFile(`static_spec/webpack.config.js`, libs.specWebpackConfigJs);
+    await libs.writeFile(`static_spec/indexSpec.ts`, libs.specIndexSpecTs);
 
     return {
         scripts: {
@@ -45,6 +59,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
             stylelint: `stylelint "static/**/*.less"`,
             standard: `standard "**/*.config.js"`,
             fix: `standard --fix "**/*.config.js"`,
+            test: "tsc -p spec && jasmine && tsc -p static_spec && karma start static_spec/karma.config.js",
             build: [
                 "npm run cleanRev",
                 "npm run file2variable",
@@ -205,3 +220,33 @@ const staticTsconfig = `{
 
 const staticIndexTemplateHtml = `<div>
 </div>`;
+
+const staticSpecTsconfig = `{
+    "compilerOptions": {
+        "target": "es5",
+
+        "module": "esnext",
+        "moduleResolution": "node",
+        "strict": true,
+        "noUnusedLocals": true,
+        "noImplicitReturns": true,
+        "skipLibCheck": true,
+        "importHelpers": true,
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "downlevelIteration": true
+    }
+}`;
+
+const specTsconfig = `{
+    "compilerOptions": {
+        "target": "esnext",
+
+        "module": "commonjs",
+        "strict": true,
+        "noUnusedLocals": true,
+        "noImplicitReturns": true,
+        "skipLibCheck": true
+    }
+}`;
