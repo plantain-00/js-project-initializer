@@ -143,6 +143,7 @@ function srcVue(context: libs.Context) {
     return `import Vue from "vue";
 import Component from "vue-class-component";
 import * as common from "./common";
+export * from "./common";
 import { vueTemplateHtml } from "./vue-variables";
 
 @Component({
@@ -160,6 +161,7 @@ Vue.component("${context.componentShortName}", ${context.componentTypeName});
 function srcReact(context: libs.Context) {
     return `import * as React from "react";
 import * as common from "./common";
+export * from "./common";
 
 export class ${context.componentTypeName} extends React.Component<{
     data: common.${context.componentTypeName}Data;
@@ -177,6 +179,7 @@ export class ${context.componentTypeName} extends React.Component<{
 function srcAngular(context: libs.Context) {
     return `import { Component, Input } from "@angular/core";
 import * as common from "./common";
+export * from "./common";
 import { angularTemplateHtml } from "./angular-variables";
 
 @Component({
@@ -464,7 +467,7 @@ function demoVueIndex(context: libs.Context) {
     return `import Vue from "vue";
 import Component from "vue-class-component";
 import "../../dist/vue";
-import * as common from "../../dist/common";
+import { ${context.componentTypeName}Data } from "../../dist/vue";
 
 @Component({
     template: \`
@@ -477,7 +480,7 @@ import * as common from "../../dist/common";
     \`,
 })
 class App extends Vue {
-    data: common.${context.componentTypeName}Data;
+    data: ${context.componentTypeName}Data;
 }
 
 // tslint:disable-next-line:no-unused-expression
@@ -498,11 +501,10 @@ const demoVueIndexEjsHtml = `<!DOCTYPE html>
 function demoReactIndex(context: libs.Context) {
     return `import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { ${context.componentTypeName} } from "../../dist/react";
-import * as common from "../../dist/common";
+import { ${context.componentTypeName}, ${context.componentTypeName}Data } from "../../dist/react";
 
 class Main extends React.Component<{}, {}> {
-    data: common.${context.componentTypeName}Data;
+    data: ${context.componentTypeName}Data;
 
     render() {
         return (
@@ -542,8 +544,6 @@ enableProdMode();
 
 import { Component } from "@angular/core";
 
-import * as common from "../../dist/common";
-
 @Component({
     selector: "app",
     template: \`
@@ -556,13 +556,13 @@ import * as common from "../../dist/common";
     \`,
 })
 export class MainComponent {
-    data: common.${context.componentTypeName}Data;
+    data: ${context.componentTypeName}Data;
 }
 
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
-import { ${context.componentTypeName}Component } from "../../dist/angular";
+import { ${context.componentTypeName}Component, ${context.componentTypeName}Data } from "../../dist/angular";
 
 @NgModule({
     imports: [BrowserModule, FormsModule],
