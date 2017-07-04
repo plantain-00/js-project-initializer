@@ -96,7 +96,7 @@ export async function runUIComponent(context: libs.Context) {
             cleancssDemo: `cleancss -o demo/index.bundle.css dist/${context.componentShortName}.min.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css`,
             webpack: `webpack --config demo/webpack.config.js`,
             revStatic: `rev-static --config demo/rev-static.config.js`,
-            tslint: `tslint "src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts"`,
+            tslint: `tslint "src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx"`,
             stylelint: `stylelint "src/**/*.less"`,
             standard: `standard "**/*.config.js"`,
             fix: `standard --fix "**/*.config.js"`,
@@ -313,6 +313,12 @@ const srcTsconfig = `{
 const demoTsconfig = `{
     "compilerOptions": {
         "target": "es5",
+
+        "lib": [
+            "dom",
+            "es5",
+            "es2015.promise"
+        ],
 
         "module": "esnext",
         "moduleResolution": "node",
