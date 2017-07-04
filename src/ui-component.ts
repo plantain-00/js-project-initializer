@@ -136,7 +136,8 @@ const demoRevStaticConfig = `module.exports = {
   },
   sha: 256,
   customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + '-' + md5String + extensionName,
-  base: 'demo'
+  base: 'demo',
+  fileSize: 'demo/file-size.json'
 }
 `;
 

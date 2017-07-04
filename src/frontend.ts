@@ -169,7 +169,8 @@ const revStaticConfig = `module.exports = {
     rmWhitespace: true
   },
   sha: 256,
-  customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + '-' + md5String + extensionName
+  customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + '-' + md5String + extensionName,
+  fileSize: 'file-size.json'
 }
 `;
 
