@@ -6,7 +6,9 @@ export async function runCLI(context: libs.Context) {
     await libs.mkdir("src");
     await libs.mkdir("bin");
 
+    await libs.exec(`npm i -SE exit`);
     await libs.exec(`npm i -DE @types/node`);
+    await libs.exec(`npm i -DE @types/exit`);
     await libs.exec(`npm i -DE jasmine @types/jasmine`);
 
     await libs.exec("./node_modules/.bin/jasmine init");
@@ -71,7 +73,8 @@ const tsconfig = `{
     }
 }`;
 
-const source = `function printInConsole(message: any) {
+const source = `// import * as exit from "exit";
+function printInConsole(message: any) {
     // tslint:disable-next-line:no-console
     console.log(message);
 }
@@ -80,9 +83,12 @@ async function executeCommandLine() {
     // todo
 }
 
-executeCommandLine().catch(error => {
+try {
+    executeCommandLine();
+} catch (error) {
     printInConsole(error);
-});
+    // exit(1);
+}
 `;
 
 const specTsconfig = `{
