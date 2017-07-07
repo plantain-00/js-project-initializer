@@ -87,7 +87,7 @@ export async function runUIComponent(context: libs.Context) {
 
     return {
         scripts: {
-            cleanRev: `rimraf demo/**/index.bundle-*.js demo/*.bundle-*.css`,
+            cleanRev: `rimraf demo/**/*.bundle-*.js demo/*.bundle-*.css`,
             clean: `rimraf dist/`,
             file2variable: commands.join(" && "),
             tsc: `tsc -p src/ && tsc -p demo/`,
@@ -126,9 +126,14 @@ export async function runUIComponent(context: libs.Context) {
 
 const demoRevStaticConfig = `module.exports = {
   inputFiles: [
-    'demo/**/index.bundle.js',
+    'demo/**/index.bundle-*.js',
+    'demo/**/*.index.bundle-*.js',
     'demo/*.bundle.css',
     'demo/**/index.ejs.html'
+  ],
+  revisedFiles: [
+    'demo/**/index.bundle-*.js',
+    'demo/**/*.index.bundle-*.js'
   ],
   outputFiles: file => file.replace('.ejs', ''),
   ejsOptions: {
@@ -398,7 +403,7 @@ module.exports = [
     entry: './demo/vue/index',
     output: {
       path: path.resolve(__dirname, 'vue'),
-      filename: 'index.bundle.js'
+      filename: 'index.bundle-[hash].js'
     },
     plugins,
     resolve
@@ -407,7 +412,7 @@ module.exports = [
     entry: './demo/react/index',
     output: {
       path: path.resolve(__dirname, 'react'),
-      filename: 'index.bundle.js'
+      filename: 'index.bundle-[hash].js'
     },
     plugins,
     resolve
@@ -416,7 +421,7 @@ module.exports = [
     entry: './demo/angular/index',
     output: {
       path: path.resolve(__dirname, 'angular'),
-      filename: 'index.bundle.js'
+      filename: 'index.bundle-[hash].js'
     },
     plugins,
     resolve
@@ -453,7 +458,7 @@ module.exports = [
     entry: './demo/vue/index',
     output: {
       path: path.resolve(__dirname, 'vue'),
-      filename: 'index.bundle.js'
+      filename: 'index.bundle-[hash].js'
     },
     plugins,
     resolve
@@ -462,7 +467,7 @@ module.exports = [
     entry: './demo/react/index',
     output: {
       path: path.resolve(__dirname, 'react'),
-      filename: 'index.bundle.js'
+      filename: 'index.bundle-[hash].js'
     },
     plugins,
     resolve

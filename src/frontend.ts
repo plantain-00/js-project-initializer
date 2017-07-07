@@ -150,7 +150,7 @@ module.exports = {
   },
   output: {
     path: __dirname,
-    filename: '[name].bundle.js'
+    filename: '[name].bundle-[hash].js'
   },
   plugins,
   resolve
@@ -159,10 +159,12 @@ module.exports = {
 
 const revStaticConfig = `module.exports = {
   inputFiles: [
-    'index.bundle.js',
-    'vendor.bundle.js',
-    'index.bundle.css',
-    'index.ejs.html'
+    '*.bundle-*.js',
+    '*.bundle.css',
+    '*.ejs.html'
+  ],
+  revisedFiles: [
+    '*.bundle-*.js'
   ],
   outputFiles: file => file.replace('.ejs', ''),
   ejsOptions: {
@@ -190,10 +192,8 @@ function indexEjsHtml(context: libs.Context) {
 
 const swPrecacheConfig = `module.exports = {
   staticFileGlobs: [
-    'index.bundle-*.css',
-    'index.bundle-*.js',
-    'vendor.bundle-*.css',
-    'vendor.bundle-*.js',
+    '*.bundle-*.css',
+    '*.bundle-*.js',
     'index.html'
   ]
 }

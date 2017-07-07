@@ -48,7 +48,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
 
     return {
         scripts: {
-            cleanRev: `rimraf static/**/index.bundle-*.js static/*.bundle-*.css`,
+            cleanRev: `rimraf static/**/*.bundle-*.js static/**/*.bundle-*.css`,
             file2variable: `file2variable-cli static/*.template.html -o static/variables.ts --html-minify --base static`,
             tsc: `tsc -p src/ && tsc -p static/`,
             lessc: `lessc static/index.less > static/index.css`,
@@ -144,7 +144,7 @@ module.exports = {
   },
   output: {
     path: __dirname,
-    filename: '[name].bundle.js'
+    filename: '[name].bundle-[hash].js'
   },
   plugins,
   resolve
@@ -153,10 +153,12 @@ module.exports = {
 
 const staticRevStaticConfig = `module.exports = {
   inputFiles: [
-    'static/index.bundle.js',
-    'static/vendor.bundle.js',
-    'static/index.bundle.css',
-    'static/index.ejs.html'
+    'static/*.bundle-*.js',
+    'static/*.bundle.css',
+    'static/*.ejs.html'
+  ],
+  revisedFiles: [
+    'static/*.bundle-*.js'
   ],
   outputFiles: file => file.replace('.ejs', ''),
   ejsOptions: {
