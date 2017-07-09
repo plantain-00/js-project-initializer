@@ -38,7 +38,7 @@ export async function runFrontend(context: libs.Context) {
 
     return {
         scripts: {
-            cleanRev: `rimraf **/index.bundle-*.js *.bundle-*.css`,
+            cleanRev: `rimraf **/*.bundle-*.js *.bundle-*.css`,
             file2variable: `file2variable-cli *.template.html -o variables.ts --html-minify`,
             tsc: `tsc`,
             lessc: `lessc index.less > index.css`,
