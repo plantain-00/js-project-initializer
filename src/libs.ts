@@ -145,12 +145,12 @@ tslint.json
 .travis.yml
 tsconfig.json
 webpack.config.js
-src
 rev-static.config.js
-spec
-demo
 **/*.ts
 !**/*.d.ts
+src/
+spec/
+demo/
 `;
 
 export const stylelint = `{

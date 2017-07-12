@@ -144,7 +144,7 @@ module.exports = {
   },
   output: {
     path: __dirname,
-    filename: '[name].bundle-[hash].js'
+    filename: '[name].bundle.js'
   },
   plugins,
   resolve
@@ -153,13 +153,16 @@ module.exports = {
 
 const staticRevStaticConfig = `module.exports = {
   inputFiles: [
-    'static/*.bundle-*.js',
+    'static/*.bundle.js',
     'static/*.bundle.css',
     'static/*.ejs.html'
   ],
   revisedFiles: [
-    'static/*.bundle-*.js'
   ],
+  inlinedFiles: [
+    'static/*.bundle.js',
+    'static/*.bundle.css'
+  ]
   outputFiles: file => file.replace('.ejs', ''),
   ejsOptions: {
     rmWhitespace: true
@@ -177,11 +180,11 @@ function staticIndexEjsHtml(context: libs.Context) {
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="<%=indexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.indexBundleCss %>" />
+<%-inline.indexBundleCss %>
 <a class="github-fork-ribbon right-bottom" href="https://github.com/${context.author}/${context.repositoryName}" title="Fork me on GitHub" target="_blank">Fork me on GitHub</a>
 <div id="container"></div>
 <script src="<%=vendorBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.vendorBundleJs %>"></script>
-<script src="<%=indexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.indexBundleJs %>"></script>
+<%-inline.indexBundleJs %>
 `;
 }
 

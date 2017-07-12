@@ -73,12 +73,13 @@ async function run() {
         packageJson.dependencies.tslib = newPackageJson.dependencies.tslib;
     }
     await libs.writeFile("package.json", JSON.stringify(packageJson, null, "  ") + "\n");
-
-    printInConsole("success.");
 }
 
-run().catch(error => {
+run().then(() => {
+    printInConsole("success.");
+}).catch(error => {
     printInConsole(error);
+    process.exit(1);
 });
 
 async function getContext(): Promise<libs.Context> {
