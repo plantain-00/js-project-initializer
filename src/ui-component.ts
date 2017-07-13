@@ -34,6 +34,7 @@ export async function runUIComponent(context: libs.Context) {
     await libs.exec(`npm i -DE clean-css-cli`);
     await libs.exec(`npm i -DE file2variable-cli`);
     await libs.exec(`npm i -DE rev-static`);
+    await libs.exec(`npm i -DE clean-release`);
     await libs.exec(`npm i -DE webpack`);
     await libs.exec(`npm i -DE vue vue-class-component`);
     await libs.exec(`npm i -DE react react-dom`);
@@ -72,11 +73,11 @@ export async function runUIComponent(context: libs.Context) {
     await libs.writeFile(`spec/webpack.config.js`, libs.specWebpackConfigJs);
     await libs.writeFile(`spec/indexSpec.ts`, specIndexSpecTs);
 
-    await libs.writeFile(".npmignore", libs.npmignore);
     await libs.prependFile("README.md", libs.readMeBadge(context));
     await libs.appendFile("README.md", readMeDocument(context, hasAngularChoice));
     await libs.writeFile(".stylelintrc", libs.stylelint);
     await libs.writeFile(".travis.yml", libs.getTravisYml(context));
+    await libs.writeFile("clean-release.config.js", cleanReleaseConfigJs);
 
     const commands = [
         `file2variable-cli src/vue.template.html -o src/vue-variables.ts --html-minify --base src`,
@@ -101,6 +102,7 @@ export async function runUIComponent(context: libs.Context) {
             standard: `standard "**/*.config.js"`,
             fix: `standard --fix "**/*.config.js"`,
             test: "tsc -p spec && karma start spec/karma.config.js",
+            release: "clean-release",
             build: [
                 "npm run cleanRev",
                 "npm run clean",
@@ -123,6 +125,19 @@ export async function runUIComponent(context: libs.Context) {
         },
     };
 }
+
+const cleanReleaseConfigJs = `module.exports = {
+  include: [
+    'dist/*',
+    'LICENSE',
+    'package.json',
+    'README.md'
+  ],
+  exclude: [
+  ],
+  postScript: 'npm publish [dir] --access public'
+}
+`;
 
 const demoRevStaticConfig = `module.exports = {
   inputFiles: [

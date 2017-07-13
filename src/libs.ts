@@ -139,20 +139,6 @@ ${npmBadge}
 `;
 }
 
-export const npmignore = `.vscode
-.github
-tslint.json
-.travis.yml
-tsconfig.json
-webpack.config.js
-rev-static.config.js
-**/*.ts
-!**/*.d.ts
-src/
-spec/
-demo/
-`;
-
 export const stylelint = `{
   "extends": "stylelint-config-standard"
 }`;

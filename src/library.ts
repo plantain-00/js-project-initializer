@@ -4,15 +4,16 @@ export async function runLibrary(context: libs.Context) {
     context.isNpmPackage = true;
 
     await libs.exec(`npm i -DE jasmine @types/jasmine`);
+    await libs.exec(`npm i -DE clean-release`);
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
     await libs.writeFile(`index.ts`, index(context));
     await libs.writeFile(`tsconfig.json`, tsconfig);
-    await libs.writeFile(".npmignore", libs.npmignore);
     await libs.prependFile("README.md", libs.readMeBadge(context));
     await libs.appendFile("README.md", readMeDocument(context));
     await libs.writeFile(".travis.yml", libs.getTravisYml(context));
+    await libs.writeFile("clean-release.config.js", cleanReleaseConfigJs);
 
     await libs.writeFile("spec/tsconfig.json", specTsconfig);
     await libs.writeFile("spec/indexSpec.ts", libs.specIndexSpecTs);
@@ -22,6 +23,7 @@ export async function runLibrary(context: libs.Context) {
             tsc: `tsc`,
             tslint: `tslint "*.ts" "spec/*.ts"`,
             test: "tsc -p spec && jasmine",
+            release: "clean-release",
             build: [
                 "npm run tsc",
             ].join(" && "),
@@ -31,6 +33,20 @@ export async function runLibrary(context: libs.Context) {
         },
     };
 }
+
+const cleanReleaseConfigJs = `module.exports = {
+  include: [
+    'index.js',
+    'index.d.ts',
+    'LICENSE',
+    'package.json',
+    'README.md'
+  ],
+  exclude: [
+  ],
+  postScript: 'npm publish [dir] --access public'
+}
+`;
 
 function readMeDocument(context: libs.Context) {
     return `

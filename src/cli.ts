@@ -11,6 +11,7 @@ export async function runCLI(context: libs.Context) {
     await libs.exec(`npm i -DE standard`);
     await libs.exec(`npm i -SE minimist`);
     await libs.exec(`npm i -DE @types/minimist`);
+    await libs.exec(`npm i -DE clean-release`);
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
@@ -18,10 +19,10 @@ export async function runCLI(context: libs.Context) {
     await libs.writeFile(`src/lib.d.ts`, libDTs);
     await libs.writeFile(`src/tsconfig.json`, tsconfig);
 
-    await libs.writeFile(".npmignore", libs.npmignore);
     await libs.prependFile("README.md", libs.readMeBadge(context));
     await libs.appendFile("README.md", readMeDocument(context));
     await libs.writeFile(".travis.yml", libs.getTravisYml(context));
+    await libs.writeFile("clean-release.config.js", getCleanReleaseConfigJs(context));
 
     await libs.writeFile(`bin/${context.repositoryName}`, binConfig);
 
@@ -39,6 +40,7 @@ export async function runCLI(context: libs.Context) {
             test: "tsc -p spec && jasmine",
             standard: "standard \"**/*.config.js\"",
             fix: "standard --fix \"**/*.config.js\"",
+            release: "clean-release",
             build: [
                 "npm run clean",
                 "npm run tsc",
@@ -52,6 +54,22 @@ export async function runCLI(context: libs.Context) {
             [context.repositoryName]: `bin/${context.repositoryName}`,
         },
     };
+}
+
+function getCleanReleaseConfigJs(context: libs.Context) {
+    return `module.exports = {
+  include: [
+    'bin/${context.repositoryName}',
+    'dist/index.js',
+    'LICENSE',
+    'package.json',
+    'README.md'
+  ],
+  exclude: [
+  ],
+  postScript: 'npm publish [dir] --access public'
+}
+`;
 }
 
 const binConfig = `#!/usr/bin/env node
