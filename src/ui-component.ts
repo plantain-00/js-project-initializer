@@ -128,7 +128,7 @@ export async function runUIComponent(context: libs.Context) {
 
 const cleanReleaseConfigJs = `module.exports = {
   include: [
-    'dist/*',
+    'dist/**/*',
     'LICENSE',
     'package.json',
     'README.md'

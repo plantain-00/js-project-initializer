@@ -22,7 +22,7 @@ export async function runCLI(context: libs.Context) {
     await libs.prependFile("README.md", libs.readMeBadge(context));
     await libs.appendFile("README.md", readMeDocument(context));
     await libs.writeFile(".travis.yml", libs.getTravisYml(context));
-    await libs.writeFile("clean-release.config.js", getCleanReleaseConfigJs(context));
+    await libs.writeFile("clean-release.config.js", cleanReleaseConfigJs);
 
     await libs.writeFile(`bin/${context.repositoryName}`, binConfig);
 
@@ -56,11 +56,10 @@ export async function runCLI(context: libs.Context) {
     };
 }
 
-function getCleanReleaseConfigJs(context: libs.Context) {
-    return `module.exports = {
+const cleanReleaseConfigJs = `module.exports = {
   include: [
-    'bin/${context.repositoryName}',
-    'dist/index.js',
+    'bin/*',
+    'dist/*.js',
     'LICENSE',
     'package.json',
     'README.md'
@@ -70,7 +69,6 @@ function getCleanReleaseConfigJs(context: libs.Context) {
   postScript: 'npm publish [dir] --access public'
 }
 `;
-}
 
 const binConfig = `#!/usr/bin/env node
 require("../dist/index.js");`;

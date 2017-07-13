@@ -166,10 +166,6 @@ addons:
     packages:
       - g++-4.8
   firefox: latest
-branches:
-  except:
-    - gh-pages
-    - release
 ` : `language: node_js
 node_js:
   - "8"
