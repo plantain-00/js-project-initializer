@@ -8,10 +8,14 @@ export async function runCLI(context: libs.Context) {
 
     await libs.exec(`npm i -DE @types/node`);
     await libs.exec(`npm i -DE jasmine @types/jasmine`);
+    await libs.exec(`npm i -DE standard`);
+    await libs.exec(`npm i -SE minimist`);
+    await libs.exec(`npm i -DE @types/minimist`);
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
     await libs.writeFile(`src/index.ts`, source);
+    await libs.writeFile(`src/lib.d.ts`, libDTs);
     await libs.writeFile(`src/tsconfig.json`, tsconfig);
 
     await libs.writeFile(".npmignore", libs.npmignore);
@@ -21,6 +25,8 @@ export async function runCLI(context: libs.Context) {
 
     await libs.writeFile(`bin/${context.repositoryName}`, binConfig);
 
+    await libs.exec(`chmod 755 bin/${context.repositoryName}`);
+
     await libs.writeFile("spec/tsconfig.json", specTsconfig);
     await libs.writeFile("spec/indexSpec.ts", libs.specIndexSpecTs);
 
@@ -29,13 +35,17 @@ export async function runCLI(context: libs.Context) {
             clean: `rimraf dist/`,
             tsc: `tsc -p src/`,
             tslint: `tslint "src/**/*.ts"`,
+            demoTest: `./bin/${context.repositoryName}`,
             test: "tsc -p spec && jasmine",
+            standard: "standard \"**/*.config.js\"",
+            fix: "standard --fix \"**/*.config.js\"",
             build: [
                 "npm run clean",
                 "npm run tsc",
             ].join(" && "),
             lint: [
                 "npm run tslint",
+                "npm run standard",
             ].join(" && "),
         },
         bin: {
@@ -71,12 +81,26 @@ const tsconfig = `{
     }
 }`;
 
-const source = `function printInConsole(message: any) {
+const source = `import * as minimist from "minimist";
+import * as packageJson from "../package.json";
+
+function printInConsole(message: any) {
     // tslint:disable-next-line:no-console
     console.log(message);
 }
 
+function showToolVersion() {
+    printInConsole(\`Version: \${packageJson.version}\`);
+}
+
 async function executeCommandLine() {
+    const argv = minimist(process.argv.slice(2), { "--": true });
+
+    const showVersion = argv.v || argv.version;
+    if (showVersion) {
+        showToolVersion();
+        return;
+    }
     // todo
 }
 
@@ -100,3 +124,8 @@ const specTsconfig = `{
         "skipLibCheck": true
     }
 }`;
+
+const libDTs = `declare module "*.json" {
+    export const version: string;
+}
+`;

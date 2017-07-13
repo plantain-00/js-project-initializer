@@ -163,6 +163,9 @@ const revStaticConfig = `module.exports = {
     '*.bundle.css',
     '*.ejs.html'
   ],
+  excludeFiles: [
+    'service-worker.bundle.js'
+  ],
   revisedFiles: [
   ],
   inlinedFiles: [
