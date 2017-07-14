@@ -18,6 +18,7 @@ export async function runElectron(context: libs.Context) {
     await libs.exec(`npm i -DE webpack`);
     await libs.exec(`npm i -DE standard`);
     await libs.exec(`npm i -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
+    await libs.exec(`npm i -DE clean-release`);
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
@@ -27,6 +28,7 @@ export async function runElectron(context: libs.Context) {
     await libs.prependFile("README.md", libs.readMeBadge(context));
     await libs.writeFile(".stylelintrc", libs.stylelint);
     await libs.writeFile(".travis.yml", libs.getTravisYml(context));
+    await libs.writeFile("clean-release.config.js", cleanReleaseConfigJs(context));
 
     await libs.writeFile("scripts/index.ts", scriptsIndex);
     await libs.writeFile(`scripts/index.less`, scriptsIndexLess);
@@ -53,10 +55,9 @@ export async function runElectron(context: libs.Context) {
             stylelint: `stylelint "scripts/*.less"`,
             standard: `standard "**/*.config.js"`,
             fix: `standard --fix "**/*.config.js"`,
-            osx: "rimraf dist/news-darwin-x64 && electron-packager . 'news' --out=dist --arch=x64 --version=1.2.1 --app-version='1.0.8' --platform=darwin --ignore='dist/'",
-            win: "rimraf dist/news-win32-x64 && electron-packager . 'news' --out=dist --arch=x64 --version=1.2.1 --app-version='1.0.8' --platform=win32 --ignore='dist/'",
             start: "electron .",
             test: "tsc -p spec && jasmine && tsc -p static_spec && karma start static_spec/karma.config.js",
+            release: "rimraf dist && clean-release",
             build: [
                 "npm run file2variable",
                 "npm run tsc",
@@ -71,6 +72,28 @@ export async function runElectron(context: libs.Context) {
             ].join(" && "),
         },
     };
+}
+
+function cleanReleaseConfigJs(context: libs.Context) {
+    return `module.exports = {
+  include: [
+    'main.js',
+    'scripts/index.css',
+    'scripts/index.js',
+    'scripts/index.html',
+    'LICENSE',
+    'package.json',
+    'README.md'
+  ],
+  exclude: [
+  ],
+  postScript: [
+    'cd [dir] && npm i --production',
+    'electron-packager [dir] "${context.repositoryName}" --out=dist --arch=x64 --version=1.2.1 --app-version="1.0.8" --platform=darwin --ignore="dist/"',
+    'electron-packager [dir] "${context.repositoryName}" --out=dist --arch=x64 --version=1.2.1 --app-version="1.0.8" --platform=win32 --ignore="dist/"'
+  ]
+}
+`;
 }
 
 const main = `import * as electron from "electron";
@@ -111,7 +134,7 @@ const indexHtml = `<!DOCTYPE html>
 
 const tsconfig = `{
     "compilerOptions": {
-        "target": "esnext",
+        "target": "es6",
 
         "module": "commonjs",
         "strict": true,

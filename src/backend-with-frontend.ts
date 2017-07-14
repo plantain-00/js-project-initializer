@@ -19,6 +19,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
     await libs.exec(`npm i -DE rev-static`);
     await libs.exec(`npm i -DE standard`);
     await libs.exec(`npm i -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
+    await libs.exec(`npm i -DE clean-release`);
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
@@ -35,8 +36,10 @@ export async function runBackendWithFrontend(context: libs.Context) {
     await libs.writeFile("static/index.ejs.html", staticIndexEjsHtml(context));
 
     await libs.prependFile("README.md", libs.readMeBadge(context));
+    await libs.appendFile("README.md", readMeDocument(context));
     await libs.writeFile(".stylelintrc", libs.stylelint);
     await libs.writeFile(".travis.yml", libs.getTravisYml(context));
+    await libs.writeFile("clean-release.config.js", getCleanReleaseConfigJs(context));
 
     await libs.writeFile("spec/tsconfig.json", specTsconfig);
     await libs.writeFile("spec/indexSpec.ts", libs.specIndexSpecTs);
@@ -60,6 +63,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
             standard: `standard "**/*.config.js"`,
             fix: `standard --fix "**/*.config.js"`,
             test: "tsc -p spec && jasmine && tsc -p static_spec && karma start static_spec/karma.config.js",
+            release: "clean-release",
             build: [
                 "npm run cleanRev",
                 "npm run file2variable",
@@ -76,6 +80,32 @@ export async function runBackendWithFrontend(context: libs.Context) {
             ].join(" && "),
         },
     };
+}
+
+function readMeDocument(context: libs.Context) {
+    return `#### install
+
+\`\`\`bash
+git clone https://github.com/${context.author}/${context.repositoryName}-release.git . --depth=1 && npm i --production
+\`\`\`
+`;
+}
+
+function getCleanReleaseConfigJs(context: libs.Context) {
+    return `module.exports = {
+  include: [
+    'dist/*.js',
+    'static/*.bundle-*.js',
+    'static/index.html',
+    'LICENSE',
+    'package.json',
+    'README.md'
+  ],
+  exclude: [
+  ],
+  releaseRepository: 'https://github.com/${context.author}/${context.repositoryName}-release.git'
+}
+`;
 }
 
 const srcIndex = `function printInConsole(message: any) {
