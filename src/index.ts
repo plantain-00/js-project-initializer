@@ -13,7 +13,7 @@ async function run() {
 
     const kind = await selectProjectKind();
 
-    await libs.exec(`npm i -DE typescript@rc`);
+    await libs.exec(`npm i -DE typescript`);
 
     await libs.appendFile(".gitignore", gitignore);
 

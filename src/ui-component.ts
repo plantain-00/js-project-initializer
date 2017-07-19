@@ -135,6 +135,7 @@ const cleanReleaseConfigJs = `module.exports = {
   ],
   exclude: [
   ],
+  base: 'dist',
   postScript: 'npm publish [dir] --access public'
 }
 `;
@@ -230,7 +231,7 @@ function readMeDocument(context: libs.Context, hasAngularChoice: boolean) {
     const angularComponentDemo = hasAngularChoice ? `#### angular component demo
 
 \`\`\`ts
-import { ${context.componentTypeName}Component } from "${context.repositoryName}/dist/angular";
+import { ${context.componentTypeName}Component } from "${context.repositoryName}/angular";
 
 @NgModule({
     imports: [BrowserModule, FormsModule],
@@ -260,7 +261,7 @@ the online demo: https://${context.author}.github.io/${context.repositoryName}/d
 #### link css
 
 \`\`\`html
-<link rel="stylesheet" href="./node_modules/${context.repositoryName}/dist/${context.componentShortName}.min.css" />
+<link rel="stylesheet" href="./node_modules/${context.repositoryName}/${context.componentShortName}.min.css" />
 \`\`\`
 
 #### vuejs component demo
@@ -268,7 +269,7 @@ the online demo: https://${context.author}.github.io/${context.repositoryName}/d
 \`npm i vue vue-class-component\`
 
 \`\`\`ts
-import "${context.repositoryName}/dist/vue";
+import "${context.repositoryName}/vue";
 \`\`\`
 
 \`\`\`html
@@ -281,7 +282,7 @@ the online demo: https://${context.author}.github.io/${context.repositoryName}/d
 #### reactjs component demo
 
 \`\`\`ts
-import { ${context.componentTypeName} } from "${context.repositoryName}/dist/react";
+import { ${context.componentTypeName} } from "${context.repositoryName}/react";
 \`\`\`
 
 \`\`\`jsx
