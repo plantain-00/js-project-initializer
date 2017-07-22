@@ -120,13 +120,12 @@ async function executeCommandLine() {
     // todo
 }
 
-try {
-    executeCommandLine();
+executeCommandLine().then(() => {
     printInConsole("success.");
-} catch (error) {
+}, error => {
     printInConsole(error);
     process.exit(1);
-}
+});
 `;
 
 const specTsconfig = `{
