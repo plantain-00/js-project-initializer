@@ -17,6 +17,7 @@ export async function runFrontend(context: libs.Context) {
     await libs.exec(`npm i -DE sw-precache uglify-js@2`);
     await libs.exec(`npm i -DE standard`);
     await libs.exec(`npm i -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
+    await libs.exec(`npm i -DE clean-scripts`);
 
     await libs.writeFile(`index.ts`, index);
     await libs.writeFile(`index.template.html`, indexTemplateHtml);
@@ -30,6 +31,7 @@ export async function runFrontend(context: libs.Context) {
     await libs.writeFile("index.ejs.html", indexEjsHtml(context));
     await libs.writeFile("sw-precache.config.js", swPrecacheConfig);
     await libs.writeFile(".travis.yml", libs.getTravisYml(context));
+    await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
 
     await libs.writeFile(`spec/karma.config.js`, libs.specKarmaConfigJs);
     await libs.writeFile(`spec/tsconfig.json`, specTsconfig);
@@ -38,36 +40,41 @@ export async function runFrontend(context: libs.Context) {
 
     return {
         scripts: {
-            cleanRev: `rimraf **/*.bundle-*.js *.bundle-*.css`,
-            file2variable: `file2variable-cli *.template.html -o variables.ts --html-minify`,
-            tsc: `tsc`,
-            lessc: `lessc index.less > index.css`,
-            cleancss: `cleancss -o index.bundle.css index.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css`,
-            webpack: `webpack --config webpack.config.js`,
-            revStatic: `rev-static --config rev-static.config.js`,
-            swPrecache: "sw-precache --config sw-precache.config.js --verbose && uglifyjs service-worker.js -o service-worker.bundle.js",
-            tslint: `tslint "*.ts"`,
-            stylelint: `stylelint "**/*.less"`,
-            standard: `standard "**/*.config.js"`,
-            fix: `standard --fix "**/*.config.js"`,
-            test: "tsc -p spec && karma start spec/karma.config.js",
-            build: [
-                "npm run cleanRev",
-                "npm run file2variable",
-                "npm run tsc",
-                "npm run lessc",
-                "npm run cleancss",
-                "npm run webpack",
-                "npm run revStatic",
-                "npm run swPrecache",
-            ].join(" && "),
-            lint: [
-                "npm run tslint",
-                "npm run stylelint",
-                "npm run standard",
-            ].join(" && "),
+            build: "clean-scripts build",
+            lint: "clean-scripts lint",
+            test: "clean-scripts test",
+            fix: `clean-scripts fix`,
         },
     };
+}
+
+function cleanScriptsConfigJs(context: libs.Context) {
+    return `module.exports = {
+  build: [
+    'rimraf **/*.bundle-*.js *.bundle-*.css',
+    'file2variable-cli *.template.html -o variables.ts --html-minify',
+    'tsc',
+    'lessc index.less > index.css',
+    'cleancss -o index.bundle.css index.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css',
+    'webpack --config webpack.config.js',
+    'rev-static --config rev-static.config.js',
+    'sw-precache --config sw-precache.config.js --verbose',
+    'uglifyjs service-worker.js -o service-worker.bundle.js'
+  ],
+  lint: [
+    \`tslint "*.ts"\`,
+    \`standard "**/*.config.js"\`,
+    \`stylelint "**/*.less"\`
+  ],
+  test: [
+    'tsc -p spec',
+    'karma start spec/karma.config.js'
+  ],
+  fix: [
+    \`standard --fix "**/*.config.js"\`
+  ]
+}
+`;
 }
 
 const index = `import Vue from "vue";
@@ -111,7 +118,6 @@ const indexLess = `* {
   padding: 0;
   font-family: "Lucida Grande", "Lucida Sans Unicode", "Hiragino Sans GB", "WenQuanYi Micro Hei", "Verdana,Aril", "sans-serif";
   -webkit-font-smoothing: antialiased;
-  user-select: none;
 }
 `;
 

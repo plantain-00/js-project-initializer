@@ -44,6 +44,7 @@ export async function runUIComponent(context: libs.Context) {
     }
     await libs.exec(`npm i -DE standard`);
     await libs.exec(`npm i -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
+    await libs.exec(`npm i -DE clean-scripts`);
 
     await libs.writeFile(`src/tsconfig.json`, srcTsconfig);
     await libs.writeFile(`src/${context.componentShortName}.less`, srcLess(context));
@@ -78,52 +79,54 @@ export async function runUIComponent(context: libs.Context) {
     await libs.writeFile(".stylelintrc", libs.stylelint);
     await libs.writeFile(".travis.yml", libs.getTravisYml(context));
     await libs.writeFile("clean-release.config.js", cleanReleaseConfigJs);
-
-    const commands = [
-        `file2variable-cli src/vue.template.html -o src/vue-variables.ts --html-minify --base src`,
-    ];
-    if (hasAngularChoice) {
-        commands.push(`file2variable-cli src/angular.template.html -o src/angular-variables.ts --html-minify --base src`);
-    }
+    await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(hasAngularChoice, context));
 
     return {
         scripts: {
-            cleanRev: `rimraf demo/**/*.bundle-*.js demo/*.bundle-*.css`,
-            clean: `rimraf dist/`,
-            file2variable: commands.join(" && "),
-            tsc: `tsc -p src/ && tsc -p demo/`,
-            lessc: `lessc src/${context.componentShortName}.less > dist/${context.componentShortName}.css`,
-            cleancss: `cleancss -o dist/${context.componentShortName}.min.css dist/${context.componentShortName}.css`,
-            cleancssDemo: `cleancss -o demo/index.bundle.css dist/${context.componentShortName}.min.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css`,
-            webpack: `webpack --config demo/webpack.config.js`,
-            revStatic: `rev-static --config demo/rev-static.config.js`,
-            tslint: `tslint "src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx"`,
-            stylelint: `stylelint "src/**/*.less"`,
-            standard: `standard "**/*.config.js"`,
-            fix: `standard --fix "**/*.config.js"`,
-            test: "tsc -p spec && karma start spec/karma.config.js",
-            release: "clean-release",
-            build: [
-                "npm run cleanRev",
-                "npm run clean",
-                "npm run file2variable",
-                "npm run tsc",
-                "npm run lessc",
-                "npm run cleancss",
-                "npm run cleancssDemo",
-                "npm run webpack",
-                "npm run revStatic",
-            ].join(" && "),
-            lint: [
-                "npm run tslint",
-                "npm run stylelint",
-                "npm run standard",
-            ].join(" && "),
+            build: `clean-scripts build`,
+            lint: `clean-scripts lint`,
+            test: "clean-scripts test",
+            fix: `clean-scripts fix`,
+            release: "clean-scripts release",
         },
         dependencies: {
             tslib: "1",
         },
     };
+}
+
+function cleanScriptsConfigJs(hasAngularChoice: boolean, context: libs.Context) {
+    const angularScript = hasAngularChoice ? "'file2variable-cli src/angular.template.html -o src/angular-variables.ts --html-minify --base src',\n" : "";
+    return `module.exports = {
+  build: [
+    'rimraf demo/**/*.bundle-*.js demo/*.bundle-*.css',
+    'rimraf dist/',
+    'file2variable-cli src/vue.template.html -o src/vue-variables.ts --html-minify --base src',${angularScript}
+    'tsc -p src/',
+    'tsc -p demo/',
+    \`lessc src/${context.componentShortName}.less > dist/${context.componentShortName}.css\`,
+    \`cleancss -o dist/${context.componentShortName}.min.css dist/${context.componentShortName}.css\`,
+    \`cleancss -o demo/index.bundle.css dist/${context.componentShortName}.min.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css\`,
+    'webpack --config demo/webpack.config.js',
+    'rev-static --config demo/rev-static.config.js'
+  ],
+  lint: [
+    \`tslint "src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx"\`,
+    \`standard "**/*.config.js"\`,
+    \`stylelint "src/**/*.less"\`
+  ],
+  test: [
+    'tsc -p spec',
+    'karma start spec/karma.config.js'
+  ],
+  fix: [
+    \`standard --fix "**/*.config.js"\`
+  ],
+  release: [
+    \`clean-release\`
+  ]
+}
+`;
 }
 
 const cleanReleaseConfigJs = `module.exports = {
@@ -381,7 +384,6 @@ function srcLess(context: libs.Context) {
     padding: 0;
     font-family: "Lucida Grande", "Lucida Sans Unicode", "Hiragino Sans GB", "WenQuanYi Micro Hei", "Verdana,Aril", "sans-serif";
     -webkit-font-smoothing: antialiased;
-    user-select: none;
   }
 }
 `;

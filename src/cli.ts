@@ -12,6 +12,7 @@ export async function runCLI(context: libs.Context) {
     await libs.exec(`npm i -SE minimist`);
     await libs.exec(`npm i -DE @types/minimist`);
     await libs.exec(`npm i -DE clean-release`);
+    await libs.exec(`npm i -DE clean-scripts`);
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
@@ -23,6 +24,7 @@ export async function runCLI(context: libs.Context) {
     await libs.appendFile("README.md", readMeDocument(context));
     await libs.writeFile(".travis.yml", libs.getTravisYml(context));
     await libs.writeFile("clean-release.config.js", cleanReleaseConfigJs);
+    await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
 
     await libs.writeFile(`bin/${context.repositoryName}`, binConfig);
 
@@ -33,27 +35,41 @@ export async function runCLI(context: libs.Context) {
 
     return {
         scripts: {
-            clean: `rimraf dist/`,
-            tsc: `tsc -p src/`,
-            tslint: `tslint "src/**/*.ts"`,
             demoTest: `./bin/${context.repositoryName}`,
-            test: "tsc -p spec && jasmine",
-            standard: "standard \"**/*.config.js\"",
-            fix: "standard --fix \"**/*.config.js\"",
-            release: "clean-release",
-            build: [
-                "npm run clean",
-                "npm run tsc",
-            ].join(" && "),
-            lint: [
-                "npm run tslint",
-                "npm run standard",
-            ].join(" && "),
+            build: "clean-scripts build",
+            lint: "clean-scripts lint",
+            test: "clean-scripts test",
+            fix: "clean-scripts fix",
+            release: "clean-scripts release",
         },
         bin: {
             [context.repositoryName]: `bin/${context.repositoryName}`,
         },
     };
+}
+
+function cleanScriptsConfigJs(context: libs.Context) {
+    return `module.exports = {
+  build: [
+    'rimraf dist/',
+    'tsc -p src/'
+  ],
+  lint: [
+    \`tslint "src/**/*.ts"\`,
+    \`standard "**/*.config.js"\`
+  ],
+  test: [
+    'tsc -p spec',
+    'jasmine'
+  ],
+  fix: [
+    \`standard --fix "**/*.config.js"\`
+  ],
+  release: [
+    \`clean-release\`
+  ]
+}
+`;
 }
 
 const cleanReleaseConfigJs = `module.exports = {
@@ -120,12 +136,17 @@ async function executeCommandLine() {
     // todo
 }
 
-executeCommandLine().then(() => {
-    printInConsole("success.");
-}, error => {
-    printInConsole(error);
-    process.exit(1);
-});
+try {
+    executeCommandLine().then(() => {
+        printInConsole("success.");
+    }, error => {
+        printInConsole(error.stdout);
+        process.exit(error.status);
+    });
+} catch (error) {
+    printInConsole(error.stdout);
+    process.exit(error.status);
+}
 `;
 
 const specTsconfig = `{

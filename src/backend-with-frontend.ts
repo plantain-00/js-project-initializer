@@ -20,6 +20,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
     await libs.exec(`npm i -DE standard`);
     await libs.exec(`npm i -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
     await libs.exec(`npm i -DE clean-release`);
+    await libs.exec(`npm i -DE clean-scripts`);
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
@@ -40,6 +41,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
     await libs.writeFile(".stylelintrc", libs.stylelint);
     await libs.writeFile(".travis.yml", libs.getTravisYml(context));
     await libs.writeFile("clean-release.config.js", getCleanReleaseConfigJs(context));
+    await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
 
     await libs.writeFile("spec/tsconfig.json", specTsconfig);
     await libs.writeFile("spec/indexSpec.ts", libs.specIndexSpecTs);
@@ -51,35 +53,46 @@ export async function runBackendWithFrontend(context: libs.Context) {
 
     return {
         scripts: {
-            cleanRev: `rimraf static/**/*.bundle-*.js static/**/*.bundle-*.css`,
-            file2variable: `file2variable-cli static/*.template.html -o static/variables.ts --html-minify --base static`,
-            tsc: `tsc -p src/ && tsc -p static/`,
-            lessc: `lessc static/index.less > static/index.css`,
-            cleancss: `cleancss -o static/index.bundle.css static/index.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css`,
-            webpack: `webpack --config static/webpack.config.js`,
-            revStatic: `rev-static --config static/rev-static.config.js`,
-            tslint: `tslint "src/**/*.ts" "static/**/*.ts"`,
-            stylelint: `stylelint "static/**/*.less"`,
-            standard: `standard "**/*.config.js"`,
-            fix: `standard --fix "**/*.config.js"`,
-            test: "tsc -p spec && jasmine && tsc -p static_spec && karma start static_spec/karma.config.js",
-            release: "clean-release",
-            build: [
-                "npm run cleanRev",
-                "npm run file2variable",
-                "npm run tsc",
-                "npm run lessc",
-                "npm run cleancss",
-                "npm run webpack",
-                "npm run revStatic",
-            ].join(" && "),
-            lint: [
-                "npm run tslint",
-                "npm run stylelint",
-                "npm run standard",
-            ].join(" && "),
+            build: "clean-scripts build",
+            lint: "clean-scripts lint",
+            test: "clean-scripts test",
+            fix: "clean-scripts fix",
+            release: "clean-scripts release",
         },
     };
+}
+
+function cleanScriptsConfigJs(context: libs.Context) {
+    return `module.exports = {
+  build: [
+    'rimraf static/**/*.bundle-*.js static/**/*.bundle-*.css',
+    'file2variable-cli static/*.template.html -o static/variables.ts --html-minify --base static',
+    'tsc -p src/',
+    'tsc -p static/',
+    'lessc static/index.less > static/index.css',
+    'cleancss -o static/index.bundle.css static/index.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css',
+    'webpack --config static/webpack.config.js',
+    'rev-static --config static/rev-static.config.js'
+  ],
+  lint: [
+    \`tslint "src/**/*.ts" "static/**/*.ts"\`,
+    \`standard "**/*.config.js"\`,
+    \`stylelint "static/**/*.less"\`
+  ],
+  test: [
+    'tsc -p spec',
+    'jasmine',
+    'tsc -p static_spec',
+    'karma start static_spec/karma.config.js'
+  ],
+  fix: [
+    \`standard --fix "**/*.config.js"\`
+  ],
+  release: [
+    \`clean-release\`
+  ]
+}
+`;
 }
 
 function readMeDocument(context: libs.Context) {
@@ -135,7 +148,6 @@ const staticIndexLess = `* {
   padding: 0;
   font-family: "Lucida Grande", "Lucida Sans Unicode", "Hiragino Sans GB", "WenQuanYi Micro Hei", "Verdana,Aril", "sans-serif";
   -webkit-font-smoothing: antialiased;
-  user-select: none;
 }
 `;
 

@@ -19,6 +19,7 @@ export async function runElectron(context: libs.Context) {
     await libs.exec(`npm i -DE standard`);
     await libs.exec(`npm i -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
     await libs.exec(`npm i -DE clean-release`);
+    await libs.exec(`npm i -DE clean-scripts`);
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
@@ -29,6 +30,7 @@ export async function runElectron(context: libs.Context) {
     await libs.writeFile(".stylelintrc", libs.stylelint);
     await libs.writeFile(".travis.yml", libs.getTravisYml(context));
     await libs.writeFile("clean-release.config.js", cleanReleaseConfigJs(context));
+    await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
 
     await libs.writeFile("scripts/index.ts", scriptsIndex);
     await libs.writeFile(`scripts/index.less`, scriptsIndexLess);
@@ -46,32 +48,46 @@ export async function runElectron(context: libs.Context) {
 
     return {
         scripts: {
-            file2variable: `file2variable-cli scripts/index.template.html -o scripts/variables.ts --html-minify`,
-            tsc: `tsc && tsc -p scripts/`,
-            lessc: `lessc scripts/index.less > scripts/index.css`,
-            cleancss: `cleancss -o scripts/index.bundle.css scripts/index.css`,
-            webpack: `webpack --config scripts/webpack.config.js`,
-            tslint: `tslint "*.ts"`,
-            stylelint: `stylelint "scripts/*.less"`,
-            standard: `standard "**/*.config.js"`,
-            fix: `standard --fix "**/*.config.js"`,
             start: "electron .",
-            test: "tsc -p spec && jasmine && tsc -p static_spec && karma start static_spec/karma.config.js",
-            release: "rimraf dist && clean-release",
-            build: [
-                "npm run file2variable",
-                "npm run tsc",
-                "npm run lessc",
-                "npm run cleancss",
-                "npm run webpack",
-            ].join(" && "),
-            lint: [
-                "npm run tslint",
-                "npm run stylelint",
-                "npm run standard",
-            ].join(" && "),
+            build: "clean-scripts build",
+            lint: "clean-scripts lint",
+            test: "clean-scripts test",
+            fix: `clean-scripts fix`,
+            release: "clean-scripts release",
         },
     };
+}
+
+function cleanScriptsConfigJs(context: libs.Context) {
+    return `module.exports = {
+  build: [
+    'file2variable-cli scripts/index.template.html -o scripts/variables.ts --html-minify',
+    'tsc',
+    'tsc -p scripts/',
+    'lessc scripts/index.less > scripts/index.css',
+    'cleancss -o scripts/index.bundle.css scripts/index.css',
+    'webpack --config scripts/webpack.config.js'
+  ],
+  lint: [
+    \`tslint "*.ts"\`,
+    \`standard "**/*.config.js"\`,
+    \`stylelint "scripts/*.less"\`
+  ],
+  test: [
+    'tsc -p spec',
+    'jasmine',
+    'tsc -p static_spec',
+    'karma start static_spec/karma.config.js'
+  ],
+  fix: [
+    \`standard --fix "**/*.config.js"\`
+  ],
+  release: [
+    'rimraf dist',
+    'clean-release'
+  ]
+}
+`;
 }
 
 function cleanReleaseConfigJs(context: libs.Context) {
@@ -154,7 +170,6 @@ const scriptsIndexLess = `* {
   padding: 0;
   font-family: "Lucida Grande", "Lucida Sans Unicode", "Hiragino Sans GB", "WenQuanYi Micro Hei", "Verdana,Aril", "sans-serif";
   -webkit-font-smoothing: antialiased;
-  user-select: none;
 }
 `;
 

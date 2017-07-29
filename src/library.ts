@@ -10,6 +10,7 @@ export async function runLibrary(context: libs.Context) {
     await libs.exec(`npm i -DE rimraf`);
     await libs.exec(`npm i -DE standard`);
     await libs.exec(`npm i -DE rollup rollup-plugin-node-resolve rollup-plugin-uglify`);
+    await libs.exec(`npm i -DE clean-scripts`);
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
@@ -23,31 +24,46 @@ export async function runLibrary(context: libs.Context) {
     await libs.writeFile(".travis.yml", libs.getTravisYml(context));
     await libs.writeFile("clean-release.config.js", cleanReleaseConfigJs);
     await libs.writeFile("rollup.config.js", rollupConfigJs(context));
+    await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
 
     await libs.writeFile("spec/tsconfig.json", specTsconfig);
     await libs.writeFile("spec/indexSpec.ts", libs.specIndexSpecTs);
 
     return {
         scripts: {
-            tsc: "tsc -p src/tsconfig.nodejs.json && tsc -p src/tsconfig.browser.json",
-            tslint: `tslint "*.ts" "spec/*.ts"`,
-            test: "tsc -p spec && jasmine",
-            release: "clean-release",
-            rollup: "rollup --config rollup.config.js",
-            clean: "rimraf dist/",
-            standard: "standard \"**/*.config.js\"",
-            fix: "standard --fix \"**/*.config.js\"",
-            build: [
-                "npm run clean",
-                "npm run tsc",
-                "npm run rollup",
-            ].join(" && "),
-            lint: [
-                "npm run tslint",
-                "npm run standard",
-            ].join(" && "),
+            build: "clean-scripts build",
+            lint: "clean-scripts lint",
+            test: "clean-scripts test",
+            fix: "clean-scripts fix",
+            release: "clean-scripts release",
         },
     };
+}
+
+function cleanScriptsConfigJs(context: libs.Context) {
+    return `module.exports = {
+  build: [
+    'rimraf dist/',
+    'tsc -p src/tsconfig.nodejs.json',
+    'tsc -p src/tsconfig.browser.json',
+    'rollup --config rollup.config.js'
+  ],
+  lint: [
+    \`tslint "*.ts" "spec/*.ts"\`,
+    \`standard "**/*.config.js"\`
+  ],
+  test: [
+    'tsc -p spec',
+    'jasmine'
+  ],
+  fix: [
+    \`standard --fix "**/*.config.js"\`
+  ],
+  release: [
+    \`clean-release\`
+  ]
+}
+`;
 }
 
 const tsconfigNodejs = `{
