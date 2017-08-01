@@ -134,7 +134,8 @@ export function readMeBadge(context: Context) {
         : "";
     return `[![Dependency Status](https://david-dm.org/${context.author}/${context.repositoryName}.svg)](https://david-dm.org/${context.author}/${context.repositoryName})
 [![devDependency Status](https://david-dm.org/${context.author}/${context.repositoryName}/dev-status.svg)](https://david-dm.org/${context.author}/${context.repositoryName}#info=devDependencies)
-[![Build Status](https://travis-ci.org/${context.author}/${context.repositoryName}.svg?branch=master)](https://travis-ci.org/${context.author}/${context.repositoryName})
+[![Build Status: Linux](https://travis-ci.org/${context.author}/${context.repositoryName}.svg?branch=master)](https://travis-ci.org/${context.author}/${context.repositoryName})
+[![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/${context.author}/${context.repositoryName}?branch=master&svg=true)](https://ci.appveyor.com/project/${context.author}/${context.repositoryName}/branch/master)
 ${npmBadge}
 `;
 }
@@ -187,6 +188,22 @@ addons:
       - g++-4.8
 `;
 }
+
+export const appveyorYml = `environment:
+  nodejs_version: "8"
+
+install:
+  - ps: Install-Product node $env:nodejs_version
+  - npm install
+
+test_script:
+  - node --version
+  - npm --version
+  - npm run build
+  - npm run lint
+
+build: off
+`;
 
 export const specIndexSpecTs = `it("", () => {
     // expect(true).toEqual(true);
