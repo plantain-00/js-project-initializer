@@ -66,7 +66,7 @@ function cleanScriptsConfigJs(context: libs.Context) {
     'tsc -p scripts/',
     'lessc scripts/index.less > scripts/index.css',
     'cleancss -o scripts/index.bundle.css scripts/index.css',
-    'webpack --config scripts/webpack.config.js'
+    'webpack --display-modules --config scripts/webpack.config.js'
   ],
   lint: [
     \`tslint "*.ts"\`,

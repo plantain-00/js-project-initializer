@@ -107,7 +107,7 @@ function cleanScriptsConfigJs(hasAngularChoice: boolean, context: libs.Context) 
     \`lessc src/${context.componentShortName}.less > dist/${context.componentShortName}.css\`,
     \`cleancss -o dist/${context.componentShortName}.min.css dist/${context.componentShortName}.css\`,
     \`cleancss -o demo/index.bundle.css dist/${context.componentShortName}.min.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css\`,
-    'webpack --config demo/webpack.config.js',
+    'webpack --display-modules --config demo/webpack.config.js',
     'rev-static --config demo/rev-static.config.js'
   ],
   lint: [

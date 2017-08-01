@@ -71,7 +71,7 @@ function cleanScriptsConfigJs(context: libs.Context) {
     'tsc -p static/',
     'lessc static/index.less > static/index.css',
     'cleancss -o static/index.bundle.css static/index.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css',
-    'webpack --config static/webpack.config.js',
+    'webpack --display-modules --config static/webpack.config.js',
     'rev-static --config static/rev-static.config.js'
   ],
   lint: [
