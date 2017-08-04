@@ -228,12 +228,11 @@ module.exports = {
     }),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      },
       output: {
         comments: false
-      }
+      },
+      exclude: [
+      ]
     })
   ],
   resolve: {

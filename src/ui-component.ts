@@ -330,7 +330,8 @@ const srcTsconfig = `{
         "jsx": "react",
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
-        "downlevelIteration": true
+        "downlevelIteration": true,
+        "emitDecoratorMetadata": true
     }
 }`;
 
@@ -354,7 +355,8 @@ const demoTsconfig = `{
         "jsx": "react",
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
-        "downlevelIteration": true
+        "downlevelIteration": true,
+        "emitDecoratorMetadata": true
     }
 }`;
 
@@ -372,7 +374,8 @@ const specTsconfig = `{
         "jsx": "react",
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
-        "downlevelIteration": true
+        "downlevelIteration": true,
+        "emitDecoratorMetadata": true
     }
 }`;
 
@@ -401,12 +404,11 @@ const plugins = [
   }),
   new webpack.NoEmitOnErrorsPlugin(),
   new webpack.optimize.UglifyJsPlugin({
-    compress: {
-      warnings: false
-    },
     output: {
       comments: false
-    }
+    },
+    exclude: [
+    ]
   })
 ]
 
@@ -456,12 +458,11 @@ const plugins = [
   }),
   new webpack.NoEmitOnErrorsPlugin(),
   new webpack.optimize.UglifyJsPlugin({
-    compress: {
-      warnings: false
-    },
     output: {
       comments: false
-    }
+    },
+    exclude: [
+    ]
   })
 ]
 
