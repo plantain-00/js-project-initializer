@@ -64,33 +64,44 @@ export async function runBackendWithFrontend(context: libs.Context) {
 
 function cleanScriptsConfigJs(context: libs.Context) {
     return `module.exports = {
-  build: [
-    'rimraf static/**/*.bundle-*.js static/**/*.bundle-*.css',
-    'file2variable-cli static/*.template.html -o static/variables.ts --html-minify --base static',
-    'tsc -p src/',
-    'tsc -p static/',
-    'lessc static/index.less > static/index.css',
-    'cleancss -o static/index.bundle.css static/index.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css',
-    'webpack --display-modules --config static/webpack.config.js',
-    'rev-static --config static/rev-static.config.js'
-  ],
-  lint: [
-    \`tslint "src/**/*.ts" "static/**/*.ts"\`,
-    \`standard "**/*.config.js"\`,
-    \`stylelint "static/**/*.less"\`
-  ],
-  test: [
-    'tsc -p spec',
-    'jasmine',
-    'tsc -p static_spec',
-    'karma start static_spec/karma.config.js'
-  ],
-  fix: [
-    \`standard --fix "**/*.config.js"\`
-  ],
-  release: [
-    \`clean-release\`
-  ]
+  build: {
+    back: [
+      'rimraf dist/'
+      'tsc -p src/'
+    ],
+    front: [
+      {
+        js: [
+          'file2variable-cli static/*.template.html -o static/variables.ts --html-minify --base static',
+          'tsc -p static/',
+          'webpack --display-modules --config static/webpack.config.js',
+        ],
+        css: [
+          'lessc static/index.less > static/index.css',
+          'cleancss -o static/index.bundle.css static/index.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css'
+        ],
+        clean: 'rimraf static/**/*.bundle-*.js static/**/*.bundle-*.css',
+      }
+      'rev-static --config static/rev-static.config.js'
+    ]
+  },
+  lint: {
+    ts: \`tslint "src/**/*.ts" "static/**/*.ts"\`,
+    js: \`standard "**/*.config.js"\`,
+    less: \`stylelint "static/**/*.less"\`
+  },
+  test: {
+    jasmine: [
+      'tsc -p spec',
+      'jasmine'
+    ],
+    karma: [
+      'tsc -p static_spec',
+      'karma start static_spec/karma.config.js'
+    ]
+  },
+  fix: \`standard --fix "**/*.config.js"\`,
+  release: \`clean-release\`
 }
 `;
 }

@@ -45,24 +45,24 @@ function cleanScriptsConfigJs(context: libs.Context) {
     return `module.exports = {
   build: [
     'rimraf dist/',
-    'tsc -p src/tsconfig.nodejs.json',
-    'tsc -p src/tsconfig.browser.json',
-    'rollup --config rollup.config.js'
+    {
+      back: 'tsc -p src/tsconfig.nodejs.json',
+      front: [
+        'tsc -p src/tsconfig.browser.json',
+        'rollup --config rollup.config.js'
+      ]
+    }
   ],
-  lint: [
-    \`tslint "*.ts" "spec/*.ts"\`,
-    \`standard "**/*.config.js"\`
-  ],
+  lint: {
+    ts: \`tslint "*.ts" "spec/*.ts"\`,
+    js: \`standard "**/*.config.js"\`
+  },
   test: [
     'tsc -p spec',
     'jasmine'
   ],
-  fix: [
-    \`standard --fix "**/*.config.js"\`
-  ],
-  release: [
-    \`clean-release\`
-  ]
+  fix: \`standard --fix "**/*.config.js"\`,
+  release: \`clean-release\`
 }
 `;
 }

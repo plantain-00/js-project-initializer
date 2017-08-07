@@ -99,32 +99,34 @@ function cleanScriptsConfigJs(hasAngularChoice: boolean, context: libs.Context) 
     const angularScript = hasAngularChoice ? "'file2variable-cli src/angular.template.html -o src/angular-variables.ts --html-minify --base src',\n" : "";
     return `module.exports = {
   build: [
-    'rimraf demo/**/*.bundle-*.js demo/*.bundle-*.css',
     'rimraf dist/',
-    'file2variable-cli src/vue.template.html -o src/vue-variables.ts --html-minify --base src',${angularScript}
-    'tsc -p src/',
-    'tsc -p demo/',
-    \`lessc src/${context.componentShortName}.less > dist/${context.componentShortName}.css\`,
-    \`cleancss -o dist/${context.componentShortName}.min.css dist/${context.componentShortName}.css\`,
-    \`cleancss -o demo/index.bundle.css dist/${context.componentShortName}.min.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css\`,
-    'webpack --display-modules --config demo/webpack.config.js',
+    {
+      js: [
+        'file2variable-cli src/vue.template.html -o src/vue-variables.ts --html-minify --base src',${angularScript}
+        'tsc -p src/',
+        'tsc -p demo/',
+        'webpack --display-modules --config demo/webpack.config.js'
+      ],
+      css: [
+        \`lessc src/${context.componentShortName}.less > dist/${context.componentShortName}.css\`,
+        \`cleancss -o dist/${context.componentShortName}.min.css dist/${context.componentShortName}.css\`,
+        \`cleancss -o demo/index.bundle.css dist/${context.componentShortName}.min.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css\`
+      ],
+      clean: 'rimraf demo/**/*.bundle-*.js demo/*.bundle-*.css'
+    },
     'rev-static --config demo/rev-static.config.js'
   ],
-  lint: [
-    \`tslint "src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx"\`,
-    \`standard "**/*.config.js"\`,
-    \`stylelint "src/**/*.less"\`
-  ],
+  lint: {
+    ts: \`tslint "src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx"\`,
+    js: \`standard "**/*.config.js"\`,
+    less: \`stylelint "src/**/*.less"\`
+  },
   test: [
     'tsc -p spec',
     'karma start spec/karma.config.js'
   ],
-  fix: [
-    \`standard --fix "**/*.config.js"\`
-  ],
-  release: [
-    \`clean-release\`
-  ]
+  fix: \`standard --fix "**/*.config.js"\`,
+  release: \`clean-release\`
 }
 `;
 }

@@ -60,28 +60,36 @@ export async function runElectron(context: libs.Context) {
 
 function cleanScriptsConfigJs(context: libs.Context) {
     return `module.exports = {
-  build: [
-    'file2variable-cli scripts/index.template.html -o scripts/variables.ts --html-minify',
-    'tsc',
-    'tsc -p scripts/',
-    'lessc scripts/index.less > scripts/index.css',
-    'cleancss -o scripts/index.bundle.css scripts/index.css',
-    'webpack --display-modules --config scripts/webpack.config.js'
-  ],
-  lint: [
-    \`tslint "*.ts"\`,
-    \`standard "**/*.config.js"\`,
-    \`stylelint "scripts/*.less"\`
-  ],
-  test: [
-    'tsc -p spec',
-    'jasmine',
-    'tsc -p static_spec',
-    'karma start static_spec/karma.config.js'
-  ],
-  fix: [
-    \`standard --fix "**/*.config.js"\`
-  ],
+  build: {
+    back: 'tsc',
+    front: {
+      js: [
+        'file2variable-cli scripts/index.template.html -o scripts/variables.ts --html-minify',
+        'tsc -p scripts/',
+        'webpack --display-modules --config scripts/webpack.config.js'
+      ],
+      css: [
+        'lessc scripts/index.less > scripts/index.css',
+        'cleancss -o scripts/index.bundle.css scripts/index.css',
+      ]
+    }
+  },
+  lint: {
+    ts: \`tslint "*.ts"\`,
+    js: \`standard "**/*.config.js"\`,
+    less: \`stylelint "scripts/*.less"\`
+  },
+  test: {
+    jasmine: [
+      'tsc -p spec',
+      'jasmine'
+    ],
+    karma: [
+      'tsc -p static_spec',
+      'karma start static_spec/karma.config.js'
+    ]
+  },
+  fix: \`standard --fix "**/*.config.js"\`,
   release: [
     'rimraf dist',
     'clean-release'

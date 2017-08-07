@@ -51,28 +51,36 @@ export async function runFrontend(context: libs.Context) {
 function cleanScriptsConfigJs(context: libs.Context) {
     return `module.exports = {
   build: [
-    'rimraf **/*.bundle-*.js *.bundle-*.css',
-    'file2variable-cli *.template.html -o variables.ts --html-minify',
-    'tsc',
-    'lessc index.less > index.css',
-    'cleancss -o index.bundle.css index.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css',
-    'webpack --display-modules --config webpack.config.js',
-    'rev-static --config rev-static.config.js',
-    'sw-precache --config sw-precache.config.js --verbose',
-    'uglifyjs service-worker.js -o service-worker.bundle.js'
+    new Set([
+      [
+        'file2variable-cli *.template.html -o variables.ts --html-minify',
+        'tsc',
+        'webpack --display-modules --config webpack.config.js'
+      ],
+      [
+        'lessc index.less > index.css',
+        'cleancss -o index.bundle.css index.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css'
+      ],
+      'rimraf **/*.bundle-*.js *.bundle-*.css'
+    ]),
+    new Set([
+      'rev-static --config rev-static.config.js',
+      [
+        'sw-precache --config sw-precache.config.js --verbose',
+        'uglifyjs service-worker.js -o service-worker.bundle.js'
+      ]
+    ])
   ],
-  lint: [
+  lint: new Set([
     \`tslint "*.ts"\`,
     \`standard "**/*.config.js"\`,
     \`stylelint "**/*.less"\`
-  ],
+  ]),
   test: [
     'tsc -p spec',
     'karma start spec/karma.config.js'
   ],
-  fix: [
-    \`standard --fix "**/*.config.js"\`
-  ]
+  fix: \`standard --fix "**/*.config.js"\`
 }
 `;
 }
