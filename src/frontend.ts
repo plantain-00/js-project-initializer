@@ -80,7 +80,11 @@ function cleanScriptsConfigJs(context: libs.Context) {
     'tsc -p spec',
     'karma start spec/karma.config.js'
   ],
-  fix: \`standard --fix "**/*.config.js"\`
+  fix: {
+    ts: \`tslint "*.ts"\`,
+    js: \`standard --fix "**/*.config.js"\`,
+    less: \`stylelint --fix "**/*.less"\`
+  }
 }
 `;
 }

@@ -100,7 +100,11 @@ function cleanScriptsConfigJs(context: libs.Context) {
       'karma start static_spec/karma.config.js'
     ]
   },
-  fix: \`standard --fix "**/*.config.js"\`,
+  fix: {
+    ts: \`tslint --fix "src/**/*.ts" "static/**/*.ts"\`,
+    js: \`standard --fix "**/*.config.js"\`,
+    less: \`stylelint --fix "static/**/*.less"\`
+  },
   release: \`clean-release\`
 }
 `;

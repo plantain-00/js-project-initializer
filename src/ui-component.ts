@@ -40,11 +40,12 @@ export async function runUIComponent(context: libs.Context) {
     await libs.exec(`npm i -DE react react-dom`);
     await libs.exec(`npm i -DE @types/react @types/react-dom`);
     if (hasAngularChoice) {
-        await libs.exec(`npm i -DE @angular/common @angular/compiler @angular/core @angular/forms @angular/platform-browser @angular/platform-browser-dynamic core-js rxjs zone.js`);
+        await libs.exec(`npm i -DE @angular/common @angular/compiler @angular/core @angular/forms @angular/platform-browser @angular/platform-browser-dynamic @angular/compiler-cli core-js rxjs zone.js`);
     }
     await libs.exec(`npm i -DE standard`);
     await libs.exec(`npm i -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
     await libs.exec(`npm i -DE clean-scripts`);
+    await libs.exec(`npm i -DE mkdirp`);
 
     await libs.writeFile(`src/tsconfig.json`, srcTsconfig);
     await libs.writeFile(`src/${context.componentShortName}.less`, srcLess(context));
@@ -97,13 +98,14 @@ export async function runUIComponent(context: libs.Context) {
 
 function cleanScriptsConfigJs(hasAngularChoice: boolean, context: libs.Context) {
     const angularScript = hasAngularChoice ? "'file2variable-cli src/angular.template.html -o src/angular-variables.ts --html-minify --base src',\n" : "";
+    const compilerType = hasAngularChoice ? "ngc" : "tsc";
     return `module.exports = {
   build: [
     'rimraf dist/',
     {
       js: [
         'file2variable-cli src/vue.template.html -o src/vue-variables.ts --html-minify --base src',${angularScript}
-        'tsc -p src/',
+        '${compilerType} -p src/',
         'tsc -p demo/',
         'webpack --display-modules --config demo/webpack.config.js'
       ],
@@ -125,7 +127,11 @@ function cleanScriptsConfigJs(hasAngularChoice: boolean, context: libs.Context) 
     'tsc -p spec',
     'karma start spec/karma.config.js'
   ],
-  fix: \`standard --fix "**/*.config.js"\`,
+  fix: {
+    ts: \`tslint --fix "src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx"\`,
+    js: \`standard --fix "**/*.config.js"\`,
+    less: \`stylelint --fix "src/**/*.less"\`
+  },
   release: \`clean-release\`
 }
 `;
@@ -205,7 +211,8 @@ export class ${context.componentTypeName} extends React.Component<{
 }
 
 function srcAngular(context: libs.Context) {
-    return `import { Component, Input } from "@angular/core";
+    return `import { Component, Input, NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
 import * as common from "./common";
 export * from "./common";
 import { angularTemplateHtml } from "./angular-variables";
@@ -218,6 +225,19 @@ export class ${context.componentTypeName}Component {
     @Input()
     data: common.${context.componentTypeName}Data;
 }
+
+@NgModule({
+    declarations: [
+        ${context.componentTypeName}Component,
+    ],
+    imports: [
+        CommonModule,
+    ],
+    exports: [
+        ${context.componentTypeName}Component,
+    ],
+})
+export class ${context.componentTypeName}Module { }
 `;
 }
 
@@ -236,11 +256,11 @@ function readMeDocument(context: libs.Context, hasAngularChoice: boolean) {
     const angularComponentDemo = hasAngularChoice ? `#### angular component demo
 
 \`\`\`ts
-import { ${context.componentTypeName}Component } from "${context.repositoryName}/angular";
+import { ${context.componentTypeName}Module } from "${context.repositoryName}/angular";
 
 @NgModule({
-    imports: [BrowserModule, FormsModule],
-    declarations: [MainComponent, ${context.componentTypeName}Component],
+    imports: [BrowserModule, FormsModule, ${context.componentTypeName}Module],
+    declarations: [MainComponent],
     bootstrap: [MainComponent],
 })
 class MainModule { }

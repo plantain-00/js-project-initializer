@@ -48,7 +48,10 @@ function cleanScriptsConfigJs(context: libs.Context) {
     'tsc -p spec',
     'jasmine'
   ],
-  fix: \`standard --fix "**/*.config.js"\`,
+  fix: {
+    ts: \`tslint --fix "src/**/*.ts" "src/**/*.tsx"\`,
+    js: \`standard --fix "**/*.config.js"\`
+  },
   release: \`clean-release\`
 }
 `;
