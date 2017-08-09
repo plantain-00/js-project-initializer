@@ -124,6 +124,13 @@ function readMeDocument(context: libs.Context) {
 #### install
 
 \`npm i ${context.repositoryName}\`
+
+#### usage
+
+\`\`\`ts
+import ${context.componentTypeName} from "${context.repositoryName}";
+// <script src="./node_modules/${context.repositoryName}/${context.repositoryName}.min.js"></script>
+\`\`\`
 `;
 }
 
