@@ -9,12 +9,15 @@ export { inquirer, upperCamelCase };
 export function exec(command: string) {
     return new Promise<void>((resolve, reject) => {
         printInConsole(`${command}...`);
-        childProcess.exec(command, (error, stdout, stderr) => {
+        const subProcess = childProcess.exec(command, (error, stdout, stderr) => {
             if (error) {
                 reject(error);
             } else {
                 resolve();
             }
+        });
+        subProcess.stdout.on("data", chunk => {
+            printInConsole(chunk);
         });
     });
 }
@@ -73,7 +76,7 @@ export function mkdir(dir: string) {
     });
 }
 
-export function printInConsole(message: string) {
+export function printInConsole(message: any) {
     // tslint:disable-next-line:no-console
     console.log(message);
 }

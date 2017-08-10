@@ -31,6 +31,7 @@ export async function runFrontend(context: libs.Context) {
     await libs.writeFile("index.ejs.html", indexEjsHtml(context));
     await libs.writeFile("sw-precache.config.js", swPrecacheConfig);
     await libs.writeFile(".travis.yml", libs.getTravisYml(context));
+    await libs.writeFile("appveyor.yml", libs.appveyorYml);
     await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
 
     await libs.writeFile(`spec/karma.config.js`, libs.specKarmaConfigJs);

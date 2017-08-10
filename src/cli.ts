@@ -23,6 +23,7 @@ export async function runCLI(context: libs.Context) {
     await libs.prependFile("README.md", libs.readMeBadge(context));
     await libs.appendFile("README.md", readMeDocument(context));
     await libs.writeFile(".travis.yml", libs.getTravisYml(context));
+    await libs.writeFile("appveyor.yml", libs.appveyorYml);
     await libs.writeFile("clean-release.config.js", cleanReleaseConfigJs);
     await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
 
@@ -35,7 +36,7 @@ export async function runCLI(context: libs.Context) {
 
     return {
         scripts: {
-            demoTest: `./bin/${context.repositoryName}`,
+            demoTest: `clean-scripts demoTest`,
             build: "clean-scripts build",
             lint: "clean-scripts lint",
             test: "clean-scripts test",
@@ -66,7 +67,8 @@ function cleanScriptsConfigJs(context: libs.Context) {
     ts: \`tslint --fix "src/**/*.ts"\`,
     js: \`standard --fix "**/*.config.js"\`
   },
-  release: \`clean-release\`
+  release: \`clean-release\`,
+  demoTest: \`node dist/index.js\`
 }
 `;
 }
