@@ -8,6 +8,8 @@ export async function runBackend(context: libs.Context) {
     await libs.exec(`npm i -DE clean-release`);
     await libs.exec(`npm i -DE standard`);
     await libs.exec(`npm i -DE clean-scripts`);
+    await libs.exec(`npm i -DE no-unused-export`);
+    await libs.exec(`npm i -DE watch-then-execute`);
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
@@ -31,6 +33,7 @@ export async function runBackend(context: libs.Context) {
             test: "clean-scripts test",
             fix: "clean-scripts fix",
             release: "clean-scripts release",
+            watch: "clean-scripts watch",
         },
     };
 }
@@ -42,18 +45,20 @@ function cleanScriptsConfigJs(context: libs.Context) {
     'tsc -p src/'
   ],
   lint: {
-    ts: \`tslint "src/**/*.ts" "src/**/*.tsx"\`,
-    js: \`standard "**/*.config.js"\`
+    ts: \`tslint "src/**/*.ts"\`,
+    js: \`standard "**/*.config.js"\`,
+    export: \`no-unused-export "src/**/*.ts"\`
   },
   test: [
     'tsc -p spec',
     'jasmine'
   ],
   fix: {
-    ts: \`tslint --fix "src/**/*.ts" "src/**/*.tsx"\`,
+    ts: \`tslint --fix "src/**/*.ts"\`,
     js: \`standard --fix "**/*.config.js"\`
   },
-  release: \`clean-release\`
+  release: \`clean-release\`,
+  watch: \`watch-then-execute "src/**/*.ts" --script "npm run build"\`
 }
 `;
 }

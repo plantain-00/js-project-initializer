@@ -21,6 +21,8 @@ export async function runBackendWithFrontend(context: libs.Context) {
     await libs.exec(`npm i -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
     await libs.exec(`npm i -DE clean-release`);
     await libs.exec(`npm i -DE clean-scripts`);
+    await libs.exec(`npm i -DE no-unused-export`);
+    await libs.exec(`npm i -DE watch-then-execute`);
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
@@ -59,6 +61,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
             test: "clean-scripts test",
             fix: "clean-scripts fix",
             release: "clean-scripts release",
+            watch: "clean-scripts watch",
         },
     };
 }
@@ -89,7 +92,8 @@ function cleanScriptsConfigJs(context: libs.Context) {
   lint: {
     ts: \`tslint "src/**/*.ts" "static/**/*.ts"\`,
     js: \`standard "**/*.config.js"\`,
-    less: \`stylelint "static/**/*.less"\`
+    less: \`stylelint "static/**/*.less"\`,
+    export: \`no-unused-export "src/**/*.ts" "static/**/*.ts"\`
   },
   test: {
     jasmine: [
@@ -106,7 +110,8 @@ function cleanScriptsConfigJs(context: libs.Context) {
     js: \`standard --fix "**/*.config.js"\`,
     less: \`stylelint --fix "static/**/*.less"\`
   },
-  release: \`clean-release\`
+  release: \`clean-release\`,
+  watch: \`watch-then-execute "src/**/*.ts" "static/**/*.ts" "static/*.less" "static/*.template.html" --exclude "static/variables.ts" --script "npm run build"\`
 }
 `;
 }

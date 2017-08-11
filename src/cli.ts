@@ -13,6 +13,7 @@ export async function runCLI(context: libs.Context) {
     await libs.exec(`npm i -DE @types/minimist`);
     await libs.exec(`npm i -DE clean-release`);
     await libs.exec(`npm i -DE clean-scripts`);
+    await libs.exec(`npm i -DE no-unused-export`);
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
@@ -57,7 +58,8 @@ function cleanScriptsConfigJs(context: libs.Context) {
   ],
   lint: {
     ts: \`tslint "src/**/*.ts"\`,
-    js: \`standard "**/*.config.js"\`
+    js: \`standard "**/*.config.js"\`,
+    export: \`no-unused-export "src/**/*.ts" "spec/*.ts"\`
   },
   test: [
     'tsc -p spec',
@@ -141,22 +143,12 @@ try {
     executeCommandLine().then(() => {
         printInConsole("success.");
     }, error => {
-        if (error.stdout) {
-            printInConsole(error.stdout);
-            process.exit(error.status);
-        } else {
-            printInConsole(error);
-            process.exit(1);
-        }
-    });
-} catch (error) {
-    if (error.stdout) {
-        printInConsole(error.stdout);
-        process.exit(error.status);
-    } else {
         printInConsole(error);
         process.exit(1);
-    }
+    });
+} catch (error) {
+    printInConsole(error);
+    process.exit(1);
 }
 `;
 

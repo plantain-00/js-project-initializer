@@ -18,6 +18,8 @@ export async function runFrontend(context: libs.Context) {
     await libs.exec(`npm i -DE standard`);
     await libs.exec(`npm i -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
     await libs.exec(`npm i -DE clean-scripts`);
+    await libs.exec(`npm i -DE no-unused-export`);
+    await libs.exec(`npm i -DE watch-then-execute`);
 
     await libs.writeFile(`index.ts`, index);
     await libs.writeFile(`index.template.html`, indexTemplateHtml);
@@ -45,6 +47,7 @@ export async function runFrontend(context: libs.Context) {
             lint: "clean-scripts lint",
             test: "clean-scripts test",
             fix: `clean-scripts fix`,
+            watch: "clean-scripts watch",
         },
     };
 }
@@ -52,31 +55,32 @@ export async function runFrontend(context: libs.Context) {
 function cleanScriptsConfigJs(context: libs.Context) {
     return `module.exports = {
   build: [
-    new Set([
-      [
+    {
+      js: [
         'file2variable-cli *.template.html -o variables.ts --html-minify',
         'tsc',
         'webpack --display-modules --config webpack.config.js'
       ],
-      [
+      css: [
         'lessc index.less > index.css',
         'cleancss -o index.bundle.css index.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css'
       ],
-      'rimraf **/*.bundle-*.js *.bundle-*.css'
-    ]),
-    new Set([
-      'rev-static --config rev-static.config.js',
-      [
+      clean: 'rimraf **/*.bundle-*.js *.bundle-*.css'
+    },
+    {
+      version: 'rev-static --config rev-static.config.js',
+      sw: [
         'sw-precache --config sw-precache.config.js --verbose',
         'uglifyjs service-worker.js -o service-worker.bundle.js'
       ]
-    ])
+    }
   ],
-  lint: new Set([
-    \`tslint "*.ts"\`,
-    \`standard "**/*.config.js"\`,
-    \`stylelint "**/*.less"\`
-  ]),
+  lint: {
+    ts: \`tslint "*.ts"\`,
+    js: \`standard "**/*.config.js"\`,
+    less: \`stylelint "**/*.less"\`,
+    export: \`no-unused-export "*.ts"\`
+  },
   test: [
     'tsc -p spec',
     'karma start spec/karma.config.js'
@@ -85,7 +89,8 @@ function cleanScriptsConfigJs(context: libs.Context) {
     ts: \`tslint "*.ts"\`,
     js: \`standard --fix "**/*.config.js"\`,
     less: \`stylelint --fix "**/*.less"\`
-  }
+  },
+  watch: \`watch-then-execute "*.ts" "*.less" "*.template.html" --exclude "variables.ts" --script "npm run build"\`
 }
 `;
 }

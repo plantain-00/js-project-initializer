@@ -46,6 +46,8 @@ export async function runUIComponent(context: libs.Context) {
     await libs.exec(`npm i -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
     await libs.exec(`npm i -DE clean-scripts`);
     await libs.exec(`npm i -DE mkdirp`);
+    await libs.exec(`npm i -DE no-unused-export`);
+    await libs.exec(`npm i -DE watch-then-execute`);
 
     await libs.writeFile(`src/tsconfig.json`, srcTsconfig);
     await libs.writeFile(`src/${context.componentShortName}.less`, srcLess(context));
@@ -90,6 +92,7 @@ export async function runUIComponent(context: libs.Context) {
             test: "clean-scripts test",
             fix: `clean-scripts fix`,
             release: "clean-scripts release",
+            watch: "clean-scripts watch",
         },
         dependencies: {
             tslib: "1",
@@ -122,7 +125,8 @@ function cleanScriptsConfigJs(hasAngularChoice: boolean, context: libs.Context) 
   lint: {
     ts: \`tslint "src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx"\`,
     js: \`standard "**/*.config.js"\`,
-    less: \`stylelint "src/**/*.less"\`
+    less: \`stylelint "src/**/*.less"\`,
+    export: \`no-unused-export "src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx" --exclude "src/compiled/**/*"\`
   },
   test: [
     'tsc -p spec',
@@ -133,7 +137,8 @@ function cleanScriptsConfigJs(hasAngularChoice: boolean, context: libs.Context) 
     js: \`standard --fix "**/*.config.js"\`,
     less: \`stylelint --fix "src/**/*.less"\`
   },
-  release: \`clean-release\`
+  release: \`clean-release\`,
+  watch: \`watch-then-execute "src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx" "src/**/*.template.html" --exclude "src/compiled/**/*,src/*-variables.ts" --script "npm run build"\`
 }
 `;
 }
@@ -198,6 +203,9 @@ function srcReact(context: libs.Context) {
 import * as common from "./common";
 export * from "./common";
 
+/**
+ * @public
+ */
 export class ${context.componentTypeName} extends React.Component<{
     data: common.${context.componentTypeName}Data;
 }, { }> {
@@ -218,6 +226,9 @@ import * as common from "./common";
 export * from "./common";
 import { angularTemplateHtml } from "./angular-variables";
 
+/**
+ * @public
+ */
 @Component({
     selector: "${context.componentShortName}",
     template: angularTemplateHtml,
@@ -227,6 +238,9 @@ export class ${context.componentTypeName}Component {
     data: common.${context.componentTypeName}Data;
 }
 
+/**
+ * @public
+ */
 @NgModule({
     declarations: [
         ${context.componentTypeName}Component,
@@ -243,7 +257,10 @@ export class ${context.componentTypeName}Module { }
 }
 
 function srcCommon(context: libs.Context) {
-    return `export type ${context.componentTypeName}Data = {
+    return `/**
+ * @public
+ */
+export type ${context.componentTypeName}Data = {
     // tslint:disable-next-line:ban-types
     component: string | Function;
     data: any;
@@ -610,18 +627,18 @@ import { Component } from "@angular/core";
     </div>
     \`,
 })
-export class MainComponent {
+class MainComponent {
     data: ${context.componentTypeName}Data;
 }
 
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
-import { ${context.componentTypeName}Component, ${context.componentTypeName}Data } from "../../dist/angular";
+import { ${context.componentTypeName}Module, ${context.componentTypeName}Data } from "../../dist/angular";
 
 @NgModule({
-    imports: [BrowserModule, FormsModule],
-    declarations: [MainComponent, ${context.componentTypeName}Component],
+    imports: [BrowserModule, FormsModule, ${context.componentTypeName}Module],
+    declarations: [MainComponent],
     bootstrap: [MainComponent],
 })
 class MainModule { }

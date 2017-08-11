@@ -20,6 +20,8 @@ export async function runElectron(context: libs.Context) {
     await libs.exec(`npm i -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
     await libs.exec(`npm i -DE clean-release`);
     await libs.exec(`npm i -DE clean-scripts`);
+    await libs.exec(`npm i -DE no-unused-export`);
+    await libs.exec(`npm i -DE watch-then-execute`);
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
@@ -55,6 +57,7 @@ export async function runElectron(context: libs.Context) {
             test: "clean-scripts test",
             fix: `clean-scripts fix`,
             release: "clean-scripts release",
+            watch: "clean-scripts watch",
         },
     };
 }
@@ -76,9 +79,10 @@ function cleanScriptsConfigJs(context: libs.Context) {
     }
   },
   lint: {
-    ts: \`tslint "*.ts"\`,
+    ts: \`tslint "*.ts" "scripts/*.ts"\`,
     js: \`standard "**/*.config.js"\`,
-    less: \`stylelint "scripts/*.less"\`
+    less: \`stylelint "scripts/*.less"\`,
+    export: \`no-unused-export "*.ts" "scripts/*.ts"\`
   },
   test: {
     jasmine: [
@@ -91,14 +95,15 @@ function cleanScriptsConfigJs(context: libs.Context) {
     ]
   },
   fix: {
-    ts: \`tslint --fix "*.ts"\`,
+    ts: \`tslint --fix "*.ts" "scripts/*.ts"\`,
     js: \`standard --fix "**/*.config.js"\`,
     less: \`stylelint --fix "scripts/*.less"\`
   },
   release: [
     'rimraf dist',
     'clean-release'
-  ]
+  ],
+  watch: \`watch-then-execute "*.ts" "scripts/*.ts" "scripts/*.less" "scripts/*.template.html" --exclude "scripts/variables.ts" --script "npm run build"\`
 }
 `;
 }

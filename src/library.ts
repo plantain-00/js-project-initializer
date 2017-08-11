@@ -11,6 +11,7 @@ export async function runLibrary(context: libs.Context) {
     await libs.exec(`npm i -DE standard`);
     await libs.exec(`npm i -DE rollup rollup-plugin-node-resolve rollup-plugin-uglify`);
     await libs.exec(`npm i -DE clean-scripts`);
+    await libs.exec(`npm i -DE no-unused-export`);
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
@@ -54,15 +55,16 @@ function cleanScriptsConfigJs(context: libs.Context) {
     }
   ],
   lint: {
-    ts: \`tslint "*.ts" "spec/*.ts"\`,
-    js: \`standard "**/*.config.js"\`
+    ts: \`tslint "src/*.ts" "spec/*.ts"\`,
+    js: \`standard "**/*.config.js"\`,
+    export: \`no-unused-export "src/*.ts" "spec/*.ts"\`
   },
   test: [
     'tsc -p spec',
     'jasmine'
   ],
   fix: {
-    ts: \`tslint --fix "*.ts" "spec/*.ts"\`,
+    ts: \`tslint --fix "src/*.ts" "spec/*.ts"\`,
     js: \`standard --fix "**/*.config.js"\`
   },
   release: \`clean-release\`
@@ -148,7 +150,10 @@ const tsconfigBase = `{
 }`;
 
 function index(context: libs.Context) {
-    return `export default class ${context.componentTypeName} {
+    return `/**
+ * @public
+ */
+export default class ${context.componentTypeName} {
 }
 `;
 }
