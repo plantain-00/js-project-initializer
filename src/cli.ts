@@ -116,7 +116,8 @@ const tsconfig = `{
     }
 }`;
 
-const source = `import * as minimist from "minimist";
+function source(context: libs.Context) {
+    return `import * as minimist from "minimist";
 import * as packageJson from "../package.json";
 
 function printInConsole(message: any) {
@@ -139,18 +140,14 @@ async function executeCommandLine() {
     // todo
 }
 
-try {
-    executeCommandLine().then(() => {
-        printInConsole("success.");
-    }, error => {
-        printInConsole(error);
-        process.exit(1);
-    });
-} catch (error) {
+executeCommandLine().then(() => {
+    printInConsole("${context.repositoryName} success.");
+}, error => {
     printInConsole(error);
     process.exit(1);
-}
+});
 `;
+}
 
 const specTsconfig = `{
     "compilerOptions": {

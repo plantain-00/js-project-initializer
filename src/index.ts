@@ -76,7 +76,7 @@ async function run() {
 }
 
 run().then(() => {
-    printInConsole("success.");
+    printInConsole("initialize repository success.");
 }).catch(error => {
     printInConsole(error);
     process.exit(1);

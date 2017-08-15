@@ -260,10 +260,10 @@ function srcCommon(context: libs.Context) {
     return `/**
  * @public
  */
-export type ${context.componentTypeName}Data = {
+export type ${context.componentTypeName}Data<T = any> = {
     // tslint:disable-next-line:ban-types
     component: string | Function;
-    data: any;
+    data: T;
 };
 `;
 }
@@ -346,9 +346,9 @@ data | [${context.componentTypeName}Data](#${context.componentShortName}-data-st
 #### ${context.componentShortName} data structure
 
 \`\`\`ts
-type ${context.componentTypeName}Data = {
+type ${context.componentTypeName}Data<T = any> = {
     component: string | Function; // the item component, for vuejs, it is the component name, for reactjs, it is the class object
-    data: any; // the data will be passed to the component as \`data\` props
+    data: T; // the data will be passed to the component as \`data\` props
 };
 \`\`\`
 `;
@@ -576,8 +576,6 @@ import * as ReactDOM from "react-dom";
 import { ${context.componentTypeName}, ${context.componentTypeName}Data } from "../../dist/react";
 
 class Main extends React.Component<{}, {}> {
-    data: ${context.componentTypeName}Data;
-
     render() {
         return (
             <div>
@@ -588,6 +586,8 @@ class Main extends React.Component<{}, {}> {
             </div>
         );
     }
+
+    private data: ${context.componentTypeName}Data;
 }
 
 ReactDOM.render(<Main />, document.getElementById("container"));
