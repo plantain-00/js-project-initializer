@@ -130,7 +130,20 @@ function cleanScriptsConfigJs(hasAngularChoice: boolean, context: libs.Context) 
   },
   test: [
     'tsc -p spec',
-    'karma start spec/karma.config.js'
+    'karma start spec/karma.config.js',
+    () => new Promise((resolve, reject) => {
+      childProcess.exec('git status -s', (error, stdout, stderr) => {
+        if (error) {
+          reject(error)
+        } else {
+          if (stdout) {
+            reject(new Error('generated files doesn't match.'))
+          } else {
+            resolve()
+          }
+        }
+      }).stdout.pipe(process.stdout)
+    })
   ],
   fix: {
     ts: \`tslint --fix "src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx"\`,
@@ -555,7 +568,6 @@ class App extends Vue {
     data: ${context.componentTypeName}Data;
 }
 
-// tslint:disable-next-line:no-unused-expression
 new App({ el: "#container" });
 `;
 }

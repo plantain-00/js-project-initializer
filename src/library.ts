@@ -61,7 +61,20 @@ function cleanScriptsConfigJs(context: libs.Context) {
   },
   test: [
     'tsc -p spec',
-    'jasmine'
+    'jasmine',
+    () => new Promise((resolve, reject) => {
+      childProcess.exec('git status -s', (error, stdout, stderr) => {
+        if (error) {
+          reject(error)
+        } else {
+          if (stdout) {
+            reject(new Error('generated files doesn't match.'))
+          } else {
+            resolve()
+          }
+        }
+      }).stdout.pipe(process.stdout)
+    })
   ],
   fix: {
     ts: \`tslint --fix "src/*.ts" "spec/*.ts"\`,

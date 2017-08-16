@@ -17,7 +17,7 @@ export async function runCLI(context: libs.Context) {
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
-    await libs.writeFile(`src/index.ts`, source);
+    await libs.writeFile(`src/index.ts`, source(context));
     await libs.writeFile(`src/lib.d.ts`, libDTs);
     await libs.writeFile(`src/tsconfig.json`, tsconfig);
 
@@ -63,7 +63,20 @@ function cleanScriptsConfigJs(context: libs.Context) {
   },
   test: [
     'tsc -p spec',
-    'jasmine'
+    'jasmine',
+    () => new Promise((resolve, reject) => {
+      childProcess.exec('git status -s', (error, stdout, stderr) => {
+        if (error) {
+          reject(error)
+        } else {
+          if (stdout) {
+            reject(new Error('generated files doesn't match.'))
+          } else {
+            resolve()
+          }
+        }
+      }).stdout.pipe(process.stdout)
+    })
   ],
   fix: {
     ts: \`tslint --fix "src/**/*.ts"\`,

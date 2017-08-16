@@ -92,7 +92,20 @@ function cleanScriptsConfigJs(context: libs.Context) {
     karma: [
       'tsc -p static_spec',
       'karma start static_spec/karma.config.js'
-    ]
+    ],
+    consistence: () => new Promise((resolve, reject) => {
+      childProcess.exec('git status -s', (error, stdout, stderr) => {
+        if (error) {
+          reject(error)
+        } else {
+          if (stdout) {
+            reject(new Error('generated files doesn't match.'))
+          } else {
+            resolve()
+          }
+        }
+      }).stdout.pipe(process.stdout)
+    })
   },
   fix: {
     ts: \`tslint --fix "*.ts" "scripts/*.ts"\`,
@@ -202,7 +215,6 @@ import { scriptsIndexTemplateHtml } from "./variables";
 class App extends Vue {
 }
 
-// tslint:disable-next-line:no-unused-expression
 new App({ el: "#container" });
 `;
 

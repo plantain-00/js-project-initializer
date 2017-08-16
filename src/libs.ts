@@ -2,7 +2,7 @@ import * as inquirer from "inquirer";
 import * as childProcess from "child_process";
 import * as fs from "fs";
 import * as mkdirp from "mkdirp";
-import * as upperCamelCase from "uppercamelcase";
+import upperCamelCase = require("uppercamelcase");
 
 export { inquirer, upperCamelCase };
 
@@ -115,7 +115,15 @@ export const tslint = `{
         "max-classes-per-file": [
             false
         ],
-        "interface-over-type-literal": false
+        "interface-over-type-literal": false,
+        "interface-name": [
+            true,
+            "never-prefix"
+        ],
+        "no-unused-expression": [
+            true,
+            "allow-new"
+        ]
     }
 }`;
 
