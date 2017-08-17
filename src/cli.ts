@@ -37,7 +37,7 @@ export async function runCLI(context: libs.Context) {
 
     return {
         scripts: {
-            demoTest: `clean-scripts demoTest`,
+            demoTest: `clean-scripts test[2]`,
             build: "clean-scripts build",
             lint: "clean-scripts lint",
             test: "clean-scripts test",
@@ -64,6 +64,7 @@ function cleanScriptsConfigJs(context: libs.Context) {
   test: [
     'tsc -p spec',
     'jasmine',
+    demoTest: \`node dist/index.js --supressError > spec/result.txt\`,
     () => new Promise((resolve, reject) => {
       childProcess.exec('git status -s', (error, stdout, stderr) => {
         if (error) {
@@ -82,8 +83,7 @@ function cleanScriptsConfigJs(context: libs.Context) {
     ts: \`tslint --fix "src/**/*.ts"\`,
     js: \`standard --fix "**/*.config.js"\`
   },
-  release: \`clean-release\`,
-  demoTest: \`node dist/index.js\`
+  release: \`clean-release\`
 }
 `;
 }
@@ -133,7 +133,12 @@ function source(context: libs.Context) {
     return `import * as minimist from "minimist";
 import * as packageJson from "../package.json";
 
+let suppressError = false;
+
 function printInConsole(message: any) {
+    if (message instanceof Error) {
+        message = message.message;
+    }
     // tslint:disable-next-line:no-console
     console.log(message);
 }
@@ -150,6 +155,9 @@ async function executeCommandLine() {
         showToolVersion();
         return;
     }
+
+    suppressError = argv.suppressError;
+
     // todo
 }
 
@@ -157,7 +165,9 @@ executeCommandLine().then(() => {
     printInConsole("${context.repositoryName} success.");
 }, error => {
     printInConsole(error);
-    process.exit(1);
+    if (!suppressError) {
+        process.exit(1);
+    }
 });
 `;
 }

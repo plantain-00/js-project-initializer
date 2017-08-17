@@ -162,9 +162,8 @@ before_install:
   - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
-before_script:
-  - npm i
 script:
+  - git checkout package-lock.json
   - npm run build
   - npm run lint
   - npm run test
@@ -182,9 +181,8 @@ node_js:
   - "8"
 before_install:
   - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
-before_script:
-  - npm i
 script:
+  - git checkout package-lock.json
   - npm run build
   - npm run lint
   - npm run test
@@ -205,6 +203,7 @@ export const appveyorYml = `environment:
 install:
   - ps: Install-Product node $env:nodejs_version
   - npm install
+  - git checkout package-lock.json
 
 test_script:
   - node --version
