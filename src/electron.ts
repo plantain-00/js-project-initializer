@@ -63,7 +63,9 @@ export async function runElectron(context: libs.Context) {
 }
 
 function cleanScriptsConfigJs(context: libs.Context) {
-    return `module.exports = {
+    return `const childProcess = require('child_process')
+
+module.exports = {
   build: {
     back: 'tsc',
     front: {
@@ -99,7 +101,7 @@ function cleanScriptsConfigJs(context: libs.Context) {
           reject(error)
         } else {
           if (stdout) {
-            reject(new Error('generated files doesn't match.'))
+            reject(new Error('generated files does not match.'))
           } else {
             resolve()
           }

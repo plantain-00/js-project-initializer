@@ -103,7 +103,9 @@ export async function runUIComponent(context: libs.Context) {
 function cleanScriptsConfigJs(hasAngularChoice: boolean, context: libs.Context) {
     const angularScript = hasAngularChoice ? "'file2variable-cli src/angular.template.html -o src/angular-variables.ts --html-minify --base src',\n" : "";
     const compilerType = hasAngularChoice ? "ngc" : "tsc";
-    return `module.exports = {
+    return `const childProcess = require('child_process')
+
+module.exports = {
   build: [
     'rimraf dist/',
     {
@@ -137,7 +139,7 @@ function cleanScriptsConfigJs(hasAngularChoice: boolean, context: libs.Context) 
           reject(error)
         } else {
           if (stdout) {
-            reject(new Error('generated files doesn't match.'))
+            reject(new Error('generated files does not match.'))
           } else {
             resolve()
           }
