@@ -61,7 +61,7 @@ module.exports = {
       js: [
         'file2variable-cli *.template.html -o variables.ts --html-minify',
         'tsc',
-        'webpack --display-modules --config webpack.config.js'
+        'webpack --display-modules'
       ],
       css: [
         'lessc index.less > index.css',
@@ -69,13 +69,11 @@ module.exports = {
       ],
       clean: 'rimraf **/*.bundle-*.js *.bundle-*.css'
     },
-    {
-      version: 'rev-static --config rev-static.config.js',
-      sw: [
-        'sw-precache --config sw-precache.config.js --verbose',
-        'uglifyjs service-worker.js -o service-worker.bundle.js'
-      ]
-    }
+    'rev-static',
+    [
+      'sw-precache --config sw-precache.config.js --verbose',
+      'uglifyjs service-worker.js -o service-worker.bundle.js'
+    ]
   ],
   lint: {
     ts: \`tslint "*.ts"\`,
@@ -105,7 +103,14 @@ module.exports = {
     js: \`standard --fix "**/*.config.js"\`,
     less: \`stylelint --fix "**/*.less"\`
   },
-  watch: \`watch-then-execute "*.ts" "*.less" "*.template.html" --exclude "variables.ts" --script "npm run build"\`
+  watch: {
+    template: \`file2variable-cli *.template.html -o variables.ts --html-minify --watch\`,
+    tsc: \`tsc --watch\`,
+    webpack: \`webpack --watch\`,
+    less: \`watch-then-execute "index.less" --script "clean-scripts build[0].css"\`,
+    rev: \`rev-static --watch\`,
+    sw: \`watch-then-execute "vendor.bundle-*.js" "index.html" --script "clean-scripts build[2]"\`
+  }
 }
 `;
 }

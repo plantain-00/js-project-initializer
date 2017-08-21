@@ -126,7 +126,14 @@ module.exports = {
     less: \`stylelint --fix "static/**/*.less"\`
   },
   release: \`clean-release\`,
-  watch: \`watch-then-execute "src/**/*.ts" "static/**/*.ts" "static/*.less" "static/*.template.html" --exclude "static/variables.ts" --script "npm run build"\`
+  watch: {
+    back: \`tsc -p src/ --watch\`,
+    template: 'file2variable-cli static/*.template.html -o static/variables.ts --html-minify --base static --watch',
+    front: \`tsc -p static/ --watch\`,
+    webpack: \`webpack --config static/webpack.config.js --watch\`,
+    less: \`watch-then-execute "static/index.less" --script "clean-scripts build[0].front[0].css"\`,
+    rev: \`rev-static --config static/rev-static.config.js --watch\`
+  }
 }
 `;
 }

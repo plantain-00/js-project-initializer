@@ -103,15 +103,17 @@ export async function runUIComponent(context: libs.Context) {
 function cleanScriptsConfigJs(hasAngularChoice: boolean, context: libs.Context) {
     const angularScript = hasAngularChoice ? "'file2variable-cli src/angular.template.html -o src/angular-variables.ts --html-minify --base src',\n" : "";
     const compilerType = hasAngularChoice ? "ngc" : "tsc";
+    const angularWatchScript = hasAngularChoice ? "angular: 'file2variable-cli src/angular.template.html -o src/angular-variables.ts --html-minify --base src --watch',\n" : "";
     return `const childProcess = require('child_process')
 
 module.exports = {
   build: [
     'rimraf dist/',
+    'mkdirp dist/',
     {
       js: [
-        'file2variable-cli src/vue.template.html -o src/vue-variables.ts --html-minify --base src',${angularScript}
-        '${compilerType} -p src/',
+        'file2variable-cli src/vue.template.html -o src/vue-variables.ts --html-minify --base src',
+        ${angularScript}'${compilerType} -p src/',
         'tsc -p demo/',
         'webpack --display-modules --config demo/webpack.config.js'
       ],
@@ -153,7 +155,14 @@ module.exports = {
     less: \`stylelint --fix "src/**/*.less"\`
   },
   release: \`clean-release\`,
-  watch: \`watch-then-execute "src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx" "src/**/*.template.html" --exclude "src/compiled/**/*,src/*-variables.ts" --script "npm run build"\`
+  watch: {
+    vue: \`file2variable-cli src/vue.template.html -o src/vue-variables.ts --html-minify --base src --watch\`,
+    ${angularWatchScript}src: \`tsc -p src --watch\`,
+    demo: \`tsc -p demo --watch\`,
+    webpack: \`webpack --config demo/webpack.config.js --watch\`,
+    less: \`watch-then-execute "src/*.less" --script "clean-scripts build[2].css"\`,
+    rev: \`rev-static --config demo/rev-static.config.js --watch\`
+  }
 }
 `;
 }
