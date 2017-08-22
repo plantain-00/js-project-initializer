@@ -79,7 +79,7 @@ module.exports = {
     ts: \`tslint "*.ts"\`,
     js: \`standard "**/*.config.js"\`,
     less: \`stylelint "**/*.less"\`,
-    export: \`no-unused-export "*.ts"\`
+    export: \`no-unused-export "*.ts" "**/*.less"\`
   },
   test: [
     'tsc -p spec',

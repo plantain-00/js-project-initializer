@@ -130,7 +130,7 @@ module.exports = {
     ts: \`tslint "src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx"\`,
     js: \`standard "**/*.config.js"\`,
     less: \`stylelint "src/**/*.less"\`,
-    export: \`no-unused-export "src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx" --exclude "src/compiled/**/*"\`
+    export: \`no-unused-export "src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx" "src/**/*.less" --exclude "src/compiled/**/*"\`
   },
   test: [
     'tsc -p spec',

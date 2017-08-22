@@ -95,7 +95,7 @@ module.exports = {
     ts: \`tslint "src/**/*.ts" "static/**/*.ts"\`,
     js: \`standard "**/*.config.js"\`,
     less: \`stylelint "static/**/*.less"\`,
-    export: \`no-unused-export "src/**/*.ts" "static/**/*.ts"\`
+    export: \`no-unused-export "src/**/*.ts" "static/**/*.ts" "static/**/*.less"\`
   },
   test: {
     jasmine: [

@@ -84,7 +84,7 @@ module.exports = {
     ts: \`tslint "*.ts" "scripts/*.ts"\`,
     js: \`standard "**/*.config.js"\`,
     less: \`stylelint "scripts/*.less"\`,
-    export: \`no-unused-export "*.ts" "scripts/*.ts"\`
+    export: \`no-unused-export "*.ts" "scripts/*.ts" "scripts/*.less"\`
   },
   test: {
     jasmine: [
