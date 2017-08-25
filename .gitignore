@@ -39,3 +39,4 @@ jspm_packages
 # Custom
 dist
 .vscode
+spec/*.js
