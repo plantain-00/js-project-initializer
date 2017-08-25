@@ -20,6 +20,8 @@ export async function runFrontend(context: libs.Context) {
     await libs.exec(`npm i -DE clean-scripts`);
     await libs.exec(`npm i -DE no-unused-export`);
     await libs.exec(`npm i -DE watch-then-execute`);
+    await libs.exec(`npm i -DE http-server`);
+    await libs.exec(`npm i -DE prerender-js`);
 
     await libs.writeFile(`index.ts`, index);
     await libs.writeFile(`index.template.html`, indexTemplateHtml);
@@ -35,6 +37,7 @@ export async function runFrontend(context: libs.Context) {
     await libs.writeFile(".travis.yml", libs.getTravisYml(context));
     await libs.writeFile("appveyor.yml", libs.appveyorYml);
     await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
+    await libs.writeFile("prerender.html", "");
 
     await libs.writeFile(`spec/karma.config.js`, libs.specKarmaConfigJs);
     await libs.writeFile(`spec/tsconfig.json`, specTsconfig);
@@ -48,6 +51,7 @@ export async function runFrontend(context: libs.Context) {
             test: "clean-scripts test",
             fix: `clean-scripts fix`,
             watch: "clean-scripts watch",
+            prerender: "clean-scripts prerender",
         },
     };
 }
@@ -78,12 +82,12 @@ module.exports = {
   lint: {
     ts: \`tslint "*.ts"\`,
     js: \`standard "**/*.config.js"\`,
-    less: \`stylelint "**/*.less"\`,
-    export: \`no-unused-export "*.ts" "**/*.less"\`
+    less: \`stylelint "index.less"\`,
+    export: \`no-unused-export "*.ts" "index.less"\`
   },
   test: [
     'tsc -p spec',
-    'karma start spec/karma.config.js',
+    process.env.APPVEYOR ? 'echo "skip karma test"' : 'karma start spec/karma.config.js',
     () => new Promise((resolve, reject) => {
       childProcess.exec('git status -s', (error, stdout, stderr) => {
         if (error) {
@@ -101,7 +105,7 @@ module.exports = {
   fix: {
     ts: \`tslint "*.ts"\`,
     js: \`standard --fix "**/*.config.js"\`,
-    less: \`stylelint --fix "**/*.less"\`
+    less: \`stylelint --fix "index.less"\`
   },
   watch: {
     template: \`file2variable-cli *.template.html -o variables.ts --html-minify --watch\`,
@@ -110,7 +114,19 @@ module.exports = {
     less: \`watch-then-execute "index.less" --script "clean-scripts build[0].css"\`,
     rev: \`rev-static --watch\`,
     sw: \`watch-then-execute "vendor.bundle-*.js" "index.html" --script "clean-scripts build[2]"\`
-  }
+  },
+  prerender: [
+    async () => {
+      const { createServer } = require('http-server')
+      const { prerender } = require('prerender-js')
+      const server = createServer()
+      server.listen(8000)
+      await prerender('http://localhost:8000', '#prerender-container', 'prerender.html')
+      server.close()
+    },
+    'clean-scripts build[1]',
+    'clean-scripts build[2]'
+  ]
 }
 `;
 }
@@ -199,7 +215,9 @@ module.exports = {
 }
 `;
 
-const revStaticConfig = `module.exports = {
+const revStaticConfig = `const fs = require('fs')
+
+module.exports = {
   inputFiles: [
     '*.bundle.js',
     '*.bundle.css',
@@ -220,7 +238,10 @@ const revStaticConfig = `module.exports = {
   },
   sha: 256,
   customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + '-' + md5String + extensionName,
-  fileSize: 'file-size.json'
+  fileSize: 'file-size.json',
+  context: {
+    prerender: fs.readFileSync('prerender.html')
+  }
 }
 `;
 
@@ -232,7 +253,9 @@ function indexEjsHtml(context: libs.Context) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <%-inline.indexBundleCss %>
 <a class="github-fork-ribbon right-bottom" href="https://github.com/${context.author}/${context.repositoryName}" title="Fork me on GitHub" target="_blank" rel="noopener">Fork me on GitHub</a>
-<div id="container"></div>
+<div id="prerender-container">
+<div id="container"><%-context.prerender %></div>
+</div>
 <script src="<%=vendorBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.vendorBundleJs %>"></script>
 <%-inline.indexBundleJs %>
 `;

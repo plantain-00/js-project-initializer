@@ -210,6 +210,7 @@ test_script:
   - npm --version
   - npm run build
   - npm run lint
+  - npm run test
 
 build: off
 `;

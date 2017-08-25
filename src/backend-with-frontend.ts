@@ -23,6 +23,8 @@ export async function runBackendWithFrontend(context: libs.Context) {
     await libs.exec(`npm i -DE clean-scripts`);
     await libs.exec(`npm i -DE no-unused-export`);
     await libs.exec(`npm i -DE watch-then-execute`);
+    await libs.exec(`npm i -DE http-server`);
+    await libs.exec(`npm i -DE prerender-js`);
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
@@ -37,6 +39,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
     await libs.writeFile(`static/webpack.config.js`, staticWebpackConfig);
     await libs.writeFile(`static/rev-static.config.js`, staticRevStaticConfig);
     await libs.writeFile("static/index.ejs.html", staticIndexEjsHtml(context));
+    await libs.writeFile("static/prerender.html", "");
 
     await libs.prependFile("README.md", libs.readMeBadge(context));
     await libs.appendFile("README.md", readMeDocument(context));
@@ -62,6 +65,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
             fix: "clean-scripts fix",
             release: "clean-scripts release",
             watch: "clean-scripts watch",
+            prerender: "clean-scripts prerender",
         },
     };
 }
@@ -104,7 +108,7 @@ module.exports = {
     ],
     karma: [
       'tsc -p static_spec',
-      'karma start static_spec/karma.config.js'
+      process.env.APPVEYOR ? 'echo "skip karma test"' : 'karma start static_spec/karma.config.js'
     ],
     consistency: () => new Promise((resolve, reject) => {
       childProcess.exec('git status -s', (error, stdout, stderr) => {
@@ -133,7 +137,18 @@ module.exports = {
     webpack: \`webpack --config static/webpack.config.js --watch\`,
     less: \`watch-then-execute "static/index.less" --script "clean-scripts build[0].front[0].css"\`,
     rev: \`rev-static --config static/rev-static.config.js --watch\`
-  }
+  },
+  prerender: [
+    async () => {
+      const { createServer } = require('http-server')
+      const { prerender } = require('prerender-js')
+      const server = createServer()
+      server.listen(8000)
+      await prerender('http://localhost:8000/static', '#prerender-container', 'static/prerender.html')
+      server.close()
+    },
+    'clean-scripts build.front[1]'
+  ]
 }
 `;
 }
@@ -235,7 +250,9 @@ module.exports = {
 }
 `;
 
-const staticRevStaticConfig = `module.exports = {
+const staticRevStaticConfig = `const fs = require('fs')
+
+module.exports = {
   inputFiles: [
     'static/*.bundle.js',
     'static/*.bundle.css',
@@ -254,7 +271,10 @@ const staticRevStaticConfig = `module.exports = {
   sha: 256,
   customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + '-' + md5String + extensionName,
   base: 'static',
-  fileSize: 'static/file-size.json'
+  fileSize: 'static/file-size.json',
+  context: {
+    prerender: fs.readFileSync('static/prerender.html')
+  }
 }
 `;
 
@@ -266,7 +286,9 @@ function staticIndexEjsHtml(context: libs.Context) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <%-inline.indexBundleCss %>
 <a class="github-fork-ribbon right-bottom" href="https://github.com/${context.author}/${context.repositoryName}" title="Fork me on GitHub" target="_blank" rel="noopener">Fork me on GitHub</a>
-<div id="container"></div>
+<div id="prerender-container">
+<div id="container"><%-context.prerender %></div>
+</div>
 <script src="<%=vendorBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.vendorBundleJs %>"></script>
 <%-inline.indexBundleJs %>
 `;
