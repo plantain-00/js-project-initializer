@@ -133,6 +133,7 @@ dist
 **/*.css
 !*.config.js
 !**/*-*.js
+!**/*.index.bundle.js
 !**/*-*.css
 service-worker.js
 !*.index.bundle.js

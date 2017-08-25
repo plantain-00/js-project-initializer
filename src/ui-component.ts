@@ -183,14 +183,11 @@ const cleanReleaseConfigJs = `module.exports = {
 
 const demoRevStaticConfig = `module.exports = {
   inputFiles: [
-    'demo/**/index.bundle-*.js',
-    'demo/**/*.index.bundle-*.js',
+    'demo/**/index.bundle.js',
     'demo/*.bundle.css',
     'demo/**/index.ejs.html'
   ],
   revisedFiles: [
-    'demo/**/index.bundle-*.js',
-    'demo/**/*.index.bundle-*.js'
   ],
   outputFiles: file => file.replace('.ejs', ''),
   ejsOptions: {
@@ -487,7 +484,7 @@ module.exports = [
     entry: './demo/vue/index',
     output: {
       path: path.resolve(__dirname, 'vue'),
-      filename: 'index.bundle-[hash].js'
+      filename: 'index.bundle.js'
     },
     plugins,
     resolve
@@ -496,7 +493,7 @@ module.exports = [
     entry: './demo/react/index',
     output: {
       path: path.resolve(__dirname, 'react'),
-      filename: 'index.bundle-[hash].js'
+      filename: 'index.bundle.js'
     },
     plugins,
     resolve
@@ -505,7 +502,7 @@ module.exports = [
     entry: './demo/angular/index',
     output: {
       path: path.resolve(__dirname, 'angular'),
-      filename: 'index.bundle-[hash].js'
+      filename: 'index.bundle.js'
     },
     plugins,
     resolve
@@ -541,7 +538,7 @@ module.exports = [
     entry: './demo/vue/index',
     output: {
       path: path.resolve(__dirname, 'vue'),
-      filename: 'index.bundle-[hash].js'
+      filename: 'index.bundle.js'
     },
     plugins,
     resolve
@@ -550,7 +547,7 @@ module.exports = [
     entry: './demo/react/index',
     output: {
       path: path.resolve(__dirname, 'react'),
-      filename: 'index.bundle-[hash].js'
+      filename: 'index.bundle.js'
     },
     plugins,
     resolve
