@@ -92,7 +92,8 @@ const tsconfigNodejs = `{
     "compilerOptions": {
         "target": "esnext",
         "outDir": "../dist/nodejs",
-        "module": "commonjs"
+        "module": "commonjs",
+        "newLine": "LF"
     }
 }
 `;
@@ -103,7 +104,8 @@ const tsconfigBrowser = `{
         "target": "es5",
         "outDir": "../dist/browser",
         "module": "esnext",
-        "moduleResolution": "node"
+        "moduleResolution": "node",
+        "newLine": "LF"
     }
 }
 `;
@@ -160,7 +162,8 @@ const tsconfigBase = `{
         "strict": true,
         "noUnusedLocals": true,
         "noImplicitReturns": true,
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "newLine": "LF"
     }
 }`;
 
@@ -186,6 +189,7 @@ const specTsconfig = `{
         "importHelpers": true,
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
-        "downlevelIteration": true
+        "downlevelIteration": true,
+        "newLine": "LF"
     }
 }`;

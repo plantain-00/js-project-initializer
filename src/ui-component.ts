@@ -392,7 +392,8 @@ const srcTsconfig = `{
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
         "downlevelIteration": true,
-        "emitDecoratorMetadata": true
+        "emitDecoratorMetadata": true,
+        "newLine": "LF"
     }
 }`;
 
@@ -417,7 +418,8 @@ const demoTsconfig = `{
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
         "downlevelIteration": true,
-        "emitDecoratorMetadata": true
+        "emitDecoratorMetadata": true,
+        "newLine": "LF"
     }
 }`;
 
@@ -436,7 +438,8 @@ const specTsconfig = `{
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
         "downlevelIteration": true,
-        "emitDecoratorMetadata": true
+        "emitDecoratorMetadata": true,
+        "newLine": "LF"
     }
 }`;
 

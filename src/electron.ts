@@ -189,7 +189,8 @@ const tsconfig = `{
         "strict": true,
         "noUnusedLocals": true,
         "noImplicitReturns": true,
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "newLine": "LF"
     },
     "exclude": [
         "scripts/",
@@ -234,7 +235,8 @@ const scriptsTsconfig = `{
         "jsx": "react",
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
-        "downlevelIteration": true
+        "downlevelIteration": true,
+        "newLine": "LF"
     }
 }
 `;
@@ -289,7 +291,8 @@ const staticSpecTsconfig = `{
         "jsx": "react",
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
-        "downlevelIteration": true
+        "downlevelIteration": true,
+        "newLine": "LF"
     }
 }`;
 
@@ -301,6 +304,7 @@ const specTsconfig = `{
         "strict": true,
         "noUnusedLocals": true,
         "noImplicitReturns": true,
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "newLine": "LF"
     }
 }`;

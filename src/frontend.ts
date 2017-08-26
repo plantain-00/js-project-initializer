@@ -161,7 +161,8 @@ const tsconfig = `{
         "jsx": "react",
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
-        "downlevelIteration": true
+        "downlevelIteration": true,
+        "newLine": "LF"
     }
 }`;
 
@@ -287,6 +288,7 @@ const specTsconfig = `{
         "jsx": "react",
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
-        "downlevelIteration": true
+        "downlevelIteration": true,
+        "newLine": "LF"
     }
 }`;

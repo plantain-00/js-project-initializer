@@ -119,7 +119,8 @@ const srcTsconfig = `{
         "strict": true,
         "noUnusedLocals": true,
         "noImplicitReturns": true,
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "newLine": "LF"
     }
 }`;
 
@@ -131,6 +132,7 @@ const specTsconfig = `{
         "strict": true,
         "noUnusedLocals": true,
         "noImplicitReturns": true,
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "newLine": "LF"
     }
 }`;
