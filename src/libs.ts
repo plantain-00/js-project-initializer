@@ -156,6 +156,7 @@ export const stylelint = `{
 
 export function getTravisYml(context: Context) {
     return context.hasKarma ? `language: node_js
+dist: trusty
 node_js:
   - "8"
 before_install:
@@ -175,8 +176,10 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-4.8
+      - libnss3
   firefox: latest
 ` : `language: node_js
+dist: trusty
 node_js:
   - "8"
 before_install:
@@ -194,6 +197,7 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-4.8
+      - libnss3
 `;
 }
 

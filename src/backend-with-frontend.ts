@@ -23,8 +23,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
     await libs.exec(`npm i -DE clean-scripts`);
     await libs.exec(`npm i -DE no-unused-export`);
     await libs.exec(`npm i -DE watch-then-execute`);
-    await libs.exec(`npm i -DE http-server`);
-    await libs.exec(`npm i -DE prerender-js`);
+    await libs.exec(`npm i -DE puppeteer`);
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
@@ -92,7 +91,21 @@ module.exports = {
         ],
         clean: 'rimraf static/**/*.bundle-*.js static/**/*.bundle-*.css',
       }
-      'rev-static --config static/rev-static.config.js'
+      'rev-static --config static/rev-static.config.js',
+      async () => {
+        const puppeteer = require('puppeteer')
+        const server = childProcess.exec('node ./dist/index.js')
+        server.stdout.pipe(process.stdout)
+        server.stderr.pipe(process.stderr)
+        const browser = await puppeteer.launch()
+        const page = await browser.newPage()
+        await page.waitFor(1000)
+        await page.goto('http://localhost:8000')
+        await page.waitFor(1000)
+        await page.screenshot({ path: 'static/screenshot.png', fullPage: true })
+        server.kill()
+        browser.close()
+      }
     ]
   },
   lint: {
@@ -110,19 +123,22 @@ module.exports = {
       'tsc -p static_spec',
       process.env.APPVEYOR ? 'echo "skip karma test"' : 'karma start static_spec/karma.config.js'
     ],
-    consistency: () => new Promise((resolve, reject) => {
-      childProcess.exec('git status -s', (error, stdout, stderr) => {
-        if (error) {
-          reject(error)
-        } else {
-          if (stdout) {
-            reject(new Error('generated files does not match.'))
+    consistency: [
+      'git checkout static/screenshot.png',
+      () => new Promise((resolve, reject) => {
+        childProcess.exec('git status -s', (error, stdout, stderr) => {
+          if (error) {
+            reject(error)
           } else {
-            resolve()
+            if (stdout) {
+              reject(new Error('generated files does not match.'))
+            } else {
+              resolve()
+            }
           }
-        }
-      }).stdout.pipe(process.stdout)
-    })
+        }).stdout.pipe(process.stdout)
+      })
+    ]
   },
   fix: {
     ts: \`tslint --fix "src/**/*.ts" "static/**/*.ts"\`,
@@ -140,12 +156,23 @@ module.exports = {
   },
   prerender: [
     async () => {
-      const { createServer } = require('http-server')
-      const { prerender } = require('prerender-js')
-      const server = createServer()
-      server.listen(8000)
-      await prerender('http://localhost:8000/static', '#prerender-container', 'static/prerender.html')
-      server.close()
+      const puppeteer = require('puppeteer')
+      const fs = require('fs')
+      const server = childProcess.exec('node ./dist/index.js')
+      server.stdout.pipe(process.stdout)
+      server.stderr.pipe(process.stderr)
+      const browser = await puppeteer.launch()
+      const page = await browser.newPage()
+      await page.waitFor(1000)
+      await page.goto('http://localhost:8000')
+      await page.waitFor(1000)
+      const content = await page.evaluate(() => {
+        const element = document.querySelector('#prerender-container')
+        return element ? element.innerHTML : ''
+      })
+      fs.writeFileSync('static/prerender.html', content)
+      server.kill()
+      browser.close()
     },
     'clean-scripts build.front[1]'
   ]

@@ -21,7 +21,7 @@ export async function runFrontend(context: libs.Context) {
     await libs.exec(`npm i -DE no-unused-export`);
     await libs.exec(`npm i -DE watch-then-execute`);
     await libs.exec(`npm i -DE http-server`);
-    await libs.exec(`npm i -DE prerender-js`);
+    await libs.exec(`npm i -DE puppeteer`);
 
     await libs.writeFile(`index.ts`, index);
     await libs.writeFile(`index.template.html`, indexTemplateHtml);
@@ -77,7 +77,19 @@ module.exports = {
     [
       'sw-precache --config sw-precache.config.js --verbose',
       'uglifyjs service-worker.js -o service-worker.bundle.js'
-    ]
+    ],
+    async () => {
+      const { createServer } = require('http-server')
+      const puppeteer = require('puppeteer')
+      const server = createServer()
+      server.listen(8000)
+      const browser = await puppeteer.launch()
+      const page = await browser.newPage()
+      await page.goto('http://localhost:8000')
+      await page.screenshot({ path: 'screenshot.png', fullPage: true })
+      server.close()
+      browser.close()
+    }
   ],
   lint: {
     ts: \`tslint "*.ts"\`,
@@ -88,6 +100,7 @@ module.exports = {
   test: [
     'tsc -p spec',
     process.env.APPVEYOR ? 'echo "skip karma test"' : 'karma start spec/karma.config.js',
+    'git checkout screenshot.png',
     () => new Promise((resolve, reject) => {
       childProcess.exec('git status -s', (error, stdout, stderr) => {
         if (error) {
@@ -118,11 +131,22 @@ module.exports = {
   prerender: [
     async () => {
       const { createServer } = require('http-server')
-      const { prerender } = require('prerender-js')
+      const puppeteer = require('puppeteer')
+      const fs = require('fs')
       const server = createServer()
       server.listen(8000)
-      await prerender('http://localhost:8000', '#prerender-container', 'prerender.html')
+      const browser = await puppeteer.launch()
+      const page = await browser.newPage()
+      await page.waitFor(1000)
+      await page.goto('http://localhost:8000')
+      await page.waitFor(1000)
+      const content = await page.evaluate(() => {
+        const element = document.querySelector('#prerender-container')
+        return element ? element.innerHTML : ''
+      })
+      fs.writeFileSync('prerender.html', content)
       server.close()
+      browser.close()
     },
     'clean-scripts build[1]',
     'clean-scripts build[2]'
