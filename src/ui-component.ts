@@ -137,6 +137,7 @@ module.exports = {
         const page = await browser.newPage()
         for (const type of ['vue', 'react'${hasAngularChoice ? ", 'angular'" : ""}]) {
           await page.goto(\`http://localhost:8000/demo/\${type}\`)
+          await page.waitFor(1000)
           await page.screenshot({ path: \`demo/\${type}/screenshot.png\`, fullPage: true })
           const content = await page.content()
           fs.writeFileSync(\`demo/\${type}/screenshot-src.html\`, content)
