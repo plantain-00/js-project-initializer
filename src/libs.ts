@@ -123,7 +123,8 @@ export const tslint = `{
         "no-unused-expression": [
             true,
             "allow-new"
-        ]
+        ],
+        "no-submodule-imports": false
     }
 }`;
 
