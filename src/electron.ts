@@ -93,7 +93,7 @@ module.exports = {
     ],
     karma: [
       'tsc -p static_spec',
-      process.env.APPVEYOR ? 'echo "skip karma test"' : 'karma start static_spec/karma.config.js'
+      'karma start static_spec/karma.config.js'
     ],
     consistence: () => new Promise((resolve, reject) => {
       childProcess.exec('git status -s', (error, stdout, stderr) => {

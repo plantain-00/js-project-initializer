@@ -157,7 +157,7 @@ module.exports = {
   },
   test: [
     'tsc -p spec',
-    process.env.APPVEYOR ? 'echo "skip karma test"' : 'karma start spec/karma.config.js',
+    'karma start spec/karma.config.js',
     'git checkout demo/vue/screenshot.png',
     'git checkout demo/react/screenshot.png',${angularCheckoutScreenshot}
     () => new Promise((resolve, reject) => {
