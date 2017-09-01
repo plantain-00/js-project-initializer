@@ -1,5 +1,4 @@
 import * as libs from "./libs";
-import { ProjectKind, printInConsole } from "./libs";
 import { runUIComponent } from "./ui-component";
 import { runCLI } from "./cli";
 import { runLibrary } from "./library";
@@ -38,25 +37,25 @@ async function run() {
     } = {};
 
     switch (kind) {
-        case ProjectKind.UIComponent:
+        case libs.ProjectKind.UIComponent:
             newPackageJson = await runUIComponent(context);
             break;
-        case ProjectKind.CLI:
+        case libs.ProjectKind.CLI:
             newPackageJson = await runCLI(context);
             break;
-        case ProjectKind.library:
+        case libs.ProjectKind.library:
             newPackageJson = await runLibrary(context);
             break;
-        case ProjectKind.backend:
+        case libs.ProjectKind.backend:
             newPackageJson = await runBackend(context);
             break;
-        case ProjectKind.frontend:
+        case libs.ProjectKind.frontend:
             newPackageJson = await runFrontend(context);
             break;
-        case ProjectKind.backendWithFrontend:
+        case libs.ProjectKind.backendWithFrontend:
             newPackageJson = await runBackendWithFrontend(context);
             break;
-        case ProjectKind.electron:
+        case libs.ProjectKind.electron:
             newPackageJson = await runElectron(context);
             break;
     }
@@ -76,9 +75,9 @@ async function run() {
 }
 
 run().then(() => {
-    printInConsole("initialize repository success.");
+    libs.printInConsole("initialize repository success.");
 }).catch(error => {
-    printInConsole(error);
+    libs.printInConsole(error);
     process.exit(1);
 });
 
@@ -113,16 +112,16 @@ async function selectProjectKind() {
         name: "projectKind",
         message: "Which kind of project?",
         choices: [
-            ProjectKind.backend,
-            ProjectKind.backendWithFrontend,
-            ProjectKind.frontend,
-            ProjectKind.CLI,
-            ProjectKind.library,
-            ProjectKind.UIComponent,
-            ProjectKind.electron,
+            libs.ProjectKind.backend,
+            libs.ProjectKind.backendWithFrontend,
+            libs.ProjectKind.frontend,
+            libs.ProjectKind.CLI,
+            libs.ProjectKind.library,
+            libs.ProjectKind.UIComponent,
+            libs.ProjectKind.electron,
         ],
     });
-    return projectKindAnswer.projectKind as ProjectKind;
+    return projectKindAnswer.projectKind as libs.ProjectKind;
 }
 
 const gitignore = `
