@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/plantain-00/js-project-initializer#readme",
   "dependencies": {
-    "inquirer": "3.2.2",
+    "inquirer": "3.2.3",
     "mkdirp": "0.5.1",
     "uppercamelcase": "3.0.0"
   },
@@ -43,11 +43,11 @@
     "clean-release": "1.3.4",
     "clean-scripts": "1.2.4",
     "jasmine": "2.8.0",
-    "no-unused-export": "1.2.3",
+    "no-unused-export": "1.2.6",
     "rimraf": "2.6.1",
     "standard": "10.0.3",
     "tslint": "5.7.0",
-    "typescript": "2.4.2"
+    "typescript": "2.5.2"
   },
   "preferGlobal": true
 }

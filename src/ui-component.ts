@@ -108,6 +108,9 @@ function cleanScriptsConfigJs(hasAngularChoice: boolean, context: libs.Context) 
     const angularCheckoutScreenshot = hasAngularChoice ? `
     'git checkout demo/angular/screenshot.png',` : "";
     return `const childProcess = require('child_process')
+const util = require('util')
+
+const execAsync = util.promisify(childProcess.exec)
 
 module.exports = {
   build: [
@@ -160,19 +163,13 @@ module.exports = {
     'karma start spec/karma.config.js',
     'git checkout demo/vue/screenshot.png',
     'git checkout demo/react/screenshot.png',${angularCheckoutScreenshot}
-    () => new Promise((resolve, reject) => {
-      childProcess.exec('git status -s', (error, stdout, stderr) => {
-        if (error) {
-          reject(error)
-        } else {
-          if (stdout) {
-            reject(new Error('generated files does not match.'))
-          } else {
-            resolve()
-          }
-        }
-      }).stdout.pipe(process.stdout)
-    })
+    async () => {
+      const { stdout } = await execAsync('git status -s')
+      if (stdout) {
+        console.log(stdout)
+        throw new Error(\`generated files doesn't match.\`)
+      }
+    }
   ],
   fix: {
     ts: \`tslint --fix "src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx"\`,
@@ -587,6 +584,7 @@ module.exports = [
 function demoVueIndex(context: libs.Context) {
     return `import Vue from "vue";
 import Component from "vue-class-component";
+// tslint:disable-next-line:no-duplicate-imports
 import "../../dist/vue";
 import { ${context.componentTypeName}Data } from "../../dist/vue";
 
@@ -658,11 +656,9 @@ import "core-js/es7/reflect";
 import "zone.js/dist/zone";
 
 import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
-import { enableProdMode } from "@angular/core";
+import { enableProdMode, Component, NgModule } from "@angular/core";
 
 enableProdMode();
-
-import { Component } from "@angular/core";
 
 @Component({
     selector: "app",
@@ -679,7 +675,6 @@ class MainComponent {
     data: ${context.componentTypeName}Data;
 }
 
-import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 import { ${context.componentTypeName}Module, ${context.componentTypeName}Data } from "../../dist/angular";
