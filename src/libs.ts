@@ -165,7 +165,6 @@ before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
 script:
-  - git checkout package-lock.json
   - npm run build
   - npm run lint
   - npm run test
@@ -186,7 +185,6 @@ node_js:
 before_install:
   - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
 script:
-  - git checkout package-lock.json
   - npm run build
   - npm run lint
   - npm run test
@@ -207,8 +205,7 @@ export const appveyorYml = `environment:
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - npm install
-  - git checkout package-lock.json
+  - yarn install --pure-lockfile
 
 test_script:
   - node --version
