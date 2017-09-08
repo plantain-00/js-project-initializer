@@ -7,24 +7,24 @@ export async function runBackendWithFrontend(context: libs.Context) {
     await libs.mkdir("static");
     await libs.mkdir("static_spec");
 
-    await libs.exec(`npm i -DE @types/node`);
-    await libs.exec(`npm i -DE tslib`);
-    await libs.exec(`npm i -DE github-fork-ribbon-css`);
-    await libs.exec(`npm i -DE less`);
-    await libs.exec(`npm i -DE stylelint stylelint-config-standard`);
-    await libs.exec(`npm i -DE vue vue-class-component`);
-    await libs.exec(`npm i -DE clean-css-cli`);
-    await libs.exec(`npm i -DE file2variable-cli`);
-    await libs.exec(`npm i -DE webpack`);
-    await libs.exec(`npm i -DE rev-static`);
-    await libs.exec(`npm i -DE standard`);
-    await libs.exec(`npm i -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
-    await libs.exec(`npm i -DE clean-release`);
-    await libs.exec(`npm i -DE clean-scripts`);
-    await libs.exec(`npm i -DE no-unused-export`);
-    await libs.exec(`npm i -DE watch-then-execute`);
-    await libs.exec(`npm i -DE puppeteer`);
-    await libs.exec(`npm i -DE js-beautify`);
+    await libs.exec(`yarn add -DE @types/node`);
+    await libs.exec(`yarn add -DE tslib`);
+    await libs.exec(`yarn add -DE github-fork-ribbon-css`);
+    await libs.exec(`yarn add -DE less`);
+    await libs.exec(`yarn add -DE stylelint stylelint-config-standard`);
+    await libs.exec(`yarn add -DE vue vue-class-component`);
+    await libs.exec(`yarn add -DE clean-css-cli`);
+    await libs.exec(`yarn add -DE file2variable-cli`);
+    await libs.exec(`yarn add -DE webpack`);
+    await libs.exec(`yarn add -DE rev-static`);
+    await libs.exec(`yarn add -DE standard`);
+    await libs.exec(`yarn add -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
+    await libs.exec(`yarn add -DE clean-release`);
+    await libs.exec(`yarn add -DE clean-scripts`);
+    await libs.exec(`yarn add -DE no-unused-export`);
+    await libs.exec(`yarn add -DE watch-then-execute`);
+    await libs.exec(`yarn add -DE puppeteer`);
+    await libs.exec(`yarn add -DE js-beautify`);
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
@@ -188,7 +188,7 @@ function readMeDocument(context: libs.Context) {
     return `#### install
 
 \`\`\`bash
-git clone https://github.com/${context.author}/${context.repositoryName}-release.git . --depth=1 && npm i --production
+git clone https://github.com/${context.author}/${context.repositoryName}-release.git . --depth=1 && yarn add --production
 \`\`\`
 `;
 }

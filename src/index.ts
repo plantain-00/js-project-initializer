@@ -12,21 +12,21 @@ async function run() {
 
     const kind = await selectProjectKind();
 
-    await libs.exec(`npm i -DE typescript`);
+    await libs.exec(`yarn add -DE typescript`);
 
     await libs.appendFile(".gitignore", gitignore);
 
     await libs.mkdir(".vscode");
     await libs.writeFile(".vscode/settings.json", vscodeSetting);
 
-    await libs.exec(`npm i -DE tslint`);
+    await libs.exec(`yarn add -DE tslint`);
     await libs.writeFile("tslint.json", libs.tslint);
 
     await libs.mkdir(".github");
     await libs.writeFile(".github/ISSUE_TEMPLATE.md", issueTemplate);
     await libs.writeFile(".github/PULL_REQUEST_TEMPLATE.md", pullRequestTemplate);
 
-    await libs.exec(`npm i -DE rimraf`);
+    await libs.exec(`yarn add -DE rimraf`);
 
     let newPackageJson: {
         scripts?: { [key: string]: string };

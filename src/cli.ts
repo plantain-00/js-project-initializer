@@ -6,14 +6,14 @@ export async function runCLI(context: libs.Context) {
     await libs.mkdir("src");
     await libs.mkdir("bin");
 
-    await libs.exec(`npm i -DE @types/node`);
-    await libs.exec(`npm i -DE jasmine @types/jasmine`);
-    await libs.exec(`npm i -DE standard`);
-    await libs.exec(`npm i -SE minimist`);
-    await libs.exec(`npm i -DE @types/minimist`);
-    await libs.exec(`npm i -DE clean-release`);
-    await libs.exec(`npm i -DE clean-scripts`);
-    await libs.exec(`npm i -DE no-unused-export`);
+    await libs.exec(`yarn add -DE @types/node`);
+    await libs.exec(`yarn add -DE jasmine @types/jasmine`);
+    await libs.exec(`yarn add -DE standard`);
+    await libs.exec(`yarn add -SE minimist`);
+    await libs.exec(`yarn add -DE @types/minimist`);
+    await libs.exec(`yarn add -DE clean-release`);
+    await libs.exec(`yarn add -DE clean-scripts`);
+    await libs.exec(`yarn add -DE no-unused-export`);
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
@@ -108,7 +108,7 @@ function readMeDocument(context: libs.Context) {
     return `
 #### install
 
-\`npm i ${context.repositoryName} -g\`
+\`yarn add ${context.repositoryName} -g\`
 
 #### usage
 

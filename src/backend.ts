@@ -3,13 +3,13 @@ import * as libs from "./libs";
 export async function runBackend(context: libs.Context) {
     await libs.mkdir("src");
 
-    await libs.exec(`npm i -DE @types/node`);
-    await libs.exec(`npm i -DE jasmine @types/jasmine`);
-    await libs.exec(`npm i -DE clean-release`);
-    await libs.exec(`npm i -DE standard`);
-    await libs.exec(`npm i -DE clean-scripts`);
-    await libs.exec(`npm i -DE no-unused-export`);
-    await libs.exec(`npm i -DE watch-then-execute`);
+    await libs.exec(`yarn add -DE @types/node`);
+    await libs.exec(`yarn add -DE jasmine @types/jasmine`);
+    await libs.exec(`yarn add -DE clean-release`);
+    await libs.exec(`yarn add -DE standard`);
+    await libs.exec(`yarn add -DE clean-scripts`);
+    await libs.exec(`yarn add -DE no-unused-export`);
+    await libs.exec(`yarn add -DE watch-then-execute`);
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
@@ -94,7 +94,7 @@ function readMeDocument(context: libs.Context) {
   return `#### install
 
 \`\`\`bash
-git clone https://github.com/${context.author}/${context.repositoryName}-release.git . --depth=1 && npm i --production
+git clone https://github.com/${context.author}/${context.repositoryName}-release.git . --depth=1 && yarn add --production
 \`\`\`
 `;
 }

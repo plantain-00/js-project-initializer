@@ -6,22 +6,22 @@ export async function runElectron(context: libs.Context) {
     await libs.mkdir("scripts");
     await libs.mkdir("static_spec");
 
-    await libs.exec(`npm i -SE electron`);
-    await libs.exec(`npm i -DE electron-packager`);
-    await libs.exec(`npm i -DE @types/node`);
-    await libs.exec(`npm i -DE tslib`);
-    await libs.exec(`npm i -DE less`);
-    await libs.exec(`npm i -DE stylelint stylelint-config-standard`);
-    await libs.exec(`npm i -DE vue vue-class-component`);
-    await libs.exec(`npm i -DE clean-css-cli`);
-    await libs.exec(`npm i -DE file2variable-cli`);
-    await libs.exec(`npm i -DE webpack`);
-    await libs.exec(`npm i -DE standard`);
-    await libs.exec(`npm i -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
-    await libs.exec(`npm i -DE clean-release`);
-    await libs.exec(`npm i -DE clean-scripts`);
-    await libs.exec(`npm i -DE no-unused-export`);
-    await libs.exec(`npm i -DE watch-then-execute`);
+    await libs.exec(`yarn add -SE electron`);
+    await libs.exec(`yarn add -DE electron-packager`);
+    await libs.exec(`yarn add -DE @types/node`);
+    await libs.exec(`yarn add -DE tslib`);
+    await libs.exec(`yarn add -DE less`);
+    await libs.exec(`yarn add -DE stylelint stylelint-config-standard`);
+    await libs.exec(`yarn add -DE vue vue-class-component`);
+    await libs.exec(`yarn add -DE clean-css-cli`);
+    await libs.exec(`yarn add -DE file2variable-cli`);
+    await libs.exec(`yarn add -DE webpack`);
+    await libs.exec(`yarn add -DE standard`);
+    await libs.exec(`yarn add -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
+    await libs.exec(`yarn add -DE clean-release`);
+    await libs.exec(`yarn add -DE clean-scripts`);
+    await libs.exec(`yarn add -DE no-unused-export`);
+    await libs.exec(`yarn add -DE watch-then-execute`);
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
@@ -134,7 +134,7 @@ function cleanReleaseConfigJs(context: libs.Context) {
   exclude: [
   ],
   postScript: [
-    'cd [dir] && npm i --production',
+    'cd [dir] && yarn add --production',
     'electron-packager [dir] "${context.repositoryName}" --out=dist --arch=x64 --version=1.2.1 --app-version="1.0.8" --platform=darwin --ignore="dist/"',
     'electron-packager [dir] "${context.repositoryName}" --out=dist --arch=x64 --version=1.2.1 --app-version="1.0.8" --platform=win32 --ignore="dist/"'
   ]

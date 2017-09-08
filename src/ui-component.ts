@@ -27,28 +27,28 @@ export async function runUIComponent(context: libs.Context) {
     }
     await libs.mkdir(`spec`);
 
-    await libs.exec(`npm i -SE tslib`);
-    await libs.exec(`npm i -DE github-fork-ribbon-css`);
-    await libs.exec(`npm i -DE less`);
-    await libs.exec(`npm i -DE stylelint stylelint-config-standard`);
-    await libs.exec(`npm i -DE clean-css-cli`);
-    await libs.exec(`npm i -DE file2variable-cli`);
-    await libs.exec(`npm i -DE rev-static`);
-    await libs.exec(`npm i -DE clean-release`);
-    await libs.exec(`npm i -DE webpack`);
-    await libs.exec(`npm i -DE vue vue-class-component`);
-    await libs.exec(`npm i -DE react react-dom`);
-    await libs.exec(`npm i -DE @types/react @types/react-dom`);
+    await libs.exec(`yarn add -SE tslib`);
+    await libs.exec(`yarn add -DE github-fork-ribbon-css`);
+    await libs.exec(`yarn add -DE less`);
+    await libs.exec(`yarn add -DE stylelint stylelint-config-standard`);
+    await libs.exec(`yarn add -DE clean-css-cli`);
+    await libs.exec(`yarn add -DE file2variable-cli`);
+    await libs.exec(`yarn add -DE rev-static`);
+    await libs.exec(`yarn add -DE clean-release`);
+    await libs.exec(`yarn add -DE webpack`);
+    await libs.exec(`yarn add -DE vue vue-class-component`);
+    await libs.exec(`yarn add -DE react react-dom`);
+    await libs.exec(`yarn add -DE @types/react @types/react-dom`);
     if (hasAngularChoice) {
-        await libs.exec(`npm i -DE @angular/common @angular/compiler @angular/core @angular/forms @angular/platform-browser @angular/platform-browser-dynamic @angular/compiler-cli core-js rxjs zone.js`);
+        await libs.exec(`yarn add -DE @angular/common @angular/compiler @angular/core @angular/forms @angular/platform-browser @angular/platform-browser-dynamic @angular/compiler-cli core-js rxjs zone.js`);
     }
-    await libs.exec(`npm i -DE standard`);
-    await libs.exec(`npm i -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
-    await libs.exec(`npm i -DE clean-scripts`);
-    await libs.exec(`npm i -DE mkdirp`);
-    await libs.exec(`npm i -DE no-unused-export`);
-    await libs.exec(`npm i -DE watch-then-execute`);
-    await libs.exec(`npm i -DE js-beautify`);
+    await libs.exec(`yarn add -DE standard`);
+    await libs.exec(`yarn add -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
+    await libs.exec(`yarn add -DE clean-scripts`);
+    await libs.exec(`yarn add -DE mkdirp`);
+    await libs.exec(`yarn add -DE no-unused-export`);
+    await libs.exec(`yarn add -DE watch-then-execute`);
+    await libs.exec(`yarn add -DE js-beautify`);
 
     await libs.writeFile(`src/tsconfig.json`, srcTsconfig);
     await libs.writeFile(`src/${context.componentShortName}.less`, srcLess(context));
@@ -342,7 +342,7 @@ the online demo: https://${context.author}.github.io/${context.repositoryName}/d
 
 #### install
 
-\`npm i ${context.repositoryName}\`
+\`yarn add ${context.repositoryName}\`
 
 #### link css
 
@@ -352,7 +352,7 @@ the online demo: https://${context.author}.github.io/${context.repositoryName}/d
 
 #### vuejs component demo
 
-\`npm i vue vue-class-component\`
+\`yarn add vue vue-class-component\`
 
 \`\`\`ts
 import "${context.repositoryName}/vue";
