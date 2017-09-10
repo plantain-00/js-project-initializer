@@ -27,7 +27,7 @@ export async function runUIComponent(context: libs.Context) {
     }
     await libs.mkdir(`spec`);
 
-    await libs.exec(`yarn add -SE tslib`);
+    await libs.exec(`yarn add -E tslib@1`);
     await libs.exec(`yarn add -DE github-fork-ribbon-css`);
     await libs.exec(`yarn add -DE less`);
     await libs.exec(`yarn add -DE stylelint stylelint-config-standard`);
@@ -49,6 +49,8 @@ export async function runUIComponent(context: libs.Context) {
     await libs.exec(`yarn add -DE no-unused-export`);
     await libs.exec(`yarn add -DE watch-then-execute`);
     await libs.exec(`yarn add -DE js-beautify`);
+    await libs.exec(`yarn add -DE http-server`);
+    await libs.exec(`yarn add -DE puppeteer`);
 
     await libs.writeFile(`src/tsconfig.json`, srcTsconfig);
     await libs.writeFile(`src/${context.componentShortName}.less`, srcLess(context));
@@ -102,9 +104,9 @@ export async function runUIComponent(context: libs.Context) {
 }
 
 function cleanScriptsConfigJs(hasAngularChoice: boolean, context: libs.Context) {
-    const angularScript = hasAngularChoice ? "'file2variable-cli src/angular.template.html -o src/angular-variables.ts --html-minify --base src',\n" : "";
+    const angularScript = hasAngularChoice ? "        'file2variable-cli src/angular.template.html -o src/angular-variables.ts --html-minify --base src',\n" : "";
     const compilerType = hasAngularChoice ? "ngc" : "tsc";
-    const angularWatchScript = hasAngularChoice ? "angular: 'file2variable-cli src/angular.template.html -o src/angular-variables.ts --html-minify --base src --watch',\n" : "";
+    const angularWatchScript = hasAngularChoice ? "    angular: 'file2variable-cli src/angular.template.html -o src/angular-variables.ts --html-minify --base src --watch',\n" : "";
     const angularCheckoutScreenshot = hasAngularChoice ? `
     'git checkout demo/angular/screenshot.png',` : "";
     return `const childProcess = require('child_process')
@@ -132,25 +134,25 @@ module.exports = {
     },
     'rev-static --config demo/rev-static.config.js',
     async () => {
-        const { createServer } = require('http-server')
-        const puppeteer = require('puppeteer')
-        const fs = require('fs')
-        const beautify = require('js-beautify').html
-        const server = createServer()
-        server.listen(8000)
-        const browser = await puppeteer.launch()
-        const page = await browser.newPage()
-        await page.emulate({ viewport: { width: 1440, height: 900 }, userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36' })
-        for (const type of ['vue', 'react'${hasAngularChoice ? ", 'angular'" : ""}]) {
-          await page.goto(\`http://localhost:8000/demo/\${type}\`)
-          await page.waitFor(1000)
-          await page.screenshot({ path: \`demo/\${type}/screenshot.png\`, fullPage: true })
-          const content = await page.content()
-          fs.writeFileSync(\`demo/\${type}/screenshot-src.html\`, beautify(content))
-        }
-        server.close()
-        browser.close()
+      const { createServer } = require('http-server')
+      const puppeteer = require('puppeteer')
+      const fs = require('fs')
+      const beautify = require('js-beautify').html
+      const server = createServer()
+      server.listen(8000)
+      const browser = await puppeteer.launch()
+      const page = await browser.newPage()
+      await page.emulate({ viewport: { width: 1440, height: 900 }, userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36' })
+      for (const type of ['vue', 'react'${hasAngularChoice ? ", 'angular'" : ""}]) {
+        await page.goto(\`http://localhost:8000/demo/\${type}\`)
+        await page.waitFor(1000)
+        await page.screenshot({ path: \`demo/\${type}/screenshot.png\`, fullPage: true })
+        const content = await page.content()
+        fs.writeFileSync(\`demo/\${type}/screenshot-src.html\`, beautify(content))
       }
+      server.close()
+      browser.close()
+    }
   ],
   lint: {
     ts: \`tslint "src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx"\`,
@@ -416,7 +418,14 @@ const srcTsconfig = `{
         "downlevelIteration": true,
         "emitDecoratorMetadata": true,
         "newLine": "LF"
-    }
+    },
+    "angularCompilerOptions": {
+        "strictMetadataEmit": true,
+        "genDir": "compiled"
+    },
+    "exclude": [
+        "./compiled/"
+    ]
 }`;
 
 const demoTsconfig = `{
@@ -622,6 +631,8 @@ import * as ReactDOM from "react-dom";
 import { ${context.componentTypeName}, ${context.componentTypeName}Data } from "../../dist/react";
 
 class Main extends React.Component<{}, {}> {
+    private data: ${context.componentTypeName}Data;
+
     render() {
         return (
             <div>
@@ -632,8 +643,6 @@ class Main extends React.Component<{}, {}> {
             </div>
         );
     }
-
-    private data: ${context.componentTypeName}Data;
 }
 
 ReactDOM.render(<Main />, document.getElementById("container"));

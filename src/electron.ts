@@ -6,7 +6,7 @@ export async function runElectron(context: libs.Context) {
     await libs.mkdir("scripts");
     await libs.mkdir("static_spec");
 
-    await libs.exec(`yarn add -SE electron`);
+    await libs.exec(`yarn add -E electron`);
     await libs.exec(`yarn add -DE electron-packager`);
     await libs.exec(`yarn add -DE @types/node`);
     await libs.exec(`yarn add -DE tslib`);

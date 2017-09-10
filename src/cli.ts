@@ -9,7 +9,7 @@ export async function runCLI(context: libs.Context) {
     await libs.exec(`yarn add -DE @types/node`);
     await libs.exec(`yarn add -DE jasmine @types/jasmine`);
     await libs.exec(`yarn add -DE standard`);
-    await libs.exec(`yarn add -SE minimist`);
+    await libs.exec(`yarn add -E minimist`);
     await libs.exec(`yarn add -DE @types/minimist`);
     await libs.exec(`yarn add -DE clean-release`);
     await libs.exec(`yarn add -DE clean-scripts`);
