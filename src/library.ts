@@ -112,11 +112,13 @@ function rollupConfigJs(context: libs.Context) {
 import resolve from 'rollup-plugin-node-resolve'
 
 export default {
-  entry: 'dist/browser/index.js',
-  dest: 'dist/${context.repositoryName}.min.js',
-  format: 'umd',
-  moduleName: '${context.componentTypeName}',
-  plugins: [resolve(), uglify()]
+  input: 'dist/browser/index.js',
+  name: '${context.componentTypeName}',
+  plugins: [resolve(), uglify()],
+  output: {
+    file: 'dist/${context.repositoryName}.min.js',
+    format: 'umd'
+  }
 }
 `;
 }
