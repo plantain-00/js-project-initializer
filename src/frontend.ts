@@ -23,6 +23,7 @@ export async function runFrontend(context: libs.Context) {
     await libs.exec(`yarn add -DE http-server`);
     await libs.exec(`yarn add -DE puppeteer`);
     await libs.exec(`yarn add -DE js-beautify`);
+    await libs.exec(`yarn add -DE autoprefixer postcss-cli`);
 
     await libs.writeFile(`index.ts`, index);
     await libs.writeFile(`index.template.html`, indexTemplateHtml);
@@ -39,6 +40,8 @@ export async function runFrontend(context: libs.Context) {
     await libs.writeFile("appveyor.yml", libs.appveyorYml);
     await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
     await libs.writeFile("prerender.html", "");
+    await libs.writeFile(".browserslistrc", libs.browsersList);
+    await libs.writeFile("postcss.config.js", libs.postcssConfig);
 
     await libs.writeFile(`spec/karma.config.js`, libs.specKarmaConfigJs);
     await libs.writeFile(`spec/tsconfig.json`, specTsconfig);
@@ -73,6 +76,7 @@ module.exports = {
       ],
       css: [
         'lessc index.less > index.css',
+        'postcss index.css -o index.postcss.css',
         'cleancss -o index.bundle.css index.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css'
       ],
       clean: 'rimraf **/*.bundle-*.js *.bundle-*.css'

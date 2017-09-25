@@ -25,6 +25,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
     await libs.exec(`yarn add -DE watch-then-execute`);
     await libs.exec(`yarn add -DE puppeteer`);
     await libs.exec(`yarn add -DE js-beautify`);
+    await libs.exec(`yarn add -DE autoprefixer postcss-cli`);
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
@@ -48,6 +49,8 @@ export async function runBackendWithFrontend(context: libs.Context) {
     await libs.writeFile("appveyor.yml", libs.appveyorYml);
     await libs.writeFile("clean-release.config.js", getCleanReleaseConfigJs(context));
     await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
+    await libs.writeFile(".browserslistrc", libs.browsersList);
+    await libs.writeFile("postcss.config.js", libs.postcssConfig);
 
     await libs.writeFile("spec/tsconfig.json", specTsconfig);
     await libs.writeFile("spec/indexSpec.ts", libs.specIndexSpecTs);
@@ -91,7 +94,8 @@ module.exports = {
         ],
         css: [
           'lessc static/index.less > static/index.css',
-          'cleancss -o static/index.bundle.css static/index.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css'
+          'postcss static/index.css -o static/index.postcss.css',
+          'cleancss -o static/index.bundle.css static/index.postcss.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css'
         ],
         clean: 'rimraf static/**/*.bundle-*.js static/**/*.bundle-*.css',
       }

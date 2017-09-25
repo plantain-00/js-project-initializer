@@ -22,6 +22,7 @@ export async function runElectron(context: libs.Context) {
     await libs.exec(`yarn add -DE clean-scripts`);
     await libs.exec(`yarn add -DE no-unused-export`);
     await libs.exec(`yarn add -DE watch-then-execute`);
+    await libs.exec(`yarn add -DE autoprefixer postcss-cli`);
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
@@ -34,6 +35,8 @@ export async function runElectron(context: libs.Context) {
     await libs.writeFile("appveyor.yml", libs.appveyorYml);
     await libs.writeFile("clean-release.config.js", cleanReleaseConfigJs(context));
     await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
+    await libs.writeFile(".browserslistrc", libs.browsersList);
+    await libs.writeFile("postcss.config.js", libs.postcssConfig);
 
     await libs.writeFile("scripts/index.ts", scriptsIndex);
     await libs.writeFile(`scripts/index.less`, scriptsIndexLess);
@@ -79,7 +82,8 @@ module.exports = {
       ],
       css: [
         'lessc scripts/index.less > scripts/index.css',
-        'cleancss -o scripts/index.bundle.css scripts/index.css',
+        'postcss scripts/index.css -o scripts/index.postcss.css',
+        'cleancss -o scripts/index.bundle.css scripts/index.postcss.css',
       ]
     }
   },

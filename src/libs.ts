@@ -280,3 +280,14 @@ module.exports = {
   resolve
 }
 `;
+
+export const browsersList = `> 1%
+Last 2 versions
+`;
+
+export const postcssConfig = `module.exports = {
+  plugins: [
+    require('autoprefixer')()
+  ]
+}
+`;
