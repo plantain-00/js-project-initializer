@@ -35,7 +35,7 @@ export async function runElectron(context: libs.Context) {
     await libs.writeFile("appveyor.yml", libs.appveyorYml);
     await libs.writeFile("clean-release.config.js", cleanReleaseConfigJs(context));
     await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
-    await libs.writeFile(".browserslistrc", libs.browsersList);
+    await libs.writeFile(".browserslistrc", browsersList);
     await libs.writeFile("postcss.config.js", libs.postcssConfig);
 
     await libs.writeFile("scripts/index.ts", scriptsIndex);
@@ -309,3 +309,6 @@ const specTsconfig = `{
         "newLine": "LF"
     }
 }`;
+
+export const browsersList = `last 2 Chrome versions
+`;
