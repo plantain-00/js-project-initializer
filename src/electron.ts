@@ -310,5 +310,5 @@ const specTsconfig = `{
     }
 }`;
 
-export const browsersList = `last 2 Chrome versions
+const browsersList = `last 2 Chrome versions
 `;

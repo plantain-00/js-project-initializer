@@ -51,6 +51,7 @@ export async function runUIComponent(context: libs.Context) {
     await libs.exec(`yarn add -DE js-beautify`);
     await libs.exec(`yarn add -DE http-server`);
     await libs.exec(`yarn add -DE puppeteer`);
+    await libs.exec(`yarn add -DE autoprefixer postcss-cli`);
 
     await libs.writeFile(`src/tsconfig.json`, srcTsconfig);
     await libs.writeFile(`src/${context.componentShortName}.less`, srcLess(context));
