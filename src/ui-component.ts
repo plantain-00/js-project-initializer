@@ -88,6 +88,8 @@ export async function runUIComponent(context: libs.Context) {
     await libs.writeFile("appveyor.yml", libs.appveyorYml);
     await libs.writeFile("clean-release.config.js", cleanReleaseConfigJs);
     await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(hasAngularChoice, context));
+    await libs.writeFile(".browserslistrc", libs.browsersList);
+    await libs.writeFile("postcss.config.js", libs.postcssConfig);
 
     return {
         scripts: {
@@ -127,7 +129,8 @@ module.exports = {
         'webpack --display-modules --config demo/webpack.config.js'
       ],
       css: [
-        \`lessc src/${context.componentShortName}.less > dist/${context.componentShortName}.css\`,
+        \`lessc src/${context.componentShortName}.less > src/${context.componentShortName}.css\`,
+        \`postcss src/${context.componentShortName}.css -o dist/${context.componentShortName}.css\`,
         \`cleancss -o dist/${context.componentShortName}.min.css dist/${context.componentShortName}.css\`,
         \`cleancss -o demo/index.bundle.css dist/${context.componentShortName}.min.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css\`
       ],
