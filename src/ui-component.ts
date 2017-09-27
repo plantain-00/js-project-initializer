@@ -110,8 +110,6 @@ function cleanScriptsConfigJs(hasAngularChoice: boolean, context: libs.Context) 
     const angularScript = hasAngularChoice ? "        'file2variable-cli src/angular.template.html -o src/angular-variables.ts --html-minify --base src',\n" : "";
     const compilerType = hasAngularChoice ? "ngc" : "tsc";
     const angularWatchScript = hasAngularChoice ? "    angular: 'file2variable-cli src/angular.template.html -o src/angular-variables.ts --html-minify --base src --watch',\n" : "";
-    const angularCheckoutScreenshot = hasAngularChoice ? `
-    'git checkout demo/angular/screenshot.png',` : "";
     return `const childProcess = require('child_process')
 const util = require('util')
 
@@ -167,8 +165,7 @@ module.exports = {
   test: [
     'tsc -p spec',
     'karma start spec/karma.config.js',
-    'git checkout demo/vue/screenshot.png',
-    'git checkout demo/react/screenshot.png',${angularCheckoutScreenshot}
+    'git checkout "demo/**/screenshot.png"',
     async () => {
       const { stdout } = await execAsync('git status -s')
       if (stdout) {
