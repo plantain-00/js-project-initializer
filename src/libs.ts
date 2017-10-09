@@ -291,3 +291,20 @@ export const postcssConfig = `module.exports = {
   ]
 }
 `;
+
+export const tsconfigJson = `{
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "commonjs",
+        "strict": true,
+        "noUnusedLocals": true,
+        "noImplicitReturns": true,
+        "skipLibCheck": true,
+        "importHelpers": true,
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "downlevelIteration": true,
+        "newLine": "LF"
+    }
+}`;

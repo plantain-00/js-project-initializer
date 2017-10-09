@@ -21,8 +21,7 @@ export async function runFrontend(context: libs.Context) {
     await libs.exec(`yarn add -DE no-unused-export`);
     await libs.exec(`yarn add -DE watch-then-execute`);
     await libs.exec(`yarn add -DE http-server`);
-    await libs.exec(`yarn add -DE puppeteer`);
-    await libs.exec(`yarn add -DE js-beautify`);
+    await libs.exec(`yarn add -DE puppeteer @types/puppeteer`);
     await libs.exec(`yarn add -DE autoprefixer postcss-cli`);
 
     await libs.writeFile(`index.ts`, index);
@@ -48,6 +47,13 @@ export async function runFrontend(context: libs.Context) {
     await libs.writeFile(`spec/webpack.config.js`, libs.specWebpackConfigJs);
     await libs.writeFile(`spec/indexSpec.ts`, libs.specIndexSpecTs);
 
+    await libs.writeFile(`screenshots/tsconfig.json`, libs.tsconfigJson);
+    await libs.writeFile(`screenshots/index.ts`, screenshotIndexTs);
+
+    await libs.writeFile(`prerender/tsconfig.json`, libs.tsconfigJson);
+    await libs.writeFile(`prerender/index.ts`, prerenderIndexTs);
+    await libs.writeFile(`prerender/index.html`, "");
+
     return {
         scripts: {
             build: "clean-scripts build",
@@ -56,13 +62,47 @@ export async function runFrontend(context: libs.Context) {
             fix: `clean-scripts fix`,
             watch: "clean-scripts watch",
             prerender: "clean-scripts prerender",
+            screenshot: "clean-scripts screenshot",
         },
     };
 }
 
+const screenshotIndexTs = `import * as puppeteer from "puppeteer";
+
+(async () => {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.emulate({ viewport: { width: 1440, height: 900 }, userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36" });
+    await page.goto("http://localhost:8000");
+    await page.waitFor(2000);
+    await page.screenshot({ path: "screenshots/initial.png", fullPage: true });
+
+    browser.close();
+})();`;
+
+const prerenderIndexTs = `import * as puppeteer from "puppeteer";
+import * as fs from "fs";
+
+(async () => {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.emulate({ viewport: { width: 1440, height: 900 }, userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36" });
+    await page.waitFor(1000);
+    await page.goto("http://localhost:8000");
+    await page.waitFor(2000);
+    const content = await page.evaluate(() => {
+        const element = document.querySelector("#prerender-container");
+        return element ? element.innerHTML.trim() : "";
+    });
+    fs.writeFileSync("prerender/index.html", content);
+
+    browser.close();
+})();`;
+
 function cleanScriptsConfigJs(context: libs.Context) {
     return `const childProcess = require('child_process')
 const util = require('util')
+const { Service } = require('clean-scripts')
 
 const execAsync = util.promisify(childProcess.exec)
 
@@ -85,25 +125,7 @@ module.exports = {
     [
       'sw-precache --config sw-precache.config.js --verbose',
       'uglifyjs service-worker.js -o service-worker.bundle.js'
-    ],
-    async () => {
-      const { createServer } = require('http-server')
-      const puppeteer = require('puppeteer')
-      const fs = require('fs')
-      const beautify = require('js-beautify').html
-      const server = createServer()
-      server.listen(8000)
-      const browser = await puppeteer.launch()
-      const page = await browser.newPage()
-      await page.emulate({ viewport: { width: 1440, height: 900 }, userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36' })
-      await page.goto('http://localhost:8000')
-      await page.waitFor(1000)
-      await page.screenshot({ path: 'screenshot.png', fullPage: true })
-      const content = await page.content()
-      fs.writeFileSync('screenshot-src.html', beautify(content))
-      server.close()
-      browser.close()
-    }
+    ]
   ],
   lint: {
     ts: \`tslint "*.ts"\`,
@@ -114,7 +136,6 @@ module.exports = {
   test: [
     'tsc -p spec',
     'karma start spec/karma.config.js',
-    'git checkout screenshot.png',
     async () => {
       const { stdout } = await execAsync('git status -s')
       if (stdout) {
@@ -136,27 +157,15 @@ module.exports = {
     rev: \`rev-static --watch\`,
     sw: \`watch-then-execute "vendor.bundle-*.js" "index.html" --script "clean-scripts build[2]"\`
   },
+  screenshot: [
+    new Service('http-server -p 8000'),
+    'tsc -p screenshots',
+    'node screenshots/index.js'
+  ],
   prerender: [
-    async () => {
-      const { createServer } = require('http-server')
-      const puppeteer = require('puppeteer')
-      const fs = require('fs')
-      const server = createServer()
-      server.listen(8000)
-      const browser = await puppeteer.launch()
-      const page = await browser.newPage()
-      await page.emulate({ viewport: { width: 1440, height: 900 }, userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36' })
-      await page.waitFor(1000)
-      await page.goto('http://localhost:8000')
-      await page.waitFor(1000)
-      const content = await page.evaluate(() => {
-        const element = document.querySelector('#prerender-container')
-        return element ? element.innerHTML : ''
-      })
-      fs.writeFileSync('prerender.html', content)
-      server.close()
-      browser.close()
-    },
+    new Service('http-server -p 8000'),
+    'tsc -p prerender',
+    'node prerender/index.js',
     'clean-scripts build[1]',
     'clean-scripts build[2]'
   ]
@@ -196,7 +205,12 @@ const tsconfig = `{
         "allowSyntheticDefaultImports": true,
         "downlevelIteration": true,
         "newLine": "LF"
-    }
+    },
+    "files": [
+        "index.ts",
+        "variables.ts",
+        "vendor.ts"
+    ]
 }`;
 
 const indexLess = `* {
@@ -274,7 +288,7 @@ module.exports = {
   customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + '-' + md5String + extensionName,
   fileSize: 'file-size.json',
   context: {
-    prerender: fs.readFileSync('prerender.html')
+    prerender: fs.readFileSync('prerender/index.html')
   }
 }
 `;

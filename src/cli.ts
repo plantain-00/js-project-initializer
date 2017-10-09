@@ -32,7 +32,7 @@ export async function runCLI(context: libs.Context) {
 
     await libs.exec(`chmod 755 bin/${context.repositoryName}`);
 
-    await libs.writeFile("spec/tsconfig.json", specTsconfig);
+    await libs.writeFile("spec/tsconfig.json", libs.tsconfigJson);
     await libs.writeFile("spec/indexSpec.ts", libs.specIndexSpecTs);
 
     return {
@@ -171,19 +171,6 @@ executeCommandLine().then(() => {
 });
 `;
 }
-
-const specTsconfig = `{
-    "compilerOptions": {
-        "target": "esnext",
-
-        "module": "commonjs",
-        "strict": true,
-        "noUnusedLocals": true,
-        "noImplicitReturns": true,
-        "skipLibCheck": true,
-        "newLine": "LF"
-    }
-}`;
 
 const libDTs = `declare module "*.json" {
     export const version: string;

@@ -44,7 +44,7 @@ export async function runElectron(context: libs.Context) {
     await libs.writeFile(`scripts/index.template.html`, scriptsIndexTemplateHtml);
     await libs.writeFile(`scripts/webpack.config.js`, scriptsWebpackConfig);
 
-    await libs.writeFile("spec/tsconfig.json", specTsconfig);
+    await libs.writeFile("spec/tsconfig.json", libs.tsconfigJson);
     await libs.writeFile("spec/indexSpec.ts", libs.specIndexSpecTs);
 
     await libs.writeFile(`static_spec/karma.config.js`, libs.specKarmaConfigJs);
@@ -293,19 +293,6 @@ const staticSpecTsconfig = `{
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
         "downlevelIteration": true,
-        "newLine": "LF"
-    }
-}`;
-
-const specTsconfig = `{
-    "compilerOptions": {
-        "target": "esnext",
-
-        "module": "commonjs",
-        "strict": true,
-        "noUnusedLocals": true,
-        "noImplicitReturns": true,
-        "skipLibCheck": true,
         "newLine": "LF"
     }
 }`;

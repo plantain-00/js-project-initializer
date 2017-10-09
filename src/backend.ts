@@ -23,7 +23,7 @@ export async function runBackend(context: libs.Context) {
     await libs.writeFile("clean-release.config.js", getCleanReleaseConfigJs(context));
     await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
 
-    await libs.writeFile("spec/tsconfig.json", specTsconfig);
+    await libs.writeFile("spec/tsconfig.json", libs.tsconfigJson);
     await libs.writeFile("spec/indexSpec.ts", libs.specIndexSpecTs);
 
     return {
@@ -111,19 +111,6 @@ const srcTsconfig = `{
     "compilerOptions": {
         "target": "esnext",
         "outDir": "../dist",
-
-        "module": "commonjs",
-        "strict": true,
-        "noUnusedLocals": true,
-        "noImplicitReturns": true,
-        "skipLibCheck": true,
-        "newLine": "LF"
-    }
-}`;
-
-const specTsconfig = `{
-    "compilerOptions": {
-        "target": "esnext",
 
         "module": "commonjs",
         "strict": true,

@@ -28,7 +28,7 @@ export async function runLibrary(context: libs.Context) {
     await libs.writeFile("rollup.config.js", rollupConfigJs(context));
     await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
 
-    await libs.writeFile("spec/tsconfig.json", specTsconfig);
+    await libs.writeFile("spec/tsconfig.json", libs.tsconfigJson);
     await libs.writeFile("spec/indexSpec.ts", libs.specIndexSpecTs);
 
     return {
@@ -174,21 +174,3 @@ export default class ${context.componentTypeName} {
 }
 `;
 }
-
-const specTsconfig = `{
-    "compilerOptions": {
-        "target": "esnext",
-        "declaration": false,
-
-        "module": "commonjs",
-        "strict": true,
-        "noUnusedLocals": true,
-        "noImplicitReturns": true,
-        "skipLibCheck": true,
-        "importHelpers": true,
-        "experimentalDecorators": true,
-        "allowSyntheticDefaultImports": true,
-        "downlevelIteration": true,
-        "newLine": "LF"
-    }
-}`;
