@@ -3,8 +3,6 @@ import * as libs from "./libs";
 export async function runFrontend(context: libs.Context) {
     context.hasKarma = true;
 
-    await libs.mkdir(`spec`);
-
     await libs.exec(`yarn add -DE tslib`);
     await libs.exec(`yarn add -DE github-fork-ribbon-css`);
     await libs.exec(`yarn add -DE less`);
@@ -42,14 +40,17 @@ export async function runFrontend(context: libs.Context) {
     await libs.writeFile(".browserslistrc", libs.browsersList);
     await libs.writeFile("postcss.config.js", libs.postcssConfig);
 
+    await libs.mkdir(`spec`);
     await libs.writeFile(`spec/karma.config.js`, libs.specKarmaConfigJs);
     await libs.writeFile(`spec/tsconfig.json`, specTsconfig);
     await libs.writeFile(`spec/webpack.config.js`, libs.specWebpackConfigJs);
     await libs.writeFile(`spec/indexSpec.ts`, libs.specIndexSpecTs);
 
+    await libs.mkdir(`screenshots`);
     await libs.writeFile(`screenshots/tsconfig.json`, libs.tsconfigJson);
     await libs.writeFile(`screenshots/index.ts`, screenshotIndexTs);
 
+    await libs.mkdir(`prerender`);
     await libs.writeFile(`prerender/tsconfig.json`, libs.tsconfigJson);
     await libs.writeFile(`prerender/index.ts`, prerenderIndexTs);
     await libs.writeFile(`prerender/index.html`, "");

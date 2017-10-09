@@ -1,8 +1,6 @@
 import * as libs from "./libs";
 
 export async function runBackend(context: libs.Context) {
-    await libs.mkdir("src");
-
     await libs.exec(`yarn add -DE @types/node`);
     await libs.exec(`yarn add -DE jasmine @types/jasmine`);
     await libs.exec(`yarn add -DE clean-release`);
@@ -13,6 +11,7 @@ export async function runBackend(context: libs.Context) {
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
+    await libs.mkdir("src");
     await libs.writeFile(`src/index.ts`, srcIndex);
     await libs.writeFile(`src/tsconfig.json`, srcTsconfig);
 
@@ -23,6 +22,7 @@ export async function runBackend(context: libs.Context) {
     await libs.writeFile("clean-release.config.js", getCleanReleaseConfigJs(context));
     await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
 
+    await libs.mkdir("spec");
     await libs.writeFile("spec/tsconfig.json", libs.tsconfigJson);
     await libs.writeFile("spec/indexSpec.ts", libs.specIndexSpecTs);
 

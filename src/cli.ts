@@ -3,9 +3,6 @@ import * as libs from "./libs";
 export async function runCLI(context: libs.Context) {
     context.isNpmPackage = true;
 
-    await libs.mkdir("src");
-    await libs.mkdir("bin");
-
     await libs.exec(`yarn add -DE @types/node`);
     await libs.exec(`yarn add -DE jasmine @types/jasmine`);
     await libs.exec(`yarn add -DE standard`);
@@ -17,6 +14,7 @@ export async function runCLI(context: libs.Context) {
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
+    await libs.mkdir("src");
     await libs.writeFile(`src/index.ts`, source(context));
     await libs.writeFile(`src/lib.d.ts`, libDTs);
     await libs.writeFile(`src/tsconfig.json`, tsconfig);
@@ -28,10 +26,12 @@ export async function runCLI(context: libs.Context) {
     await libs.writeFile("clean-release.config.js", cleanReleaseConfigJs);
     await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
 
+    await libs.mkdir("bin");
     await libs.writeFile(`bin/${context.repositoryName}`, binConfig);
 
     await libs.exec(`chmod 755 bin/${context.repositoryName}`);
 
+    await libs.mkdir("spec");
     await libs.writeFile("spec/tsconfig.json", libs.tsconfigJson);
     await libs.writeFile("spec/indexSpec.ts", libs.specIndexSpecTs);
 

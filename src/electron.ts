@@ -3,9 +3,6 @@ import * as libs from "./libs";
 export async function runElectron(context: libs.Context) {
     context.hasKarma = true;
 
-    await libs.mkdir("scripts");
-    await libs.mkdir("static_spec");
-
     await libs.exec(`yarn add -E electron`);
     await libs.exec(`yarn add -DE electron-packager`);
     await libs.exec(`yarn add -DE @types/node`);
@@ -38,15 +35,18 @@ export async function runElectron(context: libs.Context) {
     await libs.writeFile(".browserslistrc", browsersList);
     await libs.writeFile("postcss.config.js", libs.postcssConfig);
 
+    await libs.mkdir("scripts");
     await libs.writeFile("scripts/index.ts", scriptsIndex);
     await libs.writeFile(`scripts/index.less`, scriptsIndexLess);
     await libs.writeFile("scripts/tsconfig.json", scriptsTsconfig);
     await libs.writeFile(`scripts/index.template.html`, scriptsIndexTemplateHtml);
     await libs.writeFile(`scripts/webpack.config.js`, scriptsWebpackConfig);
 
+    await libs.mkdir("spec");
     await libs.writeFile("spec/tsconfig.json", libs.tsconfigJson);
     await libs.writeFile("spec/indexSpec.ts", libs.specIndexSpecTs);
 
+    await libs.mkdir("static_spec");
     await libs.writeFile(`static_spec/karma.config.js`, libs.specKarmaConfigJs);
     await libs.writeFile(`static_spec/tsconfig.json`, staticSpecTsconfig);
     await libs.writeFile(`static_spec/webpack.config.js`, libs.specWebpackConfigJs);

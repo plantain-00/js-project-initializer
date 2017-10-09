@@ -3,10 +3,6 @@ import * as libs from "./libs";
 export async function runBackendWithFrontend(context: libs.Context) {
     context.hasKarma = true;
 
-    await libs.mkdir("src");
-    await libs.mkdir("static");
-    await libs.mkdir("static_spec");
-
     await libs.exec(`yarn add -DE @types/node`);
     await libs.exec(`yarn add -DE tslib`);
     await libs.exec(`yarn add -DE github-fork-ribbon-css`);
@@ -29,9 +25,11 @@ export async function runBackendWithFrontend(context: libs.Context) {
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
+    await libs.mkdir("src");
     await libs.writeFile(`src/index.ts`, srcIndex);
     await libs.writeFile(`src/tsconfig.json`, srcTsconfig);
 
+    await libs.mkdir("static");
     await libs.writeFile(`static/tsconfig.json`, staticTsconfig);
     await libs.writeFile(`static/index.ts`, staticIndex);
     await libs.writeFile(`static/vendor.ts`, staticVendor);
@@ -52,9 +50,11 @@ export async function runBackendWithFrontend(context: libs.Context) {
     await libs.writeFile(".browserslistrc", libs.browsersList);
     await libs.writeFile("postcss.config.js", libs.postcssConfig);
 
+    await libs.mkdir("spec");
     await libs.writeFile("spec/tsconfig.json", libs.tsconfigJson);
     await libs.writeFile("spec/indexSpec.ts", libs.specIndexSpecTs);
 
+    await libs.mkdir("static_spec");
     await libs.writeFile(`static_spec/karma.config.js`, libs.specKarmaConfigJs);
     await libs.writeFile(`static_spec/tsconfig.json`, staticSpecTsconfig);
     await libs.writeFile(`static_spec/webpack.config.js`, libs.specWebpackConfigJs);

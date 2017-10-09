@@ -3,8 +3,6 @@ import * as libs from "./libs";
 export async function runLibrary(context: libs.Context) {
     context.isNpmPackage = true;
 
-    await libs.mkdir("src");
-
     await libs.exec(`yarn add -DE jasmine @types/jasmine`);
     await libs.exec(`yarn add -DE clean-release`);
     await libs.exec(`yarn add -DE rimraf`);
@@ -15,6 +13,7 @@ export async function runLibrary(context: libs.Context) {
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
+    await libs.mkdir("src");
     await libs.writeFile(`src/index.ts`, index(context));
     await libs.writeFile(`src/tsconfig.base.json`, tsconfigBase);
     await libs.writeFile(`src/tsconfig.nodejs.json`, tsconfigNodejs);
