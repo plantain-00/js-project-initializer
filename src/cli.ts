@@ -37,7 +37,6 @@ export async function runCLI(context: libs.Context) {
 
     return {
         scripts: {
-            demoTest: `clean-scripts test[2]`,
             build: "clean-scripts build",
             lint: "clean-scripts lint",
             test: "clean-scripts test",
@@ -59,7 +58,8 @@ const execAsync = util.promisify(childProcess.exec)
 module.exports = {
   build: [
     'rimraf dist/',
-    'tsc -p src/'
+    'tsc -p src/',
+    'node dist/index.js --supressError > spec/result.txt'
   ],
   lint: {
     ts: \`tslint "src/**/*.ts"\`,
@@ -69,7 +69,6 @@ module.exports = {
   test: [
     'tsc -p spec',
     'jasmine',
-    \`node dist/index.js --supressError > spec/result.txt\`,
     async () => {
       const { stdout } = await execAsync('git status -s')
       if (stdout) {
@@ -90,7 +89,7 @@ module.exports = {
 const cleanReleaseConfigJs = `module.exports = {
   include: [
     'bin/*',
-    'dist/*.js',
+    'dist/*',
     'LICENSE',
     'package.json',
     'README.md'
