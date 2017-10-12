@@ -135,6 +135,10 @@ const { Service } = require('clean-scripts')
 
 const execAsync = util.promisify(childProcess.exec)
 
+const tsFiles = \`"src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx" "screenshots/**/*.ts"\`
+const lessFiles = \`"src/**/*.less"\`
+const jsFiles = \`"*.config.js"\`
+
 module.exports = {
   build: [
     'rimraf dist/',
@@ -157,10 +161,10 @@ module.exports = {
     'rev-static --config demo/rev-static.config.js'
   ],
   lint: {
-    ts: \`tslint "src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx"\`,
-    js: \`standard "**/*.config.js"\`,
-    less: \`stylelint "src/**/*.less"\`,
-    export: \`no-unused-export "src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx" "src/**/*.less" --exclude "src/compiled/**/*"\`
+    ts: \`tslint \${tsFiles}\`,
+    js: \`standard \${jsFiles}\`,
+    less: \`stylelint \${lessFiles}\`,
+    export: \`no-unused-export \${tsFiles} \${lessFiles} --exclude "src/compiled/**/*"\`
   },
   test: [
     'tsc -p spec',
@@ -174,9 +178,9 @@ module.exports = {
     }
   ],
   fix: {
-    ts: \`tslint --fix "src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx"\`,
-    js: \`standard --fix "**/*.config.js"\`,
-    less: \`stylelint --fix "src/**/*.less"\`
+    ts: \`tslint --fix \${tsFiles}\`,
+    js: \`standard --fix \${jsFiles}\`,
+    less: \`stylelint --fix \${lessFiles}\`
   },
   release: \`clean-release\`,
   watch: {
