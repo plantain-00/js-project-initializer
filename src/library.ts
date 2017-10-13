@@ -47,7 +47,7 @@ const util = require('util')
 
 const execAsync = util.promisify(childProcess.exec)
 
-const tsFiles = \`"src/**/*.ts" "spec/**/*.ts" "demo/**/*.ts"\`
+const tsFiles = \`"src/**/*.ts" "spec/**/*.ts"\`
 const jsFiles = \`"*.config.js"\`
 
 module.exports = {
