@@ -132,6 +132,10 @@ const { Service } = require('clean-scripts')
 
 const execAsync = util.promisify(childProcess.exec)
 
+const tsFiles = \`"src/**/*.ts" "static/**/*.ts" "spec/**/*.ts" "static_spec/**/*.ts"\`
+const jsFiles = \`"*.config.js" "static/**/*.config.js" "static_spec/**/*.config.js"\`
+const lessFiles = \`"static/**/*.less"\`
+
 module.exports = {
   build: {
     back: [
@@ -156,10 +160,10 @@ module.exports = {
     ]
   },
   lint: {
-    ts: \`tslint "src/**/*.ts" "static/**/*.ts"\`,
-    js: \`standard "**/*.config.js"\`,
-    less: \`stylelint "static/**/*.less"\`,
-    export: \`no-unused-export "src/**/*.ts" "static/**/*.ts" "static/**/*.less"\`
+    ts: \`tslint \${tsFiles}\`,
+    js: \`standard \${jsFiles}\`,
+    less: \`stylelint \${lessFiles}\`,
+    export: \`no-unused-export \${tsFiles} \${lessFiles}\`
   },
   test: {
     jasmine: [
@@ -179,9 +183,9 @@ module.exports = {
     }
   },
   fix: {
-    ts: \`tslint --fix "src/**/*.ts" "static/**/*.ts"\`,
-    js: \`standard --fix "**/*.config.js"\`,
-    less: \`stylelint --fix "static/**/*.less"\`
+    ts: \`tslint --fix \${tsFiles}\`,
+    js: \`standard --fix \${jsFiles}\`,
+    less: \`stylelint --fix \${lessFiles}\`
   },
   release: \`clean-release\`,
   watch: {

@@ -71,6 +71,10 @@ const util = require('util')
 
 const execAsync = util.promisify(childProcess.exec)
 
+const tsFiles = \`"src/**/*.ts" "scripts/**/*.ts" "spec/**/*.ts" "static_spec/**/*.ts"\`
+const jsFiles = \`"*.config.js" "scripts/**/*.config.js" "static_spec/**/*.config.js"\`
+const lessFiles = \`"scripts/**/*.less"\`
+
 module.exports = {
   build: {
     back: 'tsc',
@@ -88,10 +92,10 @@ module.exports = {
     }
   },
   lint: {
-    ts: \`tslint "*.ts" "scripts/*.ts"\`,
-    js: \`standard "**/*.config.js"\`,
-    less: \`stylelint "scripts/*.less"\`,
-    export: \`no-unused-export "*.ts" "scripts/*.ts" "scripts/*.less"\`
+    ts: \`tslint \${tsFiles}\`,
+    js: \`standard \${jsFiles}\`,
+    less: \`stylelint \${lessFiles}\`,
+    export: \`no-unused-export \${tsFiles} \${lessFiles}\`
   },
   test: {
     jasmine: [
@@ -111,9 +115,9 @@ module.exports = {
     }
   },
   fix: {
-    ts: \`tslint --fix "*.ts" "scripts/*.ts"\`,
-    js: \`standard --fix "**/*.config.js"\`,
-    less: \`stylelint --fix "scripts/*.less"\`
+    ts: \`tslint --fix \${tsFiles}\`,
+    js: \`standard --fix \${jsFiles}\`,
+    less: \`stylelint --fix \${lessFiles}\`
   },
   release: [
     'rimraf dist',
