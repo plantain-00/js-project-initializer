@@ -21,6 +21,7 @@ export async function runBackend(context: libs.Context) {
     await libs.writeFile("appveyor.yml", libs.appveyorYml);
     await libs.writeFile("clean-release.config.js", getCleanReleaseConfigJs(context));
     await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
+    await libs.writeFile("Dockerfile", dockerfile);
 
     await libs.mkdir("spec");
     await libs.writeFile("spec/tsconfig.json", libs.tsconfigJson);
@@ -37,6 +38,16 @@ export async function runBackend(context: libs.Context) {
         },
     };
 }
+
+const port = 8000;
+
+const dockerfile = `FROM node:alpine
+WORKDIR /app
+ADD . /app
+RUN apk add --no-cache make gcc g++ python && yarn --production
+EXPOSE ${port}
+CMD ["node","dist/index.js"]
+`;
 
 function cleanScriptsConfigJs(context: libs.Context) {
     return `const childProcess = require('child_process')
@@ -81,11 +92,17 @@ function getCleanReleaseConfigJs(context: libs.Context) {
     'dist/*.js',
     'LICENSE',
     'package.json',
+    'yarn.lock',
     'README.md'
   ],
   exclude: [
   ],
-  releaseRepository: 'https://github.com/${context.author}/${context.repositoryName}-release.git'
+  releaseRepository: 'https://github.com/${context.author}/${context.repositoryName}-release.git',
+  postScript: [
+    'cd [dir] && rm -rf .git',
+    'cp Dockerfile [dir]',
+    'cd [dir] && docker build -t ${context.author}/${context.repositoryName} . && docker push ${context.author}/${context.repositoryName}'
+  ]
 }
 `;
 }
@@ -95,6 +112,12 @@ function readMeDocument(context: libs.Context) {
 
 \`\`\`bash
 git clone https://github.com/${context.author}/${context.repositoryName}-release.git . --depth=1 && yarn add --production
+\`\`\`
+
+#### docker
+
+\`\`\`bash
+docker run -d -p ${port}:${port} ${context.author}/${context.repositoryName}
 \`\`\`
 `;
 }
