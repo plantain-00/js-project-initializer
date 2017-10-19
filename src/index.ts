@@ -85,6 +85,7 @@ async function getContext(): Promise<libs.Context> {
     const packages = await libs.readFile("package.json");
     const packageJson: {
         name: string;
+        description: string;
         repository: {
             type: string;
             url: string;
@@ -103,7 +104,7 @@ async function getContext(): Promise<libs.Context> {
             author = items[3];
         }
     }
-    return { repositoryName, componentShortName, componentTypeName, author };
+    return { repositoryName, componentShortName, componentTypeName, author, description: packageJson.description };
 }
 
 async function selectProjectKind() {

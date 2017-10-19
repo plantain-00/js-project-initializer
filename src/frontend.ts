@@ -304,6 +304,8 @@ function indexEjsHtml(context: libs.Context) {
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="${context.description}">
+<title>${context.repositoryName}</title>
 <%-inline.indexBundleCss %>
 <a class="github-fork-ribbon right-bottom" href="https://github.com/${context.author}/${context.repositoryName}" title="Fork me on GitHub" target="_blank" rel="noopener">Fork me on GitHub</a>
 <div id="prerender-container">

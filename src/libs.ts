@@ -135,6 +135,7 @@ export type Context = {
     author: string;
     isNpmPackage?: boolean;
     hasKarma?: boolean;
+    description: string;
 };
 
 export function readMeBadge(context: Context) {
