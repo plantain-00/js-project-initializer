@@ -598,7 +598,7 @@ module.exports = [
 function demoVueIndex(context: libs.Context) {
     return `import Vue from "vue";
 import Component from "vue-class-component";
-// tslint:disable-next-line:no-duplicate-imports
+// tslint:disable:no-duplicate-imports
 import "../../dist/vue";
 import { ${context.componentTypeName}Data } from "../../dist/vue";
 

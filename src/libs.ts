@@ -124,7 +124,11 @@ export const tslint = `{
             true,
             "allow-new"
         ],
-        "no-submodule-imports": false
+        "no-submodule-imports": false,
+        "no-implicit-dependencies": [
+            true,
+            "dev"
+        ]
     }
 }`;
 
