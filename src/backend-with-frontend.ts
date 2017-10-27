@@ -126,11 +126,7 @@ import * as fs from "fs";
 })();`;
 
 function cleanScriptsConfigJs(context: libs.Context) {
-    return `const childProcess = require('child_process')
-const util = require('util')
-const { Service } = require('clean-scripts')
-
-const execAsync = util.promisify(childProcess.exec)
+    return `const { Service, execAsync } = require('clean-scripts')
 
 const tsFiles = \`"src/**/*.ts" "static/**/*.ts" "spec/**/*.ts" "static_spec/**/*.ts"\`
 const jsFiles = \`"*.config.js" "static/**/*.config.js" "static_spec/**/*.config.js"\`

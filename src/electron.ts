@@ -66,10 +66,7 @@ export async function runElectron(context: libs.Context) {
 }
 
 function cleanScriptsConfigJs(context: libs.Context) {
-    return `const childProcess = require('child_process')
-const util = require('util')
-
-const execAsync = util.promisify(childProcess.exec)
+    return `const { execAsync } = require('clean-scripts')
 
 const tsFiles = \`"src/**/*.ts" "scripts/**/*.ts" "spec/**/*.ts" "static_spec/**/*.ts"\`
 const jsFiles = \`"*.config.js" "scripts/**/*.config.js" "static_spec/**/*.config.js"\`

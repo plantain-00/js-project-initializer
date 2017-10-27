@@ -129,11 +129,7 @@ function cleanScriptsConfigJs(hasAngularChoice: boolean, context: libs.Context) 
     const angularScript = hasAngularChoice ? "        'file2variable-cli src/angular.template.html -o src/angular-variables.ts --html-minify --base src',\n" : "";
     const compilerType = hasAngularChoice ? "ngc" : "tsc";
     const angularWatchScript = hasAngularChoice ? "    angular: 'file2variable-cli src/angular.template.html -o src/angular-variables.ts --html-minify --base src --watch',\n" : "";
-    return `const childProcess = require('child_process')
-const util = require('util')
-const { Service } = require('clean-scripts')
-
-const execAsync = util.promisify(childProcess.exec)
+    return `const { Service, execAsync } = require('clean-scripts')
 
 const tsFiles = \`"src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx" "screenshots/**/*.ts"\`
 const lessFiles = \`"src/**/*.less"\`

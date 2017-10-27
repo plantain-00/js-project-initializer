@@ -42,10 +42,7 @@ export async function runLibrary(context: libs.Context) {
 }
 
 function cleanScriptsConfigJs(context: libs.Context) {
-    return `const childProcess = require('child_process')
-const util = require('util')
-
-const execAsync = util.promisify(childProcess.exec)
+    return `const { execAsync } = require('clean-scripts')
 
 const tsFiles = \`"src/**/*.ts" "spec/**/*.ts"\`
 const jsFiles = \`"*.config.js"\`
