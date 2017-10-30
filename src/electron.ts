@@ -72,14 +72,18 @@ const tsFiles = \`"src/**/*.ts" "scripts/**/*.ts" "spec/**/*.ts" "static_spec/**
 const jsFiles = \`"*.config.js" "scripts/**/*.config.js" "static_spec/**/*.config.js"\`
 const lessFiles = \`"scripts/**/*.less"\`
 
+const templateCommand = 'file2variable-cli scripts/index.template.html -o scripts/variables.ts --html-minify'
+const tscScriptsCommand = 'tsc -p scripts/'
+const webpackCommand = 'webpack --display-modules --config scripts/webpack.config.js'
+
 module.exports = {
   build: {
     back: 'tsc',
     front: {
       js: [
-        'file2variable-cli scripts/index.template.html -o scripts/variables.ts --html-minify',
-        'tsc -p scripts/',
-        'webpack --display-modules --config scripts/webpack.config.js'
+        templateCommand,
+        tscScriptsCommand,
+        webpackCommand
       ],
       css: [
         'lessc scripts/index.less > scripts/index.css',
@@ -120,7 +124,12 @@ module.exports = {
     'rimraf dist',
     'clean-release'
   ],
-  watch: \`watch-then-execute "*.ts" "scripts/*.ts" "scripts/*.less" "scripts/*.template.html" --exclude "scripts/variables.ts" --script "npm run build"\`
+  watch: {
+    template: \`\${templateCommand} --watch\`,
+    script: \`\${tscScriptsCommand} --watch\`,
+    webpack: \`\${webpackCommand} --watch\`,
+    less: \`watch-then-execute \${lessFiles} --script "npm run build.front.css"\`
+  }
 }
 `;
 }

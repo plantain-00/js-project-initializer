@@ -126,14 +126,21 @@ function screenshotsIndexTs(hasAngularChoice: boolean) {
 }
 
 function cleanScriptsConfigJs(hasAngularChoice: boolean, context: libs.Context) {
-    const angularScript = hasAngularChoice ? "        'file2variable-cli src/angular.template.html -o src/angular-variables.ts --html-minify --base src',\n" : "";
+    const angularTemplateCommand = hasAngularChoice ? "const angularTemplateCommand = 'file2variable-cli src/angular.template.html -o src/angular-variables.ts --html-minify --base src'\n" : "";
+    const angularScript = hasAngularChoice ? "        angularTemplateCommand,\n" : "";
     const compilerType = hasAngularChoice ? "ngc" : "tsc";
-    const angularWatchScript = hasAngularChoice ? "    angular: 'file2variable-cli src/angular.template.html -o src/angular-variables.ts --html-minify --base src --watch',\n" : "";
+    const angularWatchScript = hasAngularChoice ? "    angular: \`\${angularTemplateCommand} --watch\`,\n" : "";
     return `const { Service, execAsync } = require('clean-scripts')
 
 const tsFiles = \`"src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx" "screenshots/**/*.ts"\`
 const lessFiles = \`"src/**/*.less"\`
 const jsFiles = \`"*.config.js" "demo/*.config.js" "spec/*.config.js"\`
+
+const vueTemplateCommand = 'file2variable-cli src/vue.template.html -o src/vue-variables.ts --html-minify --base src'
+${angularTemplateCommand}const tscSrcCommand = '${compilerType} -p src/'
+const tscDemoCommand = 'tsc -p demo/'
+const webpackCommand = 'webpack --display-modules --config demo/webpack.config.js'
+const revStaticCommand = 'rev-static --config demo/rev-static.config.js'
 
 module.exports = {
   build: [
@@ -141,10 +148,10 @@ module.exports = {
     'mkdirp dist/',
     {
       js: [
-        'file2variable-cli src/vue.template.html -o src/vue-variables.ts --html-minify --base src',
-        ${angularScript}'${compilerType} -p src/',
-        'tsc -p demo/',
-        'webpack --display-modules --config demo/webpack.config.js'
+        vueTemplateCommand,
+        ${angularScript}'tscSrcCommand,
+        tscDemoCommand,
+        webpackCommand
       ],
       css: [
         \`lessc src/${context.componentShortName}.less > src/${context.componentShortName}.css\`,
@@ -154,7 +161,7 @@ module.exports = {
       ],
       clean: 'rimraf demo/**/*.bundle-*.js demo/*.bundle-*.css'
     },
-    'rev-static --config demo/rev-static.config.js'
+    revStaticCommand
   ],
   lint: {
     ts: \`tslint \${tsFiles}\`,
@@ -180,12 +187,12 @@ module.exports = {
   },
   release: \`clean-release\`,
   watch: {
-    vue: \`file2variable-cli src/vue.template.html -o src/vue-variables.ts --html-minify --base src --watch\`,
-    ${angularWatchScript}src: \`tsc -p src --watch\`,
-    demo: \`tsc -p demo --watch\`,
-    webpack: \`webpack --config demo/webpack.config.js --watch\`,
-    less: \`watch-then-execute "src/*.less" --script "clean-scripts build[2].css"\`,
-    rev: \`rev-static --config demo/rev-static.config.js --watch\`
+    vue: \`\${vueTemplateCommand} --watch\`,
+    ${angularWatchScript}src: \`\${tscSrcCommand} --watch\`,
+    demo: \`\${tscDemoCommand} --watch\`,
+    webpack: \`\${webpackCommand} --watch\`,
+    less: \`watch-then-execute \${lessFiles} --script "clean-scripts build[2].css"\`,
+    rev: \`\${revStaticCommand} --watch\`
   },
   screenshot: [
     new Service('http-server -p 8000'),

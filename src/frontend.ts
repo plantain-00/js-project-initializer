@@ -107,13 +107,18 @@ const tsFiles = \`"*.ts" "spec/**/*.ts" "screenshots/**/*.ts" "prerender/**/*.ts
 const jsFiles = \`"*.config.js" "spec/**/*.config.js"\`
 const lessFiles = \`"*.less"\`
 
+const templateCommand = 'file2variable-cli *.template.html -o variables.ts --html-minify'
+const tscCommand = 'tsc'
+const webpackCommand = 'webpack --display-modules'
+const revStaticCommand = 'rev-static'
+
 module.exports = {
   build: [
     {
       js: [
-        'file2variable-cli *.template.html -o variables.ts --html-minify',
-        'tsc',
-        'webpack --display-modules'
+        templateCommand,
+        tscCommand,
+        webpackCommand
       ],
       css: [
         'lessc index.less > index.css',
@@ -122,7 +127,7 @@ module.exports = {
       ],
       clean: 'rimraf **/*.bundle-*.js *.bundle-*.css'
     },
-    'rev-static',
+    revStaticCommand,
     [
       'sw-precache --config sw-precache.config.js --verbose',
       'uglifyjs service-worker.js -o service-worker.bundle.js'
@@ -151,11 +156,11 @@ module.exports = {
     less: \`stylelint --fix \${lessFiles}\`
   },
   watch: {
-    template: \`file2variable-cli *.template.html -o variables.ts --html-minify --watch\`,
-    tsc: \`tsc --watch\`,
-    webpack: \`webpack --watch\`,
-    less: \`watch-then-execute "index.less" --script "clean-scripts build[0].css"\`,
-    rev: \`rev-static --watch\`,
+    template: \`\${templateCommand} --watch\`,
+    tsc: \`\${tscCommand} --watch\`,
+    webpack: \`\${webpackCommand} --watch\`,
+    less: \`watch-then-execute \${lessFiles} --script "clean-scripts build[0].css"\`,
+    rev: \`\${revStaticCommand} --watch\`,
     sw: \`watch-then-execute "vendor.bundle-*.js" "index.html" --script "clean-scripts build[2]"\`
   },
   screenshot: [

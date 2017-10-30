@@ -7,7 +7,6 @@ export async function runBackend(context: libs.Context) {
     await libs.exec(`yarn add -DE standard`);
     await libs.exec(`yarn add -DE clean-scripts`);
     await libs.exec(`yarn add -DE no-unused-export`);
-    await libs.exec(`yarn add -DE watch-then-execute`);
 
     await libs.exec("./node_modules/.bin/jasmine init");
 
@@ -55,10 +54,12 @@ function cleanScriptsConfigJs(context: libs.Context) {
 const tsFiles = \`"src/**/*.ts" "spec/**/*.ts" "test/**/*.ts"\`
 const jsFiles = \`"*.config.js"\`
 
+const tscSrcCommand = 'tsc -p src/'
+
 module.exports = {
   build: [
     'rimraf dist/',
-    'tsc -p src/'
+    tscSrcCommand
   ],
   lint: {
     ts: \`tslint \${tsFiles}\`,
@@ -81,7 +82,7 @@ module.exports = {
     js: \`standard --fix \${jsFiles}\`
   },
   release: \`clean-release\`,
-  watch: \`watch-then-execute "src/**/*.ts" --script "npm run build"\`
+  watch: \`\${tscSrcCommand} --watch\`
 }
 `;
 }

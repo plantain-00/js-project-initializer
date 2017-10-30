@@ -132,18 +132,24 @@ const tsFiles = \`"src/**/*.ts" "static/**/*.ts" "spec/**/*.ts" "static_spec/**/
 const jsFiles = \`"*.config.js" "static/**/*.config.js" "static_spec/**/*.config.js"\`
 const lessFiles = \`"static/**/*.less"\`
 
+const tscSrcCommand = 'tsc -p src/'
+const file2variableCommand = 'file2variable-cli static/*.template.html -o static/variables.ts --html-minify --base static'
+const tscStaticCommand = 'tsc -p static/'
+const webpackCommand = 'webpack --display-modules --config static/webpack.config.js'
+const revStaticCommand = 'rev-static --config static/rev-static.config.js'
+
 module.exports = {
   build: {
     back: [
       'rimraf dist/'
-      'tsc -p src/'
+      tscSrcCommand
     ],
     front: [
       {
         js: [
-          'file2variable-cli static/*.template.html -o static/variables.ts --html-minify --base static',
-          'tsc -p static/',
-          'webpack --display-modules --config static/webpack.config.js',
+          file2variableCommand,
+          tscStaticCommand,
+          webpackCommand,
         ],
         css: [
           'lessc static/index.less > static/index.css',
@@ -152,7 +158,7 @@ module.exports = {
         ],
         clean: 'rimraf static/**/*.bundle-*.js static/**/*.bundle-*.css',
       }
-      'rev-static --config static/rev-static.config.js'
+      revStaticCommand
     ]
   },
   lint: {
@@ -185,12 +191,12 @@ module.exports = {
   },
   release: \`clean-release\`,
   watch: {
-    back: \`tsc -p src/ --watch\`,
-    template: 'file2variable-cli static/*.template.html -o static/variables.ts --html-minify --base static --watch',
-    front: \`tsc -p static/ --watch\`,
-    webpack: \`webpack --config static/webpack.config.js --watch\`,
-    less: \`watch-then-execute "static/index.less" --script "clean-scripts build[0].front[0].css"\`,
-    rev: \`rev-static --config static/rev-static.config.js --watch\`
+    back: \`\${tscSrcCommand} --watch\`,
+    template: \`\${file2variableCommand} --watch\`,
+    front: \`\${tscStaticCommand} --watch\`,
+    webpack: \`\${webpackCommand} --watch\`,
+    less: \`watch-then-execute \${lessFiles} --script "clean-scripts build.front[0].css"\`,
+    rev: \`\${revStaticCommand} --watch\`
   },
   screenshot: [
     new Service('node ./dist/index.js'),
