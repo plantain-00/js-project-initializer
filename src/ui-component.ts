@@ -130,7 +130,8 @@ function cleanScriptsConfigJs(hasAngularChoice: boolean, context: libs.Context) 
     const angularScript = hasAngularChoice ? "        angularTemplateCommand,\n" : "";
     const compilerType = hasAngularChoice ? "ngc" : "tsc";
     const angularWatchScript = hasAngularChoice ? "    angular: \`\${angularTemplateCommand} --watch\`,\n" : "";
-    return `const { Service, execAsync } = require('clean-scripts')
+    return `const { Service, execAsync, executeScriptAsync } = require('clean-scripts')
+const { watch } = require('watch-then-execute')
 
 const tsFiles = \`"src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx" "screenshots/**/*.ts"\`
 const lessFiles = \`"src/**/*.less"\`
@@ -141,6 +142,12 @@ ${angularTemplateCommand}const tscSrcCommand = '${compilerType} -p src/'
 const tscDemoCommand = 'tsc -p demo/'
 const webpackCommand = 'webpack --display-modules --config demo/webpack.config.js'
 const revStaticCommand = 'rev-static --config demo/rev-static.config.js'
+const cssCommand = [
+  \`lessc src/${context.componentShortName}.less > src/${context.componentShortName}.css\`,
+  \`postcss src/${context.componentShortName}.css -o dist/${context.componentShortName}.css\`,
+  \`cleancss -o dist/${context.componentShortName}.min.css dist/${context.componentShortName}.css\`,
+  \`cleancss -o demo/index.bundle.css dist/${context.componentShortName}.min.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css\`
+]
 
 module.exports = {
   build: [
@@ -153,12 +160,7 @@ module.exports = {
         tscDemoCommand,
         webpackCommand
       ],
-      css: [
-        \`lessc src/${context.componentShortName}.less > src/${context.componentShortName}.css\`,
-        \`postcss src/${context.componentShortName}.css -o dist/${context.componentShortName}.css\`,
-        \`cleancss -o dist/${context.componentShortName}.min.css dist/${context.componentShortName}.css\`,
-        \`cleancss -o demo/index.bundle.css dist/${context.componentShortName}.min.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css\`
-      ],
+      css: cssCommand,
       clean: 'rimraf demo/**/*.bundle-*.js demo/*.bundle-*.css'
     },
     revStaticCommand
@@ -191,7 +193,7 @@ module.exports = {
     ${angularWatchScript}src: \`\${tscSrcCommand} --watch\`,
     demo: \`\${tscDemoCommand} --watch\`,
     webpack: \`\${webpackCommand} --watch\`,
-    less: \`watch-then-execute \${lessFiles} --script "clean-scripts build[2].css"\`,
+    less: () => watch(['src/**/*.less'], [], () => executeScriptAsync(cssCommand)),
     rev: \`\${revStaticCommand} --watch\`
   },
   screenshot: [

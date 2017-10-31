@@ -66,7 +66,8 @@ export async function runElectron(context: libs.Context) {
 }
 
 function cleanScriptsConfigJs(context: libs.Context) {
-    return `const { execAsync } = require('clean-scripts')
+    return `const { execAsync, executeScriptAsync } = require('clean-scripts')
+const { watch } = require('watch-then-execute')
 
 const tsFiles = \`"src/**/*.ts" "scripts/**/*.ts" "spec/**/*.ts" "static_spec/**/*.ts"\`
 const jsFiles = \`"*.config.js" "scripts/**/*.config.js" "static_spec/**/*.config.js"\`
@@ -75,6 +76,11 @@ const lessFiles = \`"scripts/**/*.less"\`
 const templateCommand = 'file2variable-cli scripts/index.template.html -o scripts/variables.ts --html-minify'
 const tscScriptsCommand = 'tsc -p scripts/'
 const webpackCommand = 'webpack --display-modules --config scripts/webpack.config.js'
+const cssCommand = [
+  'lessc scripts/index.less > scripts/index.css',
+  'postcss scripts/index.css -o scripts/index.postcss.css',
+  'cleancss -o scripts/index.bundle.css scripts/index.postcss.css',
+]
 
 module.exports = {
   build: {
@@ -85,11 +91,7 @@ module.exports = {
         tscScriptsCommand,
         webpackCommand
       ],
-      css: [
-        'lessc scripts/index.less > scripts/index.css',
-        'postcss scripts/index.css -o scripts/index.postcss.css',
-        'cleancss -o scripts/index.bundle.css scripts/index.postcss.css',
-      ]
+      css: cssCommand
     }
   },
   lint: {
@@ -128,7 +130,7 @@ module.exports = {
     template: \`\${templateCommand} --watch\`,
     script: \`\${tscScriptsCommand} --watch\`,
     webpack: \`\${webpackCommand} --watch\`,
-    less: \`watch-then-execute \${lessFiles} --script "npm run build.front.css"\`
+    less: () => watch(['scripts/**/*.less'], [], () => executeScriptAsync(cssCommand)),
   }
 }
 `;

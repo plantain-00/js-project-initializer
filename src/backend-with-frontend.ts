@@ -126,7 +126,8 @@ import * as fs from "fs";
 })();`;
 
 function cleanScriptsConfigJs(context: libs.Context) {
-    return `const { Service, execAsync } = require('clean-scripts')
+    return `const { Service, execAsync, executeScriptAsync } = require('clean-scripts')
+const { watch } = require('watch-then-execute')
 
 const tsFiles = \`"src/**/*.ts" "static/**/*.ts" "spec/**/*.ts" "static_spec/**/*.ts"\`
 const jsFiles = \`"*.config.js" "static/**/*.config.js" "static_spec/**/*.config.js"\`
@@ -137,6 +138,11 @@ const file2variableCommand = 'file2variable-cli static/*.template.html -o static
 const tscStaticCommand = 'tsc -p static/'
 const webpackCommand = 'webpack --display-modules --config static/webpack.config.js'
 const revStaticCommand = 'rev-static --config static/rev-static.config.js'
+const cssCommand = [
+  'lessc static/index.less > static/index.css',
+  'postcss static/index.css -o static/index.postcss.css',
+  'cleancss -o static/index.bundle.css static/index.postcss.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css'
+]
 
 module.exports = {
   build: {
@@ -151,11 +157,7 @@ module.exports = {
           tscStaticCommand,
           webpackCommand,
         ],
-        css: [
-          'lessc static/index.less > static/index.css',
-          'postcss static/index.css -o static/index.postcss.css',
-          'cleancss -o static/index.bundle.css static/index.postcss.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css'
-        ],
+        css: cssCommand,
         clean: 'rimraf static/**/*.bundle-*.js static/**/*.bundle-*.css',
       }
       revStaticCommand
@@ -195,7 +197,7 @@ module.exports = {
     template: \`\${file2variableCommand} --watch\`,
     front: \`\${tscStaticCommand} --watch\`,
     webpack: \`\${webpackCommand} --watch\`,
-    less: \`watch-then-execute \${lessFiles} --script "clean-scripts build.front[0].css"\`,
+    less: () => watch(['static/**/*.less'], [], () => executeScriptAsync(cssCommand)),
     rev: \`\${revStaticCommand} --watch\`
   },
   screenshot: [
