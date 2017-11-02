@@ -209,7 +209,7 @@ module.exports = {
     new Service('node ./dist/index.js'),
     'tsc -p prerender',
     'node prerender/index.js',
-    'clean-scripts build.front[1]'
+    revStaticCommand
   ]
 }
 `;

@@ -175,8 +175,8 @@ module.exports = {
     new Service('http-server -p 8000'),
     'tsc -p prerender',
     'node prerender/index.js',
-    'clean-scripts build[1]',
-    'clean-scripts build[2]'
+    revStaticCommand,
+    swCommand
   ]
 }
 `;
