@@ -51,6 +51,7 @@ export async function runUIComponent(context: libs.Context) {
     await libs.writeFile(`src/vue.template.html`, `<div class="${context.componentShortName}"></div>`);
     await libs.writeFile(`src/react.tsx`, srcReact(context));
     if (hasAngularChoice) {
+        await libs.writeFile(`src/tsconfig.aot.json`, srcTsconfigAot);
         await libs.writeFile(`src/angular.ts`, srcAngular(context));
         await libs.writeFile(`src/angular.template.html`, `<div class="${context.componentShortName}"></div>`);
     }
@@ -117,7 +118,7 @@ function screenshotsIndexTs(hasAngularChoice: boolean) {
 
     for (const type of ["vue", "react"${hasAngularChoice ? `, "angular"` : ``}]) {
         await page.goto(\`http://localhost:8000/demo/\${type}\`);
-        await page.screenshot({ path: \`screenshots/\${type}-initial.png\`, fullPage: true });
+        await page.screenshot({ path: \`screenshots/\${type}-initial.png\` });
     }
 
     browser.close();
@@ -128,8 +129,11 @@ function screenshotsIndexTs(hasAngularChoice: boolean) {
 function cleanScriptsConfigJs(hasAngularChoice: boolean, context: libs.Context) {
     const angularTemplateCommand = hasAngularChoice ? "const angularTemplateCommand = 'file2variable-cli src/angular.template.html -o src/angular-variables.ts --html-minify --base src'\n" : "";
     const angularScript = hasAngularChoice ? "        angularTemplateCommand,\n" : "";
-    const compilerType = hasAngularChoice ? "ngc" : "tsc";
     const angularWatchScript = hasAngularChoice ? "    angular: \`\${angularTemplateCommand} --watch\`,\n" : "";
+    const tscSrcCommand = hasAngularChoice ? `const tscSrcCommand = [
+  'tsc -p src',
+  'ngc -p src/tsconfig.aot.json'
+]` : `const tscSrcCommand = 'tsc -p src'`;
     return `const { Service, execAsync, executeScriptAsync } = require('clean-scripts')
 const { watch } = require('watch-then-execute')
 
@@ -138,7 +142,7 @@ const lessFiles = \`"src/**/*.less"\`
 const jsFiles = \`"*.config.js" "demo/*.config.js" "spec/*.config.js"\`
 
 const vueTemplateCommand = 'file2variable-cli src/vue.template.html -o src/vue-variables.ts --html-minify --base src'
-${angularTemplateCommand}const tscSrcCommand = '${compilerType} -p src/'
+${angularTemplateCommand}${tscSrcCommand}
 const tscDemoCommand = 'tsc -p demo/'
 const webpackCommand = 'webpack --display-modules --config demo/webpack.config.js'
 const revStaticCommand = 'rev-static --config demo/rev-static.config.js'
@@ -335,6 +339,9 @@ function readMeDocument(context: libs.Context, hasAngularChoice: boolean) {
 \`\`\`ts
 import { ${context.componentTypeName}Module } from "${context.repositoryName}/angular";
 
+// for angular AOT:
+// import { ${context.componentTypeName}Module } from "${context.repositoryName}/aot/angular";
+
 @NgModule({
     imports: [BrowserModule, FormsModule, ${context.componentTypeName}Module],
     declarations: [MainComponent],
@@ -413,6 +420,24 @@ type ${context.componentTypeName}Data<T = any> = {
 `;
 }
 
+const srcTsconfigAot = `{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "../dist/aot",
+        "rootDir": "."
+    },
+    "angularCompilerOptions": {
+        "strictMetadataEmit": true,
+        "genDir": "compiled"
+    },
+    "include": [
+        "angular-variables.ts",
+        "angular.ts",
+        "common.ts",
+        "locales/"
+    ]
+}`;
+
 const srcTsconfig = `{
     "compilerOptions": {
         "target": "es5",
@@ -432,10 +457,6 @@ const srcTsconfig = `{
         "downlevelIteration": true,
         "emitDecoratorMetadata": true,
         "newLine": "LF"
-    },
-    "angularCompilerOptions": {
-        "strictMetadataEmit": true,
-        "genDir": "compiled"
     },
     "exclude": [
         "./compiled/"
