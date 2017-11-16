@@ -66,7 +66,7 @@ export async function runElectron(context: libs.Context) {
 }
 
 function cleanScriptsConfigJs(context: libs.Context) {
-    return `const { execAsync, executeScriptAsync } = require('clean-scripts')
+    return `const { checkGitStatus, executeScriptAsync } = require('clean-scripts')
 const { watch } = require('watch-then-execute')
 
 const tsFiles = \`"src/**/*.ts" "scripts/**/*.ts" "spec/**/*.ts" "static_spec/**/*.ts"\`
@@ -109,13 +109,7 @@ module.exports = {
       'tsc -p static_spec',
       'karma start static_spec/karma.config.js'
     ],
-    consistence: async () => {
-      const { stdout } = await execAsync('git status -s')
-      if (stdout) {
-        console.log(stdout)
-        throw new Error(\`generated files doesn't match.\`)
-      }
-    }
+    consistence: () => checkGitStatus()
   },
   fix: {
     ts: \`tslint --fix \${tsFiles}\`,

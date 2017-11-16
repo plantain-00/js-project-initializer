@@ -41,7 +41,7 @@
     "@types/mkdirp": "0.5.1",
     "@types/uppercamelcase": "3.0.0",
     "clean-release": "1.3.5",
-    "clean-scripts": "1.6.0",
+    "clean-scripts": "1.7.0",
     "jasmine": "2.8.0",
     "no-unused-export": "1.4.2",
     "rimraf": "2.6.2",

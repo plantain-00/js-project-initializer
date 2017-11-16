@@ -134,7 +134,7 @@ function cleanScriptsConfigJs(hasAngularChoice: boolean, context: libs.Context) 
   'tsc -p src',
   'ngc -p src/tsconfig.aot.json'
 ]` : `const tscSrcCommand = 'tsc -p src'`;
-    return `const { Service, execAsync, executeScriptAsync } = require('clean-scripts')
+    return `const { Service, checkGitStatus, executeScriptAsync } = require('clean-scripts')
 const { watch } = require('watch-then-execute')
 
 const tsFiles = \`"src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx" "screenshots/**/*.ts"\`
@@ -178,13 +178,7 @@ module.exports = {
   test: [
     'tsc -p spec',
     'karma start spec/karma.config.js',
-    async () => {
-      const { stdout } = await execAsync('git status -s')
-      if (stdout) {
-        console.log(stdout)
-        throw new Error(\`generated files doesn't match.\`)
-      }
-    }
+    () => checkGitStatus()
   ],
   fix: {
     ts: \`tslint --fix \${tsFiles}\`,
