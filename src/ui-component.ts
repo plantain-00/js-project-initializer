@@ -43,6 +43,10 @@ export async function runUIComponent(context: libs.Context) {
     await libs.exec(`yarn add -DE puppeteer @@types/puppeteer`);
     await libs.exec(`yarn add -DE autoprefixer postcss-cli`);
 
+    if (hasAngularChoice) {
+        await libs.appendFile(".gitignore", angularIgnore);
+    }
+
     await libs.mkdir("src");
     await libs.writeFile(`src/tsconfig.json`, srcTsconfig);
     await libs.writeFile(`src/${context.componentShortName}.less`, srcLess(context));
@@ -68,8 +72,18 @@ export async function runUIComponent(context: libs.Context) {
     await libs.writeFile(`demo/react/index.ejs.html`, demoReactIndexEjsHtml);
     if (hasAngularChoice) {
         await libs.mkdir(`demo/angular`);
+        await libs.writeFile(`demo/angular/main.ts`, demoAngularMain(context));
+        await libs.writeFile(`demo/angular/main.module.ts`, demoAngularMainModule(context));
         await libs.writeFile(`demo/angular/index.ts`, demoAngularIndex(context));
         await libs.writeFile(`demo/angular/index.ejs.html`, demoAngularIndexEjsHtml);
+
+        await libs.mkdir(`demo/aot`);
+        await libs.writeFile(`demo/aot/main.ts`, demoAotMain(context));
+        await libs.writeFile(`demo/aot/main.module.ts`, demoAotMainModule(context));
+        await libs.writeFile(`demo/aot/index.ts`, demoAotIndex(context));
+        await libs.writeFile(`demo/aot/index.ejs.html`, demoAotIndexEjsHtml);
+
+        await libs.writeFile(`demo/tsconfig.aot.json`, demoTsconfigAotJson);
     }
 
     await libs.mkdir(`spec`);
@@ -108,6 +122,103 @@ export async function runUIComponent(context: libs.Context) {
     };
 }
 
+const demoTsconfigAotJson = `{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "declaration": true
+    },
+    "angularCompilerOptions": {
+        "strictMetadataEmit": true
+    },
+    "include": [
+        "aot/*.ts"
+    ]
+}`;
+
+function demoAngularMain(context: libs.Context) {
+    return `import { Component } from "@angular/core";
+
+import { ${context.componentTypeName}Data } from "../../dist/angular";
+
+@Component({
+    selector: "app",
+    template: \`
+    <div>
+        <a href="https://github.com/${context.author}/${context.repositoryName}/tree/master/demo/angular/index.ts" target="_blank">the source code of the demo</a>
+        <br/>
+        <${context.componentShortName} [data]="data">
+        </${context.componentShortName}>
+    </div>
+    \`,
+})
+export class MainComponent {
+    data: ${context.componentTypeName}Data;
+}
+`;
+}
+
+function demoAotMain(context: libs.Context) {
+    return `import { Component } from "@angular/core";
+
+import { ${context.componentTypeName}Data } from "../../dist/angular";
+
+@Component({
+    selector: "app",
+    template: \`
+    <div>
+        <a href="https://github.com/${context.author}/${context.repositoryName}/tree/master/demo/angular/index.ts" target="_blank">the source code of the demo</a>
+        <br/>
+        <${context.componentShortName} [data]="data">
+        </${context.componentShortName}>
+    </div>
+    \`,
+})
+export class MainComponent {
+    data: ${context.componentTypeName}Data;
+}
+`;
+}
+
+function demoAngularMainModule(context: libs.Context) {
+    return `import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { FormsModule } from "@angular/forms";
+
+import { ${context.componentTypeName}Module } from "../../dist/angular";
+import { MainComponent } from "./main";
+
+@NgModule({
+    imports: [BrowserModule, FormsModule, ${context.componentTypeName}Module],
+    declarations: [MainComponent],
+    bootstrap: [MainComponent],
+})
+export class MainModule { }
+`;
+}
+
+function demoAotMainModule(context: libs.Context) {
+    return `import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { FormsModule } from "@angular/forms";
+
+import { ${context.componentTypeName}Module } from "../../dist/aot/angular";
+import { MainComponent } from "./main";
+
+@NgModule({
+    imports: [BrowserModule, FormsModule, ${context.componentTypeName}Module],
+    declarations: [MainComponent],
+    bootstrap: [MainComponent],
+})
+export class MainModule { }
+`;
+}
+
+const angularIgnore = `demo/**/*.metadata.json
+demo/**/*.ngsummary.json
+demo/aot/*.d.ts
+demo/*.d.ts
+`;
+
 function screenshotsIndexTs(hasAngularChoice: boolean) {
     return `import * as puppeteer from "puppeteer";
 
@@ -116,7 +227,7 @@ function screenshotsIndexTs(hasAngularChoice: boolean) {
     const page = await browser.newPage();
     await page.emulate({ viewport: { width: 1440, height: 900 }, userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36" });
 
-    for (const type of ["vue", "react"${hasAngularChoice ? `, "angular"` : ``}]) {
+    for (const type of ["vue", "react"${hasAngularChoice ? `, "angular", "aot"` : ``}]) {
         await page.goto(\`http://localhost:8000/demo/\${type}\`);
         await page.screenshot({ path: \`screenshots/\${type}-initial.png\` });
     }
@@ -134,16 +245,21 @@ function cleanScriptsConfigJs(hasAngularChoice: boolean, context: libs.Context) 
   'tsc -p src',
   'ngc -p src/tsconfig.aot.json'
 ]` : `const tscSrcCommand = 'tsc -p src'`;
+    const tscDemoCommand = hasAngularChoice ? `const tscDemoCommand = [
+  'tsc -p demo',
+  'ngc -p demo/tsconfig.aot.json'
+]` : `const tscDemoCommand = 'tsc -p demo/'`;
     return `const { Service, checkGitStatus, executeScriptAsync } = require('clean-scripts')
 const { watch } = require('watch-then-execute')
 
 const tsFiles = \`"src/**/*.ts" "src/**/*.tsx" "spec/**/*.ts" "demo/**/*.ts" "demo/**/*.tsx" "screenshots/**/*.ts"\`
 const lessFiles = \`"src/**/*.less"\`
 const jsFiles = \`"*.config.js" "demo/*.config.js" "spec/*.config.js"\`
+const excludeTsFiles = \`"demo/**/*.d.ts"\`
 
 const vueTemplateCommand = 'file2variable-cli src/vue.template.html -o src/vue-variables.ts --html-minify --base src'
 ${angularTemplateCommand}${tscSrcCommand}
-const tscDemoCommand = 'tsc -p demo/'
+${tscDemoCommand}
 const webpackCommand = 'webpack --display-modules --config demo/webpack.config.js'
 const revStaticCommand = 'rev-static --config demo/rev-static.config.js'
 const cssCommand = [
@@ -170,10 +286,10 @@ module.exports = {
     revStaticCommand
   ],
   lint: {
-    ts: \`tslint \${tsFiles}\`,
+    ts: \`tslint \${tsFiles} --exclude \${excludeTsFiles}\`,
     js: \`standard \${jsFiles}\`,
     less: \`stylelint \${lessFiles}\`,
-    export: \`no-unused-export \${tsFiles} \${lessFiles} --exclude "src/compiled/**/*"\`
+    export: \`no-unused-export \${tsFiles} \${lessFiles} --exclude \${excludeTsFiles}\`
   },
   test: [
     'tsc -p spec',
@@ -181,7 +297,7 @@ module.exports = {
     () => checkGitStatus()
   ],
   fix: {
-    ts: \`tslint --fix \${tsFiles}\`,
+    ts: \`tslint --fix \${tsFiles} --exclude \${excludeTsFiles}\`,
     js: \`standard --fix \${jsFiles}\`,
     less: \`stylelint --fix \${lessFiles}\`
   },
@@ -349,7 +465,9 @@ class MainModule { }
 </${context.componentShortName}>
 \`\`\`
 
-the online demo: https://${context.author}.github.io/${context.repositoryName}/demo/angular/index.html` : "";
+the online demo: https://${context.author}.github.io/${context.repositoryName}/demo/angular/index.html
+
+the AOT online demo: https://${context.author}.github.io/${context.repositoryName}/demo/aot/index.html` : "";
     return `
 #### features
 
@@ -421,8 +539,7 @@ const srcTsconfigAot = `{
         "rootDir": "."
     },
     "angularCompilerOptions": {
-        "strictMetadataEmit": true,
-        "genDir": "compiled"
+        "strictMetadataEmit": true
     },
     "include": [
         "angular-variables.ts",
@@ -451,10 +568,7 @@ const srcTsconfig = `{
         "downlevelIteration": true,
         "emitDecoratorMetadata": true,
         "newLine": "LF"
-    },
-    "exclude": [
-        "./compiled/"
-    ]
+    }
 }`;
 
 const demoTsconfig = `{
@@ -480,7 +594,12 @@ const demoTsconfig = `{
         "downlevelIteration": true,
         "emitDecoratorMetadata": true,
         "newLine": "LF"
-    }
+    },
+    "include": [
+        "angular/*",
+        "vue/*",
+        "react/*"
+    ]
 }`;
 
 const specTsconfig = `{
@@ -565,6 +684,15 @@ module.exports = [
     entry: './demo/angular/index',
     output: {
       path: path.resolve(__dirname, 'angular'),
+      filename: 'index.bundle.js'
+    },
+    plugins,
+    resolve
+  },
+  {
+    entry: './demo/aot/index',
+    output: {
+      path: path.resolve(__dirname, 'aot'),
       filename: 'index.bundle.js'
     },
     plugins,
@@ -689,42 +817,36 @@ const demoReactIndexEjsHtml = `<!DOCTYPE html>
 `;
 
 function demoAngularIndex(context: libs.Context) {
-    return `import "core-js/es6";
+    return `
+import "core-js/es6";
 import "core-js/es7/reflect";
 import "zone.js/dist/zone";
 
 import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
-import { enableProdMode, Component, NgModule } from "@angular/core";
+import { enableProdMode } from "@angular/core";
+
+import { MainModule } from "./main.module";
 
 enableProdMode();
 
-@Component({
-    selector: "app",
-    template: \`
-    <div>
-        <a href="https://github.com/${context.author}/${context.repositoryName}/tree/master/demo/angular/index.ts" target="_blank">the source code of the demo</a>
-        <br/>
-        <${context.componentShortName} [data]="data">
-        </${context.componentShortName}>
-    </div>
-    \`,
-})
-class MainComponent {
-    data: ${context.componentTypeName}Data;
+platformBrowserDynamic().bootstrapModule(MainModule);
+`;
 }
 
-import { BrowserModule } from "@angular/platform-browser";
-import { FormsModule } from "@angular/forms";
-import { ${context.componentTypeName}Module, ${context.componentTypeName}Data } from "../../dist/angular";
+function demoAotIndex(context: libs.Context) {
+    return `
+import "core-js/es6";
+import "core-js/es7/reflect";
+import "zone.js/dist/zone";
 
-@NgModule({
-    imports: [BrowserModule, FormsModule, ${context.componentTypeName}Module],
-    declarations: [MainComponent],
-    bootstrap: [MainComponent],
-})
-class MainModule { }
+import { platformBrowser } from "@angular/platform-browser";
+import { enableProdMode } from "@angular/core";
 
-platformBrowserDynamic().bootstrapModule(MainModule);
+import { MainModuleNgFactory } from "./main.module.ngfactory";
+
+enableProdMode();
+
+platformBrowser().bootstrapModuleFactory(MainModuleNgFactory);
 `;
 }
 
@@ -736,6 +858,16 @@ const demoAngularIndexEjsHtml = `<!DOCTYPE html>
 <link rel="stylesheet" href="../<%=indexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.indexBundleCss %>" />
 <app></app>
 <script src="./<%=angularIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.angularIndexBundleJs %>"></script>
+`;
+
+const demoAotIndexEjsHtml = `<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../<%=indexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.indexBundleCss %>" />
+<app></app>
+<script src="./<%=aotIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.aotIndexBundleJs %>"></script>
 `;
 
 const specIndexSpecTs = `import "../dist/common";
