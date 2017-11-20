@@ -2,7 +2,6 @@
   "name": "tab-container-component",
   "version": "1.0.0",
   "description": "A vuejs and reactjs tab container component.",
-  "main": "index.js",
   "scripts": {
   },
   "repository": {

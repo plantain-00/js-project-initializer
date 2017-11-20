@@ -2,7 +2,6 @@
   "name": "match-calculator",
   "version": "1.0.0",
   "description": "A match calculator",
-  "main": "index.js",
   "scripts": {
   },
   "repository": {
