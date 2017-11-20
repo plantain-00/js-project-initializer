@@ -169,7 +169,7 @@ before_install:
   - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
-  - git fetch --unshallow
+  - git fetch --unshallow || true
 install:
   - yarn install --pure-lockfile
 script:
@@ -192,7 +192,7 @@ node_js:
   - "8"
 before_install:
   - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
-  - git fetch --unshallow
+  - git fetch --unshallow || true
 install:
   - yarn install --pure-lockfile
 script:
