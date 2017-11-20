@@ -36,6 +36,8 @@
     "uppercamelcase": "3.0.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "5.0.1",
+    "@commitlint/config-angular": "5.0.1",
     "@types/inquirer": "0.0.35",
     "@types/jasmine": "2.8.2",
     "@types/mkdirp": "0.5.1",

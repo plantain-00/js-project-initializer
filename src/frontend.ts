@@ -12,7 +12,7 @@ export async function runFrontend(context: libs.Context) {
     await libs.exec(`yarn add -DE file2variable-cli`);
     await libs.exec(`yarn add -DE webpack`);
     await libs.exec(`yarn add -DE rev-static`);
-    await libs.exec(`yarn add -DE sw-precache uglify-js@2`);
+    await libs.exec(`yarn add -DE sw-precache uglify-js@^2.8`);
     await libs.exec(`yarn add -DE standard`);
     await libs.exec(`yarn add -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
     await libs.exec(`yarn add -DE clean-scripts`);
@@ -140,7 +140,8 @@ module.exports = {
     ts: \`tslint \${tsFiles}\`,
     js: \`standard \${jsFiles}\`,
     less: \`stylelint \${lessFiles}\`,
-    export: \`no-unused-export \${tsFiles} \${lessFiles}\`
+    export: \`no-unused-export \${tsFiles} \${lessFiles}\`,
+    commit: \`commitlint --from=HEAD~1\`
   },
   test: [
     'tsc -p spec',

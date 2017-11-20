@@ -22,6 +22,9 @@ async function run() {
     await libs.exec(`yarn add -DE tslint`);
     await libs.writeFile("tslint.json", libs.tslint);
 
+    await libs.exec(`yarn add -DE @commitlint/config-angular @commitlint/cli`);
+    await libs.writeFile("commitlint.config.js", commitlintConfig);
+
     await libs.mkdir(".github");
     await libs.writeFile(".github/ISSUE_TEMPLATE.md", issueTemplate);
     await libs.writeFile(".github/PULL_REQUEST_TEMPLATE.md", pullRequestTemplate);
@@ -80,6 +83,11 @@ run().then(() => {
     libs.printInConsole(error);
     process.exit(1);
 });
+
+const commitlintConfig = `module.exports = {
+  extends: ['@commitlint/config-angular']
+}
+`;
 
 async function getContext(): Promise<libs.Context> {
     const packages = await libs.readFile("package.json");
@@ -165,6 +173,7 @@ const pullRequestTemplate = `#### Fixes(if relevant): #1
 
 #### Checks
 
++ [ ] Contains Only One Commit(\`git reset\` then \`git commit\`)
 + [ ] Build Success(\`npm run build\`)
 + [ ] Lint Success(\`npm run lint\` to check, \`npm run fix\` to fix)
 + [ ] File Integrity(\`git add -A\` or add rules at \`.gitignore\` file)
