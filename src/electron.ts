@@ -3,6 +3,8 @@ import * as libs from "./libs";
 export async function runElectron(context: libs.Context) {
     context.hasKarma = true;
 
+    await libs.appendFile(".gitignore", libs.gitignore(context));
+
     await libs.exec(`yarn add -E electron`);
     await libs.exec(`yarn add -DE electron-packager`);
     await libs.exec(`yarn add -DE @types/node`);
@@ -29,7 +31,7 @@ export async function runElectron(context: libs.Context) {
     await libs.prependFile("README.md", libs.readMeBadge(context));
     await libs.writeFile(".stylelintrc", libs.stylelint);
     await libs.writeFile(".travis.yml", libs.getTravisYml(context));
-    await libs.writeFile("appveyor.yml", libs.appveyorYml);
+    await libs.writeFile("appveyor.yml", libs.appveyorYml(context));
     await libs.writeFile("clean-release.config.js", cleanReleaseConfigJs(context));
     await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
     await libs.writeFile(".browserslistrc", browsersList);

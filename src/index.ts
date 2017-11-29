@@ -14,8 +14,6 @@ async function run() {
 
     await libs.exec(`yarn add -DE typescript`);
 
-    await libs.appendFile(".gitignore", gitignore);
-
     await libs.mkdir(".vscode");
     await libs.writeFile(".vscode/settings.json", vscodeSetting);
 
@@ -38,6 +36,8 @@ async function run() {
             tslib?: string;
         };
     } = {};
+
+    context.kind = kind;
 
     switch (kind) {
         case libs.ProjectKind.UIComponent:
@@ -112,7 +112,7 @@ async function getContext(): Promise<libs.Context> {
             author = items[3];
         }
     }
-    return { repositoryName, componentShortName, componentTypeName, author, description: packageJson.description };
+    return { repositoryName, componentShortName, componentTypeName, author, description: packageJson.description, authorName: packageJson.author };
 }
 
 async function selectProjectKind() {
@@ -132,23 +132,6 @@ async function selectProjectKind() {
     });
     return projectKindAnswer.projectKind as libs.ProjectKind;
 }
-
-const gitignore = `
-# Source
-.vscode
-dist
-**/*.js
-**/*.css
-!*.config.js
-!**/*-*.js
-!**/*.index.bundle.js
-!**/*-*.css
-service-worker.js
-!*.index.bundle.js
-#**/*-*.png
-#index.html
-*.data
-`;
 
 const vscodeSetting = `{
     "typescript.tsdk": "./node_modules/typescript/lib"

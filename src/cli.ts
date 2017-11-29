@@ -3,6 +3,8 @@ import * as libs from "./libs";
 export async function runCLI(context: libs.Context) {
     context.isNpmPackage = true;
 
+    await libs.appendFile(".gitignore", libs.gitignore(context));
+
     await libs.exec(`yarn add -DE @types/node`);
     await libs.exec(`yarn add -DE jasmine @types/jasmine`);
     await libs.exec(`yarn add -DE standard`);
@@ -22,7 +24,7 @@ export async function runCLI(context: libs.Context) {
     await libs.prependFile("README.md", libs.readMeBadge(context));
     await libs.appendFile("README.md", readMeDocument(context));
     await libs.writeFile(".travis.yml", libs.getTravisYml(context));
-    await libs.writeFile("appveyor.yml", libs.appveyorYml);
+    await libs.writeFile("appveyor.yml", libs.appveyorYml(context));
     await libs.writeFile("clean-release.config.js", cleanReleaseConfigJs);
     await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
 

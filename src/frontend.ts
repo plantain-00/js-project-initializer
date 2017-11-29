@@ -3,6 +3,8 @@ import * as libs from "./libs";
 export async function runFrontend(context: libs.Context) {
     context.hasKarma = true;
 
+    await libs.appendFile(".gitignore", libs.gitignore(context));
+
     await libs.exec(`yarn add -DE tslib`);
     await libs.exec(`yarn add -DE github-fork-ribbon-css`);
     await libs.exec(`yarn add -DE less`);
@@ -34,7 +36,7 @@ export async function runFrontend(context: libs.Context) {
     await libs.writeFile("index.ejs.html", indexEjsHtml(context));
     await libs.writeFile("sw-precache.config.js", swPrecacheConfig);
     await libs.writeFile(".travis.yml", libs.getTravisYml(context));
-    await libs.writeFile("appveyor.yml", libs.appveyorYml);
+    await libs.writeFile("appveyor.yml", libs.appveyorYml(context));
     await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
     await libs.writeFile("prerender.html", "");
     await libs.writeFile(".browserslistrc", libs.browsersList);

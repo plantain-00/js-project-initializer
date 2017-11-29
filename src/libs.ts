@@ -133,10 +133,12 @@ export const tslint = `{
 }`;
 
 export type Context = {
+    kind?: ProjectKind;
     repositoryName: string;
     componentShortName: string;
     componentTypeName: string;
     author: string;
+    authorName: string;
     isNpmPackage?: boolean;
     hasKarma?: boolean;
     description: string;
@@ -160,7 +162,41 @@ export const stylelint = `{
   "extends": "stylelint-config-standard"
 }`;
 
+export function gitignore(context: Context) {
+    return context.kind === ProjectKind.UIComponent
+        ? `# Source
+.vscode
+dist
+**/demo/**/*.metadata.json
+**/demo/**/*.ngsummary.json
+**/demo/**/*.d.ts
+*.js
+*.css
+!*.config.js
+!**/*-*.js
+!**/*-*.css
+`
+        : `
+# Source
+.vscode
+dist
+**/*.js
+**/*.css
+!*.config.js
+!**/*-*.js
+!**/*.index.bundle.js
+!**/*-*.css
+service-worker.js
+!*.index.bundle.js
+#**/*-*.png
+#index.html
+*.data
+`;
+}
+
 export function getTravisYml(context: Context) {
+    const bootstrap = context.kind === ProjectKind.UIComponent ? `
+  - npm run bootstrap` : ``;
     return context.hasKarma ? `language: node_js
 dist: trusty
 node_js:
@@ -172,7 +208,7 @@ before_install:
   - git fetch --unshallow || true
 install:
   - yarn install --pure-lockfile
-script:
+script:${bootstrap}
   - npm run build
   - npm run lint
   - npm run test
@@ -195,7 +231,7 @@ before_install:
   - git fetch --unshallow || true
 install:
   - yarn install --pure-lockfile
-script:
+script:${bootstrap}
   - npm run build
   - npm run lint
   - npm run test
@@ -211,7 +247,10 @@ addons:
 `;
 }
 
-export const appveyorYml = `environment:
+export function appveyorYml(context: Context) {
+    const bootstrap = context.kind === ProjectKind.UIComponent ? `
+  - npm run bootstrap` : ``;
+    return `environment:
   nodejs_version: "8"
 
 install:
@@ -220,13 +259,14 @@ install:
 
 test_script:
   - node --version
-  - npm --version
+  - npm --version${bootstrap}
   - npm run build
   - npm run lint
   - npm run test
 
 build: off
 `;
+}
 
 export const specIndexSpecTs = `it("", () => {
     // expect(true).toEqual(true);
