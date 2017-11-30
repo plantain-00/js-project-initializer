@@ -77,7 +77,7 @@ const lessFiles = \`"scripts/**/*.less"\`
 
 const templateCommand = 'file2variable-cli scripts/index.template.html -o scripts/variables.ts --html-minify'
 const tscScriptsCommand = 'tsc -p scripts/'
-const webpackCommand = 'webpack --display-modules --config scripts/webpack.config.js'
+const webpackCommand = 'webpack --config scripts/webpack.config.js'
 const cssCommand = [
   'lessc scripts/index.less > scripts/index.css',
   'postcss scripts/index.css -o scripts/index.postcss.css',

@@ -138,7 +138,7 @@ const lessFiles = \`"static/**/*.less"\`
 const tscSrcCommand = 'tsc -p src/'
 const file2variableCommand = 'file2variable-cli static/*.template.html -o static/variables.ts --html-minify --base static'
 const tscStaticCommand = 'tsc -p static/'
-const webpackCommand = 'webpack --display-modules --config static/webpack.config.js'
+const webpackCommand = 'webpack --config static/webpack.config.js'
 const revStaticCommand = 'rev-static --config static/rev-static.config.js'
 const cssCommand = [
   'lessc static/index.less > static/index.css',

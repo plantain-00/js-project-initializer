@@ -227,16 +227,16 @@ function angularPackageJson(context: libs.Context) {
   "homepage": "https://github.com/${context.author}/${context.repositoryName}#readme",
   "dependencies": {
     "@angular/common": "5",
-    "@angular/compiler": "5",
-    "@angular/compiler-cli": "5",
     "@angular/core": "5",
     "@angular/forms": "5",
-    "@angular/platform-browser": "5",
-    "@angular/platform-browser-dynamic": "5",
-    "core-js": "2",
-    "${context.repositoryName}": "^1.0.0",
-    "rxjs": "5",
-    "zone.js": "0.8"
+    "${context.repositoryName}": "^1.0.0"
+  },
+  "devDependencies": {
+    "@angular/platform-browser": "5.0.3",
+    "@angular/platform-browser-dynamic": "5.0.3",
+    "core-js": "2.5.1",
+    "rxjs": "5.5.2",
+    "zone.js": "0.8.18"
   }
 }
 `;
