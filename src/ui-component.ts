@@ -369,7 +369,7 @@ import { ${context.componentTypeName}Data } from "../dist/";
     selector: "app",
     template: \`
     <div>
-        <a href="https://github.com/${context.author}/${context.repositoryName}/tree/master/demo/angular/index.ts" target="_blank">the source code of the demo</a>
+        <a href="https://github.com/${context.author}/${context.repositoryName}/tree/master/packages/angular/demo" target="_blank">the source code of the demo</a>
         <br/>
         <${context.componentShortName} [data]="data">
         </${context.componentShortName}>
@@ -511,7 +511,7 @@ module.exports = {
 
 const demoRevStaticConfig = `module.exports = {
   inputFiles: [
-    'packages/@(vue|react|angular)/demo/**/*.bundle.js',
+    'packages/@(vue|react|angular)/demo/**/index.bundle.js',
     'packages/@(vue|react|angular)/demo/**/*.ejs.html',
     'packages/core/demo/*.bundle.css'
   ],
@@ -867,7 +867,7 @@ import { ${context.componentTypeName}Data } from "../dist/";
 @Component({
     template: \`
     <div>
-        <a href="https://github.com/${context.author}/${context.repositoryName}/tree/master/demo/vue/index.ts" target="_blank">the source code of the demo</a>
+        <a href="https://github.com/${context.author}/${context.repositoryName}/tree/master/packages/vue/demo" target="_blank">the source code of the demo</a>
         <br/>
         <${context.componentShortName} :data="data">
         </${context.componentShortName}>
@@ -888,6 +888,11 @@ const demoVueIndexEjsHtml = `<!DOCTYPE html>
 <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="../../core/demo/<%=coreDemoIndexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.coreDemoIndexBundleCss %>" />
+<style>
+    .github-fork-ribbon {
+        position: fixed;
+    }
+</style>
 <div id="container"></div>
 <script src="./<%=vueDemoIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.vueDemoIndexBundleJs %>"></script>
 `;
@@ -903,7 +908,7 @@ class Main extends React.Component<{}, {}> {
     render() {
         return (
             <div>
-                <a href="https://github.com/${context.author}/${context.repositoryName}/tree/master/demo/react/index.tsx" target="_blank">the source code of the demo</a>
+                <a href="https://github.com/${context.author}/${context.repositoryName}/tree/master/packages/react/demo" target="_blank">the source code of the demo</a>
                 <br />
                 <${context.componentTypeName} data={this.data}>
                 </${context.componentTypeName}>
@@ -922,6 +927,11 @@ const demoReactIndexEjsHtml = `<!DOCTYPE html>
 <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="../../core/demo/<%=coreDemoIndexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.coreDemoIndexBundleCss %>" />
+<style>
+    .github-fork-ribbon {
+        position: fixed;
+    }
+</style>
 <div id="container"></div>
 <script src="./<%=reactDemoIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.reactDemoIndexBundleJs %>"></script>
 `;
@@ -966,6 +976,11 @@ const demoJitIndexEjsHtml = `<!DOCTYPE html>
 <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="../../../core/demo/<%=coreDemoIndexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.coreDemoIndexBundleCss %>" />
+<style>
+    .github-fork-ribbon {
+        position: fixed;
+    }
+</style>
 <app></app>
 <script src="./<%=angularDemoJitIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.angularDemoJitIndexBundleJs %>"></script>
 `;
@@ -976,6 +991,11 @@ const demoAotIndexEjsHtml = `<!DOCTYPE html>
 <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="../../../core/demo/<%=coreDemoIndexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.coreDemoIndexBundleCss %>" />
+<style>
+    .github-fork-ribbon {
+        position: fixed;
+    }
+</style>
 <app></app>
 <script src="./<%=angularDemoAotIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.angularDemoAotIndexBundleJs %>"></script>
 `;

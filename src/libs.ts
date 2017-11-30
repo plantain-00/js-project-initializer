@@ -175,6 +175,7 @@ dist
 !*.config.js
 !**/*-*.js
 !**/*-*.css
+!**/*.index.bundle.js
 `
         : `
 # Source
