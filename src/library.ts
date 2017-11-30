@@ -54,6 +54,7 @@ module.exports = {
     'rimraf dist/',
     {
       back: 'tsc -p src/tsconfig.nodejs.json',
+      all: 'tsc -p src/tsconfig.base.json',
       front: [
         'tsc -p src/tsconfig.browser.json',
         'rollup --config rollup.config.js'
@@ -85,7 +86,6 @@ const tsconfigNodejs = `{
     "compilerOptions": {
         "target": "esnext",
         "outDir": "../dist/nodejs",
-        "module": "commonjs",
         "newLine": "LF"
     }
 }
@@ -94,7 +94,6 @@ const tsconfigNodejs = `{
 const tsconfigBrowser = `{
     "extends": "./tsconfig.base.json",
     "compilerOptions": {
-        "target": "es5",
         "outDir": "../dist/browser",
         "module": "esnext",
         "moduleResolution": "node",
@@ -152,6 +151,8 @@ const tsconfigBase = `{
     "compilerOptions": {
         "target": "es5",
         "declaration": true,
+
+        "outDir": "../dist",
 
         "module": "commonjs",
         "strict": true,
