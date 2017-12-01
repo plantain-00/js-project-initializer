@@ -17,7 +17,6 @@ export async function runBackendWithFrontend(context: libs.Context) {
     await libs.exec(`yarn add -DE rev-static`);
     await libs.exec(`yarn add -DE standard`);
     await libs.exec(`yarn add -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
-    await libs.exec(`yarn add -DE clean-release`);
     await libs.exec(`yarn add -DE clean-scripts`);
     await libs.exec(`yarn add -DE no-unused-export`);
     await libs.exec(`yarn add -DE watch-then-execute`);
@@ -77,7 +76,6 @@ export async function runBackendWithFrontend(context: libs.Context) {
             lint: "clean-scripts lint",
             test: "clean-scripts test",
             fix: "clean-scripts fix",
-            release: "clean-scripts release",
             watch: "clean-scripts watch",
             screenshot: "clean-scripts screenshot",
             prerender: "clean-scripts prerender",
@@ -188,7 +186,6 @@ module.exports = {
     js: \`standard --fix \${jsFiles}\`,
     less: \`stylelint --fix \${lessFiles}\`
   },
-  release: \`clean-release\`,
   watch: {
     back: \`\${tscSrcCommand} --watch\`,
     template: \`\${file2variableCommand} --watch\`,
@@ -242,9 +239,9 @@ function getCleanReleaseConfigJs(context: libs.Context) {
   ],
   releaseRepository: 'https://github.com/${context.author}/${context.repositoryName}-release.git',
   postScript: [
-    'cd [dir] && rm -rf .git',
-    'cp Dockerfile [dir]',
-    'cd [dir] && docker build -t ${context.author}/${context.repositoryName} . && docker push ${context.author}/${context.repositoryName}'
+    'cd "[dir]" && rm -rf .git',
+    'cp Dockerfile "[dir]"',
+    'cd "[dir]" && docker build -t ${context.author}/${context.repositoryName} . && docker push ${context.author}/${context.repositoryName}'
   ]
 }
 `;

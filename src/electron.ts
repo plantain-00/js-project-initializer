@@ -17,7 +17,6 @@ export async function runElectron(context: libs.Context) {
     await libs.exec(`yarn add -DE webpack`);
     await libs.exec(`yarn add -DE standard`);
     await libs.exec(`yarn add -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
-    await libs.exec(`yarn add -DE clean-release`);
     await libs.exec(`yarn add -DE clean-scripts`);
     await libs.exec(`yarn add -DE no-unused-export`);
     await libs.exec(`yarn add -DE watch-then-execute`);
@@ -61,7 +60,6 @@ export async function runElectron(context: libs.Context) {
             lint: "clean-scripts lint",
             test: "clean-scripts test",
             fix: `clean-scripts fix`,
-            release: "clean-scripts release",
             watch: "clean-scripts watch",
         },
     };
@@ -119,10 +117,6 @@ module.exports = {
     js: \`standard --fix \${jsFiles}\`,
     less: \`stylelint --fix \${lessFiles}\`
   },
-  release: [
-    'rimraf dist',
-    'clean-release'
-  ],
   watch: {
     template: \`\${templateCommand} --watch\`,
     script: \`\${tscScriptsCommand} --watch\`,
@@ -134,7 +128,9 @@ module.exports = {
 }
 
 function cleanReleaseConfigJs(context: libs.Context) {
-    return `module.exports = {
+    return `const { name, devDependencies: { electron: electronVersion } } = require('./package.json')
+
+module.exports = {
   include: [
     'main.js',
     'scripts/index.css',
@@ -146,10 +142,21 @@ function cleanReleaseConfigJs(context: libs.Context) {
   ],
   exclude: [
   ],
+  askVersion: true,
   postScript: [
-    'cd [dir] && yarn add --production',
-    'electron-packager [dir] "${context.repositoryName}" --out=dist --arch=x64 --version=1.2.1 --app-version="1.0.8" --platform=darwin --ignore="dist/"',
-    'electron-packager [dir] "${context.repositoryName}" --out=dist --arch=x64 --version=1.2.1 --app-version="1.0.8" --platform=win32 --ignore="dist/"'
+    'git add package.json',
+    'git commit -m "feat: publish v[version]"',
+    'git tag v[version]',
+    'git push',
+    'git push origin v[version]',
+    'cd "[dir]" && npm i --production',
+    'prune-node-modules "[dir]/node_modules"',
+    \`electron-packager "[dir]" "\${name}" --out=dist --arch=x64 --electron-version=\${electronVersion} --platform=darwin --ignore="dist/"\`,
+    \`electron-packager "[dir]" "\${name}" --out=dist --arch=x64 --electron-version=\${electronVersion} --platform=win32 --ignore="dist/"\`,
+    \`7z a -r -tzip dist/\${name}-darwin-x64-[version].zip dist/\${name}-darwin-x64/\`,
+    \`7z a -r -tzip dist/\${name}-win32-x64-$[version].zip dist/\${name}-win32-x64/\`,
+    \`electron-installer-windows --src dist/\${name}-win32-x64/ --dest dist/\`,
+    \`cd dist && create-dmg \${name}-darwin-x64/\${name}.app\`
   ]
 }
 `;

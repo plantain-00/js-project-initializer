@@ -6,7 +6,6 @@ export async function runBackend(context: libs.Context) {
 
     await libs.exec(`yarn add -DE @types/node`);
     await libs.exec(`yarn add -DE jasmine @types/jasmine`);
-    await libs.exec(`yarn add -DE clean-release`);
     await libs.exec(`yarn add -DE standard`);
     await libs.exec(`yarn add -DE clean-scripts`);
     await libs.exec(`yarn add -DE no-unused-export`);
@@ -35,7 +34,6 @@ export async function runBackend(context: libs.Context) {
             lint: "clean-scripts lint",
             test: "clean-scripts test",
             fix: "clean-scripts fix",
-            release: "clean-scripts release",
             watch: "clean-scripts watch",
         },
     };
@@ -79,7 +77,6 @@ module.exports = {
     ts: \`tslint --fix \${tsFiles}\`,
     js: \`standard --fix \${jsFiles}\`
   },
-  release: \`clean-release\`,
   watch: \`\${tscSrcCommand} --watch\`
 }
 `;
@@ -98,9 +95,9 @@ function getCleanReleaseConfigJs(context: libs.Context) {
   ],
   releaseRepository: 'https://github.com/${context.author}/${context.repositoryName}-release.git',
   postScript: [
-    'cd [dir] && rm -rf .git',
-    'cp Dockerfile [dir]',
-    'cd [dir] && docker build -t ${context.author}/${context.repositoryName} . && docker push ${context.author}/${context.repositoryName}'
+    'cd "[dir]" && rm -rf .git',
+    'cp Dockerfile "[dir]"',
+    'cd "[dir]" && docker build -t ${context.author}/${context.repositoryName} . && docker push ${context.author}/${context.repositoryName}'
   ]
 }
 `;

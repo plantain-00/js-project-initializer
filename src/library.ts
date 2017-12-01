@@ -6,7 +6,6 @@ export async function runLibrary(context: libs.Context) {
     await libs.appendFile(".gitignore", libs.gitignore(context));
 
     await libs.exec(`yarn add -DE jasmine @types/jasmine`);
-    await libs.exec(`yarn add -DE clean-release`);
     await libs.exec(`yarn add -DE rimraf`);
     await libs.exec(`yarn add -DE standard`);
     await libs.exec(`yarn add -DE rollup rollup-plugin-node-resolve rollup-plugin-uglify`);
@@ -38,7 +37,6 @@ export async function runLibrary(context: libs.Context) {
             lint: "clean-scripts lint",
             test: "clean-scripts test",
             fix: "clean-scripts fix",
-            release: "clean-scripts release",
         },
     };
 }
@@ -75,8 +73,7 @@ module.exports = {
   fix: {
     ts: \`tslint --fix \${tsFiles}\`,
     js: \`standard --fix \${jsFiles}\`
-  },
-  release: \`clean-release\`
+  }
 }
 `;
 }
@@ -130,7 +127,7 @@ const cleanReleaseConfigJs = `module.exports = {
   base: 'dist',
   askVersion: true,
   postScript: [
-    'npm publish [dir] --access public',
+    'npm publish "[dir]" --access public',
     'git add package.json',
     'git commit -m "feat: publish v[version]"',
     'git tag v[version]',

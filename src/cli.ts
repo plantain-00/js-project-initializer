@@ -10,7 +10,6 @@ export async function runCLI(context: libs.Context) {
     await libs.exec(`yarn add -DE standard`);
     await libs.exec(`yarn add -E minimist`);
     await libs.exec(`yarn add -DE @types/minimist`);
-    await libs.exec(`yarn add -DE clean-release`);
     await libs.exec(`yarn add -DE clean-scripts`);
     await libs.exec(`yarn add -DE no-unused-export`);
 
@@ -43,7 +42,6 @@ export async function runCLI(context: libs.Context) {
             lint: "clean-scripts lint",
             test: "clean-scripts test",
             fix: "clean-scripts fix",
-            release: "clean-scripts release",
         },
         bin: {
             [context.repositoryName]: `bin/${context.repositoryName}`,
@@ -77,8 +75,7 @@ module.exports = {
   fix: {
     ts: \`tslint --fix \${tsFiles}\`,
     js: \`standard --fix \${jsFiles}\`
-  },
-  release: \`clean-release\`
+  }
 }
 `;
 }
@@ -95,7 +92,7 @@ const cleanReleaseConfigJs = `module.exports = {
   ],
   askVersion: true,
   postScript: [
-    'npm publish [dir] --access public',
+    'npm publish "[dir]" --access public',
     'git add package.json',
     'git commit -m "feat: publish v[version]"',
     'git tag v[version]',
