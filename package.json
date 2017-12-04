@@ -30,16 +30,16 @@
   },
   "homepage": "https://github.com/plantain-00/js-project-initializer#readme",
   "dependencies": {
-    "inquirer": "4.0.0",
+    "inquirer": "4.0.1",
     "mkdirp": "0.5.1",
     "uppercamelcase": "3.0.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "5.0.1",
-    "@commitlint/config-angular": "5.0.1",
+    "@commitlint/cli": "5.2.0",
+    "@commitlint/config-angular": "5.1.1",
     "@types/inquirer": "0.0.35",
     "@types/jasmine": "2.8.2",
-    "@types/mkdirp": "0.5.1",
+    "@types/mkdirp": "0.5.2",
     "@types/uppercamelcase": "3.0.0",
     "clean-scripts": "1.7.0",
     "jasmine": "2.8.0",
