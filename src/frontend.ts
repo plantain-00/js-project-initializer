@@ -223,7 +223,7 @@ const indexLess = `* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Lucida Grande", "Lucida Sans Unicode", "Hiragino Sans GB", "WenQuanYi Micro Hei", "Verdana,Aril", "sans-serif";
+  font-family: "Lucida Grande", "Lucida Sans Unicode", "Hiragino Sans GB", "WenQuanYi Micro Hei", "Verdana,Aril", sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 `;
