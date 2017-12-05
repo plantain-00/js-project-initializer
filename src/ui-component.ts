@@ -130,9 +130,6 @@ export async function runUIComponent(context: libs.Context) {
     const lernaString = await libs.readFile("lerna.json");
     const lernaJson: { [name: string]: any } = JSON.parse(lernaString);
     lernaJson.npmClient = "yarn";
-    lernaJson.npmClientArgs = [
-        "--pure-lockfile",
-    ];
     lernaJson.command = {
         publish: {
             message: "feat: publish %s",
@@ -142,7 +139,7 @@ export async function runUIComponent(context: libs.Context) {
 
     return {
         scripts: {
-            bootstrap: "lerna bootstrap",
+            bootstrap: "lerna bootstrap -- --frozen-lockfile",
             build: `clean-scripts build`,
             lint: `clean-scripts lint`,
             test: "clean-scripts test",

@@ -208,7 +208,7 @@ before_install:
   - "sh -e /etc/init.d/xvfb start"
   - git fetch --unshallow || true
 install:
-  - yarn install --pure-lockfile
+  - yarn install --frozen-lockfile
 script:${bootstrap}
   - npm run build
   - npm run lint
@@ -231,7 +231,7 @@ before_install:
   - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
   - git fetch --unshallow || true
 install:
-  - yarn install --pure-lockfile
+  - yarn install --frozen-lockfile
 script:${bootstrap}
   - npm run build
   - npm run lint
@@ -256,7 +256,7 @@ export function appveyorYml(context: Context) {
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - yarn install --pure-lockfile
+  - yarn install --frozen-lockfile
 
 test_script:
   - node --version
