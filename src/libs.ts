@@ -93,8 +93,7 @@ export function getComponentShortName(componentName: string) {
 
 export function tslint(context: Context) {
     return (context.kind === ProjectKind.CLI
-        || context.kind === ProjectKind.backend
-        || context.kind === ProjectKind.backendWithFrontend) ? `{
+        || context.kind === ProjectKind.backend) ? `{
     "extends": "tslint:latest",
     "rules": {
         "max-line-length": [

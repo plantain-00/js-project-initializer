@@ -247,7 +247,12 @@ function getCleanReleaseConfigJs(context: libs.Context) {
 `;
 }
 
-const srcIndex = `console.log("app started!");
+const srcIndex = `function printInConsole(message: any) {
+  // tslint:disable-next-line:no-console
+  console.log(message);
+}
+
+printInConsole("app started!");
 
 process.on("SIGINT", () => {
   process.exit();
