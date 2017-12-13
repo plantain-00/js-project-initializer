@@ -78,9 +78,13 @@ async function run() {
 }
 
 run().then(() => {
-    libs.printInConsole("initialize repository success.");
+    console.log("initialize repository success.");
 }).catch(error => {
-    libs.printInConsole(error);
+    if (error instanceof Error) {
+        console.log(error.message);
+    } else {
+        console.log(error);
+    }
     process.exit(1);
 });
 

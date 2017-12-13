@@ -8,7 +8,7 @@ export { inquirer, upperCamelCase };
 
 export function exec(command: string) {
     return new Promise<void>((resolve, reject) => {
-        printInConsole(`${command}...`);
+        console.log(`${command}...`);
         const subProcess = childProcess.exec(command, (error, stdout, stderr) => {
             if (error) {
                 reject(error);
@@ -23,7 +23,7 @@ export function exec(command: string) {
 
 export function writeFile(filename: string, data: string) {
     return new Promise<void>((resolve, reject) => {
-        printInConsole(`setting ${filename}...`);
+        console.log(`setting ${filename}...`);
         fs.writeFile(filename, data, error => {
             if (error) {
                 reject(error);
@@ -48,7 +48,7 @@ export function readFile(filename: string) {
 
 export function appendFile(filename: string, data: string) {
     return new Promise<void>((resolve, reject) => {
-        printInConsole(`setting ${filename}...`);
+        console.log(`setting ${filename}...`);
         fs.appendFile(filename, data, error => {
             if (error) {
                 reject(error);
@@ -73,11 +73,6 @@ export function mkdir(dir: string) {
             }
         });
     });
-}
-
-export function printInConsole(message: any) {
-    // tslint:disable-next-line:no-console
-    console.log(message);
 }
 
 export const enum ProjectKind {
