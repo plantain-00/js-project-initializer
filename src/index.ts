@@ -18,8 +18,6 @@ async function run() {
     await libs.writeFile(".vscode/settings.json", vscodeSetting);
 
     await libs.exec(`yarn add -DE tslint`);
-    await libs.writeFile("tslint.json", libs.tslint);
-
     await libs.exec(`yarn add -DE @commitlint/config-angular @commitlint/cli`);
     await libs.writeFile("commitlint.config.js", commitlintConfig);
 
@@ -38,6 +36,8 @@ async function run() {
     } = {};
 
     context.kind = kind;
+
+    await libs.writeFile("tslint.json", libs.tslint(context));
 
     switch (kind) {
         case libs.ProjectKind.UIComponent:

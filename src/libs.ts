@@ -91,7 +91,45 @@ export function getComponentShortName(componentName: string) {
         : componentName;
 }
 
-export const tslint = `{
+export function tslint(context: Context) {
+    return (context.kind === ProjectKind.CLI
+        || context.kind === ProjectKind.backend
+        || context.kind === ProjectKind.backendWithFrontend) ? `{
+    "extends": "tslint:latest",
+    "rules": {
+        "max-line-length": [
+            false
+        ],
+        "ordered-imports": [
+            false
+        ],
+        "object-literal-sort-keys": false,
+        "member-access": false,
+        "arrow-parens": false,
+        "array-type": [
+            true,
+            "array"
+        ],
+        "max-classes-per-file": [
+            false
+        ],
+        "interface-over-type-literal": false,
+        "interface-name": [
+            true,
+            "never-prefix"
+        ],
+        "no-unused-expression": [
+            true,
+            "allow-new"
+        ],
+        "no-submodule-imports": false,
+        "no-implicit-dependencies": [
+            true,
+            "dev"
+        ],
+        "no-console": false
+    }
+}` : `{
     "extends": "tslint:latest",
     "rules": {
         "max-line-length": [
@@ -126,6 +164,7 @@ export const tslint = `{
         ]
     }
 }`;
+}
 
 export type Context = {
     kind?: ProjectKind;
