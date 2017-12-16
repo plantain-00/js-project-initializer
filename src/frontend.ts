@@ -184,9 +184,10 @@ import Component from "vue-class-component";
 import { indexTemplateHtml } from "./variables";
 
 @Component({
-    template: indexTemplateHtml,
+    render: indexTemplateHtml,
+    staticRenderFns: indexTemplateHtmlStatic,
 })
-class App extends Vue {
+export class App extends Vue {
 }
 
 new App({ el: "#container" });
@@ -249,12 +250,6 @@ const plugins = [
   })
 ]
 
-const resolve = {
-  alias: {
-    'vue$': 'vue/dist/vue.esm.js'
-  }
-}
-
 module.exports = {
   entry: {
     index: './index',
@@ -264,8 +259,7 @@ module.exports = {
     path: __dirname,
     filename: '[name].bundle.js'
   },
-  plugins,
-  resolve
+  plugins
 }
 `;
 

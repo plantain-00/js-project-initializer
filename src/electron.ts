@@ -230,9 +230,10 @@ import Component from "vue-class-component";
 import { scriptsIndexTemplateHtml } from "./variables";
 
 @Component({
-    template: scriptsIndexTemplateHtml,
+    render: scriptsIndexTemplateHtml,
+    staticRenderFns: scriptsIndexTemplateHtmlStatic,
 })
-class App extends Vue {
+export class App extends Vue {
 }
 
 new App({ el: "#container" });
@@ -285,12 +286,7 @@ module.exports = {
       exclude: [
       ]
     })
-  ],
-  resolve: {
-    alias: {
-      'vue$': 'vue/dist/vue.esm.js'
-    }
-  }
+  ]
 }
 `;
 

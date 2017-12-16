@@ -345,24 +345,15 @@ module.exports = function (karma) {
 
 export const specWebpackConfigJs = `const webpack = require('webpack')
 
-const plugins = [
-  new webpack.DefinePlugin({
-    'process.env': {
-      'NODE_ENV': JSON.stringify('production')
-    }
-  }),
-  new webpack.NoEmitOnErrorsPlugin()
-]
-
-const resolve = {
-  alias: {
-    'vue$': 'vue/dist/vue.js'
-  }
-}
-
 module.exports = {
-  plugins,
-  resolve
+  plugins:[
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
+    new webpack.NoEmitOnErrorsPlugin()
+  ]
 }
 `;
 

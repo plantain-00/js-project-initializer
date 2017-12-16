@@ -20,7 +20,6 @@ export async function runUIComponent(context: libs.Context) {
 
     await libs.appendFile(".gitignore", libs.gitignore(context));
 
-    await libs.exec(`yarn add -E tslib@1`);
     await libs.exec(`yarn add -DE github-fork-ribbon-css`);
     await libs.exec(`yarn add -DE less`);
     await libs.exec(`yarn add -DE stylelint stylelint-config-standard`);
@@ -34,7 +33,6 @@ export async function runUIComponent(context: libs.Context) {
     await libs.exec(`yarn add -DE standard`);
     await libs.exec(`yarn add -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
     await libs.exec(`yarn add -DE clean-scripts`);
-    await libs.exec(`yarn add -DE mkdirp`);
     await libs.exec(`yarn add -DE no-unused-export`);
     await libs.exec(`yarn add -DE watch-then-execute`);
     await libs.exec(`yarn add -DE http-server`);
@@ -280,6 +278,9 @@ function vuePackageJson(context: libs.Context) {
     "type": "git",
     "url": "git+https://github.com/${context.author}/${context.repositoryName}.git"
   },
+  "scripts": {
+    "tsc": "tsc -p src"
+  },
   "author": "${context.authorName}",
   "license": "MIT",
   "bugs": {
@@ -290,6 +291,9 @@ function vuePackageJson(context: libs.Context) {
     "vue": "2",
     "vue-class-component": "6",
     "${context.repositoryName}": "^1.0.0"
+  },
+  "devDependencies": {
+    "typescript": "2.6.2"
   }
 }
 `;
@@ -433,11 +437,11 @@ const lessFiles = \`"packages/core/src/**/*.less"\`
 const jsFiles = \`"*.config.js" "spec/**/*.config.js"\`
 const excludeTsFiles = \`"packages/@(core|vue|react|angular)/@(src|demo)/**/*.d.ts"\`
 
-const vueTemplateCommand = \`file2variable-cli packages/vue/src/*.template.html -o packages/vue/src/variables.ts --html-minify --base packages/vue/src/\`
+const vueTemplateCommand = \`file2variable-cli packages/vue/src/*.template.html -o packages/vue/src/variables.ts --html-minify --base packages/vue/src/ --vue --vue-type-name "${context.componentTypeName}" --vue-type-path "./index"\`
 ${angularTemplateCommand}
 const ngcSrcCommand = [
   \`${hasAngularChoice ? "ngc" : "tsc"} -p packages/core/src\`,
-  \`tsc -p packages/vue/src\`,
+  \`${hasAngularChoice ? "cd ./packages/vue/ && npm run tsc" : "tsc -p packages/vue/src"}\`,
   \`tsc -p packages/react/src\`,
   \`ngc -p packages/angular/src\`
 ]
@@ -458,8 +462,6 @@ const cssCommand = [
 
 module.exports = {
   build: [
-    'rimraf dist/',
-    'mkdirp dist/',
     {
       js: [
         vueTemplateCommand,
@@ -533,10 +535,11 @@ export * from "${context.repositoryName}";
 import { indexTemplateHtml } from "./variables";
 
 @Component({
-    template: indexTemplateHtml,
+    render: indexTemplateHtml,
+    staticRenderFns: indexTemplateHtmlStatic,
     props: ["data"],
 })
-class ${context.componentTypeName} extends Vue {
+export class ${context.componentTypeName} extends Vue {
     data: common.${context.componentTypeName}Data;
 }
 
@@ -784,8 +787,7 @@ module.exports = [
       path: path.resolve(__dirname, 'packages/react/demo'),
       filename: 'index.bundle.js'
     },
-    plugins,
-    resolve
+    plugins
   },
   {
     entry: './packages/angular/demo/jit/index',
@@ -793,8 +795,7 @@ module.exports = [
       path: path.resolve(__dirname, 'packages/angular/demo/jit'),
       filename: 'index.bundle.js'
     },
-    plugins,
-    resolve
+    plugins
   },
   {
     entry: './packages/angular/demo/aot/index',
@@ -802,8 +803,7 @@ module.exports = [
       path: path.resolve(__dirname, 'packages/angular/demo/aot'),
       filename: 'index.bundle.js'
     },
-    plugins,
-    resolve
+    plugins
   }
 ]
 ` : `const webpack = require('webpack')
@@ -838,8 +838,7 @@ module.exports = [
       path: path.resolve(__dirname, 'packages/vue/demo'),
       filename: 'index.bundle.js'
     },
-    plugins,
-    resolve
+    plugins
   },
   {
     entry: './packages/react/demo/index',
@@ -847,8 +846,7 @@ module.exports = [
       path: path.resolve(__dirname, 'packages/react/demo'),
       filename: 'index.bundle.js'
     },
-    plugins,
-    resolve
+    plugins
   }
 ]
 `;
