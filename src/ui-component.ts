@@ -74,6 +74,7 @@ export async function runUIComponent(context: libs.Context) {
     await libs.writeFile(`packages/vue/src/index.template.html`, `<div class="${context.componentShortName}"></div>`);
     await libs.writeFile(`packages/vue/src/index.ts`, vueSrcIndexTs(context));
     await libs.writeFile(`packages/vue/src/tsconfig.json`, vueSrcTsconfigJson);
+    await libs.writeFile(`packages/vue/src/file2variable.config.js`, file2variableConfigJs(context));
 
     await libs.writeFile(`packages/vue/.npmignore`, npmignore);
     await libs.writeFile(`packages/vue/package.json`, vuePackageJson(context));
@@ -425,6 +426,26 @@ function screenshotsIndexTs(hasAngularChoice: boolean) {
 `;
 }
 
+function file2variableConfigJs(context: libs.Context) {
+    return `module.exports = {
+  base: 'packages/vue/src/',
+  files: [
+    'packages/vue/src/*.template.html'
+  ],
+  /**
+   * @argument {string} file
+   */
+  handler: file => {
+    return {
+      type: 'vue',
+      name: '${context.componentTypeName}',
+      path: './index'
+    }
+  },
+  out: 'packages/vue/src/variables.ts'
+}`;
+}
+
 function cleanScriptsConfigJs(hasAngularChoice: boolean, context: libs.Context) {
     const angularTemplateCommand = hasAngularChoice ? "const angularTemplateCommand = \`file2variable-cli packages/angular/src/*.template.html -o packages/angular/src/variables.ts --html-minify --base packages/angular/src\`\n" : "";
     const angularScript = hasAngularChoice ? "        angularTemplateCommand,\n" : "";
@@ -437,7 +458,7 @@ const lessFiles = \`"packages/core/src/**/*.less"\`
 const jsFiles = \`"*.config.js" "spec/**/*.config.js"\`
 const excludeTsFiles = \`"packages/@(core|vue|react|angular)/@(src|demo)/**/*.d.ts"\`
 
-const vueTemplateCommand = \`file2variable-cli packages/vue/src/*.template.html -o packages/vue/src/variables.ts --html-minify --base packages/vue/src/ --vue --vue-type-name "${context.componentTypeName}" --vue-type-path "./index"\`
+const vueTemplateCommand = \`file2variable-cli --config packages/vue/src/file2variable.config.js\`
 ${angularTemplateCommand}
 const ngcSrcCommand = [
   \`${hasAngularChoice ? "ngc" : "tsc"} -p packages/core/src\`,
@@ -532,7 +553,7 @@ function vueSrcIndexTs(context: libs.Context) {
 import Component from "vue-class-component";
 import * as common from "${context.repositoryName}";
 export * from "${context.repositoryName}";
-import { indexTemplateHtml } from "./variables";
+import { indexTemplateHtml, indexTemplateHtmlStatic } from "./variables";
 
 @Component({
     render: indexTemplateHtml,

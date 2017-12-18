@@ -41,6 +41,7 @@ export async function runFrontend(context: libs.Context) {
     await libs.writeFile("prerender.html", "");
     await libs.writeFile(".browserslistrc", libs.browsersList);
     await libs.writeFile("postcss.config.js", libs.postcssConfig);
+    await libs.writeFile("file2variable.config.js", file2variableConfigJs);
 
     await libs.mkdir(`spec`);
     await libs.writeFile(`spec/karma.config.js`, libs.specKarmaConfigJs);
@@ -102,6 +103,23 @@ import * as fs from "fs";
     browser.close();
 })();`;
 
+const file2variableConfigJs = `module.exports = {
+  files: [
+    '*.template.html'
+  ],
+  /**
+   * @argument {string} file
+   */
+  handler: file => {
+    return {
+      type: 'vue',
+      name: 'App',
+      path: './index'
+    }
+  },
+  out: 'variables.ts'
+}`;
+
 function cleanScriptsConfigJs(context: libs.Context) {
     return `const { Service, checkGitStatus, executeScriptAsync } = require('clean-scripts')
 const { watch } = require('watch-then-execute')
@@ -110,7 +128,7 @@ const tsFiles = \`"*.ts" "spec/**/*.ts" "screenshots/**/*.ts" "prerender/**/*.ts
 const jsFiles = \`"*.config.js" "spec/**/*.config.js"\`
 const lessFiles = \`"*.less"\`
 
-const templateCommand = 'file2variable-cli *.template.html -o variables.ts --html-minify'
+const templateCommand = 'file2variable-cli --config file2variable.config.js'
 const tscCommand = 'tsc'
 const webpackCommand = 'webpack'
 const revStaticCommand = 'rev-static'
@@ -181,7 +199,7 @@ module.exports = {
 
 const index = `import Vue from "vue";
 import Component from "vue-class-component";
-import { indexTemplateHtml } from "./variables";
+import { indexTemplateHtml, indexTemplateHtmlStatic } from "./variables";
 
 @Component({
     render: indexTemplateHtml,

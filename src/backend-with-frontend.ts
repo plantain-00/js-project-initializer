@@ -39,6 +39,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
     await libs.writeFile(`static/rev-static.config.js`, staticRevStaticConfig);
     await libs.writeFile("static/index.ejs.html", staticIndexEjsHtml(context));
     await libs.writeFile("static/prerender.html", "");
+    await libs.writeFile("static/file2variable.config.js", file2variableConfigJs);
 
     await libs.prependFile("README.md", libs.readMeBadge(context));
     await libs.appendFile("README.md", readMeDocument(context));
@@ -125,6 +126,24 @@ import * as fs from "fs";
     browser.close();
 })();`;
 
+const file2variableConfigJs = `module.exports = {
+  base: 'static',
+  files: [
+    'static/*.template.html'
+  ],
+  /**
+   * @argument {string} file
+   */
+  handler: file => {
+    return {
+      type: 'vue',
+      name: 'App',
+      path: './index'
+    }
+  },
+  out: 'static/variables.ts'
+}`;
+
 function cleanScriptsConfigJs(context: libs.Context) {
     return `const { Service, checkGitStatus, executeScriptAsync } = require('clean-scripts')
 const { watch } = require('watch-then-execute')
@@ -134,7 +153,7 @@ const jsFiles = \`"*.config.js" "static/**/*.config.js" "static_spec/**/*.config
 const lessFiles = \`"static/**/*.less"\`
 
 const tscSrcCommand = 'tsc -p src/'
-const file2variableCommand = 'file2variable-cli static/*.template.html -o static/variables.ts --html-minify --base static'
+const file2variableCommand = 'file2variable-cli --config static/file2variable.config.js'
 const tscStaticCommand = 'tsc -p static/'
 const webpackCommand = 'webpack --config static/webpack.config.js'
 const revStaticCommand = 'rev-static --config static/rev-static.config.js'
@@ -368,7 +387,7 @@ function staticIndexEjsHtml(context: libs.Context) {
 
 const staticIndex = `import Vue from "vue";
 import Component from "vue-class-component";
-import { indexTemplateHtml } from "./variables";
+import { indexTemplateHtml, indexTemplateHtmlStatic } from "./variables";
 
 @Component({
     render: indexTemplateHtml,

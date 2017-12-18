@@ -42,6 +42,7 @@ export async function runElectron(context: libs.Context) {
     await libs.writeFile("scripts/tsconfig.json", scriptsTsconfig);
     await libs.writeFile(`scripts/index.template.html`, scriptsIndexTemplateHtml);
     await libs.writeFile(`scripts/webpack.config.js`, scriptsWebpackConfig);
+    await libs.writeFile("scripts/file2variable.config.js", file2variableConfigJs);
 
     await libs.mkdir("spec");
     await libs.writeFile("spec/tsconfig.json", libs.tsconfigJson);
@@ -65,6 +66,24 @@ export async function runElectron(context: libs.Context) {
     };
 }
 
+const file2variableConfigJs = `module.exports = {
+  base: 'scripts',
+  files: [
+    'scripts/index.template.html'
+  ],
+  /**
+   * @argument {string} file
+   */
+  handler: file => {
+    return {
+      type: 'vue',
+      name: 'App',
+      path: './index'
+    }
+  },
+  out: 'scripts/variables.ts'
+}`;
+
 function cleanScriptsConfigJs(context: libs.Context) {
     return `const { checkGitStatus, executeScriptAsync } = require('clean-scripts')
 const { watch } = require('watch-then-execute')
@@ -73,7 +92,7 @@ const tsFiles = \`"src/**/*.ts" "scripts/**/*.ts" "spec/**/*.ts" "static_spec/**
 const jsFiles = \`"*.config.js" "scripts/**/*.config.js" "static_spec/**/*.config.js"\`
 const lessFiles = \`"scripts/**/*.less"\`
 
-const templateCommand = 'file2variable-cli scripts/index.template.html -o scripts/variables.ts --html-minify'
+const templateCommand = 'file2variable-cli --config scripts/file2variable.config.js'
 const tscScriptsCommand = 'tsc -p scripts/'
 const webpackCommand = 'webpack --config scripts/webpack.config.js'
 const cssCommand = [
@@ -227,7 +246,7 @@ const scriptsIndexLess = `* {
 const scriptsIndex = `// import * as electron from "electron";
 import Vue from "vue";
 import Component from "vue-class-component";
-import { scriptsIndexTemplateHtml } from "./variables";
+import { scriptsIndexTemplateHtml, scriptsIndexTemplateHtmlStatic } from "./variables";
 
 @Component({
     render: scriptsIndexTemplateHtml,
