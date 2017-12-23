@@ -162,6 +162,7 @@ module.exports = {
   exclude: [
   ],
   askVersion: true,
+  changesGitStaged: true,
   postScript: [
     'git add package.json',
     'git commit -m "feat: publish v[version]"',

@@ -126,6 +126,7 @@ const cleanReleaseConfigJs = `module.exports = {
   ],
   base: 'dist',
   askVersion: true,
+  changesGitStaged: true,
   postScript: [
     'npm publish "[dir]" --access public',
     'git add package.json',
