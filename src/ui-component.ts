@@ -50,7 +50,6 @@ export async function runUIComponent(context: libs.Context) {
     await libs.writeFile(`packages/core/src/index.ts`, srcCommon(context));
     await libs.writeFile(`packages/core/src/tsconfig.json`, coreSrcTsconfigJson);
 
-    await libs.writeFile(`packages/core/.npmignore`, npmignore);
     await libs.writeFile(`packages/core/package.json`, corePackageJson(context));
 
     await libs.mkdir("packages/react/demo/");
@@ -62,7 +61,6 @@ export async function runUIComponent(context: libs.Context) {
     await libs.writeFile(`packages/react/src/index.ts`, reactSrcIndexTs(context));
     await libs.writeFile(`packages/react/src/tsconfig.json`, reactSrcTsconfigJson);
 
-    await libs.writeFile(`packages/react/.npmignore`, npmignore);
     await libs.writeFile(`packages/react/package.json`, reactPackageJson(context));
 
     await libs.mkdir("packages/vue/demo/");
@@ -76,7 +74,6 @@ export async function runUIComponent(context: libs.Context) {
     await libs.writeFile(`packages/vue/src/tsconfig.json`, vueSrcTsconfigJson);
     await libs.writeFile(`packages/vue/src/file2variable.config.js`, file2variableConfigJs(context));
 
-    await libs.writeFile(`packages/vue/.npmignore`, npmignore);
     await libs.writeFile(`packages/vue/package.json`, vuePackageJson(context));
 
     await libs.writeFile(`packages/tsconfig.json`, tsconfigJson);
@@ -100,7 +97,6 @@ export async function runUIComponent(context: libs.Context) {
         await libs.writeFile(`packages/angular/src/index.component.ts`, angularSrcIndexComponentTs(context));
         await libs.writeFile(`packages/angular/src/tsconfig.json`, angularSrcTsconfigJson);
 
-        await libs.writeFile(`packages/angular/.npmignore`, npmignore);
         await libs.writeFile(`packages/angular/package.json`, angularPackageJson(context));
     }
 
@@ -197,7 +193,13 @@ function corePackageJson(context: libs.Context) {
     "url": "https://github.com/${context.author}/${context.repositoryName}/issues"
   },
   "homepage": "https://github.com/${context.author}/${context.repositoryName}#readme",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
+    "tslib": "1"
+  },
+  "peerDependencies": {
     "tslib": "1"
   }
 }
@@ -221,6 +223,9 @@ function angularPackageJson(context: libs.Context) {
     "url": "https://github.com/${context.author}/${context.repositoryName}/issues"
   },
   "homepage": "https://github.com/${context.author}/${context.repositoryName}#readme",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@angular/common": "5",
     "@angular/core": "5",
@@ -233,6 +238,12 @@ function angularPackageJson(context: libs.Context) {
     "core-js": "2.5.1",
     "rxjs": "5.5.2",
     "zone.js": "0.8.18"
+  },
+  "peerDependencies": {
+    "@angular/common": "5",
+    "@angular/core": "5",
+    "@angular/forms": "5",
+    "${context.repositoryName}": "^1.0.0"
   }
 }
 `;
@@ -255,6 +266,9 @@ function reactPackageJson(context: libs.Context) {
     "url": "https://github.com/${context.author}/${context.repositoryName}/issues"
   },
   "homepage": "https://github.com/${context.author}/${context.repositoryName}#readme",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "react": "16",
     "react-dom": "16",
@@ -263,6 +277,11 @@ function reactPackageJson(context: libs.Context) {
   "devDependencies": {
     "@types/react": "16.0.25",
     "@types/react-dom": "16.0.3"
+  },
+  "peerDependencies": {
+    "react": "16",
+    "react-dom": "16",
+    "${context.repositoryName}": "^1.0.0"
   }
 }
 `;
@@ -288,6 +307,9 @@ function vuePackageJson(context: libs.Context) {
     "url": "https://github.com/${context.author}/${context.repositoryName}/issues"
   },
   "homepage": "https://github.com/${context.author}/${context.repositoryName}#readme",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "vue": "2",
     "vue-class-component": "6",
@@ -295,15 +317,15 @@ function vuePackageJson(context: libs.Context) {
   },
   "devDependencies": {
     "typescript": "2.6.2"
+  },
+  "peerDependencies": {
+    "vue": "2",
+    "vue-class-component": "6",
+    "${context.repositoryName}": "^1.0.0"
   }
 }
 `;
 }
-
-const npmignore = `
-src
-demo
-`;
 
 const vueSrcTsconfigJson = `{
     "extends": "../../tsconfig.json",
