@@ -20,7 +20,7 @@ export async function runCLI(context: libs.Context) {
     await libs.writeFile(`src/lib.d.ts`, libDTs);
     await libs.writeFile(`src/tsconfig.json`, tsconfig);
 
-    await libs.prependFile("README.md", libs.readMeBadge(context));
+    await libs.appendFile("README.md", libs.readMeBadge(context));
     await libs.appendFile("README.md", readMeDocument(context));
     await libs.writeFile(".travis.yml", libs.getTravisYml(context));
     await libs.writeFile("appveyor.yml", libs.appveyorYml(context));
@@ -65,7 +65,8 @@ module.exports = {
     ts: \`tslint \${tsFiles}\`,
     js: \`standard \${jsFiles}\`,
     export: \`no-unused-export \${tsFiles}\`,
-    commit: \`commitlint --from=HEAD~1\`
+    commit: \`commitlint --from=HEAD~1\`,
+    markdown: \`markdownlint README.md\`
   },
   test: [
     'tsc -p spec',
@@ -108,11 +109,11 @@ require("../dist/index.js");`;
 
 function readMeDocument(context: libs.Context) {
     return `
-#### install
+## install
 
 \`yarn add ${context.repositoryName} -g\`
 
-#### usage
+## usage
 
 run \`${context.repositoryName}\``;
 }

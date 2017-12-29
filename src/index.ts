@@ -20,6 +20,8 @@ async function run() {
     await libs.exec(`yarn add -DE tslint`);
     await libs.exec(`yarn add -DE @commitlint/config-angular @commitlint/cli`);
     await libs.writeFile("commitlint.config.js", commitlintConfig);
+    await libs.exec(`yarn add -DE markdownlint-cli`);
+    await libs.writeFile(".markdownlint.json", markdownlintConfig);
 
     await libs.mkdir(".github");
     await libs.writeFile(".github/ISSUE_TEMPLATE.md", issueTemplate);
@@ -87,6 +89,12 @@ run().then(() => {
     }
     process.exit(1);
 });
+
+const markdownlintConfig = `{
+    "default": true,
+    "line-length": false
+}
+`;
 
 const commitlintConfig = `module.exports = {
   extends: ['@commitlint/config-angular']

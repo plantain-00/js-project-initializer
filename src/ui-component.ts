@@ -113,7 +113,7 @@ export async function runUIComponent(context: libs.Context) {
     await libs.writeFile(`screenshots/tsconfig.json`, libs.tsconfigJson);
     await libs.writeFile(`screenshots/index.ts`, screenshotsIndexTs(hasAngularChoice));
 
-    await libs.prependFile("README.md", libs.readMeBadge(context));
+    await libs.appendFile("README.md", libs.readMeBadge(context));
     await libs.appendFile("README.md", readMeDocument(context, hasAngularChoice));
     await libs.writeFile(".stylelintrc", libs.stylelint);
     await libs.writeFile(".travis.yml", libs.getTravisYml(context));
@@ -522,7 +522,8 @@ module.exports = {
     js: \`standard \${jsFiles}\`,
     less: \`stylelint \${lessFiles}\`,
     export: \`no-unused-export \${tsFiles} \${lessFiles} --exclude \${excludeTsFiles}\`,
-    commit: \`commitlint --from=HEAD~1\`
+    commit: \`commitlint --from=HEAD~1\`,
+    markdown: \`markdownlint README.md\`
   },
   test: [
     'tsc -p spec',
@@ -670,7 +671,7 @@ export type ${context.componentTypeName}Data<T = any> = {
 function readMeDocument(context: libs.Context, hasAngularChoice: boolean) {
     const angularFeature = hasAngularChoice ? `
 + angular component` : "";
-    const angularComponentDemo = hasAngularChoice ? `#### angular component
+    const angularComponentDemo = hasAngularChoice ? `## angular component
 
 \`yarn add ${context.componentShortName}-angular-component\`
 
@@ -690,23 +691,23 @@ class MainModule { }
 </${context.componentShortName}>
 \`\`\`
 
-the online demo: https://${context.author}.github.io/${context.repositoryName}/packages/angular/demo/jit
+the online demo: <https://${context.author}.github.io/${context.repositoryName}/packages/angular/demo/jit>
 
-the AOT online demo: https://${context.author}.github.io/${context.repositoryName}/packages/angular/demo/aot` : "";
+the AOT online demo: <https://${context.author}.github.io/${context.repositoryName}/packages/angular/demo/aot>` : "";
     return `
-#### features
+## features
 
 + vuejs component
 + reactjs component${angularFeature}
 + custom component
 
-#### link css
+## link css
 
 \`\`\`html
 <link rel="stylesheet" href="./node_modules/${context.repositoryName}/dist/${context.componentShortName}.min.css" />
 \`\`\`
 
-#### vuejs component
+## vuejs component
 
 \`yarn add ${context.componentShortName}-vue-component\`
 
@@ -719,9 +720,9 @@ import "${context.componentShortName}-vue-component";
 </${context.componentShortName}>
 \`\`\`
 
-the online demo: https://${context.author}.github.io/${context.repositoryName}/packages/vue/demo
+the online demo: <https://${context.author}.github.io/${context.repositoryName}/packages/vue/demo>
 
-#### reactjs component
+## reactjs component
 
 \`yarn add ${context.componentShortName}-react-component\`
 
@@ -734,17 +735,17 @@ import { ${context.componentTypeName} } from "${context.componentShortName}-reac
 </${context.componentTypeName}>
 \`\`\`
 
-the online demo: https://${context.author}.github.io/${context.repositoryName}/packages/react/demo
+the online demo: <https://${context.author}.github.io/${context.repositoryName}/packages/react/demo>
 
 ${angularComponentDemo}
 
-#### properties and events of the component
+## properties and events of the component
 
 name | type | description
 --- | --- | ---
 data | [${context.componentTypeName}Data](#${context.componentShortName}-data-structure)[] | the data of the ${context.componentShortName}
 
-#### ${context.componentShortName} data structure
+## ${context.componentShortName} data structure
 
 \`\`\`ts
 type ${context.componentTypeName}Data<T = any> = {

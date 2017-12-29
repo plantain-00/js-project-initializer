@@ -27,7 +27,7 @@ export async function runElectron(context: libs.Context) {
     await libs.writeFile(`main.ts`, main);
     await libs.writeFile(`index.html`, indexHtml);
     await libs.writeFile(`tsconfig.json`, tsconfig);
-    await libs.prependFile("README.md", libs.readMeBadge(context));
+    await libs.appendFile("README.md", libs.readMeBadge(context));
     await libs.writeFile(".stylelintrc", libs.stylelint);
     await libs.writeFile(".travis.yml", libs.getTravisYml(context));
     await libs.writeFile("appveyor.yml", libs.appveyorYml(context));
@@ -118,7 +118,8 @@ module.exports = {
     js: \`standard \${jsFiles}\`,
     less: \`stylelint \${lessFiles}\`,
     export: \`no-unused-export \${tsFiles} \${lessFiles}\`,
-    commit: \`commitlint --from=HEAD~1\`
+    commit: \`commitlint --from=HEAD~1\`,
+    markdown: \`markdownlint README.md\`
   },
   test: {
     jasmine: [

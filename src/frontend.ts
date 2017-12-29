@@ -28,7 +28,7 @@ export async function runFrontend(context: libs.Context) {
     await libs.writeFile(`index.template.html`, indexTemplateHtml);
     await libs.writeFile(`vendor.ts`, vendor);
     await libs.writeFile(`tsconfig.json`, tsconfig);
-    await libs.prependFile("README.md", libs.readMeBadge(context));
+    await libs.appendFile("README.md", libs.readMeBadge(context));
     await libs.writeFile(`index.less`, indexLess);
     await libs.writeFile(".stylelintrc", libs.stylelint);
     await libs.writeFile(`webpack.config.js`, webpackConfig);
@@ -161,7 +161,8 @@ module.exports = {
     js: \`standard \${jsFiles}\`,
     less: \`stylelint \${lessFiles}\`,
     export: \`no-unused-export \${tsFiles} \${lessFiles}\`,
-    commit: \`commitlint --from=HEAD~1\`
+    commit: \`commitlint --from=HEAD~1\`,
+    markdown: \`markdownlint README.md\`
   },
   test: [
     'tsc -p spec',

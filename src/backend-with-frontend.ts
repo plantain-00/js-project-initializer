@@ -41,7 +41,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
     await libs.writeFile("static/prerender.html", "");
     await libs.writeFile("static/file2variable.config.js", file2variableConfigJs);
 
-    await libs.prependFile("README.md", libs.readMeBadge(context));
+    await libs.appendFile("README.md", libs.readMeBadge(context));
     await libs.appendFile("README.md", readMeDocument(context));
     await libs.writeFile(".stylelintrc", libs.stylelint);
     await libs.writeFile(".travis.yml", libs.getTravisYml(context));
@@ -187,7 +187,8 @@ module.exports = {
     js: \`standard \${jsFiles}\`,
     less: \`stylelint \${lessFiles}\`,
     export: \`no-unused-export \${tsFiles} \${lessFiles}\`,
-    commit: \`commitlint --from=HEAD~1\`
+    commit: \`commitlint --from=HEAD~1\`,
+    markdown: \`markdownlint README.md\`
   },
   test: {
     jasmine: [
@@ -229,13 +230,13 @@ module.exports = {
 }
 
 function readMeDocument(context: libs.Context) {
-    return `#### install
+    return `## install
 
 \`\`\`bash
 git clone https://github.com/${context.author}/${context.repositoryName}-release.git . --depth=1 && yarn add --production
 \`\`\`
 
-#### docker
+## docker
 
 \`\`\`bash
 docker run -d -p ${port}:${port} ${context.author}/${context.repositoryName}

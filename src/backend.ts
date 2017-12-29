@@ -16,7 +16,7 @@ export async function runBackend(context: libs.Context) {
     await libs.writeFile(`src/index.ts`, srcIndex);
     await libs.writeFile(`src/tsconfig.json`, srcTsconfig);
 
-    await libs.prependFile("README.md", libs.readMeBadge(context));
+    await libs.appendFile("README.md", libs.readMeBadge(context));
     await libs.appendFile("README.md", readMeDocument(context));
     await libs.writeFile(".travis.yml", libs.getTravisYml(context));
     await libs.writeFile("appveyor.yml", libs.appveyorYml(context));
@@ -66,7 +66,8 @@ module.exports = {
     ts: \`tslint \${tsFiles}\`,
     js: \`standard \${jsFiles}\`,
     export: \`no-unused-export \${tsFiles}\`,
-    commit: \`commitlint --from=HEAD~1\`
+    commit: \`commitlint --from=HEAD~1\`,
+    markdown: \`markdownlint README.md\`
   },
   test: [
     'tsc -p spec',
@@ -104,13 +105,13 @@ function getCleanReleaseConfigJs(context: libs.Context) {
 }
 
 function readMeDocument(context: libs.Context) {
-  return `#### install
+  return `## install
 
 \`\`\`bash
 git clone https://github.com/${context.author}/${context.repositoryName}-release.git . --depth=1 && yarn add --production
 \`\`\`
 
-#### docker
+## docker
 
 \`\`\`bash
 docker run -d -p ${port}:${port} ${context.author}/${context.repositoryName}

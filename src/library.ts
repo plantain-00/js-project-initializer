@@ -20,7 +20,7 @@ export async function runLibrary(context: libs.Context) {
     await libs.writeFile(`src/tsconfig.nodejs.json`, tsconfigNodejs);
     await libs.writeFile(`src/tsconfig.browser.json`, tsconfigBrowser);
 
-    await libs.prependFile("README.md", libs.readMeBadge(context));
+    await libs.appendFile("README.md", libs.readMeBadge(context));
     await libs.appendFile("README.md", readMeDocument(context));
     await libs.writeFile(".travis.yml", libs.getTravisYml(context));
     await libs.writeFile("appveyor.yml", libs.appveyorYml(context));
@@ -63,7 +63,8 @@ module.exports = {
     ts: \`tslint \${tsFiles}\`,
     js: \`standard \${jsFiles}\`,
     export: \`no-unused-export \${tsFiles}\`,
-    commit: \`commitlint --from=HEAD~1\`
+    commit: \`commitlint --from=HEAD~1\`,
+    markdown: \`markdownlint README.md\`
   },
   test: [
     'tsc -p spec',
@@ -140,11 +141,11 @@ const cleanReleaseConfigJs = `module.exports = {
 
 function readMeDocument(context: libs.Context) {
     return `
-#### install
+## install
 
 \`yarn add ${context.repositoryName}\`
 
-#### usage
+## usage
 
 \`\`\`ts
 import ${context.componentTypeName} from "${context.repositoryName}";
