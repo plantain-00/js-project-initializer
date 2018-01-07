@@ -38,6 +38,7 @@ export async function runUIComponent(context: libs.Context) {
     await libs.exec(`yarn add -DE http-server`);
     await libs.exec(`yarn add -DE puppeteer @@types/puppeteer`);
     await libs.exec(`yarn add -DE autoprefixer postcss-cli`);
+    await libs.exec(`yarn add -DE react-test-renderer @types/react-test-renderer react vue-test-utils`);
 
     await libs.exec(`lerna init`);
 
@@ -108,6 +109,8 @@ export async function runUIComponent(context: libs.Context) {
     await libs.writeFile(`spec/tsconfig.json`, specTsconfig);
     await libs.writeFile(`spec/webpack.config.js`, libs.specWebpackConfigJs);
     await libs.writeFile(`spec/indexSpec.ts`, specIndexSpecTs);
+    await libs.writeFile(`spec/reactSpec.tsx`, specReactSpecTs(context));
+    await libs.writeFile(`spec/vueSpec.tsx`, specVueSpecTs(context));
 
     await libs.mkdir(`screenshots`);
     await libs.writeFile(`screenshots/tsconfig.json`, libs.tsconfigJson);
@@ -1045,3 +1048,36 @@ it("", () => {
     // expect(true).toEqual(true);
 });
 `;
+
+function specReactSpecTs(context: libs.Context) {
+    return `import React from "react";
+import { RelativeTime } from "../packages/react/dist";
+
+import renderer from "react-test-renderer";
+
+it("renders without crashing", () => {
+    const app = renderer.create(<${context.componentTypeName} data={undefined} />);
+    const rendered = app.toJSON();
+    expect(rendered).toBeTruthy();
+    app.unmount();
+});
+`;
+}
+
+function specVueSpecTs(context: libs.Context) {
+    return `import { ${context.componentTypeName} } from "../packages/vue/dist";
+
+import { mount } from "vue-test-utils";
+
+it("renders without crashing", () => {
+    const app = mount(${context.componentTypeName}, {
+        propsData: {
+            data: undefined,
+        },
+    });
+    const rendered = app.html();
+    expect(rendered).toBeTruthy();
+    app.destroy();
+});
+`;
+}
