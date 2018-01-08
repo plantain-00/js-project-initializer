@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/plantain-00/js-project-initializer#readme",
   "dependencies": {
-    "inquirer": "4.0.1",
+    "inquirer": "4.0.2",
     "mkdirp": "0.5.1",
     "uppercamelcase": "3.0.0"
   },
@@ -43,8 +43,8 @@
     "@types/uppercamelcase": "3.0.0",
     "clean-scripts": "1.7.0",
     "jasmine": "2.8.0",
-    "markdownlint-cli": "0.5.0",
-    "no-unused-export": "1.4.3",
+    "markdownlint-cli": "0.6.0",
+    "no-unused-export": "1.4.5",
     "rimraf": "2.6.2",
     "standard": "10.0.3",
     "tslint": "5.8.0",
