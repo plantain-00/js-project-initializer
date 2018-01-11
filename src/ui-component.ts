@@ -301,9 +301,6 @@ function vuePackageJson(context: libs.Context) {
     "type": "git",
     "url": "git+https://github.com/${context.author}/${context.repositoryName}.git"
   },
-  "scripts": {
-    "tsc": "tsc -p src"
-  },
   "author": "${context.authorName}",
   "license": "MIT",
   "bugs": {
@@ -317,9 +314,6 @@ function vuePackageJson(context: libs.Context) {
     "vue": "2",
     "vue-class-component": "6",
     "${context.repositoryName}": "^1.0.0"
-  },
-  "devDependencies": {
-    "typescript": "2.6.2"
   },
   "peerDependencies": {
     "vue": "2",
@@ -487,7 +481,7 @@ const vueTemplateCommand = \`file2variable-cli --config packages/vue/src/file2va
 ${angularTemplateCommand}
 const ngcSrcCommand = [
   \`${hasAngularChoice ? "ngc" : "tsc"} -p packages/core/src\`,
-  \`${hasAngularChoice ? "cd ./packages/vue/ && npm run tsc" : "tsc -p packages/vue/src"}\`,
+  \`${hasAngularChoice ? "tsc -p packages/vue/src" : "tsc -p packages/vue/src"}\`,
   \`tsc -p packages/react/src\`,
   \`ngc -p packages/angular/src\`
 ]
