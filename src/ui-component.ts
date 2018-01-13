@@ -691,8 +691,7 @@ class MainModule { }
 the online demo: <https://${context.author}.github.io/${context.repositoryName}/packages/angular/demo/jit>
 
 the AOT online demo: <https://${context.author}.github.io/${context.repositoryName}/packages/angular/demo/aot>` : "";
-    return `
-## features
+    return `## features
 
 + vuejs component
 + reactjs component${angularFeature}

@@ -108,14 +108,14 @@ const binConfig = `#!/usr/bin/env node
 require("../dist/index.js");`;
 
 function readMeDocument(context: libs.Context) {
-    return `
-## install
+    return `## install
 
 \`yarn add ${context.repositoryName} -g\`
 
 ## usage
 
-run \`${context.repositoryName}\``;
+run \`${context.repositoryName}\`
+`;
 }
 
 const tsconfig = `{
@@ -159,7 +159,7 @@ async function executeCommandLine() {
 executeCommandLine().then(() => {
     console.log("${context.repositoryName} success.");
 }, error => {
-    if (error instanceOf Error) {
+    if (error instanceof Error) {
         console.log(error.message);
     } else {
         console.log(error);

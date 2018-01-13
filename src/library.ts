@@ -140,8 +140,7 @@ const cleanReleaseConfigJs = `module.exports = {
 `;
 
 function readMeDocument(context: libs.Context) {
-    return `
-## install
+    return `## install
 
 \`yarn add ${context.repositoryName}\`
 
