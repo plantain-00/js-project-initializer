@@ -110,7 +110,7 @@ require("../dist/index.js");`;
 function readMeDocument(context: libs.Context) {
     return `## install
 
-\`yarn add ${context.repositoryName} -g\`
+\`yarn global add ${context.repositoryName}\`
 
 ## usage
 

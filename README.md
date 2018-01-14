@@ -11,7 +11,7 @@ An tool to initialize a nodejs project or frontend project.
 
 ## install
 
-`npm i js-project-initializer -g`
+`yarn global add js-project-initializer`
 
 ## usage
 
