@@ -130,7 +130,7 @@ export async function runUIComponent(context: libs.Context) {
     lernaJson.npmClient = "yarn";
     lernaJson.command = {
         publish: {
-            message: "feat: publish %s",
+            message: "%s",
         },
     };
     await libs.writeFile("lerna.json", JSON.stringify(lernaJson, null, 2));

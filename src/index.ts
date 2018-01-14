@@ -18,7 +18,7 @@ async function run() {
     await libs.writeFile(".vscode/settings.json", vscodeSetting);
 
     await libs.exec(`yarn add -DE tslint`);
-    await libs.exec(`yarn add -DE @commitlint/config-angular @commitlint/cli`);
+    await libs.exec(`yarn add -DE @commitlint/config-conventional @commitlint/cli`);
     await libs.writeFile("commitlint.config.js", commitlintConfig);
     await libs.exec(`yarn add -DE markdownlint-cli`);
     await libs.writeFile(".markdownlint.json", markdownlintConfig);
@@ -97,7 +97,7 @@ const markdownlintConfig = `{
 `;
 
 const commitlintConfig = `module.exports = {
-  extends: ['@commitlint/config-angular']
+  extends: ['@commitlint/config-conventional']
 }
 `;
 
