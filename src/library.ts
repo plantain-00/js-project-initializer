@@ -1,48 +1,48 @@
-import * as libs from "./libs";
+import * as libs from './libs'
 
-export async function runLibrary(context: libs.Context) {
-    context.isNpmPackage = true;
+export async function runLibrary (context: libs.Context) {
+  context.isNpmPackage = true
 
-    await libs.appendFile(".gitignore", libs.gitignore(context));
+  await libs.appendFile('.gitignore', libs.gitignore(context))
 
-    await libs.exec(`yarn add -DE jasmine @types/jasmine`);
-    await libs.exec(`yarn add -DE rimraf`);
-    await libs.exec(`yarn add -DE standard`);
-    await libs.exec(`yarn add -DE rollup rollup-plugin-node-resolve rollup-plugin-uglify`);
-    await libs.exec(`yarn add -DE clean-scripts`);
-    await libs.exec(`yarn add -DE no-unused-export`);
+  await libs.exec(`yarn add -DE jasmine @types/jasmine`)
+  await libs.exec(`yarn add -DE rimraf`)
+  await libs.exec(`yarn add -DE standard`)
+  await libs.exec(`yarn add -DE rollup rollup-plugin-node-resolve rollup-plugin-uglify`)
+  await libs.exec(`yarn add -DE clean-scripts`)
+  await libs.exec(`yarn add -DE no-unused-export`)
 
-    await libs.exec("./node_modules/.bin/jasmine init");
+  await libs.exec('./node_modules/.bin/jasmine init')
 
-    await libs.mkdir("src");
-    await libs.writeFile(`src/index.ts`, index(context));
-    await libs.writeFile(`src/tsconfig.base.json`, tsconfigBase);
-    await libs.writeFile(`src/tsconfig.nodejs.json`, tsconfigNodejs);
-    await libs.writeFile(`src/tsconfig.browser.json`, tsconfigBrowser);
+  await libs.mkdir('src')
+  await libs.writeFile(`src/index.ts`, index(context))
+  await libs.writeFile(`src/tsconfig.base.json`, tsconfigBase)
+  await libs.writeFile(`src/tsconfig.nodejs.json`, tsconfigNodejs)
+  await libs.writeFile(`src/tsconfig.browser.json`, tsconfigBrowser)
 
-    await libs.appendFile("README.md", libs.readMeBadge(context));
-    await libs.appendFile("README.md", readMeDocument(context));
-    await libs.writeFile(".travis.yml", libs.getTravisYml(context));
-    await libs.writeFile("appveyor.yml", libs.appveyorYml(context));
-    await libs.writeFile("clean-release.config.js", cleanReleaseConfigJs);
-    await libs.writeFile("rollup.config.js", rollupConfigJs(context));
-    await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
+  await libs.appendFile('README.md', libs.readMeBadge(context))
+  await libs.appendFile('README.md', readMeDocument(context))
+  await libs.writeFile('.travis.yml', libs.getTravisYml(context))
+  await libs.writeFile('appveyor.yml', libs.appveyorYml(context))
+  await libs.writeFile('clean-release.config.js', cleanReleaseConfigJs)
+  await libs.writeFile('rollup.config.js', rollupConfigJs(context))
+  await libs.writeFile('clean-scripts.config.js', cleanScriptsConfigJs(context))
 
-    await libs.writeFile("spec/tsconfig.json", libs.tsconfigJson);
-    await libs.writeFile("spec/indexSpec.ts", libs.specIndexSpecTs);
+  await libs.writeFile('spec/tsconfig.json', libs.tsconfigJson)
+  await libs.writeFile('spec/indexSpec.ts', libs.specIndexSpecTs)
 
-    return {
-        scripts: {
-            build: "clean-scripts build",
-            lint: "clean-scripts lint",
-            test: "clean-scripts test",
-            fix: "clean-scripts fix",
-        },
-    };
+  return {
+    scripts: {
+      build: 'clean-scripts build',
+      lint: 'clean-scripts lint',
+      test: 'clean-scripts test',
+      fix: 'clean-scripts fix'
+    }
+  }
 }
 
-function cleanScriptsConfigJs(context: libs.Context) {
-    return `const { checkGitStatus } = require('clean-scripts')
+function cleanScriptsConfigJs (context: libs.Context) {
+  return `const { checkGitStatus } = require('clean-scripts')
 
 const tsFiles = \`"src/**/*.ts" "spec/**/*.ts"\`
 const jsFiles = \`"*.config.js"\`
@@ -76,7 +76,7 @@ module.exports = {
     js: \`standard --fix \${jsFiles}\`
   }
 }
-`;
+`
 }
 
 const tsconfigNodejs = `{
@@ -87,7 +87,7 @@ const tsconfigNodejs = `{
         "newLine": "LF"
     }
 }
-`;
+`
 
 const tsconfigBrowser = `{
     "extends": "./tsconfig.base.json",
@@ -98,10 +98,10 @@ const tsconfigBrowser = `{
         "newLine": "LF"
     }
 }
-`;
+`
 
-function rollupConfigJs(context: libs.Context) {
-    return `import uglify from 'rollup-plugin-uglify'
+function rollupConfigJs (context: libs.Context) {
+  return `import uglify from 'rollup-plugin-uglify'
 import resolve from 'rollup-plugin-node-resolve'
 
 export default {
@@ -113,7 +113,7 @@ export default {
     format: 'umd'
   }
 }
-`;
+`
 }
 
 const cleanReleaseConfigJs = `module.exports = {
@@ -137,10 +137,10 @@ const cleanReleaseConfigJs = `module.exports = {
     'git push origin v[version]'
   ]
 }
-`;
+`
 
-function readMeDocument(context: libs.Context) {
-    return `## install
+function readMeDocument (context: libs.Context) {
+  return `## install
 
 \`yarn add ${context.repositoryName}\`
 
@@ -150,7 +150,7 @@ function readMeDocument(context: libs.Context) {
 import ${context.componentTypeName} from "${context.repositoryName}";
 // <script src="./node_modules/${context.repositoryName}/${context.repositoryName}.min.js"></script>
 \`\`\`
-`;
+`
 }
 
 const tsconfigBase = `{
@@ -167,13 +167,13 @@ const tsconfigBase = `{
         "skipLibCheck": true,
         "newLine": "LF"
     }
-}`;
+}`
 
-function index(context: libs.Context) {
-    return `/**
+function index (context: libs.Context) {
+  return `/**
  * @public
  */
 export default class ${context.componentTypeName} {
 }
-`;
+`
 }

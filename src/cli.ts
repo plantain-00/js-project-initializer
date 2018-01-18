@@ -1,56 +1,56 @@
-import * as libs from "./libs";
+import * as libs from './libs'
 
-export async function runCLI(context: libs.Context) {
-    context.isNpmPackage = true;
+export async function runCLI (context: libs.Context) {
+  context.isNpmPackage = true
 
-    await libs.appendFile(".gitignore", libs.gitignore(context));
+  await libs.appendFile('.gitignore', libs.gitignore(context))
 
-    await libs.exec(`yarn add -DE @types/node`);
-    await libs.exec(`yarn add -DE jasmine @types/jasmine`);
-    await libs.exec(`yarn add -DE standard`);
-    await libs.exec(`yarn add -E minimist`);
-    await libs.exec(`yarn add -DE @types/minimist`);
-    await libs.exec(`yarn add -DE clean-scripts`);
-    await libs.exec(`yarn add -DE no-unused-export`);
+  await libs.exec(`yarn add -DE @types/node`)
+  await libs.exec(`yarn add -DE jasmine @types/jasmine`)
+  await libs.exec(`yarn add -DE standard`)
+  await libs.exec(`yarn add -E minimist`)
+  await libs.exec(`yarn add -DE @types/minimist`)
+  await libs.exec(`yarn add -DE clean-scripts`)
+  await libs.exec(`yarn add -DE no-unused-export`)
 
-    await libs.exec("./node_modules/.bin/jasmine init");
+  await libs.exec('./node_modules/.bin/jasmine init')
 
-    await libs.mkdir("src");
-    await libs.writeFile(`src/index.ts`, source(context));
-    await libs.writeFile(`src/lib.d.ts`, libDTs);
-    await libs.writeFile(`src/tsconfig.json`, tsconfig);
+  await libs.mkdir('src')
+  await libs.writeFile(`src/index.ts`, source(context))
+  await libs.writeFile(`src/lib.d.ts`, libDTs)
+  await libs.writeFile(`src/tsconfig.json`, tsconfig)
 
-    await libs.appendFile("README.md", libs.readMeBadge(context));
-    await libs.appendFile("README.md", readMeDocument(context));
-    await libs.writeFile(".travis.yml", libs.getTravisYml(context));
-    await libs.writeFile("appveyor.yml", libs.appveyorYml(context));
-    await libs.writeFile("clean-release.config.js", cleanReleaseConfigJs);
-    await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
+  await libs.appendFile('README.md', libs.readMeBadge(context))
+  await libs.appendFile('README.md', readMeDocument(context))
+  await libs.writeFile('.travis.yml', libs.getTravisYml(context))
+  await libs.writeFile('appveyor.yml', libs.appveyorYml(context))
+  await libs.writeFile('clean-release.config.js', cleanReleaseConfigJs)
+  await libs.writeFile('clean-scripts.config.js', cleanScriptsConfigJs(context))
 
-    await libs.mkdir("bin");
-    await libs.writeFile(`bin/${context.repositoryName}`, binConfig);
+  await libs.mkdir('bin')
+  await libs.writeFile(`bin/${context.repositoryName}`, binConfig)
 
-    await libs.exec(`chmod 755 bin/${context.repositoryName}`);
+  await libs.exec(`chmod 755 bin/${context.repositoryName}`)
 
-    await libs.mkdir("spec");
-    await libs.writeFile("spec/tsconfig.json", libs.tsconfigJson);
-    await libs.writeFile("spec/indexSpec.ts", libs.specIndexSpecTs);
+  await libs.mkdir('spec')
+  await libs.writeFile('spec/tsconfig.json', libs.tsconfigJson)
+  await libs.writeFile('spec/indexSpec.ts', libs.specIndexSpecTs)
 
-    return {
-        scripts: {
-            build: "clean-scripts build",
-            lint: "clean-scripts lint",
-            test: "clean-scripts test",
-            fix: "clean-scripts fix",
-        },
-        bin: {
-            [context.repositoryName]: `bin/${context.repositoryName}`,
-        },
-    };
+  return {
+    scripts: {
+      build: 'clean-scripts build',
+      lint: 'clean-scripts lint',
+      test: 'clean-scripts test',
+      fix: 'clean-scripts fix'
+    },
+    bin: {
+      [context.repositoryName]: `bin/${context.repositoryName}`
+    }
+  }
 }
 
-function cleanScriptsConfigJs(context: libs.Context) {
-    return `const { checkGitStatus } = require('clean-scripts')
+function cleanScriptsConfigJs (context: libs.Context) {
+  return `const { checkGitStatus } = require('clean-scripts')
 
 const tsFiles = \`"src/**/*.ts" "spec/**/*.ts"\`
 const jsFiles = \`"*.config.js"\`
@@ -78,7 +78,7 @@ module.exports = {
     js: \`standard --fix \${jsFiles}\`
   }
 }
-`;
+`
 }
 
 const cleanReleaseConfigJs = `module.exports = {
@@ -102,20 +102,20 @@ const cleanReleaseConfigJs = `module.exports = {
     'git push origin v[version]'
   ]
 }
-`;
+`
 
 const binConfig = `#!/usr/bin/env node
-require("../dist/index.js");`;
+require("../dist/index.js");`
 
-function readMeDocument(context: libs.Context) {
-    return `## install
+function readMeDocument (context: libs.Context) {
+  return `## install
 
 \`yarn global add ${context.repositoryName}\`
 
 ## usage
 
 run \`${context.repositoryName}\`
-`;
+`
 }
 
 const tsconfig = `{
@@ -130,10 +130,10 @@ const tsconfig = `{
         "skipLibCheck": true,
         "newLine": "LF"
     }
-}`;
+}`
 
-function source(context: libs.Context) {
-    return `import * as minimist from "minimist";
+function source (context: libs.Context) {
+  return `import * as minimist from "minimist";
 import * as packageJson from "../package.json";
 
 let suppressError = false;
@@ -168,10 +168,10 @@ executeCommandLine().then(() => {
         process.exit(1);
     }
 });
-`;
+`
 }
 
 const libDTs = `declare module "*.json" {
     export const version: string;
 }
-`;
+`

@@ -1,199 +1,131 @@
-import * as inquirer from "inquirer";
-import * as childProcess from "child_process";
-import * as fs from "fs";
-import * as mkdirp from "mkdirp";
-import upperCamelCase = require("uppercamelcase");
+import * as inquirer from 'inquirer'
+import * as childProcess from 'child_process'
+import * as fs from 'fs'
+import * as mkdirp from 'mkdirp'
+import upperCamelCase = require('uppercamelcase')
 
-export { inquirer, upperCamelCase };
+export { inquirer, upperCamelCase }
 
-export function exec(command: string) {
-    return new Promise<void>((resolve, reject) => {
-        console.log(`${command}...`);
-        const subProcess = childProcess.exec(command, (error, stdout, stderr) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve();
-            }
-        });
-        subProcess.stdout.pipe(process.stdout);
-        subProcess.stderr.pipe(process.stderr);
-    });
+export function exec (command: string) {
+  return new Promise<void>((resolve, reject) => {
+    console.log(`${command}...`)
+    const subProcess = childProcess.exec(command, (error, stdout, stderr) => {
+      if (error) {
+        reject(error)
+      } else {
+        resolve()
+      }
+    })
+    subProcess.stdout.pipe(process.stdout)
+    subProcess.stderr.pipe(process.stderr)
+  })
 }
 
-export function writeFile(filename: string, data: string) {
-    return new Promise<void>((resolve, reject) => {
-        console.log(`setting ${filename}...`);
-        fs.writeFile(filename, data, error => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve();
-            }
-        });
-    });
+export function writeFile (filename: string, data: string) {
+  return new Promise<void>((resolve, reject) => {
+    console.log(`setting ${filename}...`)
+    fs.writeFile(filename, data, error => {
+      if (error) {
+        reject(error)
+      } else {
+        resolve()
+      }
+    })
+  })
 }
 
-export function readFile(filename: string) {
-    return new Promise<string>((resolve, reject) => {
-        fs.readFile(filename, "utf8", (error, data) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(data);
-            }
-        });
-    });
+export function readFile (filename: string) {
+  return new Promise<string>((resolve, reject) => {
+    fs.readFile(filename, 'utf8', (error, data) => {
+      if (error) {
+        reject(error)
+      } else {
+        resolve(data)
+      }
+    })
+  })
 }
 
-export function appendFile(filename: string, data: string) {
-    return new Promise<void>((resolve, reject) => {
-        console.log(`setting ${filename}...`);
-        fs.appendFile(filename, data, error => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve();
-            }
-        });
-    });
+export function appendFile (filename: string, data: string) {
+  return new Promise<void>((resolve, reject) => {
+    console.log(`setting ${filename}...`)
+    fs.appendFile(filename, data, error => {
+      if (error) {
+        reject(error)
+      } else {
+        resolve()
+      }
+    })
+  })
 }
 
-export function mkdir(dir: string) {
-    return new Promise<void>((resolve, reject) => {
-        mkdirp(dir, error => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve();
-            }
-        });
-    });
+export function mkdir (dir: string) {
+  return new Promise<void>((resolve, reject) => {
+    mkdirp(dir, error => {
+      if (error) {
+        reject(error)
+      } else {
+        resolve()
+      }
+    })
+  })
 }
 
 export const enum ProjectKind {
-    CLI = "CLI",
-    UIComponent = "UI Component",
-    frontend = "frontend",
-    backend = "backend",
-    backendWithFrontend = "backend with frontend",
-    library = "library",
-    electron = "electron",
+    CLI = 'CLI',
+    UIComponent = 'UI Component',
+    frontend = 'frontend',
+    backend = 'backend',
+    backendWithFrontend = 'backend with frontend',
+    library = 'library',
+    electron = 'electron'
 }
 
-export function getComponentShortName(componentName: string) {
-    return (componentName.endsWith("component") && componentName.length - "component".length - 1 > 0)
-        ? componentName.substring(0, componentName.length - "component".length - 1)
-        : componentName;
+export function getComponentShortName (componentName: string) {
+  return (componentName.endsWith('component') && componentName.length - 'component'.length - 1 > 0)
+        ? componentName.substring(0, componentName.length - 'component'.length - 1)
+        : componentName
 }
 
-export function tslint(context: Context) {
-    return (context.kind === ProjectKind.CLI
-        || context.kind === ProjectKind.backend) ? `{
-    "extends": "tslint:latest",
-    "rules": {
-        "max-line-length": [
-            false
-        ],
-        "ordered-imports": [
-            false
-        ],
-        "object-literal-sort-keys": false,
-        "member-access": false,
-        "arrow-parens": false,
-        "array-type": [
-            true,
-            "array"
-        ],
-        "max-classes-per-file": [
-            false
-        ],
-        "interface-over-type-literal": false,
-        "interface-name": [
-            true,
-            "never-prefix"
-        ],
-        "no-unused-expression": [
-            true,
-            "allow-new"
-        ],
-        "no-submodule-imports": false,
-        "no-implicit-dependencies": [
-            true,
-            "dev"
-        ],
-        "no-console": false
-    }
-}` : `{
-    "extends": "tslint:latest",
-    "rules": {
-        "max-line-length": [
-            false
-        ],
-        "ordered-imports": [
-            false
-        ],
-        "object-literal-sort-keys": false,
-        "member-access": false,
-        "arrow-parens": false,
-        "array-type": [
-            true,
-            "array"
-        ],
-        "max-classes-per-file": [
-            false
-        ],
-        "interface-over-type-literal": false,
-        "interface-name": [
-            true,
-            "never-prefix"
-        ],
-        "no-unused-expression": [
-            true,
-            "allow-new"
-        ],
-        "no-submodule-imports": false,
-        "no-implicit-dependencies": [
-            true,
-            "dev"
-        ]
-    }
-}`;
+export function tslint (context: Context) {
+  return `{
+    "extends": "tslint-config-standard"
+}`
 }
 
 export type Context = {
-    kind?: ProjectKind;
-    repositoryName: string;
-    componentShortName: string;
-    componentTypeName: string;
-    author: string;
-    authorName: string;
-    isNpmPackage?: boolean;
-    hasKarma?: boolean;
-    description: string;
-};
+  kind?: ProjectKind;
+  repositoryName: string;
+  componentShortName: string;
+  componentTypeName: string;
+  author: string;
+  authorName: string;
+  isNpmPackage?: boolean;
+  hasKarma?: boolean;
+  description: string;
+}
 
-export function readMeBadge(context: Context) {
-    const npmBadge = context.isNpmPackage
+export function readMeBadge (context: Context) {
+  const npmBadge = context.isNpmPackage
         ? `[![npm version](https://badge.fury.io/js/${context.repositoryName}.svg)](https://badge.fury.io/js/${context.repositoryName})
 [![Downloads](https://img.shields.io/npm/dm/${context.repositoryName}.svg)](https://www.npmjs.com/package/${context.repositoryName})
 `
-        : "";
-    return `
+        : ''
+  return `
 [![Dependency Status](https://david-dm.org/${context.author}/${context.repositoryName}.svg)](https://david-dm.org/${context.author}/${context.repositoryName})
 [![devDependency Status](https://david-dm.org/${context.author}/${context.repositoryName}/dev-status.svg)](https://david-dm.org/${context.author}/${context.repositoryName}#info=devDependencies)
 [![Build Status: Linux](https://travis-ci.org/${context.author}/${context.repositoryName}.svg?branch=master)](https://travis-ci.org/${context.author}/${context.repositoryName})
 [![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/${context.author}/${context.repositoryName}?branch=master&svg=true)](https://ci.appveyor.com/project/${context.author}/${context.repositoryName}/branch/master)
 ${npmBadge}
-`;
+`
 }
 
 export const stylelint = `{
   "extends": "stylelint-config-standard"
-}`;
+}`
 
-export function gitignore(context: Context) {
-    return context.kind === ProjectKind.UIComponent
+export function gitignore (context: Context) {
+  return context.kind === ProjectKind.UIComponent
         ? `# Source
 .vscode
 dist
@@ -222,13 +154,13 @@ service-worker.js
 #**/*-*.png
 #index.html
 *.data
-`;
+`
 }
 
-export function getTravisYml(context: Context) {
-    const bootstrap = context.kind === ProjectKind.UIComponent ? `
-  - npm run bootstrap` : ``;
-    return context.hasKarma ? `language: node_js
+export function getTravisYml (context: Context) {
+  const bootstrap = context.kind === ProjectKind.UIComponent ? `
+  - npm run bootstrap` : ``
+  return context.hasKarma ? `language: node_js
 dist: trusty
 node_js:
   - "8"
@@ -275,13 +207,13 @@ addons:
     packages:
       - g++-4.8
       - libnss3
-`;
+`
 }
 
-export function appveyorYml(context: Context) {
-    const bootstrap = context.kind === ProjectKind.UIComponent ? `
-  - npm run bootstrap` : ``;
-    return `environment:
+export function appveyorYml (context: Context) {
+  const bootstrap = context.kind === ProjectKind.UIComponent ? `
+  - npm run bootstrap` : ``
+  return `environment:
   nodejs_version: "8"
 
 install:
@@ -296,13 +228,13 @@ test_script:
   - npm run test
 
 build: off
-`;
+`
 }
 
 export const specIndexSpecTs = `it("", () => {
     // expect(true).toEqual(true);
 });
-`;
+`
 
 export const specKarmaConfigJs = `const webpackConfig = require('./webpack.config.js')
 
@@ -338,7 +270,7 @@ module.exports = function (karma) {
 
   karma.set(config)
 }
-`;
+`
 
 export const specWebpackConfigJs = `const webpack = require('webpack')
 
@@ -352,18 +284,18 @@ module.exports = {
     new webpack.NoEmitOnErrorsPlugin()
   ]
 }
-`;
+`
 
 export const browsersList = `> 1%
 Last 2 versions
-`;
+`
 
 export const postcssConfig = `module.exports = {
   plugins: [
     require('autoprefixer')()
   ]
 }
-`;
+`
 
 export const tsconfigJson = `{
     "compilerOptions": {
@@ -380,4 +312,4 @@ export const tsconfigJson = `{
         "downlevelIteration": true,
         "newLine": "LF"
     }
-}`;
+}`

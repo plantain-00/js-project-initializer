@@ -1,155 +1,155 @@
-import * as libs from "./libs";
+import * as libs from './libs'
 
-export async function runUIComponent(context: libs.Context) {
-    context.isNpmPackage = true;
-    context.hasKarma = true;
+export async function runUIComponent (context: libs.Context) {
+  context.isNpmPackage = true
+  context.hasKarma = true
 
-    const answer = await libs.inquirer.prompt({
-        type: "checkbox",
-        name: "options",
-        message: "Choose options:",
-        default: [
-        ],
-        choices: [
-            "angular",
-        ],
-    });
-    const options: string[] = answer.options;
+  const answer = await libs.inquirer.prompt({
+    type: 'checkbox',
+    name: 'options',
+    message: 'Choose options:',
+    default: [
+    ],
+    choices: [
+      'angular'
+    ]
+  })
+  const options: string[] = answer.options
 
-    const hasAngularChoice = options.some(o => o === "angular");
+  const hasAngularChoice = options.some(o => o === 'angular')
 
-    await libs.appendFile(".gitignore", libs.gitignore(context));
+  await libs.appendFile('.gitignore', libs.gitignore(context))
 
-    await libs.exec(`yarn add -DE github-fork-ribbon-css`);
-    await libs.exec(`yarn add -DE less`);
-    await libs.exec(`yarn add -DE stylelint stylelint-config-standard`);
-    await libs.exec(`yarn add -DE clean-css-cli`);
-    await libs.exec(`yarn add -DE file2variable-cli`);
-    await libs.exec(`yarn add -DE rev-static`);
-    await libs.exec(`yarn add -DE webpack`);
-    if (hasAngularChoice) {
-        await libs.exec(`yarn add -DE @angular/compiler @angular/core @angular/compiler-cli`);
+  await libs.exec(`yarn add -DE github-fork-ribbon-css`)
+  await libs.exec(`yarn add -DE less`)
+  await libs.exec(`yarn add -DE stylelint stylelint-config-standard`)
+  await libs.exec(`yarn add -DE clean-css-cli`)
+  await libs.exec(`yarn add -DE file2variable-cli`)
+  await libs.exec(`yarn add -DE rev-static`)
+  await libs.exec(`yarn add -DE webpack`)
+  if (hasAngularChoice) {
+    await libs.exec(`yarn add -DE @angular/compiler @angular/core @angular/compiler-cli`)
+  }
+  await libs.exec(`yarn add -DE standard`)
+  await libs.exec(`yarn add -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`)
+  await libs.exec(`yarn add -DE clean-scripts`)
+  await libs.exec(`yarn add -DE no-unused-export`)
+  await libs.exec(`yarn add -DE watch-then-execute`)
+  await libs.exec(`yarn add -DE http-server`)
+  await libs.exec(`yarn add -DE puppeteer @@types/puppeteer`)
+  await libs.exec(`yarn add -DE autoprefixer postcss-cli`)
+  await libs.exec(`yarn add -DE react-test-renderer @types/react-test-renderer react vue-test-utils`)
+
+  await libs.exec(`lerna init`)
+
+  await libs.mkdir('packages/core/demo/')
+  await libs.writeFile(`packages/core/demo/index.ts`, '')
+  await libs.writeFile(`packages/core/demo/tsconfig.json`, coreDemoTsconfigJson)
+
+  await libs.mkdir('packages/core/src/')
+  await libs.writeFile(`packages/core/src/${context.componentShortName}.less`, srcLess(context))
+  await libs.writeFile(`packages/core/src/index.ts`, srcCommon(context))
+  await libs.writeFile(`packages/core/src/tsconfig.json`, coreSrcTsconfigJson)
+
+  await libs.writeFile(`packages/core/package.json`, corePackageJson(context))
+
+  await libs.mkdir('packages/react/demo/')
+  await libs.writeFile(`packages/react/demo/index.ejs.html`, demoReactIndexEjsHtml)
+  await libs.writeFile(`packages/react/demo/index.ts`, demoReactIndex(context))
+  await libs.writeFile(`packages/react/demo/tsconfig.json`, reactDemoTsconfigJson)
+
+  await libs.mkdir('packages/react/src/')
+  await libs.writeFile(`packages/react/src/index.ts`, reactSrcIndexTs(context))
+  await libs.writeFile(`packages/react/src/tsconfig.json`, reactSrcTsconfigJson)
+
+  await libs.writeFile(`packages/react/package.json`, reactPackageJson(context))
+
+  await libs.mkdir('packages/vue/demo/')
+  await libs.writeFile(`packages/vue/demo/index.ejs.html`, demoVueIndexEjsHtml)
+  await libs.writeFile(`packages/vue/demo/index.ts`, demoVueIndex(context))
+  await libs.writeFile(`packages/vue/demo/tsconfig.json`, vueDemoTsconfigJson)
+
+  await libs.mkdir('packages/vue/src/')
+  await libs.writeFile(`packages/vue/src/index.template.html`, `<div class="${context.componentShortName}"></div>`)
+  await libs.writeFile(`packages/vue/src/index.ts`, vueSrcIndexTs(context))
+  await libs.writeFile(`packages/vue/src/tsconfig.json`, vueSrcTsconfigJson)
+  await libs.writeFile(`packages/vue/src/file2variable.config.js`, file2variableConfigJs(context))
+
+  await libs.writeFile(`packages/vue/package.json`, vuePackageJson(context))
+
+  await libs.writeFile(`packages/tsconfig.json`, tsconfigJson)
+
+  if (hasAngularChoice) {
+    await libs.mkdir('packages/angular/demo/aot/')
+    await libs.writeFile(`packages/angular/demo/aot/index.ejs.html`, demoAotIndexEjsHtml)
+    await libs.writeFile(`packages/angular/demo/aot/index.ts`, demoAotIndex(context))
+
+    await libs.mkdir('packages/angular/demo/jit/')
+    await libs.writeFile(`packages/angular/demo/jit/index.ejs.html`, demoJitIndexEjsHtml)
+    await libs.writeFile(`packages/angular/demo/jit/index.ts`, demoJitIndex(context))
+
+    await libs.writeFile(`packages/angular/demo/main.component.ts`, demoAngularMainComponent(context))
+    await libs.writeFile(`packages/angular/demo/main.module.ts`, demoAngularMainModule(context))
+    await libs.writeFile(`packages/angular/demo/tsconfig.json`, angularDemoTsconfigJson)
+
+    await libs.mkdir('packages/angular/src/')
+    await libs.writeFile(`packages/angular/src/index.template.html`, `<div class="${context.componentShortName}"></div>`)
+    await libs.writeFile(`packages/angular/src/index.ts`, angularSrcIndexTs(context))
+    await libs.writeFile(`packages/angular/src/index.component.ts`, angularSrcIndexComponentTs(context))
+    await libs.writeFile(`packages/angular/src/tsconfig.json`, angularSrcTsconfigJson)
+
+    await libs.writeFile(`packages/angular/package.json`, angularPackageJson(context))
+  }
+
+  await libs.writeFile(`webpack.config.js`, demoWebpackConfig(hasAngularChoice))
+  await libs.writeFile(`rev-static.config.js`, demoRevStaticConfig)
+
+  await libs.mkdir(`spec`)
+  await libs.writeFile(`spec/karma.config.js`, libs.specKarmaConfigJs)
+  await libs.writeFile(`spec/tsconfig.json`, specTsconfig)
+  await libs.writeFile(`spec/webpack.config.js`, libs.specWebpackConfigJs)
+  await libs.writeFile(`spec/indexSpec.ts`, specIndexSpecTs)
+  await libs.writeFile(`spec/reactSpec.tsx`, specReactSpecTs(context))
+  await libs.writeFile(`spec/vueSpec.tsx`, specVueSpecTs(context))
+
+  await libs.mkdir(`screenshots`)
+  await libs.writeFile(`screenshots/tsconfig.json`, libs.tsconfigJson)
+  await libs.writeFile(`screenshots/index.ts`, screenshotsIndexTs(hasAngularChoice))
+
+  await libs.appendFile('README.md', libs.readMeBadge(context))
+  await libs.appendFile('README.md', readMeDocument(context, hasAngularChoice))
+  await libs.writeFile('.stylelintrc', libs.stylelint)
+  await libs.writeFile('.travis.yml', libs.getTravisYml(context))
+  await libs.writeFile('appveyor.yml', libs.appveyorYml(context))
+  await libs.writeFile('clean-scripts.config.js', cleanScriptsConfigJs(hasAngularChoice, context))
+  await libs.writeFile('.browserslistrc', libs.browsersList)
+  await libs.writeFile('postcss.config.js', libs.postcssConfig)
+
+  const lernaString = await libs.readFile('lerna.json')
+  const lernaJson: { [name: string]: any } = JSON.parse(lernaString)
+  lernaJson.npmClient = 'yarn'
+  lernaJson.command = {
+    publish: {
+      message: '%s'
     }
-    await libs.exec(`yarn add -DE standard`);
-    await libs.exec(`yarn add -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
-    await libs.exec(`yarn add -DE clean-scripts`);
-    await libs.exec(`yarn add -DE no-unused-export`);
-    await libs.exec(`yarn add -DE watch-then-execute`);
-    await libs.exec(`yarn add -DE http-server`);
-    await libs.exec(`yarn add -DE puppeteer @@types/puppeteer`);
-    await libs.exec(`yarn add -DE autoprefixer postcss-cli`);
-    await libs.exec(`yarn add -DE react-test-renderer @types/react-test-renderer react vue-test-utils`);
+  }
+  await libs.writeFile('lerna.json', JSON.stringify(lernaJson, null, 2))
 
-    await libs.exec(`lerna init`);
-
-    await libs.mkdir("packages/core/demo/");
-    await libs.writeFile(`packages/core/demo/index.ts`, "");
-    await libs.writeFile(`packages/core/demo/tsconfig.json`, coreDemoTsconfigJson);
-
-    await libs.mkdir("packages/core/src/");
-    await libs.writeFile(`packages/core/src/${context.componentShortName}.less`, srcLess(context));
-    await libs.writeFile(`packages/core/src/index.ts`, srcCommon(context));
-    await libs.writeFile(`packages/core/src/tsconfig.json`, coreSrcTsconfigJson);
-
-    await libs.writeFile(`packages/core/package.json`, corePackageJson(context));
-
-    await libs.mkdir("packages/react/demo/");
-    await libs.writeFile(`packages/react/demo/index.ejs.html`, demoReactIndexEjsHtml);
-    await libs.writeFile(`packages/react/demo/index.ts`, demoReactIndex(context));
-    await libs.writeFile(`packages/react/demo/tsconfig.json`, reactDemoTsconfigJson);
-
-    await libs.mkdir("packages/react/src/");
-    await libs.writeFile(`packages/react/src/index.ts`, reactSrcIndexTs(context));
-    await libs.writeFile(`packages/react/src/tsconfig.json`, reactSrcTsconfigJson);
-
-    await libs.writeFile(`packages/react/package.json`, reactPackageJson(context));
-
-    await libs.mkdir("packages/vue/demo/");
-    await libs.writeFile(`packages/vue/demo/index.ejs.html`, demoVueIndexEjsHtml);
-    await libs.writeFile(`packages/vue/demo/index.ts`, demoVueIndex(context));
-    await libs.writeFile(`packages/vue/demo/tsconfig.json`, vueDemoTsconfigJson);
-
-    await libs.mkdir("packages/vue/src/");
-    await libs.writeFile(`packages/vue/src/index.template.html`, `<div class="${context.componentShortName}"></div>`);
-    await libs.writeFile(`packages/vue/src/index.ts`, vueSrcIndexTs(context));
-    await libs.writeFile(`packages/vue/src/tsconfig.json`, vueSrcTsconfigJson);
-    await libs.writeFile(`packages/vue/src/file2variable.config.js`, file2variableConfigJs(context));
-
-    await libs.writeFile(`packages/vue/package.json`, vuePackageJson(context));
-
-    await libs.writeFile(`packages/tsconfig.json`, tsconfigJson);
-
-    if (hasAngularChoice) {
-        await libs.mkdir("packages/angular/demo/aot/");
-        await libs.writeFile(`packages/angular/demo/aot/index.ejs.html`, demoAotIndexEjsHtml);
-        await libs.writeFile(`packages/angular/demo/aot/index.ts`, demoAotIndex(context));
-
-        await libs.mkdir("packages/angular/demo/jit/");
-        await libs.writeFile(`packages/angular/demo/jit/index.ejs.html`, demoJitIndexEjsHtml);
-        await libs.writeFile(`packages/angular/demo/jit/index.ts`, demoJitIndex(context));
-
-        await libs.writeFile(`packages/angular/demo/main.component.ts`, demoAngularMainComponent(context));
-        await libs.writeFile(`packages/angular/demo/main.module.ts`, demoAngularMainModule(context));
-        await libs.writeFile(`packages/angular/demo/tsconfig.json`, angularDemoTsconfigJson);
-
-        await libs.mkdir("packages/angular/src/");
-        await libs.writeFile(`packages/angular/src/index.template.html`, `<div class="${context.componentShortName}"></div>`);
-        await libs.writeFile(`packages/angular/src/index.ts`, angularSrcIndexTs(context));
-        await libs.writeFile(`packages/angular/src/index.component.ts`, angularSrcIndexComponentTs(context));
-        await libs.writeFile(`packages/angular/src/tsconfig.json`, angularSrcTsconfigJson);
-
-        await libs.writeFile(`packages/angular/package.json`, angularPackageJson(context));
-    }
-
-    await libs.writeFile(`webpack.config.js`, demoWebpackConfig(hasAngularChoice));
-    await libs.writeFile(`rev-static.config.js`, demoRevStaticConfig);
-
-    await libs.mkdir(`spec`);
-    await libs.writeFile(`spec/karma.config.js`, libs.specKarmaConfigJs);
-    await libs.writeFile(`spec/tsconfig.json`, specTsconfig);
-    await libs.writeFile(`spec/webpack.config.js`, libs.specWebpackConfigJs);
-    await libs.writeFile(`spec/indexSpec.ts`, specIndexSpecTs);
-    await libs.writeFile(`spec/reactSpec.tsx`, specReactSpecTs(context));
-    await libs.writeFile(`spec/vueSpec.tsx`, specVueSpecTs(context));
-
-    await libs.mkdir(`screenshots`);
-    await libs.writeFile(`screenshots/tsconfig.json`, libs.tsconfigJson);
-    await libs.writeFile(`screenshots/index.ts`, screenshotsIndexTs(hasAngularChoice));
-
-    await libs.appendFile("README.md", libs.readMeBadge(context));
-    await libs.appendFile("README.md", readMeDocument(context, hasAngularChoice));
-    await libs.writeFile(".stylelintrc", libs.stylelint);
-    await libs.writeFile(".travis.yml", libs.getTravisYml(context));
-    await libs.writeFile("appveyor.yml", libs.appveyorYml(context));
-    await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(hasAngularChoice, context));
-    await libs.writeFile(".browserslistrc", libs.browsersList);
-    await libs.writeFile("postcss.config.js", libs.postcssConfig);
-
-    const lernaString = await libs.readFile("lerna.json");
-    const lernaJson: { [name: string]: any } = JSON.parse(lernaString);
-    lernaJson.npmClient = "yarn";
-    lernaJson.command = {
-        publish: {
-            message: "%s",
-        },
-    };
-    await libs.writeFile("lerna.json", JSON.stringify(lernaJson, null, 2));
-
-    return {
-        scripts: {
-            bootstrap: "lerna bootstrap -- --frozen-lockfile",
-            build: `clean-scripts build`,
-            lint: `clean-scripts lint`,
-            test: "clean-scripts test",
-            fix: `clean-scripts fix`,
-            watch: "clean-scripts watch",
-            screenshot: "clean-scripts screenshot",
-        },
-        dependencies: {
-            tslib: "1",
-        },
-        private: true,
-    };
+  return {
+    scripts: {
+      bootstrap: 'lerna bootstrap -- --frozen-lockfile',
+      build: `clean-scripts build`,
+      lint: `clean-scripts lint`,
+      test: 'clean-scripts test',
+      fix: `clean-scripts fix`,
+      watch: 'clean-scripts watch',
+      screenshot: 'clean-scripts screenshot'
+    },
+    dependencies: {
+      tslib: '1'
+    },
+    private: true
+  }
 }
 
 const tsconfigJson = `{
@@ -177,10 +177,10 @@ const tsconfigJson = `{
         "newLine": "LF"
     }
 }
-`;
+`
 
-function corePackageJson(context: libs.Context) {
-    return `{
+function corePackageJson (context: libs.Context) {
+  return `{
   "name": "${context.repositoryName}",
   "version": "1.0.0",
   "description": "${context.description}",
@@ -206,11 +206,11 @@ function corePackageJson(context: libs.Context) {
     "tslib": "1"
   }
 }
-`;
+`
 }
 
-function angularPackageJson(context: libs.Context) {
-    return `{
+function angularPackageJson (context: libs.Context) {
+  return `{
   "name": "${context.componentShortName}-angular-component",
   "version": "1.0.0",
   "description": "${context.description}",
@@ -249,11 +249,11 @@ function angularPackageJson(context: libs.Context) {
     "${context.repositoryName}": "^1.0.0"
   }
 }
-`;
+`
 }
 
-function reactPackageJson(context: libs.Context) {
-    return `{
+function reactPackageJson (context: libs.Context) {
+  return `{
   "name": "${context.componentShortName}-react-component",
   "version": "1.0.0",
   "description": "${context.description}",
@@ -287,11 +287,11 @@ function reactPackageJson(context: libs.Context) {
     "${context.repositoryName}": "^1.0.0"
   }
 }
-`;
+`
 }
 
-function vuePackageJson(context: libs.Context) {
-    return `{
+function vuePackageJson (context: libs.Context) {
+  return `{
   "name": "${context.componentShortName}-vue-component",
   "version": "1.0.0",
   "description": "${context.description}",
@@ -321,7 +321,7 @@ function vuePackageJson(context: libs.Context) {
     "${context.repositoryName}": "^1.0.0"
   }
 }
-`;
+`
 }
 
 const vueSrcTsconfigJson = `{
@@ -329,14 +329,14 @@ const vueSrcTsconfigJson = `{
     "compilerOptions": {
         "outDir": "../dist"
     }
-}`;
+}`
 
 const reactSrcTsconfigJson = `{
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "outDir": "../dist"
     }
-}`;
+}`
 
 const angularSrcTsconfigJson = `{
     "extends": "../../tsconfig.json",
@@ -347,7 +347,7 @@ const angularSrcTsconfigJson = `{
         "outDir": "../dist",
         "rootDir": "."
     }
-}`;
+}`
 
 const coreSrcTsconfigJson = `{
     "extends": "../../tsconfig.json",
@@ -357,32 +357,32 @@ const coreSrcTsconfigJson = `{
     "compilerOptions": {
         "outDir": "../dist"
     }
-}`;
+}`
 
 const coreDemoTsconfigJson = `{
     "extends": "../../tsconfig.json",
     "angularCompilerOptions": {
         "strictMetadataEmit": true
     }
-}`;
+}`
 
 const reactDemoTsconfigJson = `{
     "extends": "../../tsconfig.json"
-}`;
+}`
 
 const vueDemoTsconfigJson = `{
     "extends": "../../tsconfig.json"
-}`;
+}`
 
 const angularDemoTsconfigJson = `{
     "extends": "../../tsconfig.json",
     "angularCompilerOptions": {
         "strictMetadataEmit": true
     }
-}`;
+}`
 
-function demoAngularMainComponent(context: libs.Context) {
-    return `import { Component } from "@angular/core";
+function demoAngularMainComponent (context: libs.Context) {
+  return `import { Component } from "@angular/core";
 
 import { ${context.componentTypeName}Data } from "../dist/";
 
@@ -400,11 +400,11 @@ import { ${context.componentTypeName}Data } from "../dist/";
 export class MainComponent {
     data: ${context.componentTypeName}Data;
 }
-`;
+`
 }
 
-function demoAngularMainModule(context: libs.Context) {
-    return `import { NgModule } from "@angular/core";
+function demoAngularMainModule (context: libs.Context) {
+  return `import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 
@@ -417,11 +417,11 @@ import { MainComponent } from "./main.component";
     bootstrap: [MainComponent],
 })
 export class MainModule { }
-`;
+`
 }
 
-function screenshotsIndexTs(hasAngularChoice: boolean) {
-    return `import * as puppeteer from "puppeteer";
+function screenshotsIndexTs (hasAngularChoice: boolean) {
+  return `import * as puppeteer from "puppeteer";
 
 (async () => {
     const browser = await puppeteer.launch();
@@ -442,11 +442,11 @@ function screenshotsIndexTs(hasAngularChoice: boolean) {
 
     browser.close();
 })();
-`;
+`
 }
 
-function file2variableConfigJs(context: libs.Context) {
-    return `module.exports = {
+function file2variableConfigJs (context: libs.Context) {
+  return `module.exports = {
   base: 'packages/vue/src/',
   files: [
     'packages/vue/src/*.template.html'
@@ -462,14 +462,14 @@ function file2variableConfigJs(context: libs.Context) {
     }
   },
   out: 'packages/vue/src/variables.ts'
-}`;
+}`
 }
 
-function cleanScriptsConfigJs(hasAngularChoice: boolean, context: libs.Context) {
-    const angularTemplateCommand = hasAngularChoice ? "const angularTemplateCommand = \`file2variable-cli packages/angular/src/*.template.html -o packages/angular/src/variables.ts --html-minify --base packages/angular/src\`\n" : "";
-    const angularScript = hasAngularChoice ? "        angularTemplateCommand,\n" : "";
-    const angularWatchScript = hasAngularChoice ? "    angular: \`\${angularTemplateCommand} --watch\`,\n" : "";
-    return `const { Service, checkGitStatus, executeScriptAsync } = require('clean-scripts')
+function cleanScriptsConfigJs (hasAngularChoice: boolean, context: libs.Context) {
+  const angularTemplateCommand = hasAngularChoice ? 'const angularTemplateCommand = \`file2variable-cli packages/angular/src/*.template.html -o packages/angular/src/variables.ts --html-minify --base packages/angular/src\`\n' : ''
+  const angularScript = hasAngularChoice ? '        angularTemplateCommand,\n' : ''
+  const angularWatchScript = hasAngularChoice ? '    angular: \`\${angularTemplateCommand} --watch\`,\n' : ''
+  return `const { Service, checkGitStatus, executeScriptAsync } = require('clean-scripts')
 const { watch } = require('watch-then-execute')
 
 const tsFiles = \`"packages/@(core|vue|react|angular)/@(src|demo)/**/*.@(ts|tsx)" "spec/**/*.ts" "screenshots/**/*.ts"\`
@@ -480,8 +480,8 @@ const excludeTsFiles = \`"packages/@(core|vue|react|angular)/@(src|demo)/**/*.d.
 const vueTemplateCommand = \`file2variable-cli --config packages/vue/src/file2variable.config.js\`
 ${angularTemplateCommand}
 const ngcSrcCommand = [
-  \`${hasAngularChoice ? "ngc" : "tsc"} -p packages/core/src\`,
-  \`${hasAngularChoice ? "tsc -p packages/vue/src" : "tsc -p packages/vue/src"}\`,
+  \`${hasAngularChoice ? 'ngc' : 'tsc'} -p packages/core/src\`,
+  \`${hasAngularChoice ? 'tsc -p packages/vue/src' : 'tsc -p packages/vue/src'}\`,
   \`tsc -p packages/react/src\`,
   \`ngc -p packages/angular/src\`
 ]
@@ -546,7 +546,7 @@ module.exports = {
     'node screenshots/index.js'
   ]
 }
-`;
+`
 }
 
 const demoRevStaticConfig = `module.exports = {
@@ -566,10 +566,10 @@ const demoRevStaticConfig = `module.exports = {
   base: 'packages',
   fileSize: 'file-size.json'
 }
-`;
+`
 
-function vueSrcIndexTs(context: libs.Context) {
-    return `import Vue from "vue";
+function vueSrcIndexTs (context: libs.Context) {
+  return `import Vue from "vue";
 import Component from "vue-class-component";
 import * as common from "${context.repositoryName}";
 export * from "${context.repositoryName}";
@@ -585,11 +585,11 @@ export class ${context.componentTypeName} extends Vue {
 }
 
 Vue.component("${context.componentShortName}", ${context.componentTypeName});
-`;
+`
 }
 
-function reactSrcIndexTs(context: libs.Context) {
-    return `import * as React from "react";
+function reactSrcIndexTs (context: libs.Context) {
+  return `import * as React from "react";
 import * as common from "${context.repositoryName}";
 export * from "${context.repositoryName}";
 
@@ -606,11 +606,11 @@ export class ${context.componentTypeName} extends React.Component<{
         );
     }
 }
-`;
+`
 }
 
-function angularSrcIndexTs(context: libs.Context) {
-    return `import { NgModule } from "@angular/core";
+function angularSrcIndexTs (context: libs.Context) {
+  return `import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { ${context.componentTypeName}Component } from "./index.component";
 export * from "./index.component";
@@ -631,11 +631,11 @@ export * from "${context.repositoryName}";
     ],
 })
 export class ${context.componentTypeName}Module { }
-`;
+`
 }
 
-function angularSrcIndexComponentTs(context: libs.Context) {
-    return `import { Component, Input } from "@angular/core";
+function angularSrcIndexComponentTs (context: libs.Context) {
+  return `import { Component, Input } from "@angular/core";
 import * as common from "${context.repositoryName}";
 import { indexTemplateHtml } from "./variables";
 
@@ -650,11 +650,11 @@ export class ${context.componentTypeName}Component {
     @Input()
     data: common.${context.componentTypeName}Data;
 }
-`;
+`
 }
 
-function srcCommon(context: libs.Context) {
-    return `/**
+function srcCommon (context: libs.Context) {
+  return `/**
  * @public
  */
 export type ${context.componentTypeName}Data<T = any> = {
@@ -662,13 +662,13 @@ export type ${context.componentTypeName}Data<T = any> = {
     component: string | Function;
     data: T;
 };
-`;
+`
 }
 
-function readMeDocument(context: libs.Context, hasAngularChoice: boolean) {
-    const angularFeature = hasAngularChoice ? `
-+ angular component` : "";
-    const angularComponentDemo = hasAngularChoice ? `## angular component
+function readMeDocument (context: libs.Context, hasAngularChoice: boolean) {
+  const angularFeature = hasAngularChoice ? `
++ angular component` : ''
+  const angularComponentDemo = hasAngularChoice ? `## angular component
 
 \`yarn add ${context.componentShortName}-angular-component\`
 
@@ -690,8 +690,8 @@ class MainModule { }
 
 the online demo: <https://${context.author}.github.io/${context.repositoryName}/packages/angular/demo/jit>
 
-the AOT online demo: <https://${context.author}.github.io/${context.repositoryName}/packages/angular/demo/aot>` : "";
-    return `## features
+the AOT online demo: <https://${context.author}.github.io/${context.repositoryName}/packages/angular/demo/aot>` : ''
+  return `## features
 
 + vuejs component
 + reactjs component${angularFeature}
@@ -749,7 +749,7 @@ type ${context.componentTypeName}Data<T = any> = {
     data: T; // the data will be passed to the component as \`data\` props
 };
 \`\`\`
-`;
+`
 }
 
 const specTsconfig = `{
@@ -770,10 +770,10 @@ const specTsconfig = `{
         "emitDecoratorMetadata": true,
         "newLine": "LF"
     }
-}`;
+}`
 
-function srcLess(context: libs.Context) {
-    return `.${context.componentShortName} {
+function srcLess (context: libs.Context) {
+  return `.${context.componentShortName} {
   * {
     box-sizing: border-box;
     margin: 0;
@@ -782,11 +782,11 @@ function srcLess(context: libs.Context) {
     -webkit-font-smoothing: antialiased;
   }
 }
-`;
+`
 }
 
-function demoWebpackConfig(hasAngularChoice: boolean) {
-    return hasAngularChoice ? `const webpack = require('webpack')
+function demoWebpackConfig (hasAngularChoice: boolean) {
+  return hasAngularChoice ? `const webpack = require('webpack')
 const path = require('path')
 
 const plugins = [
@@ -889,11 +889,11 @@ module.exports = [
     plugins
   }
 ]
-`;
+`
 }
 
-function demoVueIndex(context: libs.Context) {
-    return `import Vue from "vue";
+function demoVueIndex (context: libs.Context) {
+  return `import Vue from "vue";
 import Component from "vue-class-component";
 // tslint:disable:no-duplicate-imports
 import "../dist/";
@@ -914,7 +914,7 @@ class App extends Vue {
 }
 
 new App({ el: "#container" });
-`;
+`
 }
 
 const demoVueIndexEjsHtml = `<!DOCTYPE html>
@@ -930,10 +930,10 @@ const demoVueIndexEjsHtml = `<!DOCTYPE html>
 </style>
 <div id="container"></div>
 <script src="./<%=vueDemoIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.vueDemoIndexBundleJs %>"></script>
-`;
+`
 
-function demoReactIndex(context: libs.Context) {
-    return `import * as React from "react";
+function demoReactIndex (context: libs.Context) {
+  return `import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { ${context.componentTypeName}, ${context.componentTypeName}Data } from "../dist/";
 
@@ -953,7 +953,7 @@ class Main extends React.Component<{}, {}> {
 }
 
 ReactDOM.render(<Main />, document.getElementById("container"));
-`;
+`
 }
 
 const demoReactIndexEjsHtml = `<!DOCTYPE html>
@@ -969,10 +969,10 @@ const demoReactIndexEjsHtml = `<!DOCTYPE html>
 </style>
 <div id="container"></div>
 <script src="./<%=reactDemoIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.reactDemoIndexBundleJs %>"></script>
-`;
+`
 
-function demoJitIndex(context: libs.Context) {
-    return `
+function demoJitIndex (context: libs.Context) {
+  return `
 import "core-js/es6";
 import "core-js/es7/reflect";
 import "zone.js/dist/zone";
@@ -985,11 +985,11 @@ import { MainModule } from "../main.module";
 enableProdMode();
 
 platformBrowserDynamic().bootstrapModule(MainModule);
-`;
+`
 }
 
-function demoAotIndex(context: libs.Context) {
-    return `
+function demoAotIndex (context: libs.Context) {
+  return `
 import "core-js/es6";
 import "core-js/es7/reflect";
 import "zone.js/dist/zone";
@@ -1002,7 +1002,7 @@ import { MainModuleNgFactory } from "../main.module.ngfactory";
 enableProdMode();
 
 platformBrowser().bootstrapModuleFactory(MainModuleNgFactory);
-`;
+`
 }
 
 const demoJitIndexEjsHtml = `<!DOCTYPE html>
@@ -1018,7 +1018,7 @@ const demoJitIndexEjsHtml = `<!DOCTYPE html>
 </style>
 <app></app>
 <script src="./<%=angularDemoJitIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.angularDemoJitIndexBundleJs %>"></script>
-`;
+`
 
 const demoAotIndexEjsHtml = `<!DOCTYPE html>
 <meta charset="UTF-8">
@@ -1033,17 +1033,17 @@ const demoAotIndexEjsHtml = `<!DOCTYPE html>
 </style>
 <app></app>
 <script src="./<%=angularDemoAotIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.angularDemoAotIndexBundleJs %>"></script>
-`;
+`
 
 const specIndexSpecTs = `import "../packages/core/dist";
 
 it("", () => {
     // expect(true).toEqual(true);
 });
-`;
+`
 
-function specReactSpecTs(context: libs.Context) {
-    return `import React from "react";
+function specReactSpecTs (context: libs.Context) {
+  return `import React from "react";
 import { RelativeTime } from "../packages/react/dist";
 
 import renderer from "react-test-renderer";
@@ -1054,11 +1054,11 @@ it("renders without crashing", () => {
     expect(rendered).toBeTruthy();
     app.unmount();
 });
-`;
+`
 }
 
-function specVueSpecTs(context: libs.Context) {
-    return `import { ${context.componentTypeName} } from "../packages/vue/dist";
+function specVueSpecTs (context: libs.Context) {
+  return `import { ${context.componentTypeName} } from "../packages/vue/dist";
 
 import { mount } from "vue-test-utils";
 
@@ -1072,5 +1072,5 @@ it("renders without crashing", () => {
     expect(rendered).toBeTruthy();
     app.destroy();
 });
-`;
+`
 }

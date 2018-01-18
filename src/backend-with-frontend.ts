@@ -1,90 +1,90 @@
-import * as libs from "./libs";
+import * as libs from './libs'
 
-export async function runBackendWithFrontend(context: libs.Context) {
-    context.hasKarma = true;
+export async function runBackendWithFrontend (context: libs.Context) {
+  context.hasKarma = true
 
-    await libs.appendFile(".gitignore", libs.gitignore(context));
+  await libs.appendFile('.gitignore', libs.gitignore(context))
 
-    await libs.exec(`yarn add -DE @types/node`);
-    await libs.exec(`yarn add -DE tslib`);
-    await libs.exec(`yarn add -DE github-fork-ribbon-css`);
-    await libs.exec(`yarn add -DE less`);
-    await libs.exec(`yarn add -DE stylelint stylelint-config-standard`);
-    await libs.exec(`yarn add -DE vue vue-class-component`);
-    await libs.exec(`yarn add -DE clean-css-cli`);
-    await libs.exec(`yarn add -DE file2variable-cli`);
-    await libs.exec(`yarn add -DE webpack`);
-    await libs.exec(`yarn add -DE rev-static`);
-    await libs.exec(`yarn add -DE standard`);
-    await libs.exec(`yarn add -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
-    await libs.exec(`yarn add -DE clean-scripts`);
-    await libs.exec(`yarn add -DE no-unused-export`);
-    await libs.exec(`yarn add -DE watch-then-execute`);
-    await libs.exec(`yarn add -DE puppeteer @types/puppeteer`);
-    await libs.exec(`yarn add -DE autoprefixer postcss-cli`);
+  await libs.exec(`yarn add -DE @types/node`)
+  await libs.exec(`yarn add -DE tslib`)
+  await libs.exec(`yarn add -DE github-fork-ribbon-css`)
+  await libs.exec(`yarn add -DE less`)
+  await libs.exec(`yarn add -DE stylelint stylelint-config-standard`)
+  await libs.exec(`yarn add -DE vue vue-class-component`)
+  await libs.exec(`yarn add -DE clean-css-cli`)
+  await libs.exec(`yarn add -DE file2variable-cli`)
+  await libs.exec(`yarn add -DE webpack`)
+  await libs.exec(`yarn add -DE rev-static`)
+  await libs.exec(`yarn add -DE standard`)
+  await libs.exec(`yarn add -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`)
+  await libs.exec(`yarn add -DE clean-scripts`)
+  await libs.exec(`yarn add -DE no-unused-export`)
+  await libs.exec(`yarn add -DE watch-then-execute`)
+  await libs.exec(`yarn add -DE puppeteer @types/puppeteer`)
+  await libs.exec(`yarn add -DE autoprefixer postcss-cli`)
 
-    await libs.exec("./node_modules/.bin/jasmine init");
+  await libs.exec('./node_modules/.bin/jasmine init')
 
-    await libs.mkdir("src");
-    await libs.writeFile(`src/index.ts`, srcIndex);
-    await libs.writeFile(`src/tsconfig.json`, srcTsconfig);
+  await libs.mkdir('src')
+  await libs.writeFile(`src/index.ts`, srcIndex)
+  await libs.writeFile(`src/tsconfig.json`, srcTsconfig)
 
-    await libs.mkdir("static");
-    await libs.writeFile(`static/tsconfig.json`, staticTsconfig);
-    await libs.writeFile(`static/index.ts`, staticIndex);
-    await libs.writeFile(`static/vendor.ts`, staticVendor);
-    await libs.writeFile(`static/index.template.html`, staticIndexTemplateHtml);
-    await libs.writeFile(`static/index.less`, staticIndexLess);
-    await libs.writeFile(`static/webpack.config.js`, staticWebpackConfig);
-    await libs.writeFile(`static/rev-static.config.js`, staticRevStaticConfig);
-    await libs.writeFile("static/index.ejs.html", staticIndexEjsHtml(context));
-    await libs.writeFile("static/prerender.html", "");
-    await libs.writeFile("static/file2variable.config.js", file2variableConfigJs);
+  await libs.mkdir('static')
+  await libs.writeFile(`static/tsconfig.json`, staticTsconfig)
+  await libs.writeFile(`static/index.ts`, staticIndex)
+  await libs.writeFile(`static/vendor.ts`, staticVendor)
+  await libs.writeFile(`static/index.template.html`, staticIndexTemplateHtml)
+  await libs.writeFile(`static/index.less`, staticIndexLess)
+  await libs.writeFile(`static/webpack.config.js`, staticWebpackConfig)
+  await libs.writeFile(`static/rev-static.config.js`, staticRevStaticConfig)
+  await libs.writeFile('static/index.ejs.html', staticIndexEjsHtml(context))
+  await libs.writeFile('static/prerender.html', '')
+  await libs.writeFile('static/file2variable.config.js', file2variableConfigJs)
 
-    await libs.appendFile("README.md", libs.readMeBadge(context));
-    await libs.appendFile("README.md", readMeDocument(context));
-    await libs.writeFile(".stylelintrc", libs.stylelint);
-    await libs.writeFile(".travis.yml", libs.getTravisYml(context));
-    await libs.writeFile("appveyor.yml", libs.appveyorYml(context));
-    await libs.writeFile("clean-release.config.js", getCleanReleaseConfigJs(context));
-    await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
-    await libs.writeFile(".browserslistrc", libs.browsersList);
-    await libs.writeFile("postcss.config.js", libs.postcssConfig);
-    await libs.writeFile("Dockerfile", dockerfile);
+  await libs.appendFile('README.md', libs.readMeBadge(context))
+  await libs.appendFile('README.md', readMeDocument(context))
+  await libs.writeFile('.stylelintrc', libs.stylelint)
+  await libs.writeFile('.travis.yml', libs.getTravisYml(context))
+  await libs.writeFile('appveyor.yml', libs.appveyorYml(context))
+  await libs.writeFile('clean-release.config.js', getCleanReleaseConfigJs(context))
+  await libs.writeFile('clean-scripts.config.js', cleanScriptsConfigJs(context))
+  await libs.writeFile('.browserslistrc', libs.browsersList)
+  await libs.writeFile('postcss.config.js', libs.postcssConfig)
+  await libs.writeFile('Dockerfile', dockerfile)
 
-    await libs.mkdir("spec");
-    await libs.writeFile("spec/tsconfig.json", libs.tsconfigJson);
-    await libs.writeFile("spec/indexSpec.ts", libs.specIndexSpecTs);
+  await libs.mkdir('spec')
+  await libs.writeFile('spec/tsconfig.json', libs.tsconfigJson)
+  await libs.writeFile('spec/indexSpec.ts', libs.specIndexSpecTs)
 
-    await libs.mkdir("static_spec");
-    await libs.writeFile(`static_spec/karma.config.js`, libs.specKarmaConfigJs);
-    await libs.writeFile(`static_spec/tsconfig.json`, staticSpecTsconfig);
-    await libs.writeFile(`static_spec/webpack.config.js`, libs.specWebpackConfigJs);
-    await libs.writeFile(`static_spec/indexSpec.ts`, libs.specIndexSpecTs);
+  await libs.mkdir('static_spec')
+  await libs.writeFile(`static_spec/karma.config.js`, libs.specKarmaConfigJs)
+  await libs.writeFile(`static_spec/tsconfig.json`, staticSpecTsconfig)
+  await libs.writeFile(`static_spec/webpack.config.js`, libs.specWebpackConfigJs)
+  await libs.writeFile(`static_spec/indexSpec.ts`, libs.specIndexSpecTs)
 
-    await libs.mkdir("screenshots");
-    await libs.writeFile(`screenshots/tsconfig.json`, libs.tsconfigJson);
-    await libs.writeFile(`screenshots/index.ts`, screenshotsIndexTs);
+  await libs.mkdir('screenshots')
+  await libs.writeFile(`screenshots/tsconfig.json`, libs.tsconfigJson)
+  await libs.writeFile(`screenshots/index.ts`, screenshotsIndexTs)
 
-    await libs.mkdir("prerender");
-    await libs.writeFile(`prerender/tsconfig.json`, libs.tsconfigJson);
-    await libs.writeFile(`prerender/index.ts`, prerenderIndexTs);
-    await libs.writeFile(`prerender/index.html`, "");
+  await libs.mkdir('prerender')
+  await libs.writeFile(`prerender/tsconfig.json`, libs.tsconfigJson)
+  await libs.writeFile(`prerender/index.ts`, prerenderIndexTs)
+  await libs.writeFile(`prerender/index.html`, '')
 
-    return {
-        scripts: {
-            build: "clean-scripts build",
-            lint: "clean-scripts lint",
-            test: "clean-scripts test",
-            fix: "clean-scripts fix",
-            watch: "clean-scripts watch",
-            screenshot: "clean-scripts screenshot",
-            prerender: "clean-scripts prerender",
-        },
-    };
+  return {
+    scripts: {
+      build: 'clean-scripts build',
+      lint: 'clean-scripts lint',
+      test: 'clean-scripts test',
+      fix: 'clean-scripts fix',
+      watch: 'clean-scripts watch',
+      screenshot: 'clean-scripts screenshot',
+      prerender: 'clean-scripts prerender'
+    }
+  }
 }
 
-const port = 8000;
+const port = 8000
 
 const dockerfile = `FROM node:alpine
 WORKDIR /app
@@ -92,7 +92,7 @@ ADD . /app
 RUN apk add --no-cache make gcc g++ python && yarn --production
 EXPOSE ${port}
 CMD ["node","dist/index.js"]
-`;
+`
 
 const screenshotsIndexTs = `import * as puppeteer from "puppeteer";
 
@@ -105,7 +105,7 @@ const screenshotsIndexTs = `import * as puppeteer from "puppeteer";
     await page.screenshot({ path: "screenshots/initial.png" });
 
     browser.close();
-})();`;
+})();`
 
 const prerenderIndexTs = `import * as puppeteer from "puppeteer";
 import * as fs from "fs";
@@ -124,7 +124,7 @@ import * as fs from "fs";
     fs.writeFileSync("prerender/index.html", content);
 
     browser.close();
-})();`;
+})();`
 
 const file2variableConfigJs = `module.exports = {
   base: 'static',
@@ -142,10 +142,10 @@ const file2variableConfigJs = `module.exports = {
     }
   },
   out: 'static/variables.ts'
-}`;
+}`
 
-function cleanScriptsConfigJs(context: libs.Context) {
-    return `const { Service, checkGitStatus, executeScriptAsync } = require('clean-scripts')
+function cleanScriptsConfigJs (context: libs.Context) {
+  return `const { Service, checkGitStatus, executeScriptAsync } = require('clean-scripts')
 const { watch } = require('watch-then-execute')
 
 const tsFiles = \`"src/**/*.ts" "static/**/*.ts" "spec/**/*.ts" "static_spec/**/*.ts"\`
@@ -226,11 +226,11 @@ module.exports = {
     revStaticCommand
   ]
 }
-`;
+`
 }
 
-function readMeDocument(context: libs.Context) {
-    return `## install
+function readMeDocument (context: libs.Context) {
+  return `## install
 
 \`\`\`bash
 git clone https://github.com/${context.author}/${context.repositoryName}-release.git . --depth=1 && yarn add --production
@@ -241,11 +241,11 @@ git clone https://github.com/${context.author}/${context.repositoryName}-release
 \`\`\`bash
 docker run -d -p ${port}:${port} ${context.author}/${context.repositoryName}
 \`\`\`
-`;
+`
 }
 
-function getCleanReleaseConfigJs(context: libs.Context) {
-    return `module.exports = {
+function getCleanReleaseConfigJs (context: libs.Context) {
+  return `module.exports = {
   include: [
     'dist/*.js',
     'static/*.bundle-*.js',
@@ -264,7 +264,7 @@ function getCleanReleaseConfigJs(context: libs.Context) {
     'cd "[dir]" && docker build -t ${context.author}/${context.repositoryName} . && docker push ${context.author}/${context.repositoryName}'
   ]
 }
-`;
+`
 }
 
 const srcIndex = `function printInConsole(message: any) {
@@ -281,7 +281,7 @@ process.on("SIGINT", () => {
 process.on("SIGTERM", () => {
   process.exit();
 });
-`;
+`
 
 const srcTsconfig = `{
     "compilerOptions": {
@@ -295,7 +295,7 @@ const srcTsconfig = `{
         "skipLibCheck": true,
         "newLine": "LF"
     }
-}`;
+}`
 
 const staticIndexLess = `* {
   box-sizing: border-box;
@@ -304,7 +304,7 @@ const staticIndexLess = `* {
   font-family: "Lucida Grande", "Lucida Sans Unicode", "Hiragino Sans GB", "WenQuanYi Micro Hei", "Verdana,Aril", sans-serif;
   -webkit-font-smoothing: antialiased;
 }
-`;
+`
 
 const staticWebpackConfig = `const webpack = require('webpack')
 
@@ -338,7 +338,7 @@ module.exports = {
   },
   plugins
 }
-`;
+`
 
 const staticRevStaticConfig = `const fs = require('fs')
 
@@ -366,10 +366,10 @@ module.exports = {
     prerender: fs.readFileSync('prerender/index.html')
   }
 }
-`;
+`
 
-function staticIndexEjsHtml(context: libs.Context) {
-    return `<!DOCTYPE html>
+function staticIndexEjsHtml (context: libs.Context) {
+  return `<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="renderer" content="webkit" />
@@ -383,7 +383,7 @@ function staticIndexEjsHtml(context: libs.Context) {
 </div>
 <script src="<%=vendorBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.vendorBundleJs %>"></script>
 <%-inline.indexBundleJs %>
-`;
+`
 }
 
 const staticIndex = `import Vue from "vue";
@@ -398,11 +398,11 @@ export class App extends Vue {
 }
 
 new App({ el: "#container" });
-`;
+`
 
 const staticVendor = `import "vue";
 import "vue-class-component";
-`;
+`
 
 const staticTsconfig = `{
     "compilerOptions": {
@@ -421,10 +421,10 @@ const staticTsconfig = `{
         "downlevelIteration": true,
         "newLine": "LF"
     }
-}`;
+}`
 
 const staticIndexTemplateHtml = `<div>
-</div>`;
+</div>`
 
 const staticSpecTsconfig = `{
     "compilerOptions": {
@@ -443,4 +443,4 @@ const staticSpecTsconfig = `{
         "downlevelIteration": true,
         "newLine": "LF"
     }
-}`;
+}`

@@ -1,74 +1,74 @@
-import * as libs from "./libs";
+import * as libs from './libs'
 
-export async function runFrontend(context: libs.Context) {
-    context.hasKarma = true;
+export async function runFrontend (context: libs.Context) {
+  context.hasKarma = true
 
-    await libs.appendFile(".gitignore", libs.gitignore(context));
+  await libs.appendFile('.gitignore', libs.gitignore(context))
 
-    await libs.exec(`yarn add -DE tslib`);
-    await libs.exec(`yarn add -DE github-fork-ribbon-css`);
-    await libs.exec(`yarn add -DE less`);
-    await libs.exec(`yarn add -DE stylelint stylelint-config-standard`);
-    await libs.exec(`yarn add -DE vue vue-class-component`);
-    await libs.exec(`yarn add -DE clean-css-cli`);
-    await libs.exec(`yarn add -DE file2variable-cli`);
-    await libs.exec(`yarn add -DE webpack`);
-    await libs.exec(`yarn add -DE rev-static`);
-    await libs.exec(`yarn add -DE sw-precache uglify-js@^2.8`);
-    await libs.exec(`yarn add -DE standard`);
-    await libs.exec(`yarn add -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
-    await libs.exec(`yarn add -DE clean-scripts`);
-    await libs.exec(`yarn add -DE no-unused-export`);
-    await libs.exec(`yarn add -DE watch-then-execute`);
-    await libs.exec(`yarn add -DE http-server`);
-    await libs.exec(`yarn add -DE puppeteer @types/puppeteer`);
-    await libs.exec(`yarn add -DE autoprefixer postcss-cli`);
+  await libs.exec(`yarn add -DE tslib`)
+  await libs.exec(`yarn add -DE github-fork-ribbon-css`)
+  await libs.exec(`yarn add -DE less`)
+  await libs.exec(`yarn add -DE stylelint stylelint-config-standard`)
+  await libs.exec(`yarn add -DE vue vue-class-component`)
+  await libs.exec(`yarn add -DE clean-css-cli`)
+  await libs.exec(`yarn add -DE file2variable-cli`)
+  await libs.exec(`yarn add -DE webpack`)
+  await libs.exec(`yarn add -DE rev-static`)
+  await libs.exec(`yarn add -DE sw-precache uglify-js@^2.8`)
+  await libs.exec(`yarn add -DE standard`)
+  await libs.exec(`yarn add -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`)
+  await libs.exec(`yarn add -DE clean-scripts`)
+  await libs.exec(`yarn add -DE no-unused-export`)
+  await libs.exec(`yarn add -DE watch-then-execute`)
+  await libs.exec(`yarn add -DE http-server`)
+  await libs.exec(`yarn add -DE puppeteer @types/puppeteer`)
+  await libs.exec(`yarn add -DE autoprefixer postcss-cli`)
 
-    await libs.writeFile(`index.ts`, index);
-    await libs.writeFile(`index.template.html`, indexTemplateHtml);
-    await libs.writeFile(`vendor.ts`, vendor);
-    await libs.writeFile(`tsconfig.json`, tsconfig);
-    await libs.appendFile("README.md", libs.readMeBadge(context));
-    await libs.writeFile(`index.less`, indexLess);
-    await libs.writeFile(".stylelintrc", libs.stylelint);
-    await libs.writeFile(`webpack.config.js`, webpackConfig);
-    await libs.writeFile(`rev-static.config.js`, revStaticConfig);
-    await libs.writeFile("index.ejs.html", indexEjsHtml(context));
-    await libs.writeFile("sw-precache.config.js", swPrecacheConfig);
-    await libs.writeFile(".travis.yml", libs.getTravisYml(context));
-    await libs.writeFile("appveyor.yml", libs.appveyorYml(context));
-    await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
-    await libs.writeFile("prerender.html", "");
-    await libs.writeFile(".browserslistrc", libs.browsersList);
-    await libs.writeFile("postcss.config.js", libs.postcssConfig);
-    await libs.writeFile("file2variable.config.js", file2variableConfigJs);
+  await libs.writeFile(`index.ts`, index)
+  await libs.writeFile(`index.template.html`, indexTemplateHtml)
+  await libs.writeFile(`vendor.ts`, vendor)
+  await libs.writeFile(`tsconfig.json`, tsconfig)
+  await libs.appendFile('README.md', libs.readMeBadge(context))
+  await libs.writeFile(`index.less`, indexLess)
+  await libs.writeFile('.stylelintrc', libs.stylelint)
+  await libs.writeFile(`webpack.config.js`, webpackConfig)
+  await libs.writeFile(`rev-static.config.js`, revStaticConfig)
+  await libs.writeFile('index.ejs.html', indexEjsHtml(context))
+  await libs.writeFile('sw-precache.config.js', swPrecacheConfig)
+  await libs.writeFile('.travis.yml', libs.getTravisYml(context))
+  await libs.writeFile('appveyor.yml', libs.appveyorYml(context))
+  await libs.writeFile('clean-scripts.config.js', cleanScriptsConfigJs(context))
+  await libs.writeFile('prerender.html', '')
+  await libs.writeFile('.browserslistrc', libs.browsersList)
+  await libs.writeFile('postcss.config.js', libs.postcssConfig)
+  await libs.writeFile('file2variable.config.js', file2variableConfigJs)
 
-    await libs.mkdir(`spec`);
-    await libs.writeFile(`spec/karma.config.js`, libs.specKarmaConfigJs);
-    await libs.writeFile(`spec/tsconfig.json`, specTsconfig);
-    await libs.writeFile(`spec/webpack.config.js`, libs.specWebpackConfigJs);
-    await libs.writeFile(`spec/indexSpec.ts`, libs.specIndexSpecTs);
+  await libs.mkdir(`spec`)
+  await libs.writeFile(`spec/karma.config.js`, libs.specKarmaConfigJs)
+  await libs.writeFile(`spec/tsconfig.json`, specTsconfig)
+  await libs.writeFile(`spec/webpack.config.js`, libs.specWebpackConfigJs)
+  await libs.writeFile(`spec/indexSpec.ts`, libs.specIndexSpecTs)
 
-    await libs.mkdir(`screenshots`);
-    await libs.writeFile(`screenshots/tsconfig.json`, libs.tsconfigJson);
-    await libs.writeFile(`screenshots/index.ts`, screenshotIndexTs);
+  await libs.mkdir(`screenshots`)
+  await libs.writeFile(`screenshots/tsconfig.json`, libs.tsconfigJson)
+  await libs.writeFile(`screenshots/index.ts`, screenshotIndexTs)
 
-    await libs.mkdir(`prerender`);
-    await libs.writeFile(`prerender/tsconfig.json`, libs.tsconfigJson);
-    await libs.writeFile(`prerender/index.ts`, prerenderIndexTs);
-    await libs.writeFile(`prerender/index.html`, "");
+  await libs.mkdir(`prerender`)
+  await libs.writeFile(`prerender/tsconfig.json`, libs.tsconfigJson)
+  await libs.writeFile(`prerender/index.ts`, prerenderIndexTs)
+  await libs.writeFile(`prerender/index.html`, '')
 
-    return {
-        scripts: {
-            build: "clean-scripts build",
-            lint: "clean-scripts lint",
-            test: "clean-scripts test",
-            fix: `clean-scripts fix`,
-            watch: "clean-scripts watch",
-            prerender: "clean-scripts prerender",
-            screenshot: "clean-scripts screenshot",
-        },
-    };
+  return {
+    scripts: {
+      build: 'clean-scripts build',
+      lint: 'clean-scripts lint',
+      test: 'clean-scripts test',
+      fix: `clean-scripts fix`,
+      watch: 'clean-scripts watch',
+      prerender: 'clean-scripts prerender',
+      screenshot: 'clean-scripts screenshot'
+    }
+  }
 }
 
 const screenshotIndexTs = `import * as puppeteer from "puppeteer";
@@ -82,7 +82,7 @@ const screenshotIndexTs = `import * as puppeteer from "puppeteer";
     await page.screenshot({ path: "screenshots/initial.png" });
 
     browser.close();
-})();`;
+})();`
 
 const prerenderIndexTs = `import * as puppeteer from "puppeteer";
 import * as fs from "fs";
@@ -101,7 +101,7 @@ import * as fs from "fs";
     fs.writeFileSync("prerender/index.html", content);
 
     browser.close();
-})();`;
+})();`
 
 const file2variableConfigJs = `module.exports = {
   files: [
@@ -118,10 +118,10 @@ const file2variableConfigJs = `module.exports = {
     }
   },
   out: 'variables.ts'
-}`;
+}`
 
-function cleanScriptsConfigJs(context: libs.Context) {
-    return `const { Service, checkGitStatus, executeScriptAsync } = require('clean-scripts')
+function cleanScriptsConfigJs (context: libs.Context) {
+  return `const { Service, checkGitStatus, executeScriptAsync } = require('clean-scripts')
 const { watch } = require('watch-then-execute')
 
 const tsFiles = \`"*.ts" "spec/**/*.ts" "screenshots/**/*.ts" "prerender/**/*.ts"\`
@@ -195,7 +195,7 @@ module.exports = {
     swCommand
   ]
 }
-`;
+`
 }
 
 const index = `import Vue from "vue";
@@ -210,10 +210,10 @@ export class App extends Vue {
 }
 
 new App({ el: "#container" });
-`;
+`
 
 const indexTemplateHtml = `<div>
-</div>`;
+</div>`
 
 const tsconfig = `{
     "compilerOptions": {
@@ -237,7 +237,7 @@ const tsconfig = `{
         "variables.ts",
         "vendor.ts"
     ]
-}`;
+}`
 
 const indexLess = `* {
   box-sizing: border-box;
@@ -246,7 +246,7 @@ const indexLess = `* {
   font-family: "Lucida Grande", "Lucida Sans Unicode", "Hiragino Sans GB", "WenQuanYi Micro Hei", "Verdana,Aril", sans-serif;
   -webkit-font-smoothing: antialiased;
 }
-`;
+`
 
 const webpackConfig = `const webpack = require('webpack')
 
@@ -280,7 +280,7 @@ module.exports = {
   },
   plugins
 }
-`;
+`
 
 const revStaticConfig = `const fs = require('fs')
 
@@ -310,10 +310,10 @@ module.exports = {
     prerender: fs.readFileSync('prerender/index.html')
   }
 }
-`;
+`
 
-function indexEjsHtml(context: libs.Context) {
-    return `<!DOCTYPE html>
+function indexEjsHtml (context: libs.Context) {
+  return `<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="renderer" content="webkit" />
@@ -327,7 +327,7 @@ function indexEjsHtml(context: libs.Context) {
 </div>
 <script src="<%=vendorBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.vendorBundleJs %>"></script>
 <%-inline.indexBundleJs %>
-`;
+`
 }
 
 const swPrecacheConfig = `module.exports = {
@@ -336,11 +336,11 @@ const swPrecacheConfig = `module.exports = {
     'vendor.bundle-*.js'
   ]
 }
-`;
+`
 
 const vendor = `import "vue";
 import "vue-class-component";
-`;
+`
 
 const specTsconfig = `{
     "compilerOptions": {
@@ -359,4 +359,4 @@ const specTsconfig = `{
         "downlevelIteration": true,
         "newLine": "LF"
     }
-}`;
+}`

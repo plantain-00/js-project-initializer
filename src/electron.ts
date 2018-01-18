@@ -1,69 +1,69 @@
-import * as libs from "./libs";
+import * as libs from './libs'
 
-export async function runElectron(context: libs.Context) {
-    context.hasKarma = true;
+export async function runElectron (context: libs.Context) {
+  context.hasKarma = true
 
-    await libs.appendFile(".gitignore", libs.gitignore(context));
+  await libs.appendFile('.gitignore', libs.gitignore(context))
 
-    await libs.exec(`yarn add -E electron`);
-    await libs.exec(`yarn add -DE electron-packager`);
-    await libs.exec(`yarn add -DE @types/node`);
-    await libs.exec(`yarn add -DE tslib`);
-    await libs.exec(`yarn add -DE less`);
-    await libs.exec(`yarn add -DE stylelint stylelint-config-standard`);
-    await libs.exec(`yarn add -DE vue vue-class-component`);
-    await libs.exec(`yarn add -DE clean-css-cli`);
-    await libs.exec(`yarn add -DE file2variable-cli`);
-    await libs.exec(`yarn add -DE webpack`);
-    await libs.exec(`yarn add -DE standard`);
-    await libs.exec(`yarn add -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`);
-    await libs.exec(`yarn add -DE clean-scripts`);
-    await libs.exec(`yarn add -DE no-unused-export`);
-    await libs.exec(`yarn add -DE watch-then-execute`);
-    await libs.exec(`yarn add -DE autoprefixer postcss-cli`);
+  await libs.exec(`yarn add -E electron`)
+  await libs.exec(`yarn add -DE electron-packager`)
+  await libs.exec(`yarn add -DE @types/node`)
+  await libs.exec(`yarn add -DE tslib`)
+  await libs.exec(`yarn add -DE less`)
+  await libs.exec(`yarn add -DE stylelint stylelint-config-standard`)
+  await libs.exec(`yarn add -DE vue vue-class-component`)
+  await libs.exec(`yarn add -DE clean-css-cli`)
+  await libs.exec(`yarn add -DE file2variable-cli`)
+  await libs.exec(`yarn add -DE webpack`)
+  await libs.exec(`yarn add -DE standard`)
+  await libs.exec(`yarn add -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`)
+  await libs.exec(`yarn add -DE clean-scripts`)
+  await libs.exec(`yarn add -DE no-unused-export`)
+  await libs.exec(`yarn add -DE watch-then-execute`)
+  await libs.exec(`yarn add -DE autoprefixer postcss-cli`)
 
-    await libs.exec("./node_modules/.bin/jasmine init");
+  await libs.exec('./node_modules/.bin/jasmine init')
 
-    await libs.writeFile(`main.ts`, main);
-    await libs.writeFile(`index.html`, indexHtml);
-    await libs.writeFile(`tsconfig.json`, tsconfig);
-    await libs.appendFile("README.md", libs.readMeBadge(context));
-    await libs.writeFile(".stylelintrc", libs.stylelint);
-    await libs.writeFile(".travis.yml", libs.getTravisYml(context));
-    await libs.writeFile("appveyor.yml", libs.appveyorYml(context));
-    await libs.writeFile("clean-release.config.js", cleanReleaseConfigJs(context));
-    await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
-    await libs.writeFile(".browserslistrc", browsersList);
-    await libs.writeFile("postcss.config.js", libs.postcssConfig);
+  await libs.writeFile(`main.ts`, main)
+  await libs.writeFile(`index.html`, indexHtml)
+  await libs.writeFile(`tsconfig.json`, tsconfig)
+  await libs.appendFile('README.md', libs.readMeBadge(context))
+  await libs.writeFile('.stylelintrc', libs.stylelint)
+  await libs.writeFile('.travis.yml', libs.getTravisYml(context))
+  await libs.writeFile('appveyor.yml', libs.appveyorYml(context))
+  await libs.writeFile('clean-release.config.js', cleanReleaseConfigJs(context))
+  await libs.writeFile('clean-scripts.config.js', cleanScriptsConfigJs(context))
+  await libs.writeFile('.browserslistrc', browsersList)
+  await libs.writeFile('postcss.config.js', libs.postcssConfig)
 
-    await libs.mkdir("scripts");
-    await libs.writeFile("scripts/index.ts", scriptsIndex);
-    await libs.writeFile(`scripts/index.less`, scriptsIndexLess);
-    await libs.writeFile("scripts/tsconfig.json", scriptsTsconfig);
-    await libs.writeFile(`scripts/index.template.html`, scriptsIndexTemplateHtml);
-    await libs.writeFile(`scripts/webpack.config.js`, scriptsWebpackConfig);
-    await libs.writeFile("scripts/file2variable.config.js", file2variableConfigJs);
+  await libs.mkdir('scripts')
+  await libs.writeFile('scripts/index.ts', scriptsIndex)
+  await libs.writeFile(`scripts/index.less`, scriptsIndexLess)
+  await libs.writeFile('scripts/tsconfig.json', scriptsTsconfig)
+  await libs.writeFile(`scripts/index.template.html`, scriptsIndexTemplateHtml)
+  await libs.writeFile(`scripts/webpack.config.js`, scriptsWebpackConfig)
+  await libs.writeFile('scripts/file2variable.config.js', file2variableConfigJs)
 
-    await libs.mkdir("spec");
-    await libs.writeFile("spec/tsconfig.json", libs.tsconfigJson);
-    await libs.writeFile("spec/indexSpec.ts", libs.specIndexSpecTs);
+  await libs.mkdir('spec')
+  await libs.writeFile('spec/tsconfig.json', libs.tsconfigJson)
+  await libs.writeFile('spec/indexSpec.ts', libs.specIndexSpecTs)
 
-    await libs.mkdir("static_spec");
-    await libs.writeFile(`static_spec/karma.config.js`, libs.specKarmaConfigJs);
-    await libs.writeFile(`static_spec/tsconfig.json`, staticSpecTsconfig);
-    await libs.writeFile(`static_spec/webpack.config.js`, libs.specWebpackConfigJs);
-    await libs.writeFile(`static_spec/indexSpec.ts`, libs.specIndexSpecTs);
+  await libs.mkdir('static_spec')
+  await libs.writeFile(`static_spec/karma.config.js`, libs.specKarmaConfigJs)
+  await libs.writeFile(`static_spec/tsconfig.json`, staticSpecTsconfig)
+  await libs.writeFile(`static_spec/webpack.config.js`, libs.specWebpackConfigJs)
+  await libs.writeFile(`static_spec/indexSpec.ts`, libs.specIndexSpecTs)
 
-    return {
-        scripts: {
-            start: "electron .",
-            build: "clean-scripts build",
-            lint: "clean-scripts lint",
-            test: "clean-scripts test",
-            fix: `clean-scripts fix`,
-            watch: "clean-scripts watch",
-        },
-    };
+  return {
+    scripts: {
+      start: 'electron .',
+      build: 'clean-scripts build',
+      lint: 'clean-scripts lint',
+      test: 'clean-scripts test',
+      fix: `clean-scripts fix`,
+      watch: 'clean-scripts watch'
+    }
+  }
 }
 
 const file2variableConfigJs = `module.exports = {
@@ -82,10 +82,10 @@ const file2variableConfigJs = `module.exports = {
     }
   },
   out: 'scripts/variables.ts'
-}`;
+}`
 
-function cleanScriptsConfigJs(context: libs.Context) {
-    return `const { checkGitStatus, executeScriptAsync } = require('clean-scripts')
+function cleanScriptsConfigJs (context: libs.Context) {
+  return `const { checkGitStatus, executeScriptAsync } = require('clean-scripts')
 const { watch } = require('watch-then-execute')
 
 const tsFiles = \`"src/**/*.ts" "scripts/**/*.ts" "spec/**/*.ts" "static_spec/**/*.ts"\`
@@ -144,11 +144,11 @@ module.exports = {
     less: () => watch(['scripts/**/*.less'], [], () => executeScriptAsync(cssCommand)),
   }
 }
-`;
+`
 }
 
-function cleanReleaseConfigJs(context: libs.Context) {
-    return `const { name, devDependencies: { electron: electronVersion } } = require('./package.json')
+function cleanReleaseConfigJs (context: libs.Context) {
+  return `const { name, devDependencies: { electron: electronVersion } } = require('./package.json')
 
 module.exports = {
   include: [
@@ -180,7 +180,7 @@ module.exports = {
     \`cd dist && create-dmg \${name}-darwin-x64/\${name}.app\`
   ]
 }
-`;
+`
 }
 
 const main = `import * as electron from "electron";
@@ -199,7 +199,7 @@ electron.app.on("ready", () => {
     });
     // mainWindow.webContents.openDevTools();
 });
-`;
+`
 
 const indexHtml = `<!DOCTYPE html>
 <html>
@@ -217,7 +217,7 @@ const indexHtml = `<!DOCTYPE html>
     </script>
 </body>
 
-</html>`;
+</html>`
 
 const tsconfig = `{
     "compilerOptions": {
@@ -234,7 +234,7 @@ const tsconfig = `{
         "scripts/",
         "node_modules/"
     ]
-}`;
+}`
 
 const scriptsIndexLess = `* {
   box-sizing: border-box;
@@ -243,7 +243,7 @@ const scriptsIndexLess = `* {
   font-family: "Lucida Grande", "Lucida Sans Unicode", "Hiragino Sans GB", "WenQuanYi Micro Hei", "Verdana,Aril", sans-serif;
   -webkit-font-smoothing: antialiased;
 }
-`;
+`
 
 const scriptsIndex = `// import * as electron from "electron";
 import Vue from "vue";
@@ -258,7 +258,7 @@ export class App extends Vue {
 }
 
 new App({ el: "#container" });
-`;
+`
 
 const scriptsTsconfig = `{
     "compilerOptions": {
@@ -278,10 +278,10 @@ const scriptsTsconfig = `{
         "newLine": "LF"
     }
 }
-`;
+`
 
 const scriptsIndexTemplateHtml = `<div>
-</div>`;
+</div>`
 
 const scriptsWebpackConfig = `const webpack = require('webpack')
 
@@ -309,7 +309,7 @@ module.exports = {
     })
   ]
 }
-`;
+`
 
 const staticSpecTsconfig = `{
     "compilerOptions": {
@@ -328,7 +328,7 @@ const staticSpecTsconfig = `{
         "downlevelIteration": true,
         "newLine": "LF"
     }
-}`;
+}`
 
 const browsersList = `last 2 Chrome versions
-`;
+`

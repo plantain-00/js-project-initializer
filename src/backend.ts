@@ -1,45 +1,45 @@
-import * as libs from "./libs";
+import * as libs from './libs'
 
-export async function runBackend(context: libs.Context) {
+export async function runBackend (context: libs.Context) {
 
-    await libs.appendFile(".gitignore", libs.gitignore(context));
+  await libs.appendFile('.gitignore', libs.gitignore(context))
 
-    await libs.exec(`yarn add -DE @types/node`);
-    await libs.exec(`yarn add -DE jasmine @types/jasmine`);
-    await libs.exec(`yarn add -DE standard`);
-    await libs.exec(`yarn add -DE clean-scripts`);
-    await libs.exec(`yarn add -DE no-unused-export`);
+  await libs.exec(`yarn add -DE @types/node`)
+  await libs.exec(`yarn add -DE jasmine @types/jasmine`)
+  await libs.exec(`yarn add -DE standard`)
+  await libs.exec(`yarn add -DE clean-scripts`)
+  await libs.exec(`yarn add -DE no-unused-export`)
 
-    await libs.exec("./node_modules/.bin/jasmine init");
+  await libs.exec('./node_modules/.bin/jasmine init')
 
-    await libs.mkdir("src");
-    await libs.writeFile(`src/index.ts`, srcIndex);
-    await libs.writeFile(`src/tsconfig.json`, srcTsconfig);
+  await libs.mkdir('src')
+  await libs.writeFile(`src/index.ts`, srcIndex)
+  await libs.writeFile(`src/tsconfig.json`, srcTsconfig)
 
-    await libs.appendFile("README.md", libs.readMeBadge(context));
-    await libs.appendFile("README.md", readMeDocument(context));
-    await libs.writeFile(".travis.yml", libs.getTravisYml(context));
-    await libs.writeFile("appveyor.yml", libs.appveyorYml(context));
-    await libs.writeFile("clean-release.config.js", getCleanReleaseConfigJs(context));
-    await libs.writeFile("clean-scripts.config.js", cleanScriptsConfigJs(context));
-    await libs.writeFile("Dockerfile", dockerfile);
+  await libs.appendFile('README.md', libs.readMeBadge(context))
+  await libs.appendFile('README.md', readMeDocument(context))
+  await libs.writeFile('.travis.yml', libs.getTravisYml(context))
+  await libs.writeFile('appveyor.yml', libs.appveyorYml(context))
+  await libs.writeFile('clean-release.config.js', getCleanReleaseConfigJs(context))
+  await libs.writeFile('clean-scripts.config.js', cleanScriptsConfigJs(context))
+  await libs.writeFile('Dockerfile', dockerfile)
 
-    await libs.mkdir("spec");
-    await libs.writeFile("spec/tsconfig.json", libs.tsconfigJson);
-    await libs.writeFile("spec/indexSpec.ts", libs.specIndexSpecTs);
+  await libs.mkdir('spec')
+  await libs.writeFile('spec/tsconfig.json', libs.tsconfigJson)
+  await libs.writeFile('spec/indexSpec.ts', libs.specIndexSpecTs)
 
-    return {
-        scripts: {
-            build: "clean-scripts build",
-            lint: "clean-scripts lint",
-            test: "clean-scripts test",
-            fix: "clean-scripts fix",
-            watch: "clean-scripts watch",
-        },
-    };
+  return {
+    scripts: {
+      build: 'clean-scripts build',
+      lint: 'clean-scripts lint',
+      test: 'clean-scripts test',
+      fix: 'clean-scripts fix',
+      watch: 'clean-scripts watch'
+    }
+  }
 }
 
-const port = 8000;
+const port = 8000
 
 const dockerfile = `FROM node:alpine
 WORKDIR /app
@@ -47,10 +47,10 @@ ADD . /app
 RUN apk add --no-cache make gcc g++ python && yarn --production
 EXPOSE ${port}
 CMD ["node","dist/index.js"]
-`;
+`
 
-function cleanScriptsConfigJs(context: libs.Context) {
-    return `const { checkGitStatus } = require('clean-scripts')
+function cleanScriptsConfigJs (context: libs.Context) {
+  return `const { checkGitStatus } = require('clean-scripts')
 
 const tsFiles = \`"src/**/*.ts" "spec/**/*.ts" "test/**/*.ts"\`
 const jsFiles = \`"*.config.js"\`
@@ -80,10 +80,10 @@ module.exports = {
   },
   watch: \`\${tscSrcCommand} --watch\`
 }
-`;
+`
 }
 
-function getCleanReleaseConfigJs(context: libs.Context) {
+function getCleanReleaseConfigJs (context: libs.Context) {
   return `module.exports = {
   include: [
     'dist/*.js',
@@ -101,10 +101,10 @@ function getCleanReleaseConfigJs(context: libs.Context) {
     'cd "[dir]" && docker build -t ${context.author}/${context.repositoryName} . && docker push ${context.author}/${context.repositoryName}'
   ]
 }
-`;
+`
 }
 
-function readMeDocument(context: libs.Context) {
+function readMeDocument (context: libs.Context) {
   return `## install
 
 \`\`\`bash
@@ -116,7 +116,7 @@ git clone https://github.com/${context.author}/${context.repositoryName}-release
 \`\`\`bash
 docker run -d -p ${port}:${port} ${context.author}/${context.repositoryName}
 \`\`\`
-`;
+`
 }
 
 const srcIndex = `console.log("app started!");
@@ -128,7 +128,7 @@ process.on("SIGINT", () => {
 process.on("SIGTERM", () => {
   process.exit();
 });
-`;
+`
 
 const srcTsconfig = `{
     "compilerOptions": {
@@ -142,4 +142,4 @@ const srcTsconfig = `{
         "skipLibCheck": true,
         "newLine": "LF"
     }
-}`;
+}`
