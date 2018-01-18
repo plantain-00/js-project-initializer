@@ -363,21 +363,33 @@ const coreDemoTsconfigJson = `{
     "extends": "../../tsconfig.json",
     "angularCompilerOptions": {
         "strictMetadataEmit": true
+    },
+    "compilerOptions": {
+        "declaration": false
     }
 }`
 
 const reactDemoTsconfigJson = `{
-    "extends": "../../tsconfig.json"
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "declaration": false
+    }
 }`
 
 const vueDemoTsconfigJson = `{
-    "extends": "../../tsconfig.json"
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "declaration": false
+    }
 }`
 
 const angularDemoTsconfigJson = `{
     "extends": "../../tsconfig.json",
     "angularCompilerOptions": {
         "strictMetadataEmit": true
+    },
+    "compilerOptions": {
+        "declaration": false
     }
 }`
 
@@ -913,6 +925,7 @@ class App extends Vue {
     data: ${context.componentTypeName}Data;
 }
 
+// tslint:disable-next-line:no-unused-expression
 new App({ el: "#container" });
 `
 }
