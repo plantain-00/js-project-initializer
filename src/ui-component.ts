@@ -670,7 +670,6 @@ function srcCommon (context: libs.Context) {
  * @public
  */
 export type ${context.componentTypeName}Data<T = any> = {
-    // tslint:disable-next-line:ban-types
     component: string | Function;
     data: T;
 };

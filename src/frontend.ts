@@ -209,6 +209,7 @@ import { indexTemplateHtml, indexTemplateHtmlStatic } from "./variables";
 export class App extends Vue {
 }
 
+// tslint:disable-next-line:no-unused-expression
 new App({ el: "#container" });
 `
 
