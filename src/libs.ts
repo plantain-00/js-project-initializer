@@ -238,10 +238,7 @@ export const specIndexSpecTs = `it("", () => {
 
 export const specKarmaConfigJs = `const webpackConfig = require('./webpack.config.js')
 
-const ChromiumRevision = require('puppeteer/package.json').puppeteer.chromium_revision
-const Downloader = require('puppeteer/utils/ChromiumDownloader')
-const revisionInfo = Downloader.revisionInfo(Downloader.currentPlatform(), ChromiumRevision)
-process.env.CHROME_BIN = revisionInfo.executablePath
+process.env.CHROME_BIN = require('puppeteer').executablePath()
 
 module.exports = function (karma) {
   const config = {
