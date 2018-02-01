@@ -1,0 +1,26 @@
+{
+    "name": "repository-name",
+    "version": "1.0.0",
+    "description": "DESCRIPTION",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/AUTHOR/repository-name.git"
+    },
+    "author": "AUTHOR_NAME",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/AUTHOR/repository-name/issues"
+    },
+    "homepage": "https://github.com/AUTHOR/repository-name#readme",
+    "files": [
+        "dist"
+    ],
+    "dependencies": {
+        "tslib": "1"
+    },
+    "peerDependencies": {
+        "tslib": "1"
+    }
+}

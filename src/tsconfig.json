@@ -14,5 +14,8 @@
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
         "newLine": "LF"
-    }
+    },
+    "exclude": [
+        "./projects/"
+    ]
 }

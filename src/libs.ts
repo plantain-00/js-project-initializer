@@ -124,39 +124,6 @@ export const stylelint = `{
   "extends": "stylelint-config-standard"
 }`
 
-export function gitignore (context: Context) {
-  return context.kind === ProjectKind.UIComponent
-        ? `# Source
-.vscode
-dist
-**/demo/**/*.metadata.json
-**/demo/**/*.ngsummary.json
-**/demo/**/*.d.ts
-*.js
-*.css
-!*.config.js
-!**/*-*.js
-!**/*-*.css
-!**/*.index.bundle.js
-`
-        : `
-# Source
-.vscode
-dist
-**/*.js
-**/*.css
-!*.config.js
-!**/*-*.js
-!**/*.index.bundle.js
-!**/*-*.css
-service-worker.js
-!*.index.bundle.js
-#**/*-*.png
-#index.html
-*.data
-`
-}
-
 export function getTravisYml (context: Context) {
   const bootstrap = context.kind === ProjectKind.UIComponent ? `
   - npm run bootstrap` : ``

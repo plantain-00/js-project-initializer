@@ -1,0 +1,34 @@
+{
+  "name": "component-short-name-react-component",
+  "version": "1.0.0",
+  "description": "DESCRIPTION",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AUTHOR/REPOSITORY_NAME.git"
+  },
+  "author": "AUTHOR",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AUTHOR/REPOSITORY_NAME/issues"
+  },
+  "homepage": "https://github.com/AUTHOR/REPOSITORY_NAME#readme",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "react": "16",
+    "react-dom": "16",
+    "REPOSITORY_NAME": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "16.0.25",
+    "@types/react-dom": "16.0.3"
+  },
+  "peerDependencies": {
+    "react": "16",
+    "react-dom": "16",
+    "REPOSITORY_NAME": "^1.0.0"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "skipLibCheck": true,
+    "newLine": "LF"
+  },
+  "exclude": [
+    "scripts/",
+    "node_modules/"
+  ]
+}

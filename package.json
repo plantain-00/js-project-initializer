@@ -42,6 +42,7 @@
     "@types/mkdirp": "0.5.2",
     "@types/uppercamelcase": "3.0.0",
     "clean-scripts": "1.7.0",
+    "file2variable-cli": "1.8.3",
     "jasmine": "2.9.0",
     "markdownlint-cli": "0.6.0",
     "no-unused-export": "1.4.5",

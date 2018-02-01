@@ -6,6 +6,7 @@ const jsFiles = `"*.config.js"`
 module.exports = {
   build: [
     'rimraf dist/',
+    'file2variable-cli --config file2variable.config.js',
     'tsc -p src'
   ],
   lint: {

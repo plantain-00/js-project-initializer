@@ -1,9 +1,10 @@
 import * as libs from './libs'
+import * as variables from './variables'
 
 export async function runElectron (context: libs.Context) {
   context.hasKarma = true
 
-  await libs.appendFile('.gitignore', libs.gitignore(context))
+  await libs.appendFile('.gitignore', variables.electronGitignore)
 
   await libs.exec(`yarn add -E electron`)
   await libs.exec(`yarn add -DE electron-packager`)
@@ -24,25 +25,25 @@ export async function runElectron (context: libs.Context) {
 
   await libs.exec('./node_modules/.bin/jasmine init')
 
-  await libs.writeFile(`main.ts`, main)
-  await libs.writeFile(`index.html`, indexHtml)
-  await libs.writeFile(`tsconfig.json`, tsconfig)
+  await libs.writeFile(`main.ts`, variables.electronMainTs)
+  await libs.writeFile(`index.html`, variables.electronIndexHtml)
+  await libs.writeFile(`tsconfig.json`, variables.electronTsconfigJson)
   await libs.appendFile('README.md', libs.readMeBadge(context))
   await libs.writeFile('.stylelintrc', libs.stylelint)
   await libs.writeFile('.travis.yml', libs.getTravisYml(context))
   await libs.writeFile('appveyor.yml', libs.appveyorYml(context))
-  await libs.writeFile('clean-release.config.js', cleanReleaseConfigJs(context))
-  await libs.writeFile('clean-scripts.config.js', cleanScriptsConfigJs(context))
-  await libs.writeFile('.browserslistrc', browsersList)
+  await libs.writeFile('clean-release.config.js', variables.electronCleanReleaseConfigJs)
+  await libs.writeFile('clean-scripts.config.js', variables.electronCleanScriptsConfigJs)
+  await libs.writeFile('.browserslistrc', variables.electronBrowserslistrc)
   await libs.writeFile('postcss.config.js', libs.postcssConfig)
 
   await libs.mkdir('scripts')
-  await libs.writeFile('scripts/index.ts', scriptsIndex)
-  await libs.writeFile(`scripts/index.less`, scriptsIndexLess)
-  await libs.writeFile('scripts/tsconfig.json', scriptsTsconfig)
-  await libs.writeFile(`scripts/index.template.html`, scriptsIndexTemplateHtml)
-  await libs.writeFile(`scripts/webpack.config.js`, scriptsWebpackConfig)
-  await libs.writeFile('scripts/file2variable.config.js', file2variableConfigJs)
+  await libs.writeFile('scripts/index.ts', variables.electronScriptsIndexTs)
+  await libs.writeFile(`scripts/index.less`, variables.electronScriptsIndexLess)
+  await libs.writeFile('scripts/tsconfig.json', variables.electronScriptsTsconfigJson)
+  await libs.writeFile(`scripts/index.template.html`, variables.electronScriptsIndexTemplateHtml)
+  await libs.writeFile(`scripts/webpack.config.js`, variables.electronScriptsWebpackConfigJs)
+  await libs.writeFile('scripts/file2variable.config.js', variables.electronScriptsFile2variableConfigJs)
 
   await libs.mkdir('spec')
   await libs.writeFile('spec/tsconfig.json', libs.tsconfigJson)
@@ -50,7 +51,7 @@ export async function runElectron (context: libs.Context) {
 
   await libs.mkdir('static_spec')
   await libs.writeFile(`static_spec/karma.config.js`, libs.specKarmaConfigJs)
-  await libs.writeFile(`static_spec/tsconfig.json`, staticSpecTsconfig)
+  await libs.writeFile(`static_spec/tsconfig.json`, variables.electronStaticSpecTsconfigJson)
   await libs.writeFile(`static_spec/webpack.config.js`, libs.specWebpackConfigJs)
   await libs.writeFile(`static_spec/indexSpec.ts`, libs.specIndexSpecTs)
 
@@ -65,271 +66,3 @@ export async function runElectron (context: libs.Context) {
     }
   }
 }
-
-const file2variableConfigJs = `module.exports = {
-  base: 'scripts',
-  files: [
-    'scripts/index.template.html'
-  ],
-  /**
-   * @argument {string} file
-   */
-  handler: file => {
-    return {
-      type: 'vue',
-      name: 'App',
-      path: './index'
-    }
-  },
-  out: 'scripts/variables.ts'
-}`
-
-function cleanScriptsConfigJs (context: libs.Context) {
-  return `const { checkGitStatus, executeScriptAsync } = require('clean-scripts')
-const { watch } = require('watch-then-execute')
-
-const tsFiles = \`"src/**/*.ts" "scripts/**/*.ts" "spec/**/*.ts" "static_spec/**/*.ts"\`
-const jsFiles = \`"*.config.js" "scripts/**/*.config.js" "static_spec/**/*.config.js"\`
-const lessFiles = \`"scripts/**/*.less"\`
-
-const templateCommand = 'file2variable-cli --config scripts/file2variable.config.js'
-const tscScriptsCommand = 'tsc -p scripts/'
-const webpackCommand = 'webpack --config scripts/webpack.config.js'
-const cssCommand = [
-  'lessc scripts/index.less > scripts/index.css',
-  'postcss scripts/index.css -o scripts/index.postcss.css',
-  'cleancss -o scripts/index.bundle.css scripts/index.postcss.css',
-]
-
-module.exports = {
-  build: {
-    back: 'tsc',
-    front: {
-      js: [
-        templateCommand,
-        tscScriptsCommand,
-        webpackCommand
-      ],
-      css: cssCommand
-    }
-  },
-  lint: {
-    ts: \`tslint \${tsFiles}\`,
-    js: \`standard \${jsFiles}\`,
-    less: \`stylelint \${lessFiles}\`,
-    export: \`no-unused-export \${tsFiles} \${lessFiles}\`,
-    commit: \`commitlint --from=HEAD~1\`,
-    markdown: \`markdownlint README.md\`
-  },
-  test: {
-    jasmine: [
-      'tsc -p spec',
-      'jasmine'
-    ],
-    karma: [
-      'tsc -p static_spec',
-      'karma start static_spec/karma.config.js'
-    ],
-    consistence: () => checkGitStatus()
-  },
-  fix: {
-    ts: \`tslint --fix \${tsFiles}\`,
-    js: \`standard --fix \${jsFiles}\`,
-    less: \`stylelint --fix \${lessFiles}\`
-  },
-  watch: {
-    template: \`\${templateCommand} --watch\`,
-    script: \`\${tscScriptsCommand} --watch\`,
-    webpack: \`\${webpackCommand} --watch\`,
-    less: () => watch(['scripts/**/*.less'], [], () => executeScriptAsync(cssCommand)),
-  }
-}
-`
-}
-
-function cleanReleaseConfigJs (context: libs.Context) {
-  return `const { name, devDependencies: { electron: electronVersion } } = require('./package.json')
-
-module.exports = {
-  include: [
-    'main.js',
-    'scripts/index.css',
-    'scripts/index.js',
-    'scripts/index.html',
-    'LICENSE',
-    'package.json',
-    'README.md'
-  ],
-  exclude: [
-  ],
-  askVersion: true,
-  changesGitStaged: true,
-  postScript: [
-    'git add package.json',
-    'git commit -m "v[version]"',
-    'git tag v[version]',
-    'git push',
-    'git push origin v[version]',
-    'cd "[dir]" && npm i --production',
-    'prune-node-modules "[dir]/node_modules"',
-    \`electron-packager "[dir]" "\${name}" --out=dist --arch=x64 --electron-version=\${electronVersion} --platform=darwin --ignore="dist/"\`,
-    \`electron-packager "[dir]" "\${name}" --out=dist --arch=x64 --electron-version=\${electronVersion} --platform=win32 --ignore="dist/"\`,
-    \`7z a -r -tzip dist/\${name}-darwin-x64-[version].zip dist/\${name}-darwin-x64/\`,
-    \`7z a -r -tzip dist/\${name}-win32-x64-$[version].zip dist/\${name}-win32-x64/\`,
-    \`electron-installer-windows --src dist/\${name}-win32-x64/ --dest dist/\`,
-    \`cd dist && create-dmg \${name}-darwin-x64/\${name}.app\`
-  ]
-}
-`
-}
-
-const main = `import * as electron from "electron";
-
-let mainWindow: Electron.BrowserWindow | undefined;
-
-electron.app.on("window-all-closed", () => {
-    electron.app.quit();
-});
-
-electron.app.on("ready", () => {
-    mainWindow = new electron.BrowserWindow({ width: 1200, height: 800 });
-    mainWindow.loadURL(\`file://\${__dirname}/index.html\`);
-    mainWindow.on("closed", () => {
-        mainWindow = undefined;
-    });
-    // mainWindow.webContents.openDevTools();
-});
-`
-
-const indexHtml = `<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="UTF-8">
-    <title>news fetcher client v1.2.1</title>
-    <link rel="stylesheet" href="scripts/index.bundle.css">
-</head>
-
-<body>
-    <div id="container"></div>
-    <script>
-        require("./scripts/index.bundle.js");
-    </script>
-</body>
-
-</html>`
-
-const tsconfig = `{
-    "compilerOptions": {
-        "target": "es6",
-
-        "module": "commonjs",
-        "strict": true,
-        "noUnusedLocals": true,
-        "noImplicitReturns": true,
-        "skipLibCheck": true,
-        "newLine": "LF"
-    },
-    "exclude": [
-        "scripts/",
-        "node_modules/"
-    ]
-}`
-
-const scriptsIndexLess = `* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: "Lucida Grande", "Lucida Sans Unicode", "Hiragino Sans GB", "WenQuanYi Micro Hei", "Verdana,Aril", sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
-`
-
-const scriptsIndex = `// import * as electron from "electron";
-import Vue from "vue";
-import Component from "vue-class-component";
-import { scriptsIndexTemplateHtml, scriptsIndexTemplateHtmlStatic } from "./variables";
-
-@Component({
-    render: scriptsIndexTemplateHtml,
-    staticRenderFns: scriptsIndexTemplateHtmlStatic,
-})
-export class App extends Vue {
-}
-
-// tslint:disable-next-line:no-unused-expression
-new App({ el: "#container" });
-`
-
-const scriptsTsconfig = `{
-    "compilerOptions": {
-        "target": "es5",
-
-        "module": "esnext",
-        "moduleResolution": "node",
-        "strict": true,
-        "noUnusedLocals": true,
-        "noImplicitReturns": true,
-        "skipLibCheck": true,
-        "importHelpers": true,
-        "jsx": "react",
-        "experimentalDecorators": true,
-        "allowSyntheticDefaultImports": true,
-        "downlevelIteration": true,
-        "newLine": "LF"
-    }
-}
-`
-
-const scriptsIndexTemplateHtml = `<div>
-</div>`
-
-const scriptsWebpackConfig = `const webpack = require('webpack')
-
-module.exports = {
-  entry: {
-    index: './scripts/index'
-  },
-  output: {
-    path: __dirname,
-    filename: '[name].bundle.js'
-  },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('production')
-      }
-    }),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      output: {
-        comments: false
-      },
-      exclude: [
-      ]
-    })
-  ]
-}
-`
-
-const staticSpecTsconfig = `{
-    "compilerOptions": {
-        "target": "es5",
-
-        "module": "esnext",
-        "moduleResolution": "node",
-        "strict": true,
-        "noUnusedLocals": true,
-        "noImplicitReturns": true,
-        "skipLibCheck": true,
-        "importHelpers": true,
-        "jsx": "react",
-        "experimentalDecorators": true,
-        "allowSyntheticDefaultImports": true,
-        "downlevelIteration": true,
-        "newLine": "LF"
-    }
-}`
-
-const browsersList = `last 2 Chrome versions
-`

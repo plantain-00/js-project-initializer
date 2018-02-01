@@ -1,0 +1,30 @@
+{
+  "name": "component-short-name-vue-component",
+  "version": "1.0.0",
+  "description": "DESCRIPTION",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AUTHOR/REPOSITORY_NAME.git"
+  },
+  "author": "AUTHOR_NAME",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AUTHOR/REPOSITORY_NAME/issues"
+  },
+  "homepage": "https://github.com/AUTHOR/REPOSITORY_NAME#readme",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "vue": "2",
+    "vue-class-component": "6",
+    "REPOSITORY_NAME": "^1.0.0"
+  },
+  "peerDependencies": {
+    "vue": "2",
+    "vue-class-component": "6",
+    "REPOSITORY_NAME": "^1.0.0"
+  }
+}

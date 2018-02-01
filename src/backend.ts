@@ -1,8 +1,9 @@
 import * as libs from './libs'
+import * as variables from './variables'
 
 export async function runBackend (context: libs.Context) {
 
-  await libs.appendFile('.gitignore', libs.gitignore(context))
+  await libs.appendFile('.gitignore', variables.backendGitignore)
 
   await libs.exec(`yarn add -DE @types/node`)
   await libs.exec(`yarn add -DE jasmine @types/jasmine`)
@@ -13,16 +14,16 @@ export async function runBackend (context: libs.Context) {
   await libs.exec('./node_modules/.bin/jasmine init')
 
   await libs.mkdir('src')
-  await libs.writeFile(`src/index.ts`, srcIndex)
-  await libs.writeFile(`src/tsconfig.json`, srcTsconfig)
+  await libs.writeFile(`src/index.ts`, variables.backendSrcIndexTs)
+  await libs.writeFile(`src/tsconfig.json`, variables.backendSrcTsconfigJson)
 
   await libs.appendFile('README.md', libs.readMeBadge(context))
-  await libs.appendFile('README.md', readMeDocument(context))
+  await libs.appendFile('README.md', variables.backendReadmeMd.replace(/AUTHOR/g, context.author).replace(/REPOSITORY_NAME/g, context.repositoryName))
   await libs.writeFile('.travis.yml', libs.getTravisYml(context))
   await libs.writeFile('appveyor.yml', libs.appveyorYml(context))
-  await libs.writeFile('clean-release.config.js', getCleanReleaseConfigJs(context))
-  await libs.writeFile('clean-scripts.config.js', cleanScriptsConfigJs(context))
-  await libs.writeFile('Dockerfile', dockerfile)
+  await libs.writeFile('clean-release.config.js', variables.backendCleanReleaseConfigJs.replace(/AUTHOR/g, context.author).replace(/REPOSITORY_NAME/g, context.repositoryName))
+  await libs.writeFile('clean-scripts.config.js', variables.backendCleanScriptsConfigJs)
+  await libs.writeFile('Dockerfile', variables.backendDockerfile)
 
   await libs.mkdir('spec')
   await libs.writeFile('spec/tsconfig.json', libs.tsconfigJson)
@@ -38,108 +39,3 @@ export async function runBackend (context: libs.Context) {
     }
   }
 }
-
-const port = 8000
-
-const dockerfile = `FROM node:alpine
-WORKDIR /app
-ADD . /app
-RUN apk add --no-cache make gcc g++ python && yarn --production
-EXPOSE ${port}
-CMD ["node","dist/index.js"]
-`
-
-function cleanScriptsConfigJs (context: libs.Context) {
-  return `const { checkGitStatus } = require('clean-scripts')
-
-const tsFiles = \`"src/**/*.ts" "spec/**/*.ts" "test/**/*.ts"\`
-const jsFiles = \`"*.config.js"\`
-
-const tscSrcCommand = 'tsc -p src/'
-
-module.exports = {
-  build: [
-    'rimraf dist/',
-    tscSrcCommand
-  ],
-  lint: {
-    ts: \`tslint \${tsFiles}\`,
-    js: \`standard \${jsFiles}\`,
-    export: \`no-unused-export \${tsFiles}\`,
-    commit: \`commitlint --from=HEAD~1\`,
-    markdown: \`markdownlint README.md\`
-  },
-  test: [
-    'tsc -p spec',
-    'jasmine',
-    () => checkGitStatus()
-  ],
-  fix: {
-    ts: \`tslint --fix \${tsFiles}\`,
-    js: \`standard --fix \${jsFiles}\`
-  },
-  watch: \`\${tscSrcCommand} --watch\`
-}
-`
-}
-
-function getCleanReleaseConfigJs (context: libs.Context) {
-  return `module.exports = {
-  include: [
-    'dist/*.js',
-    'LICENSE',
-    'package.json',
-    'yarn.lock',
-    'README.md'
-  ],
-  exclude: [
-  ],
-  releaseRepository: 'https://github.com/${context.author}/${context.repositoryName}-release.git',
-  postScript: [
-    'cd "[dir]" && rm -rf .git',
-    'cp Dockerfile "[dir]"',
-    'cd "[dir]" && docker build -t ${context.author}/${context.repositoryName} . && docker push ${context.author}/${context.repositoryName}'
-  ]
-}
-`
-}
-
-function readMeDocument (context: libs.Context) {
-  return `## install
-
-\`\`\`bash
-git clone https://github.com/${context.author}/${context.repositoryName}-release.git . --depth=1 && yarn add --production
-\`\`\`
-
-## docker
-
-\`\`\`bash
-docker run -d -p ${port}:${port} ${context.author}/${context.repositoryName}
-\`\`\`
-`
-}
-
-const srcIndex = `console.log("app started!");
-
-process.on("SIGINT", () => {
-  process.exit();
-});
-
-process.on("SIGTERM", () => {
-  process.exit();
-});
-`
-
-const srcTsconfig = `{
-    "compilerOptions": {
-        "target": "esnext",
-        "outDir": "../dist",
-
-        "module": "commonjs",
-        "strict": true,
-        "noUnusedLocals": true,
-        "noImplicitReturns": true,
-        "skipLibCheck": true,
-        "newLine": "LF"
-    }
-}`
