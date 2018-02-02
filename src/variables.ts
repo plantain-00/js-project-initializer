@@ -4,6 +4,22 @@
  */
 // tslint:disable
 
+export const backendAppveyorYml = `environment:
+  nodejs_version: "8"
+
+install:
+  - ps: Install-Product node \$env:nodejs_version
+  - yarn install --frozen-lockfile
+
+test_script:
+  - node --version
+  - npm --version
+  - npm run build
+  - npm run lint
+  - npm run test
+
+build: off
+`
 export const backendCleanReleaseConfigJs = `module.exports = {
   include: [
     'dist/*.js',
@@ -75,7 +91,12 @@ service-worker.js
 #index.html
 *.data
 `
-export const backendReadmeMd = `## install
+export const backendReadmeMd = `[![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
+[![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
+[![Build Status: Linux](https://travis-ci.org/AUTHOR/REPOSITORY_NAME.svg?branch=master)](https://travis-ci.org/AUTHOR/REPOSITORY_NAME)
+[![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
+
+## install
 
 \`\`\`bash
 git clone https://github.com/AUTHOR/REPOSITORY_NAME-release.git . --depth=1 && yarn add --production
@@ -87,6 +108,26 @@ git clone https://github.com/AUTHOR/REPOSITORY_NAME-release.git . --depth=1 && y
 docker run -d -p \${port}:\${port} AUTHOR/REPOSITORY_NAME
 \`\`\`
 `
+export const backendSpecIndexSpecTs = `it('', () => {
+  // expect(true).toEqual(true);
+})
+`
+export const backendSpecTsconfigJson = `{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "skipLibCheck": true,
+    "importHelpers": true,
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
+    "newLine": "LF"
+  }
+}`
 export const backendSrcIndexTs = `console.log('app started!')
 
 process.on('SIGINT', () => {
@@ -109,6 +150,48 @@ export const backendSrcTsconfigJson = `{
     "newLine": "LF"
   }
 }`
+export const backendTravisYml = `language: node_js
+dist: trusty
+node_js:
+  - "8"
+before_install:
+  - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
+  - git fetch --unshallow || true
+install:
+  - yarn install --frozen-lockfile
+script:
+  - npm run build
+  - npm run lint
+  - npm run test
+env:
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
+      - libnss3
+`
+export const backendWithFrontendAppveyorYml = `environment:
+  nodejs_version: "8"
+
+install:
+  - ps: Install-Product node \$env:nodejs_version
+  - yarn install --frozen-lockfile
+
+test_script:
+  - node --version
+  - npm --version
+  - npm run build
+  - npm run lint
+  - npm run test
+
+build: off
+`
+export const backendWithFrontendBrowserslistrc = `> 1%
+Last 2 versions
+`
 export const backendWithFrontendCleanReleaseConfigJs = `module.exports = {
   include: [
     'dist/*.js',
@@ -233,6 +316,12 @@ service-worker.js
 #index.html
 *.data
 `
+export const backendWithFrontendPostcssConfigJs = `module.exports = {
+  plugins: [
+    require('autoprefixer')()
+  ]
+}
+`
 export const backendWithFrontendPrerenderIndexHtml = ``
 export const backendWithFrontendPrerenderIndexTs = `import * as puppeteer from 'puppeteer'
 import * as fs from 'fs'
@@ -253,7 +342,28 @@ import * as fs from 'fs'
   browser.close()
 })()
 `
-export const backendWithFrontendReadmeMd = `## install
+export const backendWithFrontendPrerenderTsconfigJson = `{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "skipLibCheck": true,
+    "importHelpers": true,
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
+    "newLine": "LF"
+  }
+}`
+export const backendWithFrontendReadmeMd = `[![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
+[![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
+[![Build Status: Linux](https://travis-ci.org/AUTHOR/REPOSITORY_NAME.svg?branch=master)](https://travis-ci.org/AUTHOR/REPOSITORY_NAME)
+[![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
+
+## install
 
 \`\`\`bash
 git clone https://github.com/AUTHOR/REPOSITORY_NAME-release.git . --depth=1 && yarn add --production
@@ -277,6 +387,26 @@ export const backendWithFrontendScreenshotsIndexTs = `import * as puppeteer from
 
   browser.close()
 })()
+`
+export const backendWithFrontendScreenshotsTsconfigJson = `{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "skipLibCheck": true,
+    "importHelpers": true,
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
+    "newLine": "LF"
+  }
+}`
+export const backendWithFrontendSpecIndexSpecTs = `it('', () => {
+  // expect(true).toEqual(true);
+})
 `
 export const backendWithFrontendSpecTsconfigJson = `{
   "compilerOptions": {
@@ -405,6 +535,10 @@ module.exports = {
   }
 }
 `
+export const backendWithFrontendStaticSpecIndexSpecTs = `it('', () => {
+  // expect(true).toEqual(true);
+})
+`
 export const backendWithFrontendStaticSpecKarmaConfigJs = `const webpackConfig = require('./webpack.config.js')
 
 process.env.CHROME_BIN = require('puppeteer').executablePath()
@@ -454,6 +588,19 @@ export const backendWithFrontendStaticSpecTsconfigJson = `{
     "newLine": "LF"
   }
 }`
+export const backendWithFrontendStaticSpecWebpackConfigJs = `const webpack = require('webpack')
+
+module.exports = {
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
+    new webpack.NoEmitOnErrorsPlugin()
+  ]
+}
+`
 export const backendWithFrontendStaticTsconfigJson = `{
   "compilerOptions": {
     "target": "es5",
@@ -506,6 +653,51 @@ module.exports = {
   },
   plugins
 }
+`
+export const backendWithFrontendStylelintrc = `{
+  "extends": "stylelint-config-standard"
+}`
+export const backendWithFrontendTravisYml = `language: node_js
+dist: trusty
+node_js:
+  - "8"
+before_install:
+  - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - git fetch --unshallow || true
+install:
+  - yarn install --frozen-lockfile
+script:
+  - npm run build
+  - npm run lint
+  - npm run test
+env:
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
+      - libnss3
+  firefox: latest
+`
+export const cliAppveyorYml = `environment:
+  nodejs_version: "8"
+
+install:
+  - ps: Install-Product node \$env:nodejs_version
+  - yarn install --frozen-lockfile
+
+test_script:
+  - node --version
+  - npm --version
+  - npm run build
+  - npm run lint
+  - npm run test
+
+build: off
 `
 export const cliBinCli = `#!/usr/bin/env node
 require("../dist/index.js");
@@ -576,7 +768,14 @@ service-worker.js
 #index.html
 *.data
 `
-export const cliReadmeMd = `## install
+export const cliReadmeMd = `[![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
+[![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
+[![Build Status: Linux](https://travis-ci.org/AUTHOR/REPOSITORY_NAME.svg?branch=master)](https://travis-ci.org/AUTHOR/REPOSITORY_NAME)
+[![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
+[![npm version](https://badge.fury.io/js/REPOSITORY_NAME.svg)](https://badge.fury.io/js/REPOSITORY_NAME)
+[![Downloads](https://img.shields.io/npm/dm/REPOSITORY_NAME.svg)](https://www.npmjs.com/package/REPOSITORY_NAME)
+
+## install
 
 \`yarn global add REPOSITORY_NAME\`
 
@@ -584,6 +783,26 @@ export const cliReadmeMd = `## install
 
 run \`REPOSITORY_NAME\`
 `
+export const cliSpecIndexSpecTs = `it('', () => {
+  // expect(true).toEqual(true);
+})
+`
+export const cliSpecTsconfigJson = `{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "skipLibCheck": true,
+    "importHelpers": true,
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
+    "newLine": "LF"
+  }
+}`
 export const cliSrcIndexTs = `import * as minimist from 'minimist'
 import * as packageJson from '../package.json'
 
@@ -636,6 +855,45 @@ export const cliSrcTsconfigJson = `{
     "newLine": "LF"
   }
 }`
+export const cliTravisYml = `language: node_js
+dist: trusty
+node_js:
+  - "8"
+before_install:
+  - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
+  - git fetch --unshallow || true
+install:
+  - yarn install --frozen-lockfile
+script:
+  - npm run build
+  - npm run lint
+  - npm run test
+env:
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
+      - libnss3
+`
+export const electronAppveyorYml = `environment:
+  nodejs_version: "8"
+
+install:
+  - ps: Install-Product node \$env:nodejs_version
+  - yarn install --frozen-lockfile
+
+test_script:
+  - node --version
+  - npm --version
+  - npm run build
+  - npm run lint
+  - npm run test
+
+build: off
+`
 export const electronBrowserslistrc = `last 2 Chrome versions
 `
 export const electronCleanReleaseConfigJs = `const { name, devDependencies: { electron: electronVersion } } = require('./package.json')
@@ -780,6 +1038,17 @@ electron.app.on('ready', () => {
   // mainWindow.webContents.openDevTools();
 })
 `
+export const electronPostcssConfigJs = `module.exports = {
+  plugins: [
+    require('autoprefixer')()
+  ]
+}
+`
+export const electronReadmeMd = `[![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
+[![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
+[![Build Status: Linux](https://travis-ci.org/AUTHOR/REPOSITORY_NAME.svg?branch=master)](https://travis-ci.org/AUTHOR/REPOSITORY_NAME)
+[![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
+`
 export const electronScriptsFile2variableConfigJs = `module.exports = {
   base: 'scripts',
   files: [
@@ -867,6 +1136,62 @@ module.exports = {
   ]
 }
 `
+export const electronSpecIndexSpecTs = `it('', () => {
+  // expect(true).toEqual(true);
+})
+`
+export const electronSpecTsconfigJson = `{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "skipLibCheck": true,
+    "importHelpers": true,
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
+    "newLine": "LF"
+  }
+}`
+export const electronStaticSpecIndexSpecTs = `it('', () => {
+  // expect(true).toEqual(true);
+})
+`
+export const electronStaticSpecKarmaConfigJs = `const webpackConfig = require('./webpack.config.js')
+
+process.env.CHROME_BIN = require('puppeteer').executablePath()
+
+module.exports = function (karma) {
+  const config = {
+    basePath: '',
+    frameworks: ['jasmine'],
+    files: [
+      '**/*Spec.js'
+    ],
+    reporters: ['progress'],
+    port: 9876,
+    colors: true,
+    logLevel: karma.LOG_INFO,
+    autoWatch: true,
+    browsers: ['ChromeHeadless'],
+    singleRun: true,
+    concurrency: Infinity,
+    webpack: webpackConfig,
+    preprocessors: {
+      '**/*Spec.js': ['webpack']
+    }
+  }
+
+  if (!process.env.APPVEYOR) {
+    config.browsers.push('Firefox')
+  }
+
+  karma.set(config)
+}
+`
 export const electronStaticSpecTsconfigJson = `{
   "compilerOptions": {
     "target": "es5",
@@ -884,6 +1209,48 @@ export const electronStaticSpecTsconfigJson = `{
     "newLine": "LF"
   }
 }`
+export const electronStaticSpecWebpackConfigJs = `const webpack = require('webpack')
+
+module.exports = {
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
+    new webpack.NoEmitOnErrorsPlugin()
+  ]
+}
+`
+export const electronStylelintrc = `{
+  "extends": "stylelint-config-standard"
+}`
+export const electronTravisYml = `language: node_js
+dist: trusty
+node_js:
+  - "8"
+before_install:
+  - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - git fetch --unshallow || true
+install:
+  - yarn install --frozen-lockfile
+script:
+  - npm run build
+  - npm run lint
+  - npm run test
+env:
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
+      - libnss3
+  firefox: latest
+`
 export const electronTsconfigJson = `{
   "compilerOptions": {
     "target": "es6",

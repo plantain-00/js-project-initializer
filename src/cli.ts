@@ -2,8 +2,6 @@ import * as libs from './libs'
 import * as variables from './variables'
 
 export async function runCLI (context: libs.Context) {
-  context.isNpmPackage = true
-
   await libs.appendFile('.gitignore', variables.cliGitignore)
 
   await libs.exec(`yarn add -DE @types/node`)
@@ -21,10 +19,11 @@ export async function runCLI (context: libs.Context) {
   await libs.writeFile(`src/lib.d.ts`, variables.cliSrcLibDTs)
   await libs.writeFile(`src/tsconfig.json`, variables.cliSrcTsconfigJson)
 
-  await libs.appendFile('README.md', libs.readMeBadge(context))
-  await libs.appendFile('README.md', variables.cliReadmeMd.replace(/REPOSITORY_NAME/g, context.repositoryName))
-  await libs.writeFile('.travis.yml', libs.getTravisYml(context))
-  await libs.writeFile('appveyor.yml', libs.appveyorYml(context))
+  await libs.appendFile('README.md', variables.cliReadmeMd
+    .replace(/REPOSITORY_NAME/g, context.repositoryName)
+    .replace(/AUTHOR/g, context.author))
+  await libs.writeFile('.travis.yml', variables.cliTravisYml)
+  await libs.writeFile('appveyor.yml', variables.cliAppveyorYml)
   await libs.writeFile('clean-release.config.js', variables.cliCleanReleaseConfigJs)
   await libs.writeFile('clean-scripts.config.js', variables.cliCleanScriptsConfigJs)
 
@@ -34,8 +33,8 @@ export async function runCLI (context: libs.Context) {
   await libs.exec(`chmod 755 bin/${context.repositoryName}`)
 
   await libs.mkdir('spec')
-  await libs.writeFile('spec/tsconfig.json', libs.tsconfigJson)
-  await libs.writeFile('spec/indexSpec.ts', libs.specIndexSpecTs)
+  await libs.writeFile('spec/tsconfig.json', variables.cliSpecTsconfigJson)
+  await libs.writeFile('spec/indexSpec.ts', variables.cliSpecIndexSpecTs)
 
   return {
     scripts: {

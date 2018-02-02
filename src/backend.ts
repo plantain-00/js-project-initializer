@@ -17,17 +17,20 @@ export async function runBackend (context: libs.Context) {
   await libs.writeFile(`src/index.ts`, variables.backendSrcIndexTs)
   await libs.writeFile(`src/tsconfig.json`, variables.backendSrcTsconfigJson)
 
-  await libs.appendFile('README.md', libs.readMeBadge(context))
-  await libs.appendFile('README.md', variables.backendReadmeMd.replace(/AUTHOR/g, context.author).replace(/REPOSITORY_NAME/g, context.repositoryName))
-  await libs.writeFile('.travis.yml', libs.getTravisYml(context))
-  await libs.writeFile('appveyor.yml', libs.appveyorYml(context))
-  await libs.writeFile('clean-release.config.js', variables.backendCleanReleaseConfigJs.replace(/AUTHOR/g, context.author).replace(/REPOSITORY_NAME/g, context.repositoryName))
+  await libs.appendFile('README.md', variables.backendReadmeMd
+    .replace(/AUTHOR/g, context.author)
+    .replace(/REPOSITORY_NAME/g, context.repositoryName))
+  await libs.writeFile('.travis.yml', variables.backendTravisYml)
+  await libs.writeFile('appveyor.yml', variables.backendAppveyorYml)
+  await libs.writeFile('clean-release.config.js', variables.backendCleanReleaseConfigJs
+    .replace(/AUTHOR/g, context.author)
+    .replace(/REPOSITORY_NAME/g, context.repositoryName))
   await libs.writeFile('clean-scripts.config.js', variables.backendCleanScriptsConfigJs)
   await libs.writeFile('Dockerfile', variables.backendDockerfile)
 
   await libs.mkdir('spec')
-  await libs.writeFile('spec/tsconfig.json', libs.tsconfigJson)
-  await libs.writeFile('spec/indexSpec.ts', libs.specIndexSpecTs)
+  await libs.writeFile('spec/tsconfig.json', variables.backendSpecTsconfigJson)
+  await libs.writeFile('spec/indexSpec.ts', variables.backendSpecIndexSpecTs)
 
   return {
     scripts: {

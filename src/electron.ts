@@ -2,8 +2,6 @@ import * as libs from './libs'
 import * as variables from './variables'
 
 export async function runElectron (context: libs.Context) {
-  context.hasKarma = true
-
   await libs.appendFile('.gitignore', variables.electronGitignore)
 
   await libs.exec(`yarn add -E electron`)
@@ -28,14 +26,16 @@ export async function runElectron (context: libs.Context) {
   await libs.writeFile(`main.ts`, variables.electronMainTs)
   await libs.writeFile(`index.html`, variables.electronIndexHtml)
   await libs.writeFile(`tsconfig.json`, variables.electronTsconfigJson)
-  await libs.appendFile('README.md', libs.readMeBadge(context))
-  await libs.writeFile('.stylelintrc', libs.stylelint)
-  await libs.writeFile('.travis.yml', libs.getTravisYml(context))
-  await libs.writeFile('appveyor.yml', libs.appveyorYml(context))
+  await libs.appendFile('README.md', variables.electronReadmeMd
+    .replace(/AUTHOR/g, context.author)
+    .replace(/REPOSITORY_NAME/g, context.repositoryName))
+  await libs.writeFile('.stylelintrc', variables.electronStylelintrc)
+  await libs.writeFile('.travis.yml', variables.electronTravisYml)
+  await libs.writeFile('appveyor.yml', variables.electronAppveyorYml)
   await libs.writeFile('clean-release.config.js', variables.electronCleanReleaseConfigJs)
   await libs.writeFile('clean-scripts.config.js', variables.electronCleanScriptsConfigJs)
   await libs.writeFile('.browserslistrc', variables.electronBrowserslistrc)
-  await libs.writeFile('postcss.config.js', libs.postcssConfig)
+  await libs.writeFile('postcss.config.js', variables.electronPostcssConfigJs)
 
   await libs.mkdir('scripts')
   await libs.writeFile('scripts/index.ts', variables.electronScriptsIndexTs)
@@ -46,14 +46,14 @@ export async function runElectron (context: libs.Context) {
   await libs.writeFile('scripts/file2variable.config.js', variables.electronScriptsFile2variableConfigJs)
 
   await libs.mkdir('spec')
-  await libs.writeFile('spec/tsconfig.json', libs.tsconfigJson)
-  await libs.writeFile('spec/indexSpec.ts', libs.specIndexSpecTs)
+  await libs.writeFile('spec/tsconfig.json', variables.electronSpecTsconfigJson)
+  await libs.writeFile('spec/indexSpec.ts', variables.electronSpecIndexSpecTs)
 
   await libs.mkdir('static_spec')
-  await libs.writeFile(`static_spec/karma.config.js`, libs.specKarmaConfigJs)
+  await libs.writeFile(`static_spec/karma.config.js`, variables.electronStaticSpecKarmaConfigJs)
   await libs.writeFile(`static_spec/tsconfig.json`, variables.electronStaticSpecTsconfigJson)
-  await libs.writeFile(`static_spec/webpack.config.js`, libs.specWebpackConfigJs)
-  await libs.writeFile(`static_spec/indexSpec.ts`, libs.specIndexSpecTs)
+  await libs.writeFile(`static_spec/webpack.config.js`, variables.electronStaticSpecWebpackConfigJs)
+  await libs.writeFile(`static_spec/indexSpec.ts`, variables.electronStaticSpecIndexSpecTs)
 
   return {
     scripts: {
