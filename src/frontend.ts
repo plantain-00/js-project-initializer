@@ -2,8 +2,6 @@ import * as libs from './libs'
 import * as variables from './variables'
 
 export async function runFrontend (context: libs.Context) {
-  context.hasKarma = true
-
   await libs.appendFile('.gitignore', variables.frontendGitignore)
 
   await libs.exec(`yarn add -DE tslib`)
@@ -29,7 +27,9 @@ export async function runFrontend (context: libs.Context) {
   await libs.writeFile(`index.template.html`, variables.frontendIndexTemplateHtml)
   await libs.writeFile(`vendor.ts`, variables.frontendVendorTs)
   await libs.writeFile(`tsconfig.json`, variables.frontendTsconfigJson)
-  await libs.appendFile('README.md', libs.readMeBadge(context))
+  await libs.appendFile('README.md', variables.frontendReadmeMd
+    .replace(/AUTHOR/g, context.author)
+    .replace(/REPOSITORY_NAME/g, context.repositoryName))
   await libs.writeFile(`index.less`, variables.frontendIndexLess)
   await libs.writeFile('.stylelintrc', variables.frontendStylelintrc)
   await libs.writeFile(`webpack.config.js`, variables.frontendWebpackConfigJs)
@@ -40,26 +40,26 @@ export async function runFrontend (context: libs.Context) {
       .replace(/REPOSITORY_NAME/g, context.repositoryName)
       .replace(/AUTHOR/g, context.author))
   await libs.writeFile('sw-precache.config.js', variables.frontendSwPrecacheConfigJs)
-  await libs.writeFile('.travis.yml', libs.getTravisYml(context))
-  await libs.writeFile('appveyor.yml', libs.appveyorYml(context))
+  await libs.writeFile('.travis.yml', variables.frontendTravisYml)
+  await libs.writeFile('appveyor.yml', variables.frontendAppveyorYml)
   await libs.writeFile('clean-scripts.config.js', variables.frontendCleanScriptsConfigJs)
   await libs.writeFile('prerender.html', variables.frontendPrerenderHtml)
-  await libs.writeFile('.browserslistrc', libs.browsersList)
-  await libs.writeFile('postcss.config.js', libs.postcssConfig)
+  await libs.writeFile('.browserslistrc', variables.frontendBrowserslistrc)
+  await libs.writeFile('postcss.config.js', variables.frontendPostcssConfigJs)
   await libs.writeFile('file2variable.config.js', variables.frontendFile2variableConfigJs)
 
   await libs.mkdir(`spec`)
-  await libs.writeFile(`spec/karma.config.js`, libs.specKarmaConfigJs)
+  await libs.writeFile(`spec/karma.config.js`, variables.frontendSpecKarmaConfigJs)
   await libs.writeFile(`spec/tsconfig.json`, variables.frontendSpecTsconfigJson)
-  await libs.writeFile(`spec/webpack.config.js`, libs.specWebpackConfigJs)
-  await libs.writeFile(`spec/indexSpec.ts`, libs.specIndexSpecTs)
+  await libs.writeFile(`spec/webpack.config.js`, variables.frontendSpecWebpackConfigJs)
+  await libs.writeFile(`spec/indexSpec.ts`, variables.frontendSpecIndexSpecTs)
 
   await libs.mkdir(`screenshots`)
-  await libs.writeFile(`screenshots/tsconfig.json`, libs.tsconfigJson)
+  await libs.writeFile(`screenshots/tsconfig.json`, variables.frontendScreenshotsTsconfigJson)
   await libs.writeFile(`screenshots/index.ts`, variables.frontendScreenshotsIndexTs)
 
   await libs.mkdir(`prerender`)
-  await libs.writeFile(`prerender/tsconfig.json`, libs.tsconfigJson)
+  await libs.writeFile(`prerender/tsconfig.json`, variables.frontendPrerenderTsconfigJson)
   await libs.writeFile(`prerender/index.ts`, variables.frontendPrerenderIndexTs)
   await libs.writeFile(`prerender/index.html`, variables.frontendPrerenderIndexHtml)
 

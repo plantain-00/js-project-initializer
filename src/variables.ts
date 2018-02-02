@@ -1266,6 +1266,24 @@ export const electronTsconfigJson = `{
     "node_modules/"
   ]
 }`
+export const frontendAppveyorYml = `environment:
+  nodejs_version: "8"
+
+install:
+  - ps: Install-Product node \$env:nodejs_version
+  - yarn install --frozen-lockfile
+
+test_script:
+  - node --version
+  - npm --version
+  - npm run build
+  - npm run lint
+  - npm run test
+
+build: off
+`
+export const frontendBrowserslistrc = `last 2 Chrome versions
+`
 export const frontendCleanScriptsConfigJs = `const { Service, checkGitStatus, executeScriptAsync } = require('clean-scripts')
 const { watch } = require('watch-then-execute')
 
@@ -1412,6 +1430,12 @@ class App extends Vue {
 // tslint:disable-next-line:no-unused-expression
 new App({ el: '#container' })
 `
+export const frontendPostcssConfigJs = `module.exports = {
+  plugins: [
+    require('autoprefixer')()
+  ]
+}
+`
 export const frontendPrerenderHtml = ``
 export const frontendPrerenderIndexHtml = ``
 export const frontendPrerenderIndexTs = `import * as puppeteer from 'puppeteer'
@@ -1432,6 +1456,27 @@ import * as fs from 'fs'
 
   browser.close()
 })()
+`
+export const frontendPrerenderTsconfigJson = `{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "skipLibCheck": true,
+    "importHelpers": true,
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
+    "newLine": "LF"
+  }
+}`
+export const frontendReadmeMd = `[![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
+[![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
+[![Build Status: Linux](https://travis-ci.org/AUTHOR/REPOSITORY_NAME.svg?branch=master)](https://travis-ci.org/AUTHOR/REPOSITORY_NAME)
+[![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
 `
 export const frontendRevStaticConfigJs = `const fs = require('fs')
 
@@ -1475,6 +1520,58 @@ export const frontendScreenshotsIndexTs = `import * as puppeteer from 'puppeteer
   browser.close()
 })()
 `
+export const frontendScreenshotsTsconfigJson = `{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "skipLibCheck": true,
+    "importHelpers": true,
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
+    "newLine": "LF"
+  }
+}`
+export const frontendSpecIndexSpecTs = `it('', () => {
+  // expect(true).toEqual(true);
+})
+`
+export const frontendSpecKarmaConfigJs = `const webpackConfig = require('./webpack.config.js')
+
+process.env.CHROME_BIN = require('puppeteer').executablePath()
+
+module.exports = function (karma) {
+  const config = {
+    basePath: '',
+    frameworks: ['jasmine'],
+    files: [
+      '**/*Spec.js'
+    ],
+    reporters: ['progress'],
+    port: 9876,
+    colors: true,
+    logLevel: karma.LOG_INFO,
+    autoWatch: true,
+    browsers: ['ChromeHeadless'],
+    singleRun: true,
+    concurrency: Infinity,
+    webpack: webpackConfig,
+    preprocessors: {
+      '**/*Spec.js': ['webpack']
+    }
+  }
+
+  if (!process.env.APPVEYOR) {
+    config.browsers.push('Firefox')
+  }
+
+  karma.set(config)
+}
+`
 export const frontendSpecTsconfigJson = `{
   "compilerOptions": {
     "target": "es5",
@@ -1492,6 +1589,19 @@ export const frontendSpecTsconfigJson = `{
     "newLine": "LF"
   }
 }`
+export const frontendSpecWebpackConfigJs = `const webpack = require('webpack')
+
+module.exports = {
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
+    new webpack.NoEmitOnErrorsPlugin()
+  ]
+}
+`
 export const frontendStylelintrc = `{
   "extends": "stylelint-config-standard"
 }`
@@ -1501,6 +1611,32 @@ export const frontendSwPrecacheConfigJs = `module.exports = {
     'vendor.bundle-*.js'
   ]
 }
+`
+export const frontendTravisYml = `language: node_js
+dist: trusty
+node_js:
+  - "8"
+before_install:
+  - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - git fetch --unshallow || true
+install:
+  - yarn install --frozen-lockfile
+script:
+  - npm run build
+  - npm run lint
+  - npm run test
+env:
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
+      - libnss3
+  firefox: latest
 `
 export const frontendTsconfigJson = `{
   "compilerOptions": {
@@ -1559,6 +1695,22 @@ module.exports = {
   },
   plugins
 }
+`
+export const libraryAppveyorYml = `environment:
+  nodejs_version: "8"
+
+install:
+  - ps: Install-Product node \$env:nodejs_version
+  - yarn install --frozen-lockfile
+
+test_script:
+  - node --version
+  - npm --version
+  - npm run build
+  - npm run lint
+  - npm run test
+
+build: off
 `
 export const libraryCleanReleaseConfigJs = `module.exports = {
   include: [
@@ -1632,7 +1784,14 @@ service-worker.js
 #index.html
 *.data
 `
-export const libraryReadmeMd = `## install
+export const libraryReadmeMd = `[![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
+[![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
+[![Build Status: Linux](https://travis-ci.org/AUTHOR/REPOSITORY_NAME.svg?branch=master)](https://travis-ci.org/AUTHOR/REPOSITORY_NAME)
+[![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
+[![npm version](https://badge.fury.io/js/REPOSITORY_NAME.svg)](https://badge.fury.io/js/REPOSITORY_NAME)
+[![Downloads](https://img.shields.io/npm/dm/REPOSITORY_NAME.svg)](https://www.npmjs.com/package/REPOSITORY_NAME)
+
+## install
 
 \`yarn add REPOSITORY_NAME\`
 
@@ -1656,6 +1815,26 @@ export default {
   }
 }
 `
+export const librarySpecIndexSpecTs = `it('', () => {
+  // expect(true).toEqual(true);
+})
+`
+export const librarySpecTsconfigJson = `{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "skipLibCheck": true,
+    "importHelpers": true,
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
+    "newLine": "LF"
+  }
+}`
 export const librarySrcIndexTs = `/**
  * @public
  */
@@ -1692,6 +1871,48 @@ export const librarySrcTsconfigNodejsJson = `{
     "newLine": "LF"
   }
 }`
+export const libraryTravisYml = `language: node_js
+dist: trusty
+node_js:
+  - "8"
+before_install:
+  - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
+  - git fetch --unshallow || true
+install:
+  - yarn install --frozen-lockfile
+script:
+  - npm run build
+  - npm run lint
+  - npm run test
+env:
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
+      - libnss3
+`
+export const uiComponentAppveyorYml = `environment:
+  nodejs_version: "8"
+
+install:
+  - ps: Install-Product node \$env:nodejs_version
+  - yarn install --frozen-lockfile
+
+test_script:
+  - node --version
+  - npm --version
+  - npm run bootstrap
+  - npm run build
+  - npm run lint
+  - npm run test
+
+build: off
+`
+export const uiComponentBrowserslistrc = `last 2 Chrome versions
+`
 export const uiComponentCleanScriptsConfigJs = `const { Service, checkGitStatus, executeScriptAsync } = require('clean-scripts')
 const { watch } = require('watch-then-execute')
 
@@ -2269,7 +2490,20 @@ export const uiComponentPackagesVueSrcTsconfigJson = `{
     "outDir": "../dist"
   }
 }`
-export const uiComponentReadmeMd = `## features
+export const uiComponentPostcssConfigJs = `module.exports = {
+  plugins: [
+    require('autoprefixer')()
+  ]
+}
+`
+export const uiComponentReadmeMd = `[![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
+[![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
+[![Build Status: Linux](https://travis-ci.org/AUTHOR/REPOSITORY_NAME.svg?branch=master)](https://travis-ci.org/AUTHOR/REPOSITORY_NAME)
+[![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
+[![npm version](https://badge.fury.io/js/REPOSITORY_NAME.svg)](https://badge.fury.io/js/REPOSITORY_NAME)
+[![Downloads](https://img.shields.io/npm/dm/REPOSITORY_NAME.svg)](https://www.npmjs.com/package/REPOSITORY_NAME)
+
+## features
 
 + vuejs component
 + reactjs component
@@ -2489,6 +2723,49 @@ it('renders without crashing', () => {
   expect(rendered).toBeTruthy()
   app.destroy()
 })
+`
+export const uiComponentSpecWebpackConfigJs = `const webpack = require('webpack')
+
+module.exports = {
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
+    new webpack.NoEmitOnErrorsPlugin()
+  ]
+}
+`
+export const uiComponentStylelintrc = `{
+  "extends": "stylelint-config-standard"
+}`
+export const uiComponentTravisYml = `language: node_js
+dist: trusty
+node_js:
+  - "8"
+before_install:
+  - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - git fetch --unshallow || true
+install:
+  - yarn install --frozen-lockfile
+script:
+  - npm run bootstrap
+  - npm run build
+  - npm run lint
+  - npm run test
+env:
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
+      - libnss3
+  firefox: latest
 `
 export const uiComponentWebpackConfigJs = `const webpack = require('webpack')
 const path = require('path')

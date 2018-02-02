@@ -2,9 +2,6 @@ import * as libs from './libs'
 import * as variables from './variables'
 
 export async function runUIComponent (context: libs.Context) {
-  context.isNpmPackage = true
-  context.hasKarma = true
-
   const answer = await libs.inquirer.prompt({
     type: 'checkbox',
     name: 'options',
@@ -150,7 +147,7 @@ export async function runUIComponent (context: libs.Context) {
   await libs.mkdir(`spec`)
   await libs.writeFile(`spec/karma.config.js`, variables.uiComponentSpecKarmaConfigJs)
   await libs.writeFile(`spec/tsconfig.json`, variables.uiComponentSpecTsconfigJson)
-  await libs.writeFile(`spec/webpack.config.js`, libs.specWebpackConfigJs)
+  await libs.writeFile(`spec/webpack.config.js`, variables.uiComponentSpecWebpackConfigJs)
   await libs.writeFile(`spec/indexSpec.ts`, variables.uiComponentSpecIndexSpecTs)
   await libs.writeFile(`spec/reactSpec.tsx`, variables.uiComponentSpecReactSpecTsx
     .replace(/COMPONENT_TYPE_NAME/g, context.componentTypeName))
@@ -161,19 +158,18 @@ export async function runUIComponent (context: libs.Context) {
   await libs.writeFile(`screenshots/tsconfig.json`, variables.uiComponentScreenshotsTsconfigJson)
   await libs.writeFile(`screenshots/index.ts`, variables.uiComponentScreenshotsIndexTs)
 
-  await libs.appendFile('README.md', libs.readMeBadge(context))
   await libs.appendFile('README.md', variables.uiComponentReadmeMd
     .replace(/REPOSITORY_NAME/g, context.repositoryName)
     .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName)
     .replace(/AUTHOR/g, context.author)
     .replace(/COMPONENT_TYPE_NAME/g, context.componentTypeName))
-  await libs.writeFile('.stylelintrc', libs.stylelint)
-  await libs.writeFile('.travis.yml', libs.getTravisYml(context))
-  await libs.writeFile('appveyor.yml', libs.appveyorYml(context))
+  await libs.writeFile('.stylelintrc', variables.uiComponentStylelintrc)
+  await libs.writeFile('.travis.yml', variables.uiComponentTravisYml)
+  await libs.writeFile('appveyor.yml', variables.uiComponentAppveyorYml)
   await libs.writeFile('clean-scripts.config.js', variables.uiComponentCleanScriptsConfigJs
     .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName))
-  await libs.writeFile('.browserslistrc', libs.browsersList)
-  await libs.writeFile('postcss.config.js', libs.postcssConfig)
+  await libs.writeFile('.browserslistrc', variables.uiComponentBrowserslistrc)
+  await libs.writeFile('postcss.config.js', variables.uiComponentPostcssConfigJs)
 
   const lernaString = await libs.readFile('lerna.json')
   const lernaJson: { [name: string]: any } = JSON.parse(lernaString)
