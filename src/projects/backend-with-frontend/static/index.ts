@@ -6,7 +6,7 @@ import { indexTemplateHtml, indexTemplateHtmlStatic } from './variables'
   render: indexTemplateHtml,
   staticRenderFns: indexTemplateHtmlStatic
 })
-class App extends Vue {
+export class App extends Vue {
 }
 
 // tslint:disable-next-line:no-unused-expression

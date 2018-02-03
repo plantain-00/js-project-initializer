@@ -34,7 +34,7 @@ export async function runUIComponent (context: libs.Context) {
   await libs.exec(`yarn add -DE no-unused-export`)
   await libs.exec(`yarn add -DE watch-then-execute`)
   await libs.exec(`yarn add -DE http-server`)
-  await libs.exec(`yarn add -DE puppeteer @@types/puppeteer`)
+  await libs.exec(`yarn add -DE puppeteer @types/puppeteer`)
   await libs.exec(`yarn add -DE autoprefixer postcss-cli`)
   await libs.exec(`yarn add -DE react-test-renderer @types/react-test-renderer react vue-test-utils`)
 
