@@ -87,12 +87,6 @@ export function getComponentShortName (componentName: string) {
         : componentName
 }
 
-export function tslint (context: Context) {
-  return `{
-    "extends": "tslint-config-standard"
-}`
-}
-
 export type Context = {
   kind?: ProjectKind;
   repositoryName: string;

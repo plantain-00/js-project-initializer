@@ -39,8 +39,6 @@ async function run () {
 
   context.kind = kind
 
-  await libs.writeFile('tslint.json', libs.tslint(context))
-
   switch (kind) {
     case libs.ProjectKind.UIComponent:
       newPackageJson = await runUIComponent(context)
@@ -74,6 +72,9 @@ async function run () {
     packageJson.bin = newPackageJson.bin
   }
   if (newPackageJson.dependencies && newPackageJson.dependencies.tslib) {
+    if (!newPackageJson.dependencies) {
+      packageJson.dependencies = {}
+    }
     packageJson.dependencies.tslib = newPackageJson.dependencies.tslib
   }
   await libs.writeFile('package.json', JSON.stringify(packageJson, null, '  ') + '\n')

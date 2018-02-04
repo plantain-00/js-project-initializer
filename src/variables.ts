@@ -76,6 +76,15 @@ RUN apk add --no-cache make gcc g++ python && yarn --production
 EXPOSE 8000
 CMD ["node","dist/index.js"]
 `
+export const backendEditorconfig = `root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+indent_style = space
+indent_size = 2
+`
 export const backendGitignore = `# Source
 .vscode
 dist
@@ -173,6 +182,10 @@ addons:
     packages:
       - g++-4.8
       - libnss3
+`
+export const backendTslintJson = `{
+  "extends": "tslint-config-standard"
+}
 `
 export const backendWithFrontendAppveyorYml = `environment:
   nodejs_version: "8"
@@ -301,6 +314,15 @@ ADD . /app
 RUN apk add --no-cache make gcc g++ python && yarn --production
 EXPOSE 8000
 CMD ["node","dist/index.js"]
+`
+export const backendWithFrontendEditorconfig = `root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+indent_style = space
+indent_size = 2
 `
 export const backendWithFrontendGitignore = `# Source
 .vscode
@@ -685,6 +707,10 @@ addons:
       - libnss3
   firefox: latest
 `
+export const backendWithFrontendTslintJson = `{
+  "extends": "tslint-config-standard"
+}
+`
 export const cliAppveyorYml = `environment:
   nodejs_version: "8"
 
@@ -754,6 +780,15 @@ module.exports = {
     js: \`standard --fix \${jsFiles}\`
   }
 }
+`
+export const cliEditorconfig = `root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+indent_style = space
+indent_size = 2
 `
 export const cliGitignore = `# Source
 .vscode
@@ -881,6 +916,10 @@ addons:
       - g++-4.8
       - libnss3
 `
+export const cliTslintJson = `{
+  "extends": "tslint-config-standard"
+}
+`
 export const electronAppveyorYml = `environment:
   nodejs_version: "8"
 
@@ -991,6 +1030,15 @@ module.exports = {
     less: () => watch(['scripts/**/*.less'], [], () => executeScriptAsync(cssCommand))
   }
 }
+`
+export const electronEditorconfig = `root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+indent_style = space
+indent_size = 2
 `
 export const electronGitignore = `# Source
 .vscode
@@ -1270,6 +1318,10 @@ export const electronTsconfigJson = `{
     "node_modules/"
   ]
 }`
+export const electronTslintJson = `{
+  "extends": "tslint-config-standard"
+}
+`
 export const frontendAppveyorYml = `environment:
   nodejs_version: "8"
 
@@ -1362,6 +1414,15 @@ module.exports = {
     swCommand
   ]
 }
+`
+export const frontendEditorconfig = `root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+indent_style = space
+indent_size = 2
 `
 export const frontendFile2variableConfigJs = `module.exports = {
   files: [
@@ -1665,6 +1726,10 @@ export const frontendTsconfigJson = `{
     "vendor.ts"
   ]
 }`
+export const frontendTslintJson = `{
+  "extends": "tslint-config-standard"
+}
+`
 export const frontendVendorTs = `import 'vue'
 import 'vue-class-component'
 `
@@ -1773,6 +1838,15 @@ module.exports = {
     js: \`standard --fix \${jsFiles}\`
   }
 }
+`
+export const libraryEditorconfig = `root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+indent_style = space
+indent_size = 2
 `
 export const libraryGitignore = `# Source
 .vscode
@@ -1900,6 +1974,10 @@ addons:
       - g++-4.8
       - libnss3
 `
+export const libraryTslintJson = `{
+  "extends": "tslint-config-standard"
+}
+`
 export const uiComponentAppveyorYml = `environment:
   nodejs_version: "8"
 
@@ -1999,6 +2077,15 @@ module.exports = {
   ]
 }
 `
+export const uiComponentEditorconfig = `root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+indent_style = space
+indent_size = 2
+`
 export const uiComponentGitignore = `# Source
 .vscode
 dist
@@ -2011,6 +2098,20 @@ dist
 !**/*-*.js
 !**/*-*.css
 !**/*.index.bundle.js
+`
+export const uiComponentLernaJson = `{
+  "lerna": "2.5.1",
+  "packages": [
+    "packages/*"
+  ],
+  "version": "1.0.0",
+  "npmClient": "yarn",
+  "command": {
+    "publish": {
+      "message": "feat: publish %s"
+    }
+  }
+}
 `
 export const uiComponentPackagesAngularDemoAotIndexEjsHtml = `<!DOCTYPE html>
 <meta charset="UTF-8">
@@ -2773,6 +2874,10 @@ addons:
       - g++-4.8
       - libnss3
   firefox: latest
+`
+export const uiComponentTslintJson = `{
+  "extends": "tslint-config-standard"
+}
 `
 export const uiComponentWebpackConfigJs = `const webpack = require('webpack')
 const path = require('path')

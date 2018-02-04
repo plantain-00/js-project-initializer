@@ -17,6 +17,8 @@ export async function runUIComponent (context: libs.Context) {
   const hasAngularChoice = options.some(o => o === 'angular')
 
   await libs.appendFile('.gitignore', variables.uiComponentGitignore)
+  await libs.appendFile('tslint.json', variables.uiComponentTslintJson)
+  await libs.appendFile('.editorconfig', variables.uiComponentEditorconfig)
 
   await libs.exec(`yarn add -DE github-fork-ribbon-css`)
   await libs.exec(`yarn add -DE less`)
@@ -171,15 +173,7 @@ export async function runUIComponent (context: libs.Context) {
   await libs.writeFile('.browserslistrc', variables.uiComponentBrowserslistrc)
   await libs.writeFile('postcss.config.js', variables.uiComponentPostcssConfigJs)
 
-  const lernaString = await libs.readFile('lerna.json')
-  const lernaJson: { [name: string]: any } = JSON.parse(lernaString)
-  lernaJson.npmClient = 'yarn'
-  lernaJson.command = {
-    publish: {
-      message: '%s'
-    }
-  }
-  await libs.writeFile('lerna.json', JSON.stringify(lernaJson, null, 2))
+  await libs.writeFile('lerna.json', variables.uiComponentLernaJson)
 
   return {
     scripts: {
