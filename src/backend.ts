@@ -5,6 +5,7 @@ export async function runBackend (context: libs.Context) {
   await libs.appendFile('.gitignore', variables.backendGitignore)
   await libs.appendFile('tslint.json', variables.backendTslintJson)
   await libs.appendFile('.editorconfig', variables.backendEditorconfig)
+  await libs.appendFile('tsconfig.base.json', variables.backendTsconfigBaseJson)
 
   await libs.exec(`yarn add -DE @types/node`)
   await libs.exec(`yarn add -DE jasmine @types/jasmine`)

@@ -5,6 +5,7 @@ export async function runElectron (context: libs.Context) {
   await libs.appendFile('.gitignore', variables.electronGitignore)
   await libs.appendFile('tslint.json', variables.electronTslintJson)
   await libs.appendFile('.editorconfig', variables.electronEditorconfig)
+  await libs.appendFile('tsconfig.base.json', variables.electronTsconfigBaseJson)
 
   await libs.exec(`yarn add -E electron`)
   await libs.exec(`yarn add -DE electron-packager`)

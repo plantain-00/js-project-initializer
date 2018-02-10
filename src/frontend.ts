@@ -5,6 +5,7 @@ export async function runFrontend (context: libs.Context) {
   await libs.appendFile('.gitignore', variables.frontendGitignore)
   await libs.appendFile('tslint.json', variables.frontendTslintJson)
   await libs.appendFile('.editorconfig', variables.frontendEditorconfig)
+  await libs.appendFile('tsconfig.base.json', variables.frontendTsconfigBaseJson)
 
   await libs.exec(`yarn add -DE tslib`)
   await libs.exec(`yarn add -DE github-fork-ribbon-css`)

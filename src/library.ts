@@ -5,6 +5,7 @@ export async function runLibrary (context: libs.Context) {
   await libs.appendFile('.gitignore', variables.libraryGitignore)
   await libs.appendFile('tslint.json', variables.libraryTslintJson)
   await libs.appendFile('.editorconfig', variables.libraryEditorconfig)
+  await libs.appendFile('tsconfig.base.json', variables.libraryTsconfigBaseJson)
 
   await libs.exec(`yarn add -DE jasmine @types/jasmine`)
   await libs.exec(`yarn add -DE rimraf`)

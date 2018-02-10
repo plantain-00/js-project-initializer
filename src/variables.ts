@@ -123,21 +123,12 @@ export const backendSpecIndexSpecTs = `it('', () => {
 })
 `
 export const backendSpecTsconfigJson = `{
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "esnext",
-    "module": "commonjs",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "importHelpers": true,
-    "jsx": "react",
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
-    "newLine": "LF"
+    "module": "commonjs"
   }
-}`
+}
+`
 export const backendSrcIndexTs = `console.log('app started!')
 
 process.on('SIGINT', () => {
@@ -149,17 +140,13 @@ process.on('SIGTERM', () => {
 })
 `
 export const backendSrcTsconfigJson = `{
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "esnext",
     "outDir": "../dist",
-    "module": "commonjs",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "newLine": "LF"
+    "module": "commonjs"
   }
-}`
+}
+`
 export const backendTravisYml = `language: node_js
 dist: trusty
 node_js:
@@ -182,6 +169,35 @@ addons:
     packages:
       - g++-4.8
       - libnss3
+`
+export const backendTsconfigBaseJson = `{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "lib": [
+      "dom",
+      "es5",
+      "es2015",
+      "es2016",
+      "es2017"
+    ],
+    "jsx": "react",
+    "importHelpers": true,
+    "downlevelIteration": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "newLine": "LF",
+    "noImplicitAny": true
+  }
+}
 `
 export const backendTslintJson = `{
   "extends": "tslint-config-standard"
@@ -366,21 +382,12 @@ import * as fs from 'fs'
 })()
 `
 export const backendWithFrontendPrerenderTsconfigJson = `{
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "esnext",
-    "module": "commonjs",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "importHelpers": true,
-    "jsx": "react",
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
-    "newLine": "LF"
+    "module": "commonjs"
   }
-}`
+}
+`
 export const backendWithFrontendReadmeMd = `
 [![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
 [![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
@@ -413,41 +420,23 @@ export const backendWithFrontendScreenshotsIndexTs = `import * as puppeteer from
 })()
 `
 export const backendWithFrontendScreenshotsTsconfigJson = `{
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "esnext",
-    "module": "commonjs",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "importHelpers": true,
-    "jsx": "react",
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
-    "newLine": "LF"
+    "module": "commonjs"
   }
-}`
+}
+`
 export const backendWithFrontendSpecIndexSpecTs = `it('', () => {
   // expect(true).toEqual(true);
 })
 `
 export const backendWithFrontendSpecTsconfigJson = `{
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "esnext",
-    "module": "commonjs",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "importHelpers": true,
-    "jsx": "react",
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
-    "newLine": "LF"
+    "module": "commonjs"
   }
-}`
+}
+`
 export const backendWithFrontendSrcIndexTs = `function printInConsole (message: any) {
   console.log(message)
 }
@@ -463,17 +452,13 @@ process.on('SIGTERM', () => {
 })
 `
 export const backendWithFrontendSrcTsconfigJson = `{
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "esnext",
     "outDir": "../dist",
-    "module": "commonjs",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "newLine": "LF"
+    "module": "commonjs"
   }
-}`
+}
+`
 export const backendWithFrontendStaticFile2variableConfigJs = `module.exports = {
   base: 'static',
   files: [
@@ -596,22 +581,12 @@ module.exports = function (karma) {
 }
 `
 export const backendWithFrontendStaticSpecTsconfigJson = `{
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "es5",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "importHelpers": true,
-    "jsx": "react",
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
-    "newLine": "LF"
+    "target": "es5"
   }
-}`
+}
+`
 export const backendWithFrontendStaticSpecWebpackConfigJs = `const webpack = require('webpack')
 
 module.exports = {
@@ -626,22 +601,12 @@ module.exports = {
 }
 `
 export const backendWithFrontendStaticTsconfigJson = `{
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "es5",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "importHelpers": true,
-    "jsx": "react",
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
-    "newLine": "LF"
+    "target": "es5"
   }
-}`
+}
+`
 export const backendWithFrontendStaticVendorTs = `import 'vue'
 import 'vue-class-component'
 `
@@ -706,6 +671,35 @@ addons:
       - g++-4.8
       - libnss3
   firefox: latest
+`
+export const backendWithFrontendTsconfigBaseJson = `{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "lib": [
+      "dom",
+      "es5",
+      "es2015",
+      "es2016",
+      "es2017"
+    ],
+    "jsx": "react",
+    "importHelpers": true,
+    "downlevelIteration": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "newLine": "LF",
+    "noImplicitAny": true
+  }
+}
 `
 export const backendWithFrontendTslintJson = `{
   "extends": "tslint-config-standard"
@@ -826,21 +820,12 @@ export const cliSpecIndexSpecTs = `it('', () => {
 })
 `
 export const cliSpecTsconfigJson = `{
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "esnext",
-    "module": "commonjs",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "importHelpers": true,
-    "jsx": "react",
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
-    "newLine": "LF"
+    "module": "commonjs"
   }
-}`
+}
+`
 export const cliSrcIndexTs = `import * as minimist from 'minimist'
 import * as packageJson from '../package.json'
 
@@ -882,17 +867,13 @@ export const cliSrcLibDTs = `declare module '*.json' {
 }
 `
 export const cliSrcTsconfigJson = `{
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "esnext",
     "outDir": "../dist",
-    "module": "commonjs",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "newLine": "LF"
+    "module": "commonjs"
   }
-}`
+}
+`
 export const cliTravisYml = `language: node_js
 dist: trusty
 node_js:
@@ -915,6 +896,35 @@ addons:
     packages:
       - g++-4.8
       - libnss3
+`
+export const cliTsconfigBaseJson = `{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "lib": [
+      "dom",
+      "es5",
+      "es2015",
+      "es2016",
+      "es2017"
+    ],
+    "jsx": "react",
+    "importHelpers": true,
+    "downlevelIteration": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "newLine": "LF",
+    "noImplicitAny": true
+  }
+}
 `
 export const cliTslintJson = `{
   "extends": "tslint-config-standard"
@@ -1145,22 +1155,12 @@ class App extends Vue {
 new App({ el: '#container' })
 `
 export const electronScriptsTsconfigJson = `{
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "es5",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "importHelpers": true,
-    "jsx": "react",
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
-    "newLine": "LF"
+    "target": "es5"
   }
-}`
+}
+`
 export const electronScriptsWebpackConfigJs = `const webpack = require('webpack')
 
 module.exports = {
@@ -1193,21 +1193,12 @@ export const electronSpecIndexSpecTs = `it('', () => {
 })
 `
 export const electronSpecTsconfigJson = `{
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "esnext",
-    "module": "commonjs",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "importHelpers": true,
-    "jsx": "react",
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
-    "newLine": "LF"
+    "module": "commonjs"
   }
-}`
+}
+`
 export const electronStaticSpecIndexSpecTs = `it('', () => {
   // expect(true).toEqual(true);
 })
@@ -1245,22 +1236,12 @@ module.exports = function (karma) {
 }
 `
 export const electronStaticSpecTsconfigJson = `{
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "es5",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "importHelpers": true,
-    "jsx": "react",
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
-    "newLine": "LF"
+    "target": "es5"
   }
-}`
+}
+`
 export const electronStaticSpecWebpackConfigJs = `const webpack = require('webpack')
 
 module.exports = {
@@ -1303,21 +1284,47 @@ addons:
       - libnss3
   firefox: latest
 `
-export const electronTsconfigJson = `{
+export const electronTsconfigBaseJson = `{
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
+    "target": "esnext",
+    "module": "esnext",
+    "lib": [
+      "dom",
+      "es5",
+      "es2015",
+      "es2016",
+      "es2017"
+    ],
+    "jsx": "react",
+    "importHelpers": true,
+    "downlevelIteration": true,
     "strict": true,
     "noUnusedLocals": true,
     "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "skipLibCheck": true,
-    "newLine": "LF"
+    "newLine": "LF",
+    "noImplicitAny": true
+  }
+}
+`
+export const electronTsconfigJson = `{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs"
   },
   "exclude": [
     "scripts/",
     "node_modules/"
   ]
-}`
+}
+`
 export const electronTslintJson = `{
   "extends": "tslint-config-standard"
 }
@@ -1523,21 +1530,12 @@ import * as fs from 'fs'
 })()
 `
 export const frontendPrerenderTsconfigJson = `{
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "esnext",
-    "module": "commonjs",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "importHelpers": true,
-    "jsx": "react",
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
-    "newLine": "LF"
+    "module": "commonjs"
   }
-}`
+}
+`
 export const frontendReadmeMd = `
 [![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
 [![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
@@ -1587,21 +1585,12 @@ export const frontendScreenshotsIndexTs = `import * as puppeteer from 'puppeteer
 })()
 `
 export const frontendScreenshotsTsconfigJson = `{
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "esnext",
-    "module": "commonjs",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "importHelpers": true,
-    "jsx": "react",
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
-    "newLine": "LF"
+    "module": "commonjs"
   }
-}`
+}
+`
 export const frontendSpecIndexSpecTs = `it('', () => {
   // expect(true).toEqual(true);
 })
@@ -1639,22 +1628,12 @@ module.exports = function (karma) {
 }
 `
 export const frontendSpecTsconfigJson = `{
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "es5",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "importHelpers": true,
-    "jsx": "react",
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
-    "newLine": "LF"
+    "target": "es5"
   }
-}`
+}
+`
 export const frontendSpecWebpackConfigJs = `const webpack = require('webpack')
 
 module.exports = {
@@ -1704,28 +1683,47 @@ addons:
       - libnss3
   firefox: latest
 `
-export const frontendTsconfigJson = `{
+export const frontendTsconfigBaseJson = `{
   "compilerOptions": {
-    "target": "es5",
+    "target": "esnext",
     "module": "esnext",
-    "moduleResolution": "node",
+    "lib": [
+      "dom",
+      "es5",
+      "es2015",
+      "es2016",
+      "es2017"
+    ],
+    "jsx": "react",
+    "importHelpers": true,
+    "downlevelIteration": true,
     "strict": true,
     "noUnusedLocals": true,
     "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "importHelpers": true,
-    "jsx": "react",
-    "experimentalDecorators": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
-    "newLine": "LF"
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "newLine": "LF",
+    "noImplicitAny": true
+  }
+}
+`
+export const frontendTsconfigJson = `{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "target": "es5"
   },
   "files": [
     "index.ts",
     "variables.ts",
     "vendor.ts"
   ]
-}`
+}
+`
 export const frontendTslintJson = `{
   "extends": "tslint-config-standard"
 }
@@ -1900,21 +1898,12 @@ export const librarySpecIndexSpecTs = `it('', () => {
 })
 `
 export const librarySpecTsconfigJson = `{
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "esnext",
-    "module": "commonjs",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "importHelpers": true,
-    "jsx": "react",
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
-    "newLine": "LF"
+    "module": "commonjs"
   }
-}`
+}
+`
 export const librarySrcIndexTs = `/**
  * @public
  */
@@ -1922,35 +1911,33 @@ export default class ComponentTypeName {
 }
 `
 export const librarySrcTsconfigBaseJson = `{
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "target": "es5",
     "declaration": true,
     "outDir": "../dist",
-    "module": "commonjs",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "newLine": "LF"
+    "module": "commonjs"
   }
-}`
+}
+`
 export const librarySrcTsconfigBrowserJson = `{
-  "extends": "./tsconfig.base.json",
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "../dist/browser",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "newLine": "LF"
+    "declaration": true,
+    "target": "es5"
   }
-}`
+}
+`
 export const librarySrcTsconfigNodejsJson = `{
-  "extends": "./tsconfig.base.json",
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "esnext",
+    "declaration": true,
     "outDir": "../dist/nodejs",
-    "newLine": "LF"
+    "module": "commonjs"
   }
-}`
+}
+`
 export const libraryTravisYml = `language: node_js
 dist: trusty
 node_js:
@@ -1973,6 +1960,35 @@ addons:
     packages:
       - g++-4.8
       - libnss3
+`
+export const libraryTsconfigBaseJson = `{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "lib": [
+      "dom",
+      "es5",
+      "es2015",
+      "es2016",
+      "es2017"
+    ],
+    "jsx": "react",
+    "importHelpers": true,
+    "downlevelIteration": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "newLine": "LF",
+    "noImplicitAny": true
+  }
+}
 `
 export const libraryTslintJson = `{
   "extends": "tslint-config-standard"
@@ -2204,11 +2220,9 @@ export const uiComponentPackagesAngularDemoTsconfigJson = `{
   "extends": "../../tsconfig.json",
   "angularCompilerOptions": {
     "strictMetadataEmit": true
-  },
-  "compilerOptions": {
-    "declaration": false
   }
-}`
+}
+`
 export const uiComponentPackagesAngularPackageJson = `{
   "name": "component-short-name-angular-component",
   "version": "1.0.0",
@@ -2294,19 +2308,19 @@ export const uiComponentPackagesAngularSrcTsconfigJson = `{
   },
   "compilerOptions": {
     "outDir": "../dist",
-    "rootDir": "."
+    "rootDir": ".",
+    "declaration": true
   }
-}`
+}
+`
 export const uiComponentPackagesCoreDemoIndexTs = ``
 export const uiComponentPackagesCoreDemoTsconfigJson = `{
   "extends": "../../tsconfig.json",
   "angularCompilerOptions": {
     "strictMetadataEmit": true
-  },
-  "compilerOptions": {
-    "declaration": false
   }
-}`
+}
+`
 export const uiComponentPackagesCorePackageJson = `{
     "name": "repository-name",
     "version": "1.0.0",
@@ -2357,9 +2371,11 @@ export const uiComponentPackagesCoreSrcTsconfigJson = `{
     "strictMetadataEmit": true
   },
   "compilerOptions": {
-    "outDir": "../dist"
+    "outDir": "../dist",
+    "declaration": true
   }
-}`
+}
+`
 export const uiComponentPackagesReactDemoIndexEjsHtml = `<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -2396,11 +2412,9 @@ class Main extends React.Component<{}, {}> {
 ReactDOM.render(<Main />, document.getElementById('container'))
 `
 export const uiComponentPackagesReactDemoTsconfigJson = `{
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "declaration": false
-  }
-}`
+  "extends": "../../tsconfig.json"
+}
+`
 export const uiComponentPackagesReactPackageJson = `{
   "name": "component-short-name-react-component",
   "version": "1.0.0",
@@ -2456,32 +2470,18 @@ export class ComponentTypeName extends React.Component<{
 export const uiComponentPackagesReactSrcTsconfigJson = `{
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../dist"
+    "outDir": "../dist",
+    "declaration": true
   }
-}`
+}
+`
 export const uiComponentPackagesTsconfigJson = `{
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "es5",
-    "declaration": true,
-    "lib": [
-      "dom",
-      "es5",
-      "es2015.promise"
-    ],
-    "module": "esnext",
-    "moduleResolution": "node",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "importHelpers": true,
-    "jsx": "react",
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "emitDecoratorMetadata": true,
-    "newLine": "LF"
+    "target": "es5"
   }
-}`
+}
+`
 export const uiComponentPackagesVueDemoIndexEjsHtml = `<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -2520,11 +2520,9 @@ class App extends Vue {
 new App({ el: '#container' })
 `
 export const uiComponentPackagesVueDemoTsconfigJson = `{
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "declaration": false
-  }
-}`
+  "extends": "../../tsconfig.json"
+}
+`
 export const uiComponentPackagesVuePackageJson = `{
   "name": "component-short-name-vue-component",
   "version": "1.0.0",
@@ -2594,9 +2592,11 @@ Vue.component('COMPONENT_SHORT_NAME', ComponentTypeName)
 export const uiComponentPackagesVueSrcTsconfigJson = `{
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../dist"
+    "outDir": "../dist",
+    "declaration": true
   }
-}`
+}
+`
 export const uiComponentPostcssConfigJs = `module.exports = {
   plugins: [
     require('autoprefixer')()
@@ -2734,21 +2734,12 @@ export const uiComponentScreenshotsIndexTs = `import * as puppeteer from 'puppet
 })()
 `
 export const uiComponentScreenshotsTsconfigJson = `{
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "esnext",
-    "module": "commonjs",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "importHelpers": true,
-    "jsx": "react",
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
-    "newLine": "LF"
+    "module": "commonjs"
   }
-}`
+}
+`
 export const uiComponentSpecIndexSpecTs = `import '../packages/core/dist'
 
 it('', () => {
@@ -2800,23 +2791,12 @@ it('renders without crashing', () => {
 })
 `
 export const uiComponentSpecTsconfigJson = `{
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "es5",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "importHelpers": true,
-    "jsx": "react",
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
-    "emitDecoratorMetadata": true,
-    "newLine": "LF"
+    "target": "es5"
   }
-}`
+}
+`
 export const uiComponentSpecVueSpecTsx = `import { COMPONENT_TYPE_NAME } from '../packages/vue/dist'
 
 import { mount } from 'vue-test-utils'
@@ -2874,6 +2854,35 @@ addons:
       - g++-4.8
       - libnss3
   firefox: latest
+`
+export const uiComponentTsconfigBaseJson = `{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "lib": [
+      "dom",
+      "es5",
+      "es2015",
+      "es2016",
+      "es2017"
+    ],
+    "jsx": "react",
+    "importHelpers": true,
+    "downlevelIteration": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "newLine": "LF",
+    "noImplicitAny": true
+  }
+}
 `
 export const uiComponentTslintJson = `{
   "extends": "tslint-config-standard"

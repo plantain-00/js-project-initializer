@@ -5,6 +5,7 @@ export async function runCLI (context: libs.Context) {
   await libs.appendFile('.gitignore', variables.cliGitignore)
   await libs.appendFile('tslint.json', variables.cliTslintJson)
   await libs.appendFile('.editorconfig', variables.cliEditorconfig)
+  await libs.appendFile('tsconfig.base.json', variables.cliTsconfigBaseJson)
 
   await libs.exec(`yarn add -DE @types/node`)
   await libs.exec(`yarn add -DE jasmine @types/jasmine`)
