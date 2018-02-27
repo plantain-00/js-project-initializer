@@ -65,6 +65,7 @@ export async function runUIComponent (context: libs.Context) {
     .replace(/AUTHOR/g, context.author)
     .replace(/REPOSITORY_NAME/g, context.repositoryName))
   await libs.writeFile(`packages/react/demo/tsconfig.json`, variables.uiComponentPackagesReactDemoTsconfigJson)
+  await libs.writeFile(`packages/react/demo/webpack.config.js`, variables.uiComponentPackagesReactDemoWebpackConfigJs)
 
   await libs.mkdir('packages/react/src/')
   await libs.writeFile(`packages/react/src/index.tsx`, variables.uiComponentPackagesReactSrcIndexTsx
@@ -87,6 +88,7 @@ export async function runUIComponent (context: libs.Context) {
     .replace(/REPSOTIRY_NAME/g, context.repositoryName)
     .replace(/componentShortName/g, context.componentShortName))
   await libs.writeFile(`packages/vue/demo/tsconfig.json`, variables.uiComponentPackagesVueDemoTsconfigJson)
+  await libs.writeFile(`packages/vue/demo/webpack.config.js`, variables.uiComponentPackagesVueDemoWebpackConfigJs)
 
   await libs.mkdir('packages/vue/src/')
   await libs.writeFile(`packages/vue/src/index.template.html`, variables.uiComponentPackagesVueSrcIndexTemplateHtml)
@@ -111,10 +113,12 @@ export async function runUIComponent (context: libs.Context) {
     await libs.mkdir('packages/angular/demo/aot/')
     await libs.writeFile(`packages/angular/demo/aot/index.ejs.html`, variables.uiComponentPackagesAngularDemoAotIndexEjsHtml)
     await libs.writeFile(`packages/angular/demo/aot/index.ts`, variables.uiComponentPackagesAngularDemoAotIndexTs)
+    await libs.writeFile(`packages/angular/demo/aot/webpack.config.js`, variables.uiComponentPackagesAngularDemoAotWebpackConfigJs)
 
     await libs.mkdir('packages/angular/demo/jit/')
     await libs.writeFile(`packages/angular/demo/jit/index.ejs.html`, variables.uiComponentPackagesAngularDemoJitIndexEjsHtml)
     await libs.writeFile(`packages/angular/demo/jit/index.ts`, variables.uiComponentPackagesAngularDemoJitIndexTs)
+    await libs.writeFile(`packages/angular/demo/jit/webpack.config.js`, variables.uiComponentPackagesAngularDemoJitWebpackConfigJs)
 
     await libs.writeFile(`packages/angular/demo/main.component.ts`, variables.uiComponentPackagesAngularDemoMainComponentTs
       .replace(/COMPONENT_TYPE_NAME/g, context.componentTypeName)
@@ -144,7 +148,6 @@ export async function runUIComponent (context: libs.Context) {
       .replace(/REPOSITORY_NAME/g, context.repositoryName))
   }
 
-  await libs.writeFile(`webpack.config.js`, variables.uiComponentWebpackConfigJs)
   await libs.writeFile(`rev-static.config.js`, variables.uiComponentRevStaticConfigJs)
 
   await libs.mkdir(`spec`)
