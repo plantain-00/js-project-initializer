@@ -2300,7 +2300,8 @@ export class MainModule { }
 export const uiComponentPackagesAngularDemoTsconfigJson = `{
   "extends": "../../tsconfig.json",
   "angularCompilerOptions": {
-    "strictMetadataEmit": true
+    "strictMetadataEmit": true,
+    "fullTemplateTypeCheck" : true
   }
 }
 `
@@ -2385,7 +2386,8 @@ export class ComponentTypeNameModule { }
 export const uiComponentPackagesAngularSrcTsconfigJson = `{
   "extends": "../../tsconfig.json",
   "angularCompilerOptions": {
-    "strictMetadataEmit": true
+    "strictMetadataEmit": true,
+    "fullTemplateTypeCheck" : true
   },
   "compilerOptions": {
     "outDir": "../dist",
@@ -2398,7 +2400,8 @@ export const uiComponentPackagesCoreDemoIndexTs = ``
 export const uiComponentPackagesCoreDemoTsconfigJson = `{
   "extends": "../../tsconfig.json",
   "angularCompilerOptions": {
-    "strictMetadataEmit": true
+    "strictMetadataEmit": true,
+    "fullTemplateTypeCheck" : true
   }
 }
 `
@@ -2449,7 +2452,8 @@ export type componentTypeNameData<T = any> = {
 export const uiComponentPackagesCoreSrcTsconfigJson = `{
   "extends": "../../tsconfig.json",
   "angularCompilerOptions": {
-    "strictMetadataEmit": true
+    "strictMetadataEmit": true,
+    "fullTemplateTypeCheck" : true
   },
   "compilerOptions": {
     "outDir": "../dist",
