@@ -16,7 +16,7 @@ export async function runElectron (context: libs.Context) {
   await libs.exec(`yarn add -DE vue vue-class-component`)
   await libs.exec(`yarn add -DE clean-css-cli`)
   await libs.exec(`yarn add -DE file2variable-cli`)
-  await libs.exec(`yarn add -DE webpack`)
+  await libs.exec(`yarn add -DE webpack webpack-cli`)
   await libs.exec(`yarn add -DE standard`)
   await libs.exec(`yarn add -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`)
   await libs.exec(`yarn add -DE clean-scripts`)

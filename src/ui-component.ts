@@ -27,7 +27,7 @@ export async function runUIComponent (context: libs.Context) {
   await libs.exec(`yarn add -DE clean-css-cli`)
   await libs.exec(`yarn add -DE file2variable-cli`)
   await libs.exec(`yarn add -DE rev-static`)
-  await libs.exec(`yarn add -DE webpack`)
+  await libs.exec(`yarn add -DE webpack webpack-cli`)
   if (hasAngularChoice) {
     await libs.exec(`yarn add -DE @angular/compiler @angular/core @angular/compiler-cli`)
   }

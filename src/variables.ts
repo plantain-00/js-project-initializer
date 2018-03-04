@@ -587,18 +587,7 @@ export const backendWithFrontendStaticSpecTsconfigJson = `{
   }
 }
 `
-export const backendWithFrontendStaticSpecWebpackConfigJs = `const webpack = require('webpack')
-
-module.exports = {
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('production')
-      }
-    }),
-    new webpack.NoEmitOnErrorsPlugin()
-  ]
-}
+export const backendWithFrontendStaticSpecWebpackConfigJs = `module.exports = {}
 `
 export const backendWithFrontendStaticTsconfigJson = `{
   "extends": "../tsconfig.base.json",
@@ -607,40 +596,25 @@ export const backendWithFrontendStaticTsconfigJson = `{
   }
 }
 `
-export const backendWithFrontendStaticVendorTs = `import 'vue'
-import 'vue-class-component'
-`
-export const backendWithFrontendStaticWebpackConfigJs = `const webpack = require('webpack')
-
-const plugins = [
-  new webpack.DefinePlugin({
-    'process.env': {
-      'NODE_ENV': JSON.stringify('production')
-    }
-  }),
-  new webpack.NoEmitOnErrorsPlugin(),
-  new webpack.optimize.UglifyJsPlugin({
-    output: {
-      comments: false
-    },
-    exclude: [
-    ]
-  }),
-  new webpack.optimize.CommonsChunkPlugin({
-    name: ['index', 'vendor']
-  })
-]
-
-module.exports = {
+export const backendWithFrontendStaticWebpackConfigJs = `module.exports = {
   entry: {
-    index: './static/index',
-    vendor: './static/vendor'
+    index: './static/index'
   },
   output: {
     path: __dirname,
     filename: '[name].bundle.js'
   },
-  plugins
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendor',
+          chunks: 'all'
+        }
+      }
+    }
+  }
 }
 `
 export const backendWithFrontendStylelintrc = `{
@@ -1161,31 +1135,14 @@ export const electronScriptsTsconfigJson = `{
   }
 }
 `
-export const electronScriptsWebpackConfigJs = `const webpack = require('webpack')
-
-module.exports = {
+export const electronScriptsWebpackConfigJs = `module.exports = {
   entry: {
     index: './scripts/index'
   },
   output: {
     path: __dirname,
     filename: '[name].bundle.js'
-  },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('production')
-      }
-    }),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      output: {
-        comments: false
-      },
-      exclude: [
-      ]
-    })
-  ]
+  }
 }
 `
 export const electronSpecIndexSpecTs = `it('', () => {
@@ -1242,18 +1199,7 @@ export const electronStaticSpecTsconfigJson = `{
   }
 }
 `
-export const electronStaticSpecWebpackConfigJs = `const webpack = require('webpack')
-
-module.exports = {
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('production')
-      }
-    }),
-    new webpack.NoEmitOnErrorsPlugin()
-  ]
-}
+export const electronStaticSpecWebpackConfigJs = `module.exports = {}
 `
 export const electronStylelintrc = `{
   "extends": "stylelint-config-standard"
@@ -1634,18 +1580,7 @@ export const frontendSpecTsconfigJson = `{
   }
 }
 `
-export const frontendSpecWebpackConfigJs = `const webpack = require('webpack')
-
-module.exports = {
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('production')
-      }
-    }),
-    new webpack.NoEmitOnErrorsPlugin()
-  ]
-}
+export const frontendSpecWebpackConfigJs = `module.exports = {}
 `
 export const frontendStylelintrc = `{
   "extends": "stylelint-config-standard"
@@ -1728,40 +1663,25 @@ export const frontendTslintJson = `{
   "extends": "tslint-config-standard"
 }
 `
-export const frontendVendorTs = `import 'vue'
-import 'vue-class-component'
-`
-export const frontendWebpackConfigJs = `const webpack = require('webpack')
-
-const plugins = [
-  new webpack.DefinePlugin({
-    'process.env': {
-      'NODE_ENV': JSON.stringify('production')
-    }
-  }),
-  new webpack.NoEmitOnErrorsPlugin(),
-  new webpack.optimize.UglifyJsPlugin({
-    output: {
-      comments: false
-    },
-    exclude: [
-    ]
-  }),
-  new webpack.optimize.CommonsChunkPlugin({
-    name: ['index', 'vendor']
-  })
-]
-
-module.exports = {
+export const frontendWebpackConfigJs = `module.exports = {
   entry: {
-    index: './index',
-    vendor: './vendor'
+    index: './index'
   },
   output: {
     path: __dirname,
     filename: '[name].bundle.js'
   },
-  plugins
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendor',
+          chunks: 'all'
+        }
+      }
+    }
+  }
 }
 `
 export const libraryAppveyorYml = `environment:
@@ -2187,29 +2107,12 @@ enableProdMode()
 
 platformBrowser().bootstrapModuleFactory(MainModuleNgFactory)
 `
-export const uiComponentPackagesAngularDemoAotWebpackConfigJs = `const webpack = require('webpack')
-
-module.exports = {
+export const uiComponentPackagesAngularDemoAotWebpackConfigJs = `module.exports = {
   entry: './packages/angular/demo/aot/index',
   output: {
     path: __dirname,
     filename: 'index.bundle.js'
-  },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('production')
-      }
-    }),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      output: {
-        comments: false
-      },
-      exclude: [
-      ]
-    })
-  ]
+  }
 }
 `
 export const uiComponentPackagesAngularDemoJitIndexEjsHtml = `<!DOCTYPE html>
@@ -2239,29 +2142,12 @@ enableProdMode()
 
 platformBrowserDynamic().bootstrapModule(MainModule)
 `
-export const uiComponentPackagesAngularDemoJitWebpackConfigJs = `const webpack = require('webpack')
-
-module.exports = {
+export const uiComponentPackagesAngularDemoJitWebpackConfigJs = `module.exports = {
   entry: './packages/angular/demo/jit/index',
   output: {
     path: __dirname,
     filename: 'index.bundle.js'
-  },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('production')
-      }
-    }),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      output: {
-        comments: false
-      },
-      exclude: [
-      ]
-    })
-  ]
+  }
 }
 `
 export const uiComponentPackagesAngularDemoMainComponentTs = `import { Component } from '@angular/core'
@@ -2500,29 +2386,12 @@ export const uiComponentPackagesReactDemoTsconfigJson = `{
   "extends": "../../tsconfig.json"
 }
 `
-export const uiComponentPackagesReactDemoWebpackConfigJs = `const webpack = require('webpack')
-
-module.exports = {
+export const uiComponentPackagesReactDemoWebpackConfigJs = `module.exports = {
   entry: './packages/react/demo/index',
   output: {
     path: __dirname,
     filename: 'index.bundle.js'
-  },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('production')
-      }
-    }),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      output: {
-        comments: false
-      },
-      exclude: [
-      ]
-    })
-  ]
+  }
 }
 `
 export const uiComponentPackagesReactPackageJson = `{
@@ -2633,29 +2502,12 @@ export const uiComponentPackagesVueDemoTsconfigJson = `{
   "extends": "../../tsconfig.json"
 }
 `
-export const uiComponentPackagesVueDemoWebpackConfigJs = `const webpack = require('webpack')
-
-module.exports = {
+export const uiComponentPackagesVueDemoWebpackConfigJs = `module.exports = {
   entry: './packages/vue/demo/index',
   output: {
     path: __dirname,
     filename: 'index.bundle.js'
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('production')
-      }
-    }),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      output: {
-        comments: false
-      },
-      exclude: [
-      ]
-    })
-  ],
   resolve: {
     alias: {
       'vue\$': 'vue/dist/vue.esm.js'
@@ -2952,18 +2804,7 @@ it('renders without crashing', () => {
   app.destroy()
 })
 `
-export const uiComponentSpecWebpackConfigJs = `const webpack = require('webpack')
-
-module.exports = {
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('production')
-      }
-    }),
-    new webpack.NoEmitOnErrorsPlugin()
-  ]
-}
+export const uiComponentSpecWebpackConfigJs = `module.exports = {}
 `
 export const uiComponentStylelintrc = `{
   "extends": "stylelint-config-standard"

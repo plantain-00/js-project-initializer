@@ -14,7 +14,7 @@ export async function runFrontend (context: libs.Context) {
   await libs.exec(`yarn add -DE vue vue-class-component`)
   await libs.exec(`yarn add -DE clean-css-cli`)
   await libs.exec(`yarn add -DE file2variable-cli`)
-  await libs.exec(`yarn add -DE webpack`)
+  await libs.exec(`yarn add -DE webpack webpack-cli`)
   await libs.exec(`yarn add -DE rev-static`)
   await libs.exec(`yarn add -DE sw-precache uglify-js@^2.8`)
   await libs.exec(`yarn add -DE standard`)
@@ -28,7 +28,6 @@ export async function runFrontend (context: libs.Context) {
 
   await libs.writeFile(`index.ts`, variables.frontendIndexTs)
   await libs.writeFile(`index.template.html`, variables.frontendIndexTemplateHtml)
-  await libs.writeFile(`vendor.ts`, variables.frontendVendorTs)
   await libs.writeFile(`tsconfig.json`, variables.frontendTsconfigJson)
   await libs.appendFile('README.md', variables.frontendReadmeMd
     .replace(/AUTHOR/g, context.author)
