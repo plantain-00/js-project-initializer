@@ -1654,8 +1654,7 @@ export const frontendTsconfigJson = `{
   },
   "files": [
     "index.ts",
-    "variables.ts",
-    "vendor.ts"
+    "variables.ts"
   ]
 }
 `
