@@ -1976,11 +1976,13 @@ module.exports = {
           vue: [
             vueTemplateCommand,
             tscVueSrcCommand,
+            \`rollup --config packages/vue/src/rollup.config.js\`,
             tscVueDemoCommand,
             webpackVueCommand
           ],
           react: [
             tscReactSrcCommand,
+            \`rollup --config packages/react/src/rollup.config.js\`,
             tscReactDemoCommand,
             webpackReactCommand
           ],
@@ -2445,6 +2447,28 @@ export class ComponentTypeName extends React.Component<{
   }
 }
 `
+export const uiComponentPackagesReactSrcRollupConfigJs = `import uglify from 'rollup-plugin-uglify'
+import resolve from 'rollup-plugin-node-resolve'
+import commonjs from 'rollup-plugin-commonjs'
+
+export default {
+  input: 'packages/react/dist/index.js',
+  name: 'ComponentTypeName',
+  plugins: [
+    resolve(),
+    uglify(),
+    commonjs()
+  ],
+  output: {
+    file: 'packages/react/dist/COMPONENT_SHORT_NAME-react-component.min.js',
+    format: 'umd'
+  },
+  external: [
+    'react',
+    'react-dom'
+  ]
+}
+`
 export const uiComponentPackagesReactSrcTsconfigJson = `{
   "extends": "../../tsconfig.json",
   "compilerOptions": {
@@ -2580,6 +2604,31 @@ class ComponentTypeName extends Vue {
 
 Vue.component('COMPONENT_SHORT_NAME', ComponentTypeName)
 `
+export const uiComponentPackagesVueSrcRollupConfigJs = `import uglify from 'rollup-plugin-uglify'
+import resolve from 'rollup-plugin-node-resolve'
+import commonjs from 'rollup-plugin-commonjs'
+
+export default {
+  input: 'packages/vue/dist/index.js',
+  name: 'ComponentTypeName',
+  plugins: [
+    resolve(),
+    uglify(),
+    commonjs()
+  ],
+  output: {
+    file: 'packages/vue/dist/COMPONENT_SHORT_NAME-vue-component.min.js',
+    format: 'umd'
+  },
+  external: [
+    'vue',
+    'vue-class-component'
+  ],
+  globals: {
+    'vue-class-component': 'VueClassComponent'
+  }
+}
+`
 export const uiComponentPackagesVueSrcTsconfigJson = `{
   "extends": "../../tsconfig.json",
   "compilerOptions": {
@@ -2623,6 +2672,14 @@ export const uiComponentReadmeMd = `
 import "COMPONENT_SHORT_NAME-vue-component";
 \`\`\`
 
+or
+
+\`\`\`html
+<script src="./node_modules/vue/dist/vue.min.js"></script>
+<script src="./node_modules/vue-class-component/dist/vue-class-component.min.js"></script>
+<script src="./node_modules/COMPONENT_SHORT_NAME-vue-component/dist/COMPONENT_SHORT_NAME-vue-component.min.js"></script>
+\`\`\`
+
 \`\`\`html
 <COMPONENT_SHORT_NAME :data="data">
 </COMPONENT_SHORT_NAME>
@@ -2636,6 +2693,14 @@ the online demo: <https://AUTHOR.github.io/REPOSITORY_NAME/packages/vue/demo>
 
 \`\`\`ts
 import { COMPONENT_TYPE_NAME } from "COMPONENT_SHORT_NAME-react-component";
+\`\`\`
+
+or
+
+\`\`\`html
+<script src="./node_modules/react/umd/react.production.min.js"></script>
+<script src="./node_modules/react-dom/umd/react-dom.production.min.js"></script>
+<script src="./node_modules/COMPONENT_SHORT_NAME-react-component/dist/COMPONENT_SHORT_NAME-react-component.min.js"></script>
 \`\`\`
 
 \`\`\`jsx

@@ -40,6 +40,7 @@ export async function runUIComponent (context: libs.Context) {
   await libs.exec(`yarn add -DE puppeteer @types/puppeteer`)
   await libs.exec(`yarn add -DE autoprefixer postcss-cli`)
   await libs.exec(`yarn add -DE react-test-renderer @types/react-test-renderer react vue-test-utils`)
+  await libs.exec(`yarn add -DE rollup rollup-plugin-commonjs rollup-plugin-node-resolve rollup-plugin-uglify`)
 
   await libs.exec(`lerna init`)
 
@@ -73,6 +74,9 @@ export async function runUIComponent (context: libs.Context) {
     .replace(/ComponentTypeName/g, context.componentTypeName)
     .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName))
   await libs.writeFile(`packages/react/src/tsconfig.json`, variables.uiComponentPackagesReactSrcTsconfigJson)
+  await libs.writeFile(`packages/react/src/rollup.config.js`, variables.uiComponentPackagesReactSrcRollupConfigJs
+    .replace(/ComponentTypeName/g, context.componentTypeName)
+    .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName))
 
   await libs.writeFile(`packages/react/package.json`, variables.uiComponentPackagesReactPackageJson
     .replace(/component-short-name/g, context.componentShortName)
@@ -100,6 +104,9 @@ export async function runUIComponent (context: libs.Context) {
   await libs.writeFile(`packages/vue/src/tsconfig.json`, variables.uiComponentPackagesVueSrcTsconfigJson)
   await libs.writeFile(`packages/vue/src/file2variable.config.js`, variables.uiComponentPackagesVueSrcFile2variableConfigJs
     .replace(/COMPONENT_TYPE_NAME/g, context.componentTypeName))
+  await libs.writeFile(`packages/react/src/rollup.config.js`, variables.uiComponentPackagesVueSrcRollupConfigJs
+    .replace(/ComponentTypeName/g, context.componentTypeName)
+    .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName))
 
   await libs.writeFile(`packages/vue/package.json`, variables.uiComponentPackagesVuePackageJson
     .replace(/component-short-name/g, context.componentShortName)

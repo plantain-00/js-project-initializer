@@ -27,6 +27,14 @@
 import "COMPONENT_SHORT_NAME-vue-component";
 ```
 
+or
+
+```html
+<script src="./node_modules/vue/dist/vue.min.js"></script>
+<script src="./node_modules/vue-class-component/dist/vue-class-component.min.js"></script>
+<script src="./node_modules/COMPONENT_SHORT_NAME-vue-component/dist/COMPONENT_SHORT_NAME-vue-component.min.js"></script>
+```
+
 ```html
 <COMPONENT_SHORT_NAME :data="data">
 </COMPONENT_SHORT_NAME>
@@ -40,6 +48,14 @@ the online demo: <https://AUTHOR.github.io/REPOSITORY_NAME/packages/vue/demo>
 
 ```ts
 import { COMPONENT_TYPE_NAME } from "COMPONENT_SHORT_NAME-react-component";
+```
+
+or
+
+```html
+<script src="./node_modules/react/umd/react.production.min.js"></script>
+<script src="./node_modules/react-dom/umd/react-dom.production.min.js"></script>
+<script src="./node_modules/COMPONENT_SHORT_NAME-react-component/dist/COMPONENT_SHORT_NAME-react-component.min.js"></script>
 ```
 
 ```jsx
