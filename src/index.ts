@@ -129,7 +129,7 @@ async function getContext (): Promise<libs.Context> {
 }
 
 async function selectProjectKind () {
-  const projectKindAnswer = await libs.inquirer.prompt({
+  const projectKindAnswer = await libs.inquirer.prompt<{ projectKind: libs.ProjectKind }>({
     type: 'list',
     name: 'projectKind',
     message: 'Which kind of project?',

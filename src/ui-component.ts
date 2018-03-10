@@ -2,7 +2,7 @@ import * as libs from './libs'
 import * as variables from './variables'
 
 export async function runUIComponent (context: libs.Context) {
-  const answer = await libs.inquirer.prompt({
+  const answer = await libs.inquirer.prompt<{ options: string[] }>({
     type: 'checkbox',
     name: 'options',
     message: 'Choose options:',
@@ -12,7 +12,7 @@ export async function runUIComponent (context: libs.Context) {
       'angular'
     ]
   })
-  const options: string[] = answer.options
+  const options = answer.options
 
   const hasAngularChoice = options.some(o => o === 'angular')
 
