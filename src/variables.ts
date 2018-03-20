@@ -2400,6 +2400,9 @@ export const uiComponentPackagesReactPackageJson = `{
   "version": "1.0.0",
   "description": "DESCRIPTION",
   "main": "dist/index.js",
+  "module": "dist/index.js",
+  "unpkg": "dist/component-short-name-react-component.min.js",
+  "jsdelivr": "dist/component-short-name-react-component.min.js",
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
@@ -2428,7 +2431,8 @@ export const uiComponentPackagesReactPackageJson = `{
     "react-dom": "16",
     "REPOSITORY_NAME": "^1.0.0"
   }
-}`
+}
+`
 export const uiComponentPackagesReactSrcIndexTsx = `import * as React from 'react'
 import * as common from 'REPOSITORY_NAME'
 export * from 'REPOSITORY_NAME'
@@ -2543,6 +2547,9 @@ export const uiComponentPackagesVuePackageJson = `{
   "version": "1.0.0",
   "description": "DESCRIPTION",
   "main": "dist/index.js",
+  "module": "dist/index.js",
+  "unpkg": "dist/component-short-name-vue-component.min.js",
+  "jsdelivr": "dist/component-short-name-vue-component.min.js",
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
@@ -2567,7 +2574,8 @@ export const uiComponentPackagesVuePackageJson = `{
     "vue-class-component": "6",
     "REPOSITORY_NAME": "^1.0.0"
   }
-}`
+}
+`
 export const uiComponentPackagesVueSrcFile2variableConfigJs = `module.exports = {
   base: 'packages/vue/src/',
   files: [

@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "DESCRIPTION",
   "main": "dist/index.js",
+  "module": "dist/index.js",
+  "unpkg": "dist/component-short-name-vue-component.min.js",
+  "jsdelivr": "dist/component-short-name-vue-component.min.js",
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
