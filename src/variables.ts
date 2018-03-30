@@ -800,7 +800,7 @@ export const cliSpecTsconfigJson = `{
   }
 }
 `
-export const cliSrcIndexTs = `import * as minimist from 'minimist'
+export const cliSrcIndexTs = `import minimist from 'minimist'
 import * as packageJson from '../package.json'
 
 let suppressError = false
