@@ -30,6 +30,7 @@ export const backendCleanReleaseConfigJs = `module.exports = {
   ],
   exclude: [
   ],
+  askVersion: true,
   releaseRepository: 'https://github.com/AUTHOR/REPOSITORY_NAME-release.git',
   postScript: [
     'cd "[dir]" && rm -rf .git',
@@ -234,6 +235,7 @@ export const backendWithFrontendCleanReleaseConfigJs = `module.exports = {
   ],
   exclude: [
   ],
+  askVersion: true,
   releaseRepository: 'https://github.com/AUTHOR/REPOSITORY_NAME-release.git',
   postScript: [
     'cd "[dir]" && rm -rf .git',
@@ -713,7 +715,7 @@ export const cliCleanReleaseConfigJs = `module.exports = {
   postScript: [
     'npm publish "[dir]" --access public',
     'git add package.json',
-    'git commit -m "v[version]"',
+    'git commit -m "[version]"',
     'git tag v[version]',
     'git push',
     'git push origin v[version]'
@@ -940,7 +942,7 @@ module.exports = {
   changesGitStaged: true,
   postScript: [
     'git add package.json',
-    'git commit -m "v[version]"',
+    'git commit -m "[version]"',
     'git tag v[version]',
     'git push',
     'git push origin v[version]',
@@ -1714,7 +1716,7 @@ export const libraryCleanReleaseConfigJs = `module.exports = {
   postScript: [
     'npm publish "[dir]" --access public',
     'git add package.json',
-    'git commit -m "v[version]"',
+    'git commit -m "[version]"',
     'git tag v[version]',
     'git push',
     'git push origin v[version]'
@@ -2073,12 +2075,7 @@ export const uiComponentLernaJson = `{
     "packages/*"
   ],
   "version": "1.0.0",
-  "npmClient": "yarn",
-  "command": {
-    "publish": {
-      "message": "feat: publish %s"
-    }
-  }
+  "npmClient": "yarn"
 }
 `
 export const uiComponentPackagesAngularDemoAotIndexEjsHtml = `<!DOCTYPE html>
