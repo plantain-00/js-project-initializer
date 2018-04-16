@@ -39,9 +39,7 @@ export const backendCleanReleaseConfigJs = `module.exports = {
   ]
 }
 `
-export const backendCleanScriptsConfigJs = `const { checkGitStatus } = require('clean-scripts')
-
-const tsFiles = \`"src/**/*.ts" "spec/**/*.ts" "test/**/*.ts"\`
+export const backendCleanScriptsConfigJs = `const tsFiles = \`"src/**/*.ts" "spec/**/*.ts" "test/**/*.ts"\`
 const jsFiles = \`"*.config.js"\`
 
 const tscSrcCommand = 'tsc -p src/'
@@ -60,8 +58,7 @@ module.exports = {
   },
   test: [
     'tsc -p spec',
-    'jasmine',
-    () => checkGitStatus()
+    'jasmine'
   ],
   fix: {
     ts: \`tslint --fix \${tsFiles}\`,
@@ -957,7 +954,7 @@ module.exports = {
   ]
 }
 `
-export const electronCleanScriptsConfigJs = `const { checkGitStatus, executeScriptAsync } = require('clean-scripts')
+export const electronCleanScriptsConfigJs = `const { executeScriptAsync } = require('clean-scripts')
 const { watch } = require('watch-then-execute')
 
 const tsFiles = \`"src/**/*.ts" "scripts/**/*.ts" "spec/**/*.ts" "static_spec/**/*.ts"\`
@@ -1001,8 +998,7 @@ module.exports = {
     karma: [
       'tsc -p static_spec',
       'karma start static_spec/karma.config.js'
-    ],
-    consistence: () => checkGitStatus()
+    ]
   },
   fix: {
     ts: \`tslint --fix \${tsFiles}\`,
@@ -1733,9 +1729,7 @@ export const libraryCleanReleaseConfigJs = `module.exports = {
   ]
 }
 `
-export const libraryCleanScriptsConfigJs = `const { checkGitStatus } = require('clean-scripts')
-
-const tsFiles = \`"src/**/*.ts" "spec/**/*.ts"\`
+export const libraryCleanScriptsConfigJs = `const tsFiles = \`"src/**/*.ts" "spec/**/*.ts"\`
 const jsFiles = \`"*.config.js"\`
 
 module.exports = {
@@ -1759,8 +1753,7 @@ module.exports = {
   },
   test: [
     'tsc -p spec',
-    'jasmine',
-    () => checkGitStatus()
+    'jasmine'
   ],
   fix: {
     ts: \`tslint --fix \${tsFiles}\`,
@@ -2026,8 +2019,7 @@ module.exports = {
   },
   test: [
     'tsc -p spec',
-    'karma start spec/karma.config.js',
-    () => checkGitStatus()
+    'karma start spec/karma.config.js'
   ],
   fix: {
     ts: \`tslint --fix \${tsFiles} --exclude \${excludeTsFiles}\`,
