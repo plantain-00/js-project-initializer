@@ -1934,7 +1934,7 @@ build: off
 `
 export const uiComponentBrowserslistrc = `last 2 Chrome versions
 `
-export const uiComponentCleanScriptsConfigJs = `const { Service, checkGitStatus, executeScriptAsync } = require('clean-scripts')
+export const uiComponentCleanScriptsConfigJs = `const { Service, executeScriptAsync } = require('clean-scripts')
 const { watch } = require('watch-then-execute')
 
 const tsFiles = \`"packages/@(core|vue|react|angular)/@(src|demo)/**/*.@(ts|tsx)" "spec/**/*.ts" "screenshots/**/*.ts"\`
@@ -1968,6 +1968,8 @@ const cssCommand = [
   \`cleancss packages/core/dist/COMPONENT_SHORT_NAME.min.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css -o packages/core/demo/index.bundle.css\`
 ]
 
+const isDev = process.env.NODE_ENV === 'development'
+
 module.exports = {
   build: [
     {
@@ -1978,13 +1980,13 @@ module.exports = {
           vue: [
             vueTemplateCommand,
             tscVueSrcCommand,
-            \`rollup --config packages/vue/src/rollup.config.js\`,
+            isDev ? undefined : \`rollup --config packages/vue/src/rollup.config.js\`,
             tscVueDemoCommand,
             webpackVueCommand
           ],
           react: [
             tscReactSrcCommand,
-            \`rollup --config packages/react/src/rollup.config.js\`,
+            isDev ? undefined : \`rollup --config packages/react/src/rollup.config.js\`,
             tscReactDemoCommand,
             webpackReactCommand
           ],
@@ -1993,7 +1995,7 @@ module.exports = {
             tscAngularSrcCommand,
             tscAngularDemoCommand,
             {
-              webpackAngularJitCommand,
+              webpackAngularJitCommand: isDev ? undefined : webpackAngularJitCommand,
               webpackAngularAotCommand
             }
           ]
@@ -2106,6 +2108,7 @@ enableProdMode()
 platformBrowser().bootstrapModuleFactory(MainModuleNgFactory)
 `
 export const uiComponentPackagesAngularDemoAotWebpackConfigJs = `module.exports = {
+  mode: process.env.NODE_ENV,
   entry: './packages/angular/demo/aot/index',
   output: {
     path: __dirname,
@@ -2141,6 +2144,7 @@ enableProdMode()
 platformBrowserDynamic().bootstrapModule(MainModule)
 `
 export const uiComponentPackagesAngularDemoJitWebpackConfigJs = `module.exports = {
+  mode: process.env.NODE_ENV,
   entry: './packages/angular/demo/jit/index',
   output: {
     path: __dirname,
@@ -2385,6 +2389,7 @@ export const uiComponentPackagesReactDemoTsconfigJson = `{
 }
 `
 export const uiComponentPackagesReactDemoWebpackConfigJs = `module.exports = {
+  mode: process.env.NODE_ENV,
   entry: './packages/react/demo/index',
   output: {
     path: __dirname,
@@ -2527,6 +2532,7 @@ export const uiComponentPackagesVueDemoTsconfigJson = `{
 }
 `
 export const uiComponentPackagesVueDemoWebpackConfigJs = `module.exports = {
+  mode: process.env.NODE_ENV,
   entry: './packages/vue/demo/index',
   output: {
     path: __dirname,
@@ -2904,6 +2910,14 @@ addons:
       - g++-4.8
       - libnss3
   firefox: latest
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: \$GITHUB_TOKEN
+  keep-history: true
+  on:
+    branch: master
 `
 export const uiComponentTsconfigBaseJson = `{
   "compilerOptions": {

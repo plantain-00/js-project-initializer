@@ -190,6 +190,7 @@ export async function runUIComponent (context: libs.Context) {
     scripts: {
       bootstrap: 'lerna bootstrap -- --frozen-lockfile',
       build: `clean-scripts build`,
+      "dev": "export NODE_ENV=development && clean-scripts build",
       lint: `clean-scripts lint`,
       test: 'clean-scripts test',
       fix: `clean-scripts fix`,
