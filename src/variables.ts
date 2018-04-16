@@ -1295,12 +1295,14 @@ build: off
 `
 export const frontendBrowserslistrc = `last 2 Chrome versions
 `
-export const frontendCleanScriptsConfigJs = `const { Service, checkGitStatus, executeScriptAsync } = require('clean-scripts')
+export const frontendCleanScriptsConfigJs = `const { Service, executeScriptAsync } = require('clean-scripts')
 const { watch } = require('watch-then-execute')
 
 const tsFiles = \`"*.ts" "spec/**/*.ts" "screenshots/**/*.ts" "prerender/**/*.ts"\`
 const jsFiles = \`"*.config.js" "spec/**/*.config.js"\`
 const lessFiles = \`"*.less"\`
+
+const isDev = process.env.NODE_ENV === 'development'
 
 const templateCommand = 'file2variable-cli --config file2variable.config.js'
 const tscCommand = 'tsc'
@@ -1311,7 +1313,7 @@ const cssCommand = [
   'postcss index.css -o index.postcss.css',
   'cleancss -o index.bundle.css index.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css'
 ]
-const swCommand = [
+const swCommand = isDev ? undefined : [
   'sw-precache --config sw-precache.config.js --verbose',
   'uglifyjs service-worker.js -o service-worker.bundle.js'
 ]
@@ -1340,8 +1342,7 @@ module.exports = {
   },
   test: [
     'tsc -p spec',
-    'karma start spec/karma.config.js',
-    () => checkGitStatus()
+    'karma start spec/karma.config.js'
   ],
   fix: {
     ts: \`tslint --fix \${tsFiles}\`,
@@ -1619,6 +1620,14 @@ addons:
       - g++-4.8
       - libnss3
   firefox: latest
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: \$GITHUB_TOKEN
+  keep-history: true
+  on:
+    branch: master
 `
 export const frontendTsconfigBaseJson = `{
   "compilerOptions": {
@@ -1665,6 +1674,7 @@ export const frontendTslintJson = `{
 }
 `
 export const frontendWebpackConfigJs = `module.exports = {
+  mode: process.env.NODE_ENV,
   entry: {
     index: './index'
   },
