@@ -596,6 +596,7 @@ export const backendWithFrontendStaticTsconfigJson = `{
 }
 `
 export const backendWithFrontendStaticWebpackConfigJs = `module.exports = {
+  mode: process.env.NODE_ENV,
   entry: {
     index: './static/index'
   },

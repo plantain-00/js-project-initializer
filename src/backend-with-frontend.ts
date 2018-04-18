@@ -84,6 +84,7 @@ export async function runBackendWithFrontend (context: libs.Context) {
   return {
     scripts: {
       build: 'clean-scripts build',
+      dev: 'export NODE_ENV=development && clean-scripts build',
       lint: 'clean-scripts lint',
       test: 'clean-scripts test',
       fix: 'clean-scripts fix',
