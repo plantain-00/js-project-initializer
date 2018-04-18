@@ -39,6 +39,18 @@ export const backendCleanReleaseConfigJs = `module.exports = {
   ]
 }
 `
+export const backendCleanRunConfigJs = `module.exports = {
+  include: [
+    'dist/*.js',
+    'package.json'
+  ],
+  exclude: [
+  ],
+  postScript: [
+    'cd "[dir]" && npm i --production && node dist/index.js'
+  ]
+}
+`
 export const backendCleanScriptsConfigJs = `const tsFiles = \`"src/**/*.ts" "spec/**/*.ts" "test/**/*.ts"\`
 const jsFiles = \`"*.config.js"\`
 
@@ -238,6 +250,18 @@ export const backendWithFrontendCleanReleaseConfigJs = `module.exports = {
     'cd "[dir]" && rm -rf .git',
     'cp Dockerfile "[dir]"',
     'cd "[dir]" && docker build -t AUTHOR/REPOSITORY_NAME . && docker push AUTHOR/REPOSITORY_NAME'
+  ]
+}
+`
+export const backendWithFrontendCleanRunConfigJs = `module.exports = {
+  include: [
+    'dist/*.js',
+    'package.json'
+  ],
+  exclude: [
+  ],
+  postScript: [
+    'cd "[dir]" && npm i --production && node dist/index.js'
   ]
 }
 `

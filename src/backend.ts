@@ -29,6 +29,7 @@ export async function runBackend (context: libs.Context) {
     .replace(/REPOSITORY_NAME/g, context.repositoryName))
   await libs.writeFile('clean-scripts.config.js', variables.backendCleanScriptsConfigJs)
   await libs.writeFile('Dockerfile', variables.backendDockerfile)
+  await libs.writeFile('clean-run.config.js', variables.backendCleanRunConfigJs)
 
   await libs.mkdir('spec')
   await libs.writeFile('spec/tsconfig.json', variables.backendSpecTsconfigJson)
@@ -37,6 +38,7 @@ export async function runBackend (context: libs.Context) {
   return {
     scripts: {
       build: 'clean-scripts build',
+      'test:run': 'clean-release --config clean-run.config.js',
       lint: 'clean-scripts lint',
       test: 'clean-scripts test',
       fix: 'clean-scripts fix',

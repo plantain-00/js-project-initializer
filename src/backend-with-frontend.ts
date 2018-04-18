@@ -61,6 +61,7 @@ export async function runBackendWithFrontend (context: libs.Context) {
   await libs.writeFile('.browserslistrc', variables.backendWithFrontendBrowserslistrc)
   await libs.writeFile('postcss.config.js', variables.backendWithFrontendPostcssConfigJs)
   await libs.writeFile('Dockerfile', variables.backendWithFrontendDockerfile)
+  await libs.writeFile('clean-run.config.js', variables.backendWithFrontendCleanRunConfigJs)
 
   await libs.mkdir('spec')
   await libs.writeFile('spec/tsconfig.json', variables.backendWithFrontendSpecTsconfigJson)
@@ -84,6 +85,7 @@ export async function runBackendWithFrontend (context: libs.Context) {
   return {
     scripts: {
       build: 'clean-scripts build',
+      'test:run': 'clean-release --config clean-run.config.js',
       dev: 'export NODE_ENV=development && clean-scripts build',
       lint: 'clean-scripts lint',
       test: 'clean-scripts test',
