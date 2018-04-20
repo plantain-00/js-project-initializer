@@ -42,12 +42,13 @@ export const backendCleanReleaseConfigJs = `module.exports = {
 export const backendCleanRunConfigJs = `module.exports = {
   include: [
     'dist/*.js',
-    'package.json'
+    'package.json',
+    'yarn.lock'
   ],
   exclude: [
   ],
   postScript: [
-    'cd "[dir]" && npm i --production && node dist/index.js'
+    'cd "[dir]" && yarn --production && node dist/index.js'
   ]
 }
 `
@@ -256,12 +257,13 @@ export const backendWithFrontendCleanReleaseConfigJs = `module.exports = {
 export const backendWithFrontendCleanRunConfigJs = `module.exports = {
   include: [
     'dist/*.js',
-    'package.json'
+    'package.json',
+    'yarn.lock'
   ],
   exclude: [
   ],
   postScript: [
-    'cd "[dir]" && npm i --production && node dist/index.js'
+    'cd "[dir]" && yarn --production && node dist/index.js'
   ]
 }
 `
