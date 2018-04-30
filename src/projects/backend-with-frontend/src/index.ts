@@ -1,4 +1,4 @@
-function printInConsole (message: any) {
+function printInConsole(message: any) {
   console.log(message)
 }
 

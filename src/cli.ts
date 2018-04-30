@@ -1,7 +1,7 @@
 import * as libs from './libs'
 import * as variables from './variables'
 
-export async function runCLI (context: libs.Context) {
+export async function runCLI(context: libs.Context) {
   await libs.appendFile('.gitignore', variables.cliGitignore)
   await libs.appendFile('tslint.json', variables.cliTslintJson)
   await libs.appendFile('.editorconfig', variables.cliEditorconfig)

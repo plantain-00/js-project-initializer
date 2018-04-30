@@ -1,7 +1,7 @@
 import * as libs from './libs'
 import * as variables from './variables'
 
-export async function runLibrary (context: libs.Context) {
+export async function runLibrary(context: libs.Context) {
   await libs.appendFile('.gitignore', variables.libraryGitignore)
   await libs.appendFile('tslint.json', variables.libraryTslintJson)
   await libs.appendFile('.editorconfig', variables.libraryEditorconfig)
@@ -23,9 +23,9 @@ export async function runLibrary (context: libs.Context) {
   await libs.writeFile(`src/tsconfig.browser.json`, variables.librarySrcTsconfigBrowserJson)
 
   await libs.appendFile('README.md', variables.libraryReadmeMd
-      .replace(/AUTHOR/g, context.author)
-      .replace(/REPOSITORY_NAME/g, context.repositoryName)
-      .replace(/ComponentTypeName/g, context.componentTypeName))
+    .replace(/AUTHOR/g, context.author)
+    .replace(/REPOSITORY_NAME/g, context.repositoryName)
+    .replace(/ComponentTypeName/g, context.componentTypeName))
   await libs.writeFile('.travis.yml', variables.libraryTravisYml)
   await libs.writeFile('appveyor.yml', variables.libraryAppveyorYml)
   await libs.writeFile('clean-release.config.js', variables.libraryCleanReleaseConfigJs)

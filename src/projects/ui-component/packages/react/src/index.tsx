@@ -8,7 +8,7 @@ export * from 'REPOSITORY_NAME'
 export class ComponentTypeName extends React.Component<{
   data: common.ComponentTypeNameData;
 }, {}> {
-  render () {
+  render() {
     return (
       <div className='COMPONENT_SHORT_NAME'>
       </div>

@@ -6,7 +6,7 @@ import upperCamelCase from 'uppercamelcase'
 
 export { inquirer, upperCamelCase }
 
-export function exec (command: string) {
+export function exec(command: string) {
   return new Promise<void>((resolve, reject) => {
     console.log(`${command}...`)
     const subProcess = childProcess.exec(command, (error, stdout, stderr) => {
@@ -21,20 +21,14 @@ export function exec (command: string) {
   })
 }
 
-export function writeFile (filename: string, data: string) {
+export function writeFile(filename: string, data: string) {
   return new Promise<void>((resolve, reject) => {
     console.log(`setting ${filename}...`)
-    fs.writeFile(filename, data, error => {
-      if (error) {
-        reject(error)
-      } else {
-        resolve()
-      }
-    })
+    fs.writeFile(filename, data, error => error ? reject(error) : resolve())
   })
 }
 
-export function readFile (filename: string) {
+export function readFile(filename: string) {
   return new Promise<string>((resolve, reject) => {
     fs.readFile(filename, 'utf8', (error, data) => {
       if (error) {
@@ -46,45 +40,33 @@ export function readFile (filename: string) {
   })
 }
 
-export function appendFile (filename: string, data: string) {
+export function appendFile(filename: string, data: string) {
   return new Promise<void>((resolve, reject) => {
     console.log(`setting ${filename}...`)
-    fs.appendFile(filename, data, error => {
-      if (error) {
-        reject(error)
-      } else {
-        resolve()
-      }
-    })
+    fs.appendFile(filename, data, error => error ? reject(error) : resolve())
   })
 }
 
-export function mkdir (dir: string) {
+export function mkdir(dir: string) {
   return new Promise<void>((resolve, reject) => {
-    mkdirp(dir, error => {
-      if (error) {
-        reject(error)
-      } else {
-        resolve()
-      }
-    })
+    mkdirp(dir, error => error ? reject(error) : resolve())
   })
 }
 
 export const enum ProjectKind {
-    CLI = 'CLI',
-    UIComponent = 'UI Component',
-    frontend = 'frontend',
-    backend = 'backend',
-    backendWithFrontend = 'backend with frontend',
-    library = 'library',
-    electron = 'electron'
+  CLI = 'CLI',
+  UIComponent = 'UI Component',
+  frontend = 'frontend',
+  backend = 'backend',
+  backendWithFrontend = 'backend with frontend',
+  library = 'library',
+  electron = 'electron'
 }
 
-export function getComponentShortName (componentName: string) {
+export function getComponentShortName(componentName: string) {
   return (componentName.endsWith('component') && componentName.length - 'component'.length - 1 > 0)
-        ? componentName.substring(0, componentName.length - 'component'.length - 1)
-        : componentName
+    ? componentName.substring(0, componentName.length - 'component'.length - 1)
+    : componentName
 }
 
 export type Context = {

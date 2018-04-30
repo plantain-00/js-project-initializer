@@ -12,5 +12,5 @@ electron.app.on('ready', () => {
   mainWindow.on('closed', () => {
     mainWindow = undefined
   })
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools()
 })

@@ -1,7 +1,7 @@
 import * as libs from './libs'
 import * as variables from './variables'
 
-export async function runFrontend (context: libs.Context) {
+export async function runFrontend(context: libs.Context) {
   await libs.appendFile('.gitignore', variables.frontendGitignore)
   await libs.appendFile('tslint.json', variables.frontendTslintJson)
   await libs.appendFile('.editorconfig', variables.frontendEditorconfig)

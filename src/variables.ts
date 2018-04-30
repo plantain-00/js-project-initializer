@@ -130,7 +130,7 @@ docker run -d -p \${port}:\${port} AUTHOR/REPOSITORY_NAME
 \`\`\`
 `
 export const backendSpecIndexSpecTs = `it('', () => {
-  // expect(true).toEqual(true);
+  expect(true).toEqual(true)
 })
 `
 export const backendSpecTsconfigJson = `{
@@ -211,7 +211,13 @@ export const backendTsconfigBaseJson = `{
 }
 `
 export const backendTslintJson = `{
-  "extends": "tslint-config-standard"
+  "extends": [
+    "tslint-config-standard",
+    "tslint-sonarts"
+  ],
+  "rules": {
+    "space-before-function-paren": [true, "never"]
+  }
 }
 `
 export const backendWithFrontendAppveyorYml = `environment:
@@ -390,7 +396,7 @@ export const backendWithFrontendPrerenderIndexHtml = ``
 export const backendWithFrontendPrerenderIndexTs = `import * as puppeteer from 'puppeteer'
 import * as fs from 'fs'
 
-(async () => {
+(async() => {
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
   await page.emulate({ viewport: { width: 1440, height: 900 }, userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36' })
@@ -433,7 +439,7 @@ docker run -d -p 8000:8000 AUTHOR/REPOSITORY_NAME
 `
 export const backendWithFrontendScreenshotsIndexTs = `import * as puppeteer from 'puppeteer'
 
-(async () => {
+(async() => {
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
   await page.emulate({ viewport: { width: 1440, height: 900 }, userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36' })
@@ -452,7 +458,7 @@ export const backendWithFrontendScreenshotsTsconfigJson = `{
 }
 `
 export const backendWithFrontendSpecIndexSpecTs = `it('', () => {
-  // expect(true).toEqual(true);
+  expect(true).toEqual(true)
 })
 `
 export const backendWithFrontendSpecTsconfigJson = `{
@@ -462,7 +468,7 @@ export const backendWithFrontendSpecTsconfigJson = `{
   }
 }
 `
-export const backendWithFrontendSrcIndexTs = `function printInConsole (message: any) {
+export const backendWithFrontendSrcIndexTs = `function printInConsole(message: any) {
   console.log(message)
 }
 
@@ -570,7 +576,7 @@ module.exports = {
 }
 `
 export const backendWithFrontendStaticSpecIndexSpecTs = `it('', () => {
-  // expect(true).toEqual(true);
+  expect(true).toEqual(true)
 })
 `
 export const backendWithFrontendStaticSpecKarmaConfigJs = `const webpackConfig = require('./webpack.config.js')
@@ -702,7 +708,13 @@ export const backendWithFrontendTsconfigBaseJson = `{
 }
 `
 export const backendWithFrontendTslintJson = `{
-  "extends": "tslint-config-standard"
+  "extends": [
+    "tslint-config-standard",
+    "tslint-sonarts"
+  ],
+  "rules": {
+    "space-before-function-paren": [true, "never"]
+  }
 }
 `
 export const cliAppveyorYml = `environment:
@@ -820,7 +832,7 @@ export const cliReadmeMd = `
 run \`REPOSITORY_NAME\`
 `
 export const cliSpecIndexSpecTs = `it('', () => {
-  // expect(true).toEqual(true);
+  expect(true).toEqual(true)
 })
 `
 export const cliSpecTsconfigJson = `{
@@ -835,11 +847,11 @@ import * as packageJson from '../package.json'
 
 let suppressError = false
 
-function showToolVersion () {
+function showToolVersion() {
   console.log(\`Version: \${packageJson.version}\`)
 }
 
-async function executeCommandLine () {
+async function executeCommandLine() {
   const argv = minimist(process.argv.slice(2), { '--': true })
 
   const showVersion = argv.v || argv.version
@@ -931,7 +943,13 @@ export const cliTsconfigBaseJson = `{
 }
 `
 export const cliTslintJson = `{
-  "extends": "tslint-config-standard"
+  "extends": [
+    "tslint-config-standard",
+    "tslint-sonarts"
+  ],
+  "rules": {
+    "space-before-function-paren": [true, "never"]
+  }
 }
 `
 export const electronAppveyorYml = `environment:
@@ -1099,7 +1117,7 @@ electron.app.on('ready', () => {
   mainWindow.on('closed', () => {
     mainWindow = undefined
   })
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools()
 })
 `
 export const electronPostcssConfigJs = `module.exports = {
@@ -1142,7 +1160,7 @@ export const electronScriptsIndexLess = `* {
   `
 export const electronScriptsIndexTemplateHtml = `<div>
 </div>`
-export const electronScriptsIndexTs = `// import * as electron from "electron";
+export const electronScriptsIndexTs = `import * as electron from 'electron'
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import { scriptsIndexTemplateHtml, scriptsIndexTemplateHtmlStatic } from './variables'
@@ -1175,7 +1193,7 @@ export const electronScriptsWebpackConfigJs = `module.exports = {
 }
 `
 export const electronSpecIndexSpecTs = `it('', () => {
-  // expect(true).toEqual(true);
+  expect(true).toEqual(true)
 })
 `
 export const electronSpecTsconfigJson = `{
@@ -1186,7 +1204,7 @@ export const electronSpecTsconfigJson = `{
 }
 `
 export const electronStaticSpecIndexSpecTs = `it('', () => {
-  // expect(true).toEqual(true);
+  expect(true).toEqual(true)
 })
 `
 export const electronStaticSpecKarmaConfigJs = `const webpackConfig = require('./webpack.config.js')
@@ -1301,7 +1319,13 @@ export const electronTsconfigJson = `{
 }
 `
 export const electronTslintJson = `{
-  "extends": "tslint-config-standard"
+  "extends": [
+    "tslint-config-standard",
+    "tslint-sonarts"
+  ],
+  "rules": {
+    "space-before-function-paren": [true, "never"]
+  }
 }
 `
 export const frontendAppveyorYml = `environment:
@@ -1489,7 +1513,7 @@ export const frontendPrerenderIndexHtml = ``
 export const frontendPrerenderIndexTs = `import * as puppeteer from 'puppeteer'
 import * as fs from 'fs'
 
-(async () => {
+(async() => {
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
   await page.emulate({ viewport: { width: 1440, height: 900 }, userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36' })
@@ -1549,7 +1573,7 @@ module.exports = {
 `
 export const frontendScreenshotsIndexTs = `import * as puppeteer from 'puppeteer'
 
-(async () => {
+(async() => {
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
   await page.emulate({ viewport: { width: 1440, height: 900 }, userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36' })
@@ -1568,7 +1592,7 @@ export const frontendScreenshotsTsconfigJson = `{
 }
 `
 export const frontendSpecIndexSpecTs = `it('', () => {
-  // expect(true).toEqual(true);
+  expect(true).toEqual(true)
 })
 `
 export const frontendSpecKarmaConfigJs = `const webpackConfig = require('./webpack.config.js')
@@ -1697,7 +1721,13 @@ export const frontendTsconfigJson = `{
 }
 `
 export const frontendTslintJson = `{
-  "extends": "tslint-config-standard"
+  "extends": [
+    "tslint-config-standard",
+    "tslint-sonarts"
+  ],
+  "rules": {
+    "space-before-function-paren": [true, "never"]
+  }
 }
 `
 export const frontendWebpackConfigJs = `module.exports = {
@@ -1853,7 +1883,7 @@ export default {
 }
 `
 export const librarySpecIndexSpecTs = `it('', () => {
-  // expect(true).toEqual(true);
+  expect(true).toEqual(true)
 })
 `
 export const librarySpecTsconfigJson = `{
@@ -1950,7 +1980,13 @@ export const libraryTsconfigBaseJson = `{
 }
 `
 export const libraryTslintJson = `{
-  "extends": "tslint-config-standard"
+  "extends": [
+    "tslint-config-standard",
+    "tslint-sonarts"
+  ],
+  "rules": {
+    "space-before-function-paren": [true, "never"]
+  }
 }
 `
 export const uiComponentAppveyorYml = `environment:
@@ -2407,7 +2443,7 @@ import { componentTypeName, componentTypeNameData } from '../dist/'
 class Main extends React.Component<{}, {}> {
   private data: componentTypeNameData
 
-  render () {
+  render() {
     return (
       <div>
         <a href='https://github.com/AUTHOR/REPOSITORY_NAME/tree/master/packages/react/demo' target='_blank'>the source code of the demo</a>
@@ -2482,7 +2518,7 @@ export * from 'REPOSITORY_NAME'
 export class ComponentTypeName extends React.Component<{
   data: common.ComponentTypeNameData;
 }, {}> {
-  render () {
+  render() {
     return (
       <div className='COMPONENT_SHORT_NAME'>
       </div>
@@ -2817,7 +2853,7 @@ export const uiComponentRevStaticConfigJs = `module.exports = {
 `
 export const uiComponentScreenshotsIndexTs = `import * as puppeteer from 'puppeteer'
 
-(async () => {
+(async() => {
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
   await page.emulate({ viewport: { width: 1440, height: 900 }, userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36' })
@@ -2847,7 +2883,7 @@ export const uiComponentScreenshotsTsconfigJson = `{
 export const uiComponentSpecIndexSpecTs = `import '../packages/core/dist'
 
 it('', () => {
-  // expect(true).toEqual(true);
+  expect(true).toEqual(true)
 })
 `
 export const uiComponentSpecKarmaConfigJs = `const webpackConfig = require('./webpack.config.js')
@@ -2986,7 +3022,13 @@ export const uiComponentTsconfigBaseJson = `{
 }
 `
 export const uiComponentTslintJson = `{
-  "extends": "tslint-config-standard"
+  "extends": [
+    "tslint-config-standard",
+    "tslint-sonarts"
+  ],
+  "rules": {
+    "space-before-function-paren": [true, "never"]
+  }
 }
 `
 // tslint:enable

@@ -1,7 +1,7 @@
 import * as libs from './libs'
 import * as variables from './variables'
 
-export async function runElectron (context: libs.Context) {
+export async function runElectron(context: libs.Context) {
   await libs.appendFile('.gitignore', variables.electronGitignore)
   await libs.appendFile('tslint.json', variables.electronTslintJson)
   await libs.appendFile('.editorconfig', variables.electronEditorconfig)

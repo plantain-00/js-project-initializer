@@ -1,7 +1,7 @@
 import * as libs from './libs'
 import * as variables from './variables'
 
-export async function runUIComponent (context: libs.Context) {
+export async function runUIComponent(context: libs.Context) {
   const answer = await libs.inquirer.prompt<{ options: string[] }>({
     type: 'checkbox',
     name: 'options',
@@ -117,42 +117,7 @@ export async function runUIComponent (context: libs.Context) {
   await libs.writeFile(`packages/tsconfig.json`, variables.uiComponentPackagesTsconfigJson)
 
   if (hasAngularChoice) {
-    await libs.mkdir('packages/angular/demo/aot/')
-    await libs.writeFile(`packages/angular/demo/aot/index.ejs.html`, variables.uiComponentPackagesAngularDemoAotIndexEjsHtml)
-    await libs.writeFile(`packages/angular/demo/aot/index.ts`, variables.uiComponentPackagesAngularDemoAotIndexTs)
-    await libs.writeFile(`packages/angular/demo/aot/webpack.config.js`, variables.uiComponentPackagesAngularDemoAotWebpackConfigJs)
-
-    await libs.mkdir('packages/angular/demo/jit/')
-    await libs.writeFile(`packages/angular/demo/jit/index.ejs.html`, variables.uiComponentPackagesAngularDemoJitIndexEjsHtml)
-    await libs.writeFile(`packages/angular/demo/jit/index.ts`, variables.uiComponentPackagesAngularDemoJitIndexTs)
-    await libs.writeFile(`packages/angular/demo/jit/webpack.config.js`, variables.uiComponentPackagesAngularDemoJitWebpackConfigJs)
-
-    await libs.writeFile(`packages/angular/demo/main.component.ts`, variables.uiComponentPackagesAngularDemoMainComponentTs
-      .replace(/COMPONENT_TYPE_NAME/g, context.componentTypeName)
-      .replace(/AUTHOR/g, context.author)
-      .replace(/REPOSITORY_NAME/g, context.repositoryName)
-      .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName))
-    await libs.writeFile(`packages/angular/demo/main.module.ts`, variables.uiComponentPackagesAngularDemoMainModuleTs
-      .replace(/COMPONENT_TYPE_NAME/g, context.componentTypeName))
-    await libs.writeFile(`packages/angular/demo/tsconfig.json`, variables.uiComponentPackagesAngularDemoTsconfigJson)
-
-    await libs.mkdir('packages/angular/src/')
-    await libs.writeFile(`packages/angular/src/index.template.html`, variables.uiComponentPackagesAngularSrcIndexTemplateHtml
-      .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName))
-    await libs.writeFile(`packages/angular/src/index.ts`, variables.uiComponentPackagesAngularSrcIndexTs
-      .replace(/ComponentTypeName/g, context.componentTypeName)
-      .replace(/REPOSITORY_NAME/g, context.repositoryName))
-    await libs.writeFile(`packages/angular/src/index.component.ts`, variables.uiComponentPackagesAngularSrcIndexComponentTs
-      .replace(/ComponentTypeName/g, context.componentTypeName)
-      .replace(/REPOSITORY_NAME/g, context.repositoryName)
-      .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName))
-    await libs.writeFile(`packages/angular/src/tsconfig.json`, variables.uiComponentPackagesAngularSrcTsconfigJson)
-
-    await libs.writeFile(`packages/angular/package.json`, variables.uiComponentPackagesAngularPackageJson
-      .replace(/component-short-name/g, context.componentShortName)
-      .replace(/DESCRIPTION/g, context.description)
-      .replace(/AUTHOR/g, context.author)
-      .replace(/REPOSITORY_NAME/g, context.repositoryName))
+    await initializeAngularFiles(context)
   }
 
   await libs.writeFile(`rev-static.config.js`, variables.uiComponentRevStaticConfigJs)
@@ -202,4 +167,43 @@ export async function runUIComponent (context: libs.Context) {
     },
     private: true
   }
+}
+
+async function initializeAngularFiles(context: libs.Context) {
+  await libs.mkdir('packages/angular/demo/aot/')
+  await libs.writeFile(`packages/angular/demo/aot/index.ejs.html`, variables.uiComponentPackagesAngularDemoAotIndexEjsHtml)
+  await libs.writeFile(`packages/angular/demo/aot/index.ts`, variables.uiComponentPackagesAngularDemoAotIndexTs)
+  await libs.writeFile(`packages/angular/demo/aot/webpack.config.js`, variables.uiComponentPackagesAngularDemoAotWebpackConfigJs)
+
+  await libs.mkdir('packages/angular/demo/jit/')
+  await libs.writeFile(`packages/angular/demo/jit/index.ejs.html`, variables.uiComponentPackagesAngularDemoJitIndexEjsHtml)
+  await libs.writeFile(`packages/angular/demo/jit/index.ts`, variables.uiComponentPackagesAngularDemoJitIndexTs)
+  await libs.writeFile(`packages/angular/demo/jit/webpack.config.js`, variables.uiComponentPackagesAngularDemoJitWebpackConfigJs)
+
+  await libs.writeFile(`packages/angular/demo/main.component.ts`, variables.uiComponentPackagesAngularDemoMainComponentTs
+    .replace(/COMPONENT_TYPE_NAME/g, context.componentTypeName)
+    .replace(/AUTHOR/g, context.author)
+    .replace(/REPOSITORY_NAME/g, context.repositoryName)
+    .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName))
+  await libs.writeFile(`packages/angular/demo/main.module.ts`, variables.uiComponentPackagesAngularDemoMainModuleTs
+    .replace(/COMPONENT_TYPE_NAME/g, context.componentTypeName))
+  await libs.writeFile(`packages/angular/demo/tsconfig.json`, variables.uiComponentPackagesAngularDemoTsconfigJson)
+
+  await libs.mkdir('packages/angular/src/')
+  await libs.writeFile(`packages/angular/src/index.template.html`, variables.uiComponentPackagesAngularSrcIndexTemplateHtml
+    .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName))
+  await libs.writeFile(`packages/angular/src/index.ts`, variables.uiComponentPackagesAngularSrcIndexTs
+    .replace(/ComponentTypeName/g, context.componentTypeName)
+    .replace(/REPOSITORY_NAME/g, context.repositoryName))
+  await libs.writeFile(`packages/angular/src/index.component.ts`, variables.uiComponentPackagesAngularSrcIndexComponentTs
+    .replace(/ComponentTypeName/g, context.componentTypeName)
+    .replace(/REPOSITORY_NAME/g, context.repositoryName)
+    .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName))
+  await libs.writeFile(`packages/angular/src/tsconfig.json`, variables.uiComponentPackagesAngularSrcTsconfigJson)
+
+  await libs.writeFile(`packages/angular/package.json`, variables.uiComponentPackagesAngularPackageJson
+    .replace(/component-short-name/g, context.componentShortName)
+    .replace(/DESCRIPTION/g, context.description)
+    .replace(/AUTHOR/g, context.author)
+    .replace(/REPOSITORY_NAME/g, context.repositoryName))
 }

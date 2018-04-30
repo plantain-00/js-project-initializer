@@ -7,7 +7,7 @@ import { runFrontend } from './frontend'
 import { runBackendWithFrontend } from './backend-with-frontend'
 import { runElectron } from './electron'
 
-async function run () {
+async function run() {
   const context = await getContext()
 
   const kind = await selectProjectKind()
@@ -17,7 +17,7 @@ async function run () {
   await libs.mkdir('.vscode')
   await libs.writeFile('.vscode/settings.json', vscodeSetting)
 
-  await libs.exec(`yarn add -DE tslint tslint-config-standard`)
+  await libs.exec(`yarn add -DE tslint tslint-config-standard tslint-sonarts`)
   await libs.exec(`yarn add -DE @commitlint/config-conventional @commitlint/cli`)
   await libs.writeFile('commitlint.config.js', commitlintConfig)
   await libs.exec(`yarn add -DE markdownlint-cli`)
@@ -63,7 +63,7 @@ async function run () {
       break
   }
 
-  const packages = await libs.readFile('package.json')
+  const packages = await libs.readFile(packageJsonFileName)
   const packageJson = JSON.parse(packages)
   if (newPackageJson.scripts) {
     packageJson.scripts = newPackageJson.scripts
@@ -77,7 +77,7 @@ async function run () {
     }
     packageJson.dependencies.tslib = newPackageJson.dependencies.tslib
   }
-  await libs.writeFile('package.json', JSON.stringify(packageJson, null, '  ') + '\n')
+  await libs.writeFile(packageJsonFileName, JSON.stringify(packageJson, null, '  ') + '\n')
 }
 
 run().then(() => {
@@ -102,8 +102,8 @@ const commitlintConfig = `module.exports = {
 }
 `
 
-async function getContext (): Promise<libs.Context> {
-  const packages = await libs.readFile('package.json')
+async function getContext(): Promise<libs.Context> {
+  const packages = await libs.readFile(packageJsonFileName)
   const packageJson: {
     name: string;
     description: string;
@@ -128,7 +128,7 @@ async function getContext (): Promise<libs.Context> {
   return { repositoryName, componentShortName, componentTypeName, author, description: packageJson.description, authorName: packageJson.author }
 }
 
-async function selectProjectKind () {
+async function selectProjectKind() {
   const projectKindAnswer = await libs.inquirer.prompt<{ projectKind: libs.ProjectKind }>({
     type: 'list',
     name: 'projectKind',
@@ -143,7 +143,7 @@ async function selectProjectKind () {
       libs.ProjectKind.electron
     ]
   })
-  return projectKindAnswer.projectKind as libs.ProjectKind
+  return projectKindAnswer.projectKind
 }
 
 const vscodeSetting = `{
@@ -175,3 +175,5 @@ const pullRequestTemplate = `#### Fixes(if relevant): #1
 + [ ] Add Test(if relevant, \`npm run test\` to check)
 + [ ] Add Demo(if relevant)
 `
+
+const packageJsonFileName = 'package.json'
