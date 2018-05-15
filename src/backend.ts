@@ -7,6 +7,7 @@ export async function runBackend(context: libs.Context) {
   await libs.appendFile('.editorconfig', variables.backendEditorconfig)
   await libs.appendFile('tsconfig.base.json', variables.backendTsconfigBaseJson)
 
+  await libs.exec(`yarn add -SE tslib`)
   await libs.exec(`yarn add -DE @types/node`)
   await libs.exec(`yarn add -DE jasmine @types/jasmine`)
   await libs.exec(`yarn add -DE standard`)

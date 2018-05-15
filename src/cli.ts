@@ -7,12 +7,14 @@ export async function runCLI(context: libs.Context) {
   await libs.appendFile('.editorconfig', variables.cliEditorconfig)
   await libs.appendFile('tsconfig.base.json', variables.cliTsconfigBaseJson)
 
+  await libs.exec(`yarn add -SE tslib`)
   await libs.exec(`yarn add -DE @types/node`)
   await libs.exec(`yarn add -DE jasmine @types/jasmine`)
   await libs.exec(`yarn add -DE standard`)
   await libs.exec(`yarn add -E minimist`)
   await libs.exec(`yarn add -DE @types/minimist`)
   await libs.exec(`yarn add -DE clean-scripts`)
+  await libs.exec(`yarn add -DE clean-release`)
   await libs.exec(`yarn add -DE no-unused-export`)
 
   await libs.exec('./node_modules/.bin/jasmine init')
@@ -29,6 +31,7 @@ export async function runCLI(context: libs.Context) {
   await libs.writeFile('appveyor.yml', variables.cliAppveyorYml)
   await libs.writeFile('clean-release.config.js', variables.cliCleanReleaseConfigJs)
   await libs.writeFile('clean-scripts.config.js', variables.cliCleanScriptsConfigJs)
+  await libs.writeFile('clean-run.config.js', variables.cliCleanRunConfigJs.replace(/REPOSITORY_NAME/g, context.repositoryName))
 
   await libs.mkdir('bin')
   await libs.writeFile(`bin/${context.repositoryName}`, variables.cliBinCli)

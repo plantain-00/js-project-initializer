@@ -762,6 +762,21 @@ module.exports = {
   ]
 }
 `
+export const cliCleanRunConfigJs = `module.exports = {
+  include: [
+    'bin/*',
+    'dist/*.js',
+    'package.json',
+    'yarn.lock'
+  ],
+  exclude: [
+  ],
+  postScript: [
+    'cd "[dir]" && yarn --production',
+    '[dir]/bin/REPOSITORY_NAME'
+  ]
+}
+`
 export const cliCleanScriptsConfigJs = `const { checkGitStatus } = require('clean-scripts')
 
 const tsFiles = \`"src/**/*.ts" "spec/**/*.ts"\`
@@ -783,6 +798,7 @@ module.exports = {
   test: [
     'tsc -p spec',
     'jasmine',
+    'clean-release --config clean-run.config.js',
     () => checkGitStatus()
   ],
   fix: {
