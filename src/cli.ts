@@ -31,7 +31,7 @@ export async function runCLI(context: libs.Context) {
   await libs.writeFile('appveyor.yml', variables.cliAppveyorYml)
   await libs.writeFile('clean-release.config.js', variables.cliCleanReleaseConfigJs)
   await libs.writeFile('clean-scripts.config.js', variables.cliCleanScriptsConfigJs)
-  await libs.writeFile('clean-run.config.js', variables.cliCleanRunConfigJs.replace(/REPOSITORY_NAME/g, context.repositoryName))
+  await libs.writeFile('clean-run.config.js', variables.cliCleanRunConfigJs)
 
   await libs.mkdir('bin')
   await libs.writeFile(`bin/${context.repositoryName}`, variables.cliBinCli)

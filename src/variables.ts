@@ -773,7 +773,7 @@ export const cliCleanRunConfigJs = `module.exports = {
   ],
   postScript: [
     'cd "[dir]" && yarn --production',
-    '[dir]/bin/REPOSITORY_NAME'
+    'node [dir]/dist/index.js'
   ]
 }
 `
