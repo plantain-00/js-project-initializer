@@ -12,6 +12,7 @@ export async function runBackend(context: libs.Context) {
   await libs.exec(`yarn add -DE jasmine @types/jasmine`)
   await libs.exec(`yarn add -DE standard`)
   await libs.exec(`yarn add -DE clean-scripts`)
+  await libs.exec(`yarn add -DE clean-release`)
   await libs.exec(`yarn add -DE no-unused-export`)
 
   await libs.exec('./node_modules/.bin/jasmine init')

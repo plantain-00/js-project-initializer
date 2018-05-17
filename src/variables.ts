@@ -52,7 +52,9 @@ export const backendCleanRunConfigJs = `module.exports = {
   ]
 }
 `
-export const backendCleanScriptsConfigJs = `const tsFiles = \`"src/**/*.ts" "spec/**/*.ts" "test/**/*.ts"\`
+export const backendCleanScriptsConfigJs = `import { Program } from 'clean-scripts'
+
+const tsFiles = \`"src/**/*.ts" "spec/**/*.ts" "test/**/*.ts"\`
 const jsFiles = \`"*.config.js"\`
 
 const tscSrcCommand = 'tsc -p src/'
@@ -71,7 +73,8 @@ module.exports = {
   },
   test: [
     'tsc -p spec',
-    'jasmine'
+    'jasmine',
+    new Program('clean-release --config clean-run.config.js', 30000)
   ],
   fix: {
     ts: \`tslint --fix \${tsFiles}\`,
@@ -273,7 +276,7 @@ export const backendWithFrontendCleanRunConfigJs = `module.exports = {
   ]
 }
 `
-export const backendWithFrontendCleanScriptsConfigJs = `const { Service, checkGitStatus, executeScriptAsync } = require('clean-scripts')
+export const backendWithFrontendCleanScriptsConfigJs = `const { Service, checkGitStatus, executeScriptAsync, Program } = require('clean-scripts')
 const { watch } = require('watch-then-execute')
 
 const tsFiles = \`"src/**/*.ts" "static/**/*.ts" "spec/**/*.ts" "static_spec/**/*.ts"\`
@@ -327,6 +330,7 @@ module.exports = {
       'tsc -p static_spec',
       'karma start static_spec/karma.config.js'
     ],
+    start: new Program('clean-release --config clean-run.config.js', 30000),
     consistency: () => checkGitStatus()
   },
   fix: {

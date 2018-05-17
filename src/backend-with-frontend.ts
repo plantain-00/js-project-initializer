@@ -20,6 +20,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
   await libs.exec(`yarn add -DE standard`)
   await libs.exec(`yarn add -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`)
   await libs.exec(`yarn add -DE clean-scripts`)
+  await libs.exec(`yarn add -DE clean-release`)
   await libs.exec(`yarn add -DE no-unused-export`)
   await libs.exec(`yarn add -DE watch-then-execute`)
   await libs.exec(`yarn add -DE puppeteer @types/puppeteer`)
