@@ -7,6 +7,8 @@ import { runFrontend } from './frontend'
 import { runBackendWithFrontend } from './backend-with-frontend'
 import { runElectron } from './electron'
 
+const packageJsonFileName = 'package.json'
+
 async function run() {
   const context = await getContext()
 
@@ -175,5 +177,3 @@ const pullRequestTemplate = `#### Fixes(if relevant): #1
 + [ ] Add Test(if relevant, \`npm run test\` to check)
 + [ ] Add Demo(if relevant)
 `
-
-const packageJsonFileName = 'package.json'
