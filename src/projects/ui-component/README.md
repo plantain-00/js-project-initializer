@@ -21,6 +21,8 @@
 
 ## vuejs component
 
+[![gzip size](https://img.badgesize.io/https://unpkg.com/COMPONENT_SHORT_NAME-vue-component?compression=gzip)](https://unpkg.com/COMPONENT_SHORT_NAME-vue-component)
+
 `yarn add COMPONENT_SHORT_NAME-vue-component`
 
 ```ts
@@ -43,6 +45,8 @@ or
 the online demo: <https://AUTHOR.github.io/REPOSITORY_NAME/packages/vue/demo>
 
 ## reactjs component
+
+[![gzip size](https://img.badgesize.io/https://unpkg.com/COMPONENT_SHORT_NAME-react-component?compression=gzip)](https://unpkg.com/COMPONENT_SHORT_NAME-react-component)
 
 `yarn add COMPONENT_SHORT_NAME-react-component`
 

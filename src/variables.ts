@@ -1505,7 +1505,7 @@ export const frontendIndexLess = `* {
   font-family: "Lucida Grande", "Lucida Sans Unicode", "Hiragino Sans GB", "WenQuanYi Micro Hei", "Verdana,Aril", sans-serif;
   -webkit-font-smoothing: antialiased;
 }
-  `
+`
 export const frontendIndexTemplateHtml = `<div>
 </div>`
 export const frontendIndexTs = `import Vue from 'vue'
@@ -1877,6 +1877,7 @@ export const libraryReadmeMd = `
 [![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
 [![npm version](https://badge.fury.io/js/REPOSITORY_NAME.svg)](https://badge.fury.io/js/REPOSITORY_NAME)
 [![Downloads](https://img.shields.io/npm/dm/REPOSITORY_NAME.svg)](https://www.npmjs.com/package/REPOSITORY_NAME)
+[![gzip size](https://img.badgesize.io/https://unpkg.com/REPOSITORY_NAME?compression=gzip)](https://unpkg.com/REPOSITORY_NAME)
 
 ## install
 
@@ -2770,6 +2771,8 @@ export const uiComponentReadmeMd = `
 
 ## vuejs component
 
+[![gzip size](https://img.badgesize.io/https://unpkg.com/COMPONENT_SHORT_NAME-vue-component?compression=gzip)](https://unpkg.com/COMPONENT_SHORT_NAME-vue-component)
+
 \`yarn add COMPONENT_SHORT_NAME-vue-component\`
 
 \`\`\`ts
@@ -2792,6 +2795,8 @@ or
 the online demo: <https://AUTHOR.github.io/REPOSITORY_NAME/packages/vue/demo>
 
 ## reactjs component
+
+[![gzip size](https://img.badgesize.io/https://unpkg.com/COMPONENT_SHORT_NAME-react-component?compression=gzip)](https://unpkg.com/COMPONENT_SHORT_NAME-react-component)
 
 \`yarn add COMPONENT_SHORT_NAME-react-component\`
 

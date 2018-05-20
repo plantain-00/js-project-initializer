@@ -32,6 +32,11 @@ async function run() {
   await libs.exec(`yarn add -DE rimraf`)
 
   let newPackageJson: {
+    main?: string;
+    module?: string;
+    unpkg?: string;
+    jsdelivr?: string;
+    types?: string;
     scripts?: { [key: string]: string };
     bin?: { [key: string]: string };
     dependencies?: {
@@ -78,6 +83,21 @@ async function run() {
       packageJson.dependencies = {}
     }
     packageJson.dependencies.tslib = newPackageJson.dependencies.tslib
+  }
+  if (newPackageJson.main) {
+    packageJson.main = newPackageJson.main
+  }
+  if (newPackageJson.module) {
+    packageJson.module = newPackageJson.module
+  }
+  if (newPackageJson.unpkg) {
+    packageJson.unpkg = newPackageJson.unpkg
+  }
+  if (newPackageJson.jsdelivr) {
+    packageJson.jsdelivr = newPackageJson.jsdelivr
+  }
+  if (newPackageJson.types) {
+    packageJson.types = newPackageJson.types
   }
   await libs.writeFile(packageJsonFileName, JSON.stringify(packageJson, null, '  ') + '\n')
 }
