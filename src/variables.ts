@@ -1890,7 +1890,7 @@ import ComponentTypeName from "REPOSITORY_NAME";
 // <script src="./node_modules/REPOSITORY_NAME/REPOSITORY_NAME.min.js"></script>
 \`\`\`
 `
-export const libraryRollupConfigJs = `import uglify from 'rollup-plugin-uglify'
+export const libraryRollupConfigJs = `import { uglify } from 'rollup-plugin-uglify'
 import resolve from 'rollup-plugin-node-resolve'
 
 export default {
@@ -2547,7 +2547,7 @@ export class ComponentTypeName extends React.Component<{
   }
 }
 `
-export const uiComponentPackagesReactSrcRollupConfigJs = `import uglify from 'rollup-plugin-uglify'
+export const uiComponentPackagesReactSrcRollupConfigJs = `import { uglify } from 'rollup-plugin-uglify'
 import resolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
 
@@ -2709,7 +2709,7 @@ class ComponentTypeName extends Vue {
 
 Vue.component('COMPONENT_SHORT_NAME', ComponentTypeName)
 `
-export const uiComponentPackagesVueSrcRollupConfigJs = `import uglify from 'rollup-plugin-uglify'
+export const uiComponentPackagesVueSrcRollupConfigJs = `import { uglify } from 'rollup-plugin-uglify'
 import resolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
 
