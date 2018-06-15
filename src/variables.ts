@@ -740,9 +740,7 @@ build: off
 export const cliBinCli = `#!/usr/bin/env node
 require("../dist/index.js");
 `
-export const cliCleanReleaseConfigJs = `const semver = require('semver')
-
-module.exports = {
+export const cliCleanReleaseConfigJs = `module.exports = {
   include: [
     'bin/*',
     'dist/*',
@@ -755,8 +753,8 @@ module.exports = {
   askVersion: true,
   changesGitStaged: true,
   postScript: [
-    ({ version, dir }) => semver.prerelease(version)
-      ? \`npm publish "\${dir}" --access public --tag next\`
+    ({ dir, tag }) => tag
+      ? \`npm publish "\${dir}" --access public --tag \${tag}\`
       : \`npm publish "\${dir}" --access public\`,
     'git add package.json',
     ({ version }) => \`git commit -m "\${version}"\`,
@@ -1788,9 +1786,7 @@ test_script:
 
 build: off
 `
-export const libraryCleanReleaseConfigJs = `const semver = require('semver')
-
-module.exports = {
+export const libraryCleanReleaseConfigJs = `module.exports = {
   include: [
     'dist/**/*',
     'LICENSE',
@@ -1803,8 +1799,8 @@ module.exports = {
   askVersion: true,
   changesGitStaged: true,
   postScript: [
-    ({ version, dir }) => semver.prerelease(version)
-      ? \`npm publish "\${dir}" --access public --tag next\`
+    ({ dir, tag }) => tag
+      ? \`npm publish "\${dir}" --access public --tag \${tag}\`
       : \`npm publish "\${dir}" --access public\`,
     'git add package.json',
     ({ version }) => \`git commit -m "\${version}"\`,
