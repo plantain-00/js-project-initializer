@@ -32,13 +32,13 @@
   "dependencies": {
     "inquirer": "6.0.0",
     "mkdirp": "0.5.1",
-    "tslib": "1.9.2",
+    "tslib": "1.9.3",
     "uppercamelcase": "3.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "7.0.0",
     "@commitlint/config-conventional": "7.0.1",
-    "@types/inquirer": "0.0.41",
+    "@types/inquirer": "0.0.42",
     "@types/jasmine": "2.8.8",
     "@types/mkdirp": "0.5.2",
     "@types/uppercamelcase": "3.0.0",
@@ -50,7 +50,7 @@
     "rimraf": "2.6.2",
     "standard": "11.0.1",
     "tslint": "5.10.0",
-    "tslint-config-standard": "7.0.0",
+    "tslint-config-standard": "7.1.0",
     "tslint-sonarts": "1.7.0",
     "typescript": "2.9.2"
   },
