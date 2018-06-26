@@ -25,6 +25,7 @@ export async function runFrontend(context: libs.Context) {
   await libs.exec(`yarn add -DE http-server`)
   await libs.exec(`yarn add -DE puppeteer @types/puppeteer`)
   await libs.exec(`yarn add -DE autoprefixer postcss-cli`)
+  await libs.exec(`yarn add -DE cross-env`)
 
   await libs.writeFile(`index.ts`, variables.frontendIndexTs)
   await libs.writeFile(`index.template.html`, variables.frontendIndexTemplateHtml)
@@ -68,7 +69,7 @@ export async function runFrontend(context: libs.Context) {
   return {
     scripts: {
       build: 'clean-scripts build',
-      dev: 'export NODE_ENV=development && clean-scripts build',
+      dev: 'cross-env NODE_ENV=development clean-scripts build',
       lint: 'clean-scripts lint',
       test: 'clean-scripts test',
       fix: `clean-scripts fix`,

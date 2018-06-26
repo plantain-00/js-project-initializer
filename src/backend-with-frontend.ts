@@ -25,6 +25,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
   await libs.exec(`yarn add -DE watch-then-execute`)
   await libs.exec(`yarn add -DE puppeteer @types/puppeteer`)
   await libs.exec(`yarn add -DE autoprefixer postcss-cli`)
+  await libs.exec(`yarn add -DE cross-env`)
 
   await libs.exec('./node_modules/.bin/jasmine init')
 
@@ -87,7 +88,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
     scripts: {
       build: 'clean-scripts build',
       'test:run': 'clean-release --config clean-run.config.js',
-      dev: 'export NODE_ENV=development && clean-scripts build',
+      dev: 'cross-env NODE_ENV=development clean-scripts build',
       lint: 'clean-scripts lint',
       test: 'clean-scripts test',
       fix: 'clean-scripts fix',

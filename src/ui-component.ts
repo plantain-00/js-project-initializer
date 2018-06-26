@@ -41,6 +41,7 @@ export async function runUIComponent(context: libs.Context) {
   await libs.exec(`yarn add -DE autoprefixer postcss-cli`)
   await libs.exec(`yarn add -DE react-test-renderer @types/react-test-renderer react vue-test-utils`)
   await libs.exec(`yarn add -DE rollup rollup-plugin-commonjs rollup-plugin-node-resolve rollup-plugin-uglify`)
+  await libs.exec(`yarn add -DE cross-env`)
 
   await libs.exec(`lerna init`)
 
@@ -155,7 +156,7 @@ export async function runUIComponent(context: libs.Context) {
     scripts: {
       bootstrap: 'lerna bootstrap -- --frozen-lockfile',
       build: `clean-scripts build`,
-      dev: `export NODE_ENV=development && clean-scripts build`,
+      dev: `cross-env NODE_ENV=development clean-scripts build`,
       lint: `clean-scripts lint`,
       test: 'clean-scripts test',
       fix: `clean-scripts fix`,
