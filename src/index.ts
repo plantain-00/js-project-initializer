@@ -187,7 +187,7 @@ const issueTemplate = `#### Version(if relevant): 1.0.0
 #### Actual:
 `
 
-const pullRequestTemplate = `#### Fixes(if relevant): #1
+const pullRequestTemplate = `#### Fixes(if relevant):
 
 #### Checks
 
