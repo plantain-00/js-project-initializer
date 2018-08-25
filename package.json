@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/plantain-00/js-project-initializer#readme",
   "dependencies": {
-    "inquirer": "6.1.0",
+    "inquirer": "6.2.0",
     "mkdirp": "0.5.1",
     "tslib": "1.9.3",
     "uppercamelcase": "3.0.0"
