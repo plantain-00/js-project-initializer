@@ -36,11 +36,11 @@ export async function runLibrary(context: libs.Context) {
   await libs.writeFile('spec/indexSpec.ts', variables.librarySpecIndexSpecTs)
 
   return {
-    main: 'index.js',
-    module: 'index.js',
+    main: 'nodejs/index.js',
+    module: 'browser/index.js',
     unpkg: `${context.repositoryName}.min.js`,
     jsdelivr: `${context.repositoryName}.min.js`,
-    types: 'index.d.ts',
+    types: 'nodejs/index.d.ts',
     scripts: {
       build: 'clean-scripts build',
       lint: 'clean-scripts lint',
