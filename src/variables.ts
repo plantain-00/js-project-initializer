@@ -341,7 +341,6 @@ module.exports = {
   watch: {
     back: \`\${tscSrcCommand} --watch\`,
     template: \`\${file2variableCommand} --watch\`,
-    front: \`\${tscStaticCommand} --watch\`,
     webpack: \`\${webpackCommand} --watch\`,
     less: () => watch(['static/**/*.less'], [], () => executeScriptAsync(cssCommand)),
     rev: \`\${revStaticCommand} --watch\`
@@ -631,7 +630,9 @@ export const backendWithFrontendStaticTsconfigJson = `{
   }
 }
 `
-export const backendWithFrontendStaticWebpackConfigJs = `module.exports = {
+export const backendWithFrontendStaticWebpackConfigJs = `const isDev = process.env.NODE_ENV === 'development'
+
+module.exports = {
   mode: process.env.NODE_ENV,
   entry: {
     index: './static/index'
@@ -640,6 +641,14 @@ export const backendWithFrontendStaticWebpackConfigJs = `module.exports = {
     path: __dirname,
     filename: '[name].bundle.js'
   },
+  resolve: isDev ? {
+    extensions: ['.ts', '.tsx', '.js']
+  } : undefined,
+  module: isDev ? {
+    rules: [
+      { test: /\\.tsx?\$/, loader: 'ts-loader' }
+    ]
+  } : undefined,
   optimization: {
     splitChunks: {
       cacheGroups: {
@@ -1420,11 +1429,9 @@ module.exports = {
   },
   watch: {
     template: \`\${templateCommand} --watch\`,
-    tsc: \`\${tscCommand} --watch\`,
     webpack: \`\${webpackCommand} --watch\`,
     less: () => watch(['*.less'], [], () => executeScriptAsync(cssCommand)),
-    rev: \`\${revStaticCommand} --watch\`,
-    sw: () => watch(['vendor.bundle-*.js', 'index.html'], [], () => executeScriptAsync(swCommand))
+    rev: \`\${revStaticCommand} --watch\`
   },
   screenshot: [
     new Service('http-server -p 8000'),
@@ -1748,7 +1755,9 @@ export const frontendTslintJson = `{
   }
 }
 `
-export const frontendWebpackConfigJs = `module.exports = {
+export const frontendWebpackConfigJs = `const isDev = process.env.NODE_ENV === 'development'
+
+module.exports = {
   mode: process.env.NODE_ENV,
   entry: {
     index: './index'
@@ -1757,6 +1766,14 @@ export const frontendWebpackConfigJs = `module.exports = {
     path: __dirname,
     filename: '[name].bundle.js'
   },
+  resolve: isDev ? {
+    extensions: ['.ts', '.tsx', '.js']
+  } : undefined,
+  module: isDev ? {
+    rules: [
+      { test: /\\.tsx?\$/, loader: 'ts-loader' }
+    ]
+  } : undefined,
   optimization: {
     splitChunks: {
       cacheGroups: {

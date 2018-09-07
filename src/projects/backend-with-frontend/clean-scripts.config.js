@@ -63,7 +63,6 @@ module.exports = {
   watch: {
     back: `${tscSrcCommand} --watch`,
     template: `${file2variableCommand} --watch`,
-    front: `${tscStaticCommand} --watch`,
     webpack: `${webpackCommand} --watch`,
     less: () => watch(['static/**/*.less'], [], () => executeScriptAsync(cssCommand)),
     rev: `${revStaticCommand} --watch`
