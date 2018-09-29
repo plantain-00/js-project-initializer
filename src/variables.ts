@@ -767,7 +767,7 @@ export const cliCleanReleaseConfigJs = `module.exports = {
       : \`npm publish "\${dir}" --access public\`,
     'git add package.json',
     ({ version }) => \`git commit -m "\${version}"\`,
-    ({ version }) => \`git tag v\${version}\`,
+    ({ version }) => \`git tag -a v\${version} -m 'v\${version}'\`,
     'git push',
     ({ version }) => \`git push origin v\${version}\`
   ]
@@ -1016,7 +1016,7 @@ module.exports = {
   postScript: [
     'git add package.json',
     'git commit -m "[version]"',
-    'git tag v[version]',
+    'git tag -a v[version] -m "v[version]"',
     'git push',
     'git push origin v[version]',
     'cd "[dir]" && npm i --production',
@@ -1821,7 +1821,7 @@ export const libraryCleanReleaseConfigJs = `module.exports = {
       : \`npm publish "\${dir}" --access public\`,
     'git add package.json',
     ({ version }) => \`git commit -m "\${version}"\`,
-    ({ version }) => \`git tag v\${version}\`,
+    ({ version }) => \`git tag -a v\${version} -m 'v\${version}'\`,
     'git push',
     ({ version }) => \`git push origin v\${version}\`
   ]
@@ -2178,10 +2178,17 @@ dist
 !**/*.index.bundle.js
 `
 export const uiComponentLernaJson = `{
-  "lerna": "2.5.1",
   "packages": [
     "packages/*"
   ],
+  "command": {
+    "publish": {
+      "ignoreChanges": [
+        "**/*.md",
+        "**/demo/**"
+      ]
+    }
+  },
   "version": "1.0.0",
   "npmClient": "yarn"
 }
