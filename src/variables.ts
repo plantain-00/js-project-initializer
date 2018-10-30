@@ -396,7 +396,7 @@ export const backendWithFrontendPostcssConfigJs = `module.exports = {
 }
 `
 export const backendWithFrontendPrerenderIndexHtml = ``
-export const backendWithFrontendPrerenderIndexTs = `import * as puppeteer from 'puppeteer'
+export const backendWithFrontendPrerenderIndexTs = `import puppeteer from 'puppeteer'
 import * as fs from 'fs'
 
 (async() => {
@@ -440,7 +440,7 @@ git clone https://github.com/AUTHOR/REPOSITORY_NAME-release.git . --depth=1 && y
 docker run -d -p 8000:8000 AUTHOR/REPOSITORY_NAME
 \`\`\`
 `
-export const backendWithFrontendScreenshotsIndexTs = `import * as puppeteer from 'puppeteer'
+export const backendWithFrontendScreenshotsIndexTs = `import puppeteer from 'puppeteer'
 
 (async() => {
   const browser = await puppeteer.launch()
@@ -1535,7 +1535,7 @@ export const frontendPostcssConfigJs = `module.exports = {
 `
 export const frontendPrerenderHtml = ``
 export const frontendPrerenderIndexHtml = ``
-export const frontendPrerenderIndexTs = `import * as puppeteer from 'puppeteer'
+export const frontendPrerenderIndexTs = `import puppeteer from 'puppeteer'
 import * as fs from 'fs'
 
 (async() => {
@@ -1596,7 +1596,7 @@ module.exports = {
   }
 }
 `
-export const frontendScreenshotsIndexTs = `import * as puppeteer from 'puppeteer'
+export const frontendScreenshotsIndexTs = `import puppeteer from 'puppeteer'
 
 (async() => {
   const browser = await puppeteer.launch()
@@ -1908,7 +1908,7 @@ import resolve from 'rollup-plugin-node-resolve'
 export default {
   input: 'dist/browser/index.js',
   name: 'ComponentTypeName',
-  plugins: [resolve(), uglify()],
+  plugins: [resolve({ browser: true }), uglify()],
   output: {
     file: 'dist/ComponentTypeName.min.js',
     format: 'umd'
@@ -2574,7 +2574,7 @@ export default {
   input: 'packages/react/dist/index.js',
   name: 'ComponentTypeName',
   plugins: [
-    resolve(),
+    resolve({ browser: true }),
     uglify(),
     commonjs()
   ],
@@ -2736,7 +2736,7 @@ export default {
   input: 'packages/vue/dist/index.js',
   name: 'ComponentTypeName',
   plugins: [
-    resolve(),
+    resolve({ browser: true }),
     uglify(),
     commonjs()
   ],
@@ -2895,7 +2895,7 @@ export const uiComponentRevStaticConfigJs = `module.exports = {
   fileSize: 'file-size.json'
 }
 `
-export const uiComponentScreenshotsIndexTs = `import * as puppeteer from 'puppeteer'
+export const uiComponentScreenshotsIndexTs = `import puppeteer from 'puppeteer'
 
 (async() => {
   const browser = await puppeteer.launch()
