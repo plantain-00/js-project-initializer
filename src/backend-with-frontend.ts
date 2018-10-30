@@ -27,6 +27,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
   await libs.exec(`yarn add -DE autoprefixer postcss-cli`)
   await libs.exec(`yarn add -DE cross-env`)
   await libs.exec(`yarn add -DE ts-loader`)
+  await libs.exec(`yarn add -DE type-coverage`)
 
   await libs.exec('./node_modules/.bin/jasmine init')
 

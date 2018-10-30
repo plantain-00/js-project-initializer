@@ -23,6 +23,7 @@ export async function runElectron(context: libs.Context) {
   await libs.exec(`yarn add -DE no-unused-export`)
   await libs.exec(`yarn add -DE watch-then-execute`)
   await libs.exec(`yarn add -DE autoprefixer postcss-cli`)
+  await libs.exec(`yarn add -DE type-coverage`)
 
   await libs.exec('./node_modules/.bin/jasmine init')
 

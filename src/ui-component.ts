@@ -42,6 +42,7 @@ export async function runUIComponent(context: libs.Context) {
   await libs.exec(`yarn add -DE react-test-renderer @types/react-test-renderer react vue-test-utils`)
   await libs.exec(`yarn add -DE rollup rollup-plugin-commonjs rollup-plugin-node-resolve rollup-plugin-uglify`)
   await libs.exec(`yarn add -DE cross-env`)
+  await libs.exec(`yarn add -DE type-coverage`)
 
   await libs.exec(`lerna init`)
 

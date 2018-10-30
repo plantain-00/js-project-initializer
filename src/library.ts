@@ -13,6 +13,7 @@ export async function runLibrary(context: libs.Context) {
   await libs.exec(`yarn add -DE rollup rollup-plugin-node-resolve rollup-plugin-uglify`)
   await libs.exec(`yarn add -DE clean-scripts`)
   await libs.exec(`yarn add -DE no-unused-export`)
+  await libs.exec(`yarn add -DE type-coverage`)
 
   await libs.exec('./node_modules/.bin/jasmine init')
 

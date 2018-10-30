@@ -16,6 +16,7 @@ export async function runCLI(context: libs.Context) {
   await libs.exec(`yarn add -DE clean-scripts`)
   await libs.exec(`yarn add -DE clean-release`)
   await libs.exec(`yarn add -DE no-unused-export`)
+  await libs.exec(`yarn add -DE type-coverage`)
 
   await libs.exec('./node_modules/.bin/jasmine init')
 

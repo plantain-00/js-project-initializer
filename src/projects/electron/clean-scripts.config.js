@@ -32,7 +32,9 @@ module.exports = {
     less: `stylelint ${lessFiles}`,
     export: `no-unused-export ${tsFiles} ${lessFiles}`,
     commit: `commitlint --from=HEAD~1`,
-    markdown: `markdownlint README.md`
+    markdown: `markdownlint README.md`,
+    typeCoverage: 'type-coverage -p . --at-least 95',
+    typeCoverageStatic: 'type-coverage -p static --at-least 95'
   },
   test: {
     jasmine: [

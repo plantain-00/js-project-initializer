@@ -27,6 +27,7 @@ export async function runFrontend(context: libs.Context) {
   await libs.exec(`yarn add -DE autoprefixer postcss-cli`)
   await libs.exec(`yarn add -DE cross-env`)
   await libs.exec(`yarn add -DE ts-loader`)
+  await libs.exec(`yarn add -DE type-coverage`)
 
   await libs.writeFile(`index.ts`, variables.frontendIndexTs)
   await libs.writeFile(`index.template.html`, variables.frontendIndexTemplateHtml)

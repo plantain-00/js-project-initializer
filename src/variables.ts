@@ -69,7 +69,8 @@ module.exports = {
     js: \`standard \${jsFiles}\`,
     export: \`no-unused-export \${tsFiles}\`,
     commit: \`commitlint --from=HEAD~1\`,
-    markdown: \`markdownlint README.md\`
+    markdown: \`markdownlint README.md\`,
+    typeCoverage: 'type-coverage -p src --at-least 95'
   },
   test: [
     'tsc -p spec',
@@ -319,7 +320,9 @@ module.exports = {
     less: \`stylelint \${lessFiles}\`,
     export: \`no-unused-export \${tsFiles} \${lessFiles}\`,
     commit: \`commitlint --from=HEAD~1\`,
-    markdown: \`markdownlint README.md\`
+    markdown: \`markdownlint README.md\`,
+    typeCoverage: 'type-coverage -p src --at-least 95',
+    typeCoverageStatic: 'type-coverage -p static --at-least 95'
   },
   test: {
     jasmine: [
@@ -804,7 +807,8 @@ module.exports = {
     js: \`standard \${jsFiles}\`,
     export: \`no-unused-export \${tsFiles}\`,
     commit: \`commitlint --from=HEAD~1\`,
-    markdown: \`markdownlint README.md\`
+    markdown: \`markdownlint README.md\`,
+    typeCoverage: 'type-coverage -p src --at-least 96'
   },
   test: [
     'tsc -p spec',
@@ -1064,7 +1068,9 @@ module.exports = {
     less: \`stylelint \${lessFiles}\`,
     export: \`no-unused-export \${tsFiles} \${lessFiles}\`,
     commit: \`commitlint --from=HEAD~1\`,
-    markdown: \`markdownlint README.md\`
+    markdown: \`markdownlint README.md\`,
+    typeCoverage: 'type-coverage -p . --at-least 95',
+    typeCoverageStatic: 'type-coverage -p static --at-least 95'
   },
   test: {
     jasmine: [
@@ -1416,7 +1422,8 @@ module.exports = {
     less: \`stylelint \${lessFiles}\`,
     export: \`no-unused-export \${tsFiles} \${lessFiles}\`,
     commit: \`commitlint --from=HEAD~1\`,
-    markdown: \`markdownlint README.md\`
+    markdown: \`markdownlint README.md\`,
+    typeCoverage: 'type-coverage -p . --at-least 95'
   },
   test: [
     'tsc -p spec',
@@ -1846,7 +1853,9 @@ module.exports = {
     js: \`standard \${jsFiles}\`,
     export: \`no-unused-export \${tsFiles}\`,
     commit: \`commitlint --from=HEAD~1\`,
-    markdown: \`markdownlint README.md\`
+    markdown: \`markdownlint README.md\`,
+    typeCoverage: 'type-coverage -p src/tsconfig.nodejs.json --at-least 100',
+    typeCoverageBrowser: 'type-coverage -p src/tsconfig.browser.json --at-least 100'
   },
   test: [
     'tsc -p spec',
@@ -2119,7 +2128,8 @@ module.exports = {
     less: \`stylelint \${lessFiles}\`,
     export: \`no-unused-export \${tsFiles} \${lessFiles} --exclude \${excludeTsFiles}\`,
     commit: \`commitlint --from=HEAD~1\`,
-    markdown: \`markdownlint README.md\`
+    markdown: \`markdownlint README.md\`,
+    typeCoverage: 'lerna exec -- type-coverage -p src --at-least 95'
   },
   test: [
     'tsc -p spec',
