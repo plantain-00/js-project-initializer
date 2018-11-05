@@ -99,6 +99,9 @@ async function run() {
   if (newPackageJson.types) {
     packageJson.types = newPackageJson.types
   }
+  packageJson.typeCoverage = {
+    atLeast: 97
+  }
   await libs.writeFile(packageJsonFileName, JSON.stringify(packageJson, null, '  ') + '\n')
 }
 

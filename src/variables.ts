@@ -70,7 +70,7 @@ module.exports = {
     export: \`no-unused-export \${tsFiles}\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
-    typeCoverage: 'type-coverage -p src --at-least 95'
+    typeCoverage: 'type-coverage -p src'
   },
   test: [
     'tsc -p spec',
@@ -120,7 +120,7 @@ export const backendReadmeMd = `
 [![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
 [![Build Status: Linux](https://travis-ci.org/AUTHOR/REPOSITORY_NAME.svg?branch=master)](https://travis-ci.org/AUTHOR/REPOSITORY_NAME)
 [![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
-
+[![type-coverage](https://img.shields.io/badge/dynamic/json.svg?label=type-coverage&prefix=%E2%89%A5&suffix=%&query=\$.typeCoverage.atLeast&uri=https%3A%2F%2Fraw.githubusercontent.com%2FAUTHOR%2FREPOSITORY_NAME%2Fmaster%2Fpackage.json)](https://github.com/AUTHOR/REPOSITORY_NAME)
 ## install
 
 \`\`\`bash
@@ -321,8 +321,8 @@ module.exports = {
     export: \`no-unused-export \${tsFiles} \${lessFiles}\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
-    typeCoverage: 'type-coverage -p src --at-least 95',
-    typeCoverageStatic: 'type-coverage -p static --at-least 95'
+    typeCoverage: 'type-coverage -p src',
+    typeCoverageStatic: 'type-coverage -p static'
   },
   test: {
     jasmine: [
@@ -430,6 +430,7 @@ export const backendWithFrontendReadmeMd = `
 [![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
 [![Build Status: Linux](https://travis-ci.org/AUTHOR/REPOSITORY_NAME.svg?branch=master)](https://travis-ci.org/AUTHOR/REPOSITORY_NAME)
 [![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
+[![type-coverage](https://img.shields.io/badge/dynamic/json.svg?label=type-coverage&prefix=%E2%89%A5&suffix=%&query=\$.typeCoverage.atLeast&uri=https%3A%2F%2Fraw.githubusercontent.com%2FAUTHOR%2FREPOSITORY_NAME%2Fmaster%2Fpackage.json)](https://github.com/AUTHOR/REPOSITORY_NAME)
 
 ## install
 
@@ -808,7 +809,7 @@ module.exports = {
     export: \`no-unused-export \${tsFiles}\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
-    typeCoverage: 'type-coverage -p src --at-least 96'
+    typeCoverage: 'type-coverage -p src'
   },
   test: [
     'tsc -p spec',
@@ -853,6 +854,7 @@ export const cliReadmeMd = `
 [![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
 [![npm version](https://badge.fury.io/js/REPOSITORY_NAME.svg)](https://badge.fury.io/js/REPOSITORY_NAME)
 [![Downloads](https://img.shields.io/npm/dm/REPOSITORY_NAME.svg)](https://www.npmjs.com/package/REPOSITORY_NAME)
+[![type-coverage](https://img.shields.io/badge/dynamic/json.svg?label=type-coverage&prefix=%E2%89%A5&suffix=%&query=\$.typeCoverage.atLeast&uri=https%3A%2F%2Fraw.githubusercontent.com%2FAUTHOR%2FREPOSITORY_NAME%2Fmaster%2Fpackage.json)](https://github.com/AUTHOR/REPOSITORY_NAME)
 
 ## install
 
@@ -1069,8 +1071,8 @@ module.exports = {
     export: \`no-unused-export \${tsFiles} \${lessFiles}\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
-    typeCoverage: 'type-coverage -p . --at-least 95',
-    typeCoverageStatic: 'type-coverage -p static --at-least 95'
+    typeCoverage: 'type-coverage -p .',
+    typeCoverageStatic: 'type-coverage -p static'
   },
   test: {
     jasmine: [
@@ -1164,6 +1166,7 @@ export const electronReadmeMd = `
 [![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
 [![Build Status: Linux](https://travis-ci.org/AUTHOR/REPOSITORY_NAME.svg?branch=master)](https://travis-ci.org/AUTHOR/REPOSITORY_NAME)
 [![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
+[![type-coverage](https://img.shields.io/badge/dynamic/json.svg?label=type-coverage&prefix=%E2%89%A5&suffix=%&query=\$.typeCoverage.atLeast&uri=https%3A%2F%2Fraw.githubusercontent.com%2FAUTHOR%2FREPOSITORY_NAME%2Fmaster%2Fpackage.json)](https://github.com/AUTHOR/REPOSITORY_NAME)
 `
 export const electronScriptsFile2variableConfigJs = `module.exports = {
   base: 'scripts',
@@ -1423,7 +1426,7 @@ module.exports = {
     export: \`no-unused-export \${tsFiles} \${lessFiles}\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
-    typeCoverage: 'type-coverage -p . --at-least 95'
+    typeCoverage: 'type-coverage -p .'
   },
   test: [
     'tsc -p spec',
@@ -1573,6 +1576,7 @@ export const frontendReadmeMd = `
 [![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
 [![Build Status: Linux](https://travis-ci.org/AUTHOR/REPOSITORY_NAME.svg?branch=master)](https://travis-ci.org/AUTHOR/REPOSITORY_NAME)
 [![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
+[![type-coverage](https://img.shields.io/badge/dynamic/json.svg?label=type-coverage&prefix=%E2%89%A5&suffix=%&query=\$.typeCoverage.atLeast&uri=https%3A%2F%2Fraw.githubusercontent.com%2FAUTHOR%2FREPOSITORY_NAME%2Fmaster%2Fpackage.json)](https://github.com/AUTHOR/REPOSITORY_NAME)
 `
 export const frontendRevStaticConfigJs = `const fs = require('fs')
 
@@ -1854,8 +1858,8 @@ module.exports = {
     export: \`no-unused-export \${tsFiles}\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
-    typeCoverage: 'type-coverage -p src/tsconfig.nodejs.json --at-least 99',
-    typeCoverageBrowser: 'type-coverage -p src/tsconfig.browser.json --at-least 99'
+    typeCoverage: 'type-coverage -p src/tsconfig.nodejs.json',
+    typeCoverageBrowser: 'type-coverage -p src/tsconfig.browser.json'
   },
   test: [
     'tsc -p spec',
@@ -1899,6 +1903,7 @@ export const libraryReadmeMd = `
 [![npm version](https://badge.fury.io/js/REPOSITORY_NAME.svg)](https://badge.fury.io/js/REPOSITORY_NAME)
 [![Downloads](https://img.shields.io/npm/dm/REPOSITORY_NAME.svg)](https://www.npmjs.com/package/REPOSITORY_NAME)
 [![gzip size](https://img.badgesize.io/https://unpkg.com/REPOSITORY_NAME?compression=gzip)](https://unpkg.com/REPOSITORY_NAME)
+[![type-coverage](https://img.shields.io/badge/dynamic/json.svg?label=type-coverage&prefix=%E2%89%A5&suffix=%&query=\$.typeCoverage.atLeast&uri=https%3A%2F%2Fraw.githubusercontent.com%2FAUTHOR%2FREPOSITORY_NAME%2Fmaster%2Fpackage.json)](https://github.com/AUTHOR/REPOSITORY_NAME)
 
 ## install
 
@@ -2129,7 +2134,7 @@ module.exports = {
     export: \`no-unused-export \${tsFiles} \${lessFiles} --exclude \${excludeTsFiles}\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
-    typeCoverage: 'lerna exec -- type-coverage -p src --at-least 95'
+    typeCoverage: 'lerna exec -- type-coverage -p src'
   },
   test: [
     'tsc -p spec',
@@ -2784,6 +2789,7 @@ export const uiComponentReadmeMd = `
 [![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
 [![npm version](https://badge.fury.io/js/REPOSITORY_NAME.svg)](https://badge.fury.io/js/REPOSITORY_NAME)
 [![Downloads](https://img.shields.io/npm/dm/REPOSITORY_NAME.svg)](https://www.npmjs.com/package/REPOSITORY_NAME)
+[![type-coverage](https://img.shields.io/badge/dynamic/json.svg?label=type-coverage&prefix=%E2%89%A5&suffix=%&query=\$.typeCoverage.atLeast&uri=https%3A%2F%2Fraw.githubusercontent.com%2FAUTHOR%2FREPOSITORY_NAME%2Fmaster%2Fpackage.json)](https://github.com/AUTHOR/REPOSITORY_NAME)
 
 ## features
 
