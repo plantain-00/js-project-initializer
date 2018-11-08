@@ -24,10 +24,5 @@
     "vue": "2",
     "vue-class-component": "6",
     "REPOSITORY_NAME": "^1.0.0"
-  },
-  "peerDependencies": {
-    "vue": "2",
-    "vue-class-component": "6",
-    "REPOSITORY_NAME": "^1.0.0"
   }
 }

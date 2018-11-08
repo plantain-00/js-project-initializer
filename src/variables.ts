@@ -277,7 +277,7 @@ export const backendWithFrontendCleanRunConfigJs = `module.exports = {
   ]
 }
 `
-export const backendWithFrontendCleanScriptsConfigJs = `const { Service, checkGitStatus, executeScriptAsync, Program } = require('clean-scripts')
+export const backendWithFrontendCleanScriptsConfigJs = `const { Service, executeScriptAsync, Program } = require('clean-scripts')
 const { watch } = require('watch-then-execute')
 
 const tsFiles = \`"src/**/*.ts" "static/**/*.ts" "spec/**/*.ts" "static_spec/**/*.ts"\`
@@ -333,8 +333,7 @@ module.exports = {
       'tsc -p static_spec',
       'karma start static_spec/karma.config.js'
     ],
-    start: new Program('clean-release --config clean-run.config.js', 30000),
-    consistency: () => checkGitStatus()
+    start: new Program('clean-release --config clean-run.config.js', 30000)
   },
   fix: {
     ts: \`tslint --fix \${tsFiles}\`,
@@ -525,7 +524,7 @@ export const backendWithFrontendStaticIndexEjsHtml = `<!DOCTYPE html>
 <%-inline.indexBundleCss %>
 <a class="github-fork-ribbon right-bottom" href="https://github.com/AUTHOR/REPOSITORY_NAME" title="Fork me on GitHub" target="_blank" rel="noopener">Fork me on GitHub</a>
 <div id="prerender-container">
-<div id="container"><%-PRERENDER %></div>
+<div id="container"><%-context.prerender %></div>
 </div>
 <script src="<%=vendorBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.vendorBundleJs %>"></script>
 <%-inline.indexBundleJs %>
@@ -537,7 +536,7 @@ export const backendWithFrontendStaticIndexLess = `* {
   font-family: "Lucida Grande", "Lucida Sans Unicode", "Hiragino Sans GB", "WenQuanYi Micro Hei", "Verdana,Aril", sans-serif;
   -webkit-font-smoothing: antialiased;
 }
-  `
+`
 export const backendWithFrontendStaticIndexTemplateHtml = `<div>
 </div>`
 export const backendWithFrontendStaticIndexTs = `import Vue from 'vue'
@@ -566,7 +565,7 @@ module.exports = {
   revisedFiles: [
   ],
   inlinedFiles: [
-    'static/*.bundle.js',
+    'static/index.bundle.js',
     'static/*.bundle.css'
   ],
   outputFiles: file => file.replace('.ejs', ''),
@@ -2341,9 +2340,9 @@ export const uiComponentPackagesAngularPackageJson = `{
     "dist"
   ],
   "dependencies": {
-    "@angular/common": "5",
-    "@angular/core": "5",
-    "@angular/forms": "5",
+    "@angular/common": "7",
+    "@angular/core": "7",
+    "@angular/forms": "7",
     "REPOSITORY_NAME": "^1.0.0"
   },
   "devDependencies": {
@@ -2352,14 +2351,9 @@ export const uiComponentPackagesAngularPackageJson = `{
     "core-js": "2.5.1",
     "rxjs": "5.5.2",
     "zone.js": "0.8.18"
-  },
-  "peerDependencies": {
-    "@angular/common": "5",
-    "@angular/core": "5",
-    "@angular/forms": "5",
-    "REPOSITORY_NAME": "^1.0.0"
   }
-}`
+}
+`
 export const uiComponentPackagesAngularSrcIndexComponentTs = `import { Component, Input } from '@angular/core'
 import * as common from 'REPOSITORY_NAME'
 import { indexTemplateHtml } from './variables'
@@ -2442,11 +2436,9 @@ export const uiComponentPackagesCorePackageJson = `{
     ],
     "dependencies": {
         "tslib": "1"
-    },
-    "peerDependencies": {
-        "tslib": "1"
     }
-}`
+}
+`
 export const uiComponentPackagesCoreSrcIndexLess = `.componentShortName {
   * {
     box-sizing: border-box;
@@ -2555,11 +2547,6 @@ export const uiComponentPackagesReactPackageJson = `{
   "devDependencies": {
     "@types/react": "16.0.25",
     "@types/react-dom": "16.0.3"
-  },
-  "peerDependencies": {
-    "react": "16",
-    "react-dom": "16",
-    "REPOSITORY_NAME": "^1.0.0"
   }
 }
 `
@@ -2696,11 +2683,6 @@ export const uiComponentPackagesVuePackageJson = `{
     "dist"
   ],
   "dependencies": {
-    "vue": "2",
-    "vue-class-component": "6",
-    "REPOSITORY_NAME": "^1.0.0"
-  },
-  "peerDependencies": {
     "vue": "2",
     "vue-class-component": "6",
     "REPOSITORY_NAME": "^1.0.0"

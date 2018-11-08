@@ -135,7 +135,7 @@ async function getContext(): Promise<libs.Context> {
     repository: {
       type: string;
       url: string;
-    }
+    } | string
     author: string;
     scripts: { [key: string]: string };
     bin: { [key: string]: string };
@@ -144,10 +144,18 @@ async function getContext(): Promise<libs.Context> {
   const componentShortName = libs.getComponentShortName(repositoryName)
   const componentTypeName = libs.upperCamelCase(componentShortName)
   let author = packageJson.author
-  if (packageJson.repository && packageJson.repository.url) {
-    const items = packageJson.repository.url.split('/')
-    if (items.length >= 4) {
-      author = items[3]
+  if (packageJson.repository) {
+    let repositoryUrl: string | undefined
+    if (typeof packageJson.repository === 'string') {
+      repositoryUrl = packageJson.repository
+    } else if (packageJson.repository.url) {
+      repositoryUrl = packageJson.repository.url
+    }
+    if (repositoryUrl) {
+      const items = repositoryUrl.split('/')
+      if (items.length >= 4) {
+        author = items[3]
+      }
     }
   }
   return { repositoryName, componentShortName, componentTypeName, author, description: packageJson.description, authorName: packageJson.author }
