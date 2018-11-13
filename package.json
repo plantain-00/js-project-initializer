@@ -28,6 +28,9 @@
   "bugs": {
     "url": "https://github.com/plantain-00/js-project-initializer/issues"
   },
+  "typeCoverage": {
+    "atLeast": 98
+  },
   "homepage": "https://github.com/plantain-00/js-project-initializer#readme",
   "dependencies": {
     "inquirer": "6.2.0",
