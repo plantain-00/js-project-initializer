@@ -4,13 +4,13 @@ import commonjs from 'rollup-plugin-commonjs'
 
 export default {
   input: 'packages/vue/dist/index.js',
-  name: 'ComponentTypeName',
   plugins: [
     resolve({ browser: true }),
     uglify(),
     commonjs()
   ],
   output: {
+    name: 'ComponentTypeName',
     file: 'packages/vue/dist/COMPONENT_SHORT_NAME-vue-component.min.js',
     format: 'umd'
   },
