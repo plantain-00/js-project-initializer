@@ -70,7 +70,7 @@ module.exports = {
     export: \`no-unused-export \${tsFiles}\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
-    typeCoverage: 'type-coverage -p src'
+    typeCoverage: 'type-coverage -p src --strict'
   },
   test: [
     'tsc -p spec',
@@ -321,8 +321,8 @@ module.exports = {
     export: \`no-unused-export \${tsFiles} \${lessFiles}\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
-    typeCoverage: 'type-coverage -p src',
-    typeCoverageStatic: 'type-coverage -p static'
+    typeCoverage: 'type-coverage -p src --strict',
+    typeCoverageStatic: 'type-coverage -p static --strict'
   },
   test: {
     jasmine: [
@@ -808,7 +808,7 @@ module.exports = {
     export: \`no-unused-export \${tsFiles}\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
-    typeCoverage: 'type-coverage -p src'
+    typeCoverage: 'type-coverage -p src --strict'
   },
   test: [
     'tsc -p spec',
@@ -1070,8 +1070,8 @@ module.exports = {
     export: \`no-unused-export \${tsFiles} \${lessFiles}\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
-    typeCoverage: 'type-coverage -p .',
-    typeCoverageStatic: 'type-coverage -p static'
+    typeCoverage: 'type-coverage -p . --strict',
+    typeCoverageStatic: 'type-coverage -p static --strict'
   },
   test: {
     jasmine: [
@@ -1425,7 +1425,7 @@ module.exports = {
     export: \`no-unused-export \${tsFiles} \${lessFiles}\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
-    typeCoverage: 'type-coverage -p .'
+    typeCoverage: 'type-coverage -p . --strict'
   },
   test: [
     'tsc -p spec',
@@ -1857,8 +1857,8 @@ module.exports = {
     export: \`no-unused-export \${tsFiles}\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
-    typeCoverage: 'type-coverage -p src/tsconfig.nodejs.json',
-    typeCoverageBrowser: 'type-coverage -p src/tsconfig.browser.json'
+    typeCoverage: 'type-coverage -p src/tsconfig.nodejs.json --strict',
+    typeCoverageBrowser: 'type-coverage -p src/tsconfig.browser.json --strict'
   },
   test: [
     'tsc -p spec',
@@ -2133,7 +2133,7 @@ module.exports = {
     export: \`no-unused-export \${tsFiles} \${lessFiles} --exclude \${excludeTsFiles}\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
-    typeCoverage: 'lerna exec -- type-coverage -p src'
+    typeCoverage: 'lerna exec -- type-coverage -p src --strict'
   },
   test: [
     'tsc -p spec',

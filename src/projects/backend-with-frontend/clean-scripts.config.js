@@ -42,8 +42,8 @@ module.exports = {
     export: `no-unused-export ${tsFiles} ${lessFiles}`,
     commit: `commitlint --from=HEAD~1`,
     markdown: `markdownlint README.md`,
-    typeCoverage: 'type-coverage -p src',
-    typeCoverageStatic: 'type-coverage -p static'
+    typeCoverage: 'type-coverage -p src --strict',
+    typeCoverageStatic: 'type-coverage -p static --strict'
   },
   test: {
     jasmine: [
