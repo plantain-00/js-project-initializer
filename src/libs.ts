@@ -16,8 +16,12 @@ export function exec(command: string) {
         resolve()
       }
     })
-    subProcess.stdout.pipe(process.stdout)
-    subProcess.stderr.pipe(process.stderr)
+    if (subProcess.stdout) {
+      subProcess.stdout.pipe(process.stdout)
+    }
+    if (subProcess.stderr) {
+      subProcess.stderr.pipe(process.stderr)
+    }
   })
 }
 
