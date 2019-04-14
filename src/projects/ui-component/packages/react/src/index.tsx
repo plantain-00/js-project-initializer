@@ -5,13 +5,11 @@ export * from 'REPOSITORY_NAME'
 /**
  * @public
  */
-export class ComponentTypeName extends React.Component<{
+export function ComponentTypeName(props: {
   data: common.ComponentTypeNameData;
-}, {}> {
-  render() {
-    return (
-      <div className='COMPONENT_SHORT_NAME'>
-      </div>
-    )
-  }
+}) {
+  return (
+    <div className='COMPONENT_SHORT_NAME'>
+    </div>
+  )
 }
