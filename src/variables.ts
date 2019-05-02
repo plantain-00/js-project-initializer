@@ -2354,6 +2354,10 @@ export const uiComponentPackagesAngularPackageJson = `{
   }
 }
 `
+export const uiComponentPackagesAngularReadmeMd = `# COMPONENT_SHORT_NAME-angular-component
+
+Docs: <https://github.com/AUTHOR/REPOSITORY_NAME>
+`
 export const uiComponentPackagesAngularSrcIndexComponentTs = `import { Component, Input } from '@angular/core'
 import * as common from 'REPOSITORY_NAME'
 import { indexTemplateHtml } from './variables'
@@ -2438,6 +2442,10 @@ export const uiComponentPackagesCorePackageJson = `{
         "tslib": "1"
     }
 }
+`
+export const uiComponentPackagesCoreReadmeMd = `# REPOSITORY_NAME
+
+Docs: <https://github.com/AUTHOR/REPOSITORY_NAME>
 `
 export const uiComponentPackagesCoreSrcIndexLess = `.componentShortName {
   * {
@@ -2546,6 +2554,10 @@ export const uiComponentPackagesReactPackageJson = `{
     "@types/react-dom": "16.0.3"
   }
 }
+`
+export const uiComponentPackagesReactReadmeMd = `# COMPONENT_SHORT_NAME-react-component
+
+Docs: <https://github.com/AUTHOR/REPOSITORY_NAME>
 `
 export const uiComponentPackagesReactSrcIndexTsx = `import * as React from 'react'
 import * as common from 'REPOSITORY_NAME'
@@ -2683,6 +2695,10 @@ export const uiComponentPackagesVuePackageJson = `{
     "REPOSITORY_NAME": "^1.0.0"
   }
 }
+`
+export const uiComponentPackagesVueReadmeMd = `# COMPONENT_SHORT_NAME-vue-component
+
+Docs: <https://github.com/AUTHOR/REPOSITORY_NAME>
 `
 export const uiComponentPackagesVueSrcFile2variableConfigJs = `module.exports = {
   base: 'packages/vue/src/',

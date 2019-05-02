@@ -55,6 +55,10 @@ export async function runUIComponent(context: libs.Context) {
   await libs.writeFile(`packages/core/src/index.ts`, variables.uiComponentPackagesCoreSrcIndexTs.replace(/componentTypeNameData/g, context.componentShortName))
   await libs.writeFile(`packages/core/src/tsconfig.json`, variables.uiComponentPackagesCoreSrcTsconfigJson)
 
+  await libs.writeFile(`packages/core/README.md`, variables.uiComponentPackagesCoreReadmeMd
+    .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName)
+    .replace(/AUTHOR/g, context.author)
+    .replace(/REPOSITORY_NAME/g, context.repositoryName))
   await libs.writeFile(`packages/core/package.json`, variables.uiComponentPackagesCorePackageJson
     .replace(/repository-name/g, context.repositoryName)
     .replace(/DESCRIPTION/g, context.description)
@@ -80,6 +84,10 @@ export async function runUIComponent(context: libs.Context) {
     .replace(/ComponentTypeName/g, context.componentTypeName)
     .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName))
 
+  await libs.writeFile(`packages/react/README.md`, variables.uiComponentPackagesReactReadmeMd
+    .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName)
+    .replace(/AUTHOR/g, context.author)
+    .replace(/REPOSITORY_NAME/g, context.repositoryName))
   await libs.writeFile(`packages/react/package.json`, variables.uiComponentPackagesReactPackageJson
     .replace(/component-short-name/g, context.componentShortName)
     .replace(/DESCRIPTION/g, context.description)
@@ -110,6 +118,10 @@ export async function runUIComponent(context: libs.Context) {
     .replace(/ComponentTypeName/g, context.componentTypeName)
     .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName))
 
+  await libs.writeFile(`packages/vue/README.md`, variables.uiComponentPackagesVueReadmeMd
+    .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName)
+    .replace(/AUTHOR/g, context.author)
+    .replace(/REPOSITORY_NAME/g, context.repositoryName))
   await libs.writeFile(`packages/vue/package.json`, variables.uiComponentPackagesVuePackageJson
     .replace(/component-short-name/g, context.componentShortName)
     .replace(/DESCRIPTION/g, context.description)
@@ -203,6 +215,10 @@ async function initializeAngularFiles(context: libs.Context) {
     .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName))
   await libs.writeFile(`packages/angular/src/tsconfig.json`, variables.uiComponentPackagesAngularSrcTsconfigJson)
 
+  await libs.writeFile(`packages/angular/README.md`, variables.uiComponentPackagesAngularReadmeMd
+    .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName)
+    .replace(/AUTHOR/g, context.author)
+    .replace(/REPOSITORY_NAME/g, context.repositoryName))
   await libs.writeFile(`packages/angular/package.json`, variables.uiComponentPackagesAngularPackageJson
     .replace(/component-short-name/g, context.componentShortName)
     .replace(/DESCRIPTION/g, context.description)
