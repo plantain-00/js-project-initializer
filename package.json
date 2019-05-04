@@ -45,7 +45,7 @@
     "@types/jasmine": "3.3.12",
     "@types/mkdirp": "0.5.2",
     "@types/uppercamelcase": "3.0.0",
-    "clean-scripts": "1.9.2",
+    "clean-scripts": "1.11.0",
     "file2variable-cli": "1.8.5",
     "jasmine": "3.4.0",
     "markdownlint-cli": "0.15.0",
@@ -55,7 +55,7 @@
     "tslint": "5.16.0",
     "tslint-config-standard": "8.0.1",
     "tslint-sonarts": "1.9.0",
-    "type-coverage": "1.13.0",
+    "type-coverage": "2.0.1",
     "typescript": "3.4.5"
   },
   "preferGlobal": true
