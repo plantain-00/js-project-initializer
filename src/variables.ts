@@ -1923,7 +1923,7 @@ export default {
   plugins: [resolve({ browser: true }), uglify()],
   output: {
     name: 'ComponentTypeName',
-    file: 'dist/ComponentTypeName.min.js',
+    file: 'dist/REPOSITORY_NAME.min.js',
     format: 'umd'
   }
 }

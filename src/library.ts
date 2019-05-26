@@ -30,7 +30,7 @@ export async function runLibrary(context: libs.Context) {
   await libs.writeFile('.travis.yml', variables.libraryTravisYml)
   await libs.writeFile('appveyor.yml', variables.libraryAppveyorYml)
   await libs.writeFile('clean-release.config.js', variables.libraryCleanReleaseConfigJs)
-  await libs.writeFile('rollup.config.js', variables.libraryRollupConfigJs.replace(/ComponentTypeName/g, context.componentTypeName))
+  await libs.writeFile('rollup.config.js', variables.libraryRollupConfigJs.replace(/ComponentTypeName/g, context.componentTypeName).replace(/REPOSITORY_NAME/g, context.repositoryName))
   await libs.writeFile('clean-scripts.config.js', variables.libraryCleanScriptsConfigJs)
 
   await libs.writeFile('spec/tsconfig.json', variables.librarySpecTsconfigJson)
