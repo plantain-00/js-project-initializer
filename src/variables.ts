@@ -165,7 +165,7 @@ export const backendSrcTsconfigJson = `{
 export const backendTravisYml = `language: node_js
 dist: trusty
 node_js:
-  - "8"
+  - "10"
 before_install:
   - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
   - git fetch --unshallow || true
@@ -605,6 +605,7 @@ module.exports = function (karma) {
     singleRun: true,
     concurrency: Infinity,
     webpack: webpackConfig,
+    webpackMiddleware: {},
     preprocessors: {
       '**/*Spec.js': ['webpack']
     }
@@ -671,7 +672,7 @@ export const backendWithFrontendStylelintrc = `{
 export const backendWithFrontendTravisYml = `language: node_js
 dist: trusty
 node_js:
-  - "8"
+  - "10"
 before_install:
   - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
   - "export DISPLAY=:99.0"
@@ -925,7 +926,7 @@ export const cliSrcTsconfigJson = `{
 export const cliTravisYml = `language: node_js
 dist: trusty
 node_js:
-  - "8"
+  - "10"
 before_install:
   - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
   - git fetch --unshallow || true
@@ -1262,6 +1263,7 @@ module.exports = function (karma) {
     singleRun: true,
     concurrency: Infinity,
     webpack: webpackConfig,
+    webpackMiddleware: {},
     preprocessors: {
       '**/*Spec.js': ['webpack']
     }
@@ -1289,7 +1291,7 @@ export const electronStylelintrc = `{
 export const electronTravisYml = `language: node_js
 dist: trusty
 node_js:
-  - "8"
+  - "10"
 before_install:
   - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
   - "export DISPLAY=:99.0"
@@ -1650,6 +1652,7 @@ module.exports = function (karma) {
     singleRun: true,
     concurrency: Infinity,
     webpack: webpackConfig,
+    webpackMiddleware: {},
     preprocessors: {
       '**/*Spec.js': ['webpack']
     }
@@ -1684,7 +1687,7 @@ export const frontendSwPrecacheConfigJs = `module.exports = {
 export const frontendTravisYml = `language: node_js
 dist: trusty
 node_js:
-  - "8"
+  - "10"
 before_install:
   - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
   - "export DISPLAY=:99.0"
@@ -1976,7 +1979,7 @@ export const librarySrcTsconfigNodejsJson = `{
 export const libraryTravisYml = `language: node_js
 dist: trusty
 node_js:
-  - "8"
+  - "10"
 before_install:
   - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
   - git fetch --unshallow || true
@@ -2959,6 +2962,7 @@ module.exports = function (karma) {
     singleRun: true,
     concurrency: Infinity,
     webpack: webpackConfig,
+    webpackMiddleware: {},
     preprocessors: {
       '**/*Spec.js': ['webpack']
     }
@@ -3013,7 +3017,7 @@ export const uiComponentStylelintrc = `{
 export const uiComponentTravisYml = `language: node_js
 dist: trusty
 node_js:
-  - "8"
+  - "10"
 before_install:
   - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
   - "export DISPLAY=:99.0"
