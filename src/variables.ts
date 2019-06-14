@@ -5,7 +5,7 @@
 // tslint:disable
 
 export const backendAppveyorYml = `environment:
-  nodejs_version: "8"
+  nodejs_version: "10"
 
 install:
   - ps: Install-Product node \$env:nodejs_version
@@ -225,7 +225,7 @@ export const backendTslintJson = `{
 }
 `
 export const backendWithFrontendAppveyorYml = `environment:
-  nodejs_version: "8"
+  nodejs_version: "10"
 
 install:
   - ps: Install-Product node \$env:nodejs_version
@@ -735,7 +735,7 @@ export const backendWithFrontendTslintJson = `{
 }
 `
 export const cliAppveyorYml = `environment:
-  nodejs_version: "8"
+  nodejs_version: "10"
 
 install:
   - ps: Install-Product node \$env:nodejs_version
@@ -986,7 +986,7 @@ export const cliTslintJson = `{
 }
 `
 export const electronAppveyorYml = `environment:
-  nodejs_version: "8"
+  nodejs_version: "10"
 
 install:
   - ps: Install-Product node \$env:nodejs_version
@@ -1366,7 +1366,7 @@ export const electronTslintJson = `{
 }
 `
 export const frontendAppveyorYml = `environment:
-  nodejs_version: "8"
+  nodejs_version: "10"
 
 install:
   - ps: Install-Product node \$env:nodejs_version
@@ -1801,7 +1801,7 @@ module.exports = {
 }
 `
 export const libraryAppveyorYml = `environment:
-  nodejs_version: "8"
+  nodejs_version: "10"
 
 install:
   - ps: Install-Product node \$env:nodejs_version
@@ -2039,7 +2039,7 @@ export const libraryTslintJson = `{
 }
 `
 export const uiComponentAppveyorYml = `environment:
-  nodejs_version: "8"
+  nodejs_version: "10"
 
 install:
   - ps: Install-Product node \$env:nodejs_version
