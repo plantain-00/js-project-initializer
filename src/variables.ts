@@ -67,7 +67,7 @@ module.exports = {
   lint: {
     ts: \`tslint \${tsFiles}\`,
     js: \`standard \${jsFiles}\`,
-    export: \`no-unused-export \${tsFiles}\`,
+    export: \`no-unused-export \${tsFiles} --strict\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
     typeCoverage: 'type-coverage -p src --strict'
@@ -318,7 +318,7 @@ module.exports = {
     ts: \`tslint \${tsFiles}\`,
     js: \`standard \${jsFiles}\`,
     less: \`stylelint \${lessFiles}\`,
-    export: \`no-unused-export \${tsFiles} \${lessFiles}\`,
+    export: \`no-unused-export \${tsFiles} \${lessFiles} --strict\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
     typeCoverage: 'type-coverage -p src --strict',
@@ -806,7 +806,7 @@ module.exports = {
   lint: {
     ts: \`tslint \${tsFiles}\`,
     js: \`standard \${jsFiles}\`,
-    export: \`no-unused-export \${tsFiles}\`,
+    export: \`no-unused-export \${tsFiles} --strict\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
     typeCoverage: 'type-coverage -p src --strict'
@@ -1068,7 +1068,7 @@ module.exports = {
     ts: \`tslint \${tsFiles}\`,
     js: \`standard \${jsFiles}\`,
     less: \`stylelint \${lessFiles}\`,
-    export: \`no-unused-export \${tsFiles} \${lessFiles}\`,
+    export: \`no-unused-export \${tsFiles} \${lessFiles} --strict\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
     typeCoverage: 'type-coverage -p . --strict',
@@ -1424,7 +1424,7 @@ module.exports = {
     ts: \`tslint \${tsFiles}\`,
     js: \`standard \${jsFiles}\`,
     less: \`stylelint \${lessFiles}\`,
-    export: \`no-unused-export \${tsFiles} \${lessFiles}\`,
+    export: \`no-unused-export \${tsFiles} \${lessFiles} --strict\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
     typeCoverage: 'type-coverage -p . --strict'
@@ -1857,7 +1857,7 @@ module.exports = {
   lint: {
     ts: \`tslint \${tsFiles}\`,
     js: \`standard \${jsFiles}\`,
-    export: \`no-unused-export \${tsFiles}\`,
+    export: \`no-unused-export \${tsFiles} --strict\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
     typeCoverage: 'type-coverage -p src/tsconfig.nodejs.json --strict',
@@ -2133,7 +2133,7 @@ module.exports = {
     ts: \`tslint \${tsFiles} --exclude \${excludeTsFiles}\`,
     js: \`standard \${jsFiles}\`,
     less: \`stylelint \${lessFiles}\`,
-    export: \`no-unused-export \${tsFiles} \${lessFiles} --exclude \${excludeTsFiles}\`,
+    export: \`no-unused-export \${tsFiles} \${lessFiles} --exclude \${excludeTsFiles} --strict\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
     typeCoverage: 'lerna exec -- type-coverage -p src --strict'
