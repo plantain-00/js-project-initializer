@@ -3,7 +3,6 @@ import * as variables from './variables'
 
 export async function runElectron(context: libs.Context) {
   await libs.appendFile('.gitignore', variables.electronGitignore)
-  await libs.appendFile('tslint.json', variables.electronTslintJson)
   await libs.appendFile('.editorconfig', variables.electronEditorconfig)
   await libs.appendFile('tsconfig.base.json', variables.electronTsconfigBaseJson)
 
@@ -17,7 +16,6 @@ export async function runElectron(context: libs.Context) {
   await libs.exec(`yarn add -DE clean-css-cli`)
   await libs.exec(`yarn add -DE file2variable-cli`)
   await libs.exec(`yarn add -DE webpack webpack-cli`)
-  await libs.exec(`yarn add -DE standard`)
   await libs.exec(`yarn add -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`)
   await libs.exec(`yarn add -DE clean-scripts`)
   await libs.exec(`yarn add -DE no-unused-export`)
@@ -40,6 +38,8 @@ export async function runElectron(context: libs.Context) {
   await libs.writeFile('clean-scripts.config.js', variables.electronCleanScriptsConfigJs)
   await libs.writeFile('.browserslistrc', variables.electronBrowserslistrc)
   await libs.writeFile('postcss.config.js', variables.electronPostcssConfigJs)
+  await libs.writeFile('.eslintrc', variables.electronEslintrc)
+  await libs.writeFile('.eslintignore', variables.electronEslintignore)
 
   await libs.mkdir('scripts')
   await libs.writeFile('scripts/index.ts', variables.electronScriptsIndexTs)
@@ -47,7 +47,7 @@ export async function runElectron(context: libs.Context) {
   await libs.writeFile('scripts/tsconfig.json', variables.electronScriptsTsconfigJson)
   await libs.writeFile(`scripts/index.template.html`, variables.electronScriptsIndexTemplateHtml)
   await libs.writeFile(`scripts/webpack.config.js`, variables.electronScriptsWebpackConfigJs)
-  await libs.writeFile('scripts/file2variable.config.js', variables.electronScriptsFile2variableConfigJs)
+  await libs.writeFile('scripts/file2variable.config.js', variables.electronScriptsFile2VariableConfigJs)
 
   await libs.mkdir('spec')
   await libs.writeFile('spec/tsconfig.json', variables.electronSpecTsconfigJson)

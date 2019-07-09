@@ -3,14 +3,12 @@ import * as variables from './variables'
 
 export async function runCLI(context: libs.Context) {
   await libs.appendFile('.gitignore', variables.cliGitignore)
-  await libs.appendFile('tslint.json', variables.cliTslintJson)
   await libs.appendFile('.editorconfig', variables.cliEditorconfig)
   await libs.appendFile('tsconfig.base.json', variables.cliTsconfigBaseJson)
 
   await libs.exec(`yarn add -SE tslib`)
   await libs.exec(`yarn add -DE @types/node`)
   await libs.exec(`yarn add -DE jasmine @types/jasmine`)
-  await libs.exec(`yarn add -DE standard`)
   await libs.exec(`yarn add -E minimist`)
   await libs.exec(`yarn add -DE @types/minimist`)
   await libs.exec(`yarn add -DE clean-scripts`)
@@ -33,6 +31,8 @@ export async function runCLI(context: libs.Context) {
   await libs.writeFile('clean-release.config.js', variables.cliCleanReleaseConfigJs)
   await libs.writeFile('clean-scripts.config.js', variables.cliCleanScriptsConfigJs)
   await libs.writeFile('clean-run.config.js', variables.cliCleanRunConfigJs)
+  await libs.writeFile('.eslintrc', variables.cliEslintrc)
+  await libs.writeFile('.eslintignore', variables.cliEslintignore)
 
   await libs.mkdir('bin')
   await libs.writeFile(`bin/${context.repositoryName}`, variables.cliBinCli)

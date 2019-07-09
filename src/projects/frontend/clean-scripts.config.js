@@ -36,8 +36,7 @@ module.exports = {
     swCommand
   ],
   lint: {
-    ts: `tslint ${tsFiles}`,
-    js: `standard ${jsFiles}`,
+    ts: `eslint --ext .js,.ts ${tsFiles} ${jsFiles}`,
     less: `stylelint ${lessFiles}`,
     export: `no-unused-export ${tsFiles} ${lessFiles} --strict`,
     commit: `commitlint --from=HEAD~1`,
@@ -49,8 +48,7 @@ module.exports = {
     'karma start spec/karma.config.js'
   ],
   fix: {
-    ts: `tslint --fix ${tsFiles}`,
-    js: `standard --fix ${jsFiles}`,
+    ts: `eslint --ext .js,.ts ${tsFiles} ${jsFiles} --fix`,
     less: `stylelint --fix ${lessFiles}`
   },
   watch: {

@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
-// tslint:disable:no-duplicate-imports
 import '../dist/'
 import { componentTypeNameData } from '../dist/'
 
@@ -18,5 +17,4 @@ class App extends Vue {
   data: componentTypeNameData
 }
 
-// tslint:disable-next-line:no-unused-expression
 new App({ el: '#container' })

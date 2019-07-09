@@ -3,7 +3,6 @@ import * as variables from './variables'
 
 export async function runBackendWithFrontend(context: libs.Context) {
   await libs.appendFile('.gitignore', variables.backendWithFrontendGitignore)
-  await libs.appendFile('tslint.json', variables.backendWithFrontendTslintJson)
   await libs.appendFile('.editorconfig', variables.backendWithFrontendEditorconfig)
   await libs.appendFile('tsconfig.base.json', variables.backendWithFrontendTsconfigBaseJson)
 
@@ -17,7 +16,6 @@ export async function runBackendWithFrontend(context: libs.Context) {
   await libs.exec(`yarn add -DE file2variable-cli`)
   await libs.exec(`yarn add -DE webpack webpack-cli`)
   await libs.exec(`yarn add -DE rev-static`)
-  await libs.exec(`yarn add -DE standard`)
   await libs.exec(`yarn add -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`)
   await libs.exec(`yarn add -DE clean-scripts`)
   await libs.exec(`yarn add -DE clean-release`)
@@ -48,7 +46,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
       .replace(/REPOSITORY_NAME/g, context.repositoryName)
       .replace(/AUTHOR/g, context.author))
   await libs.writeFile('static/prerender.html', variables.backendWithFrontendStaticPrerenderHtml)
-  await libs.writeFile('static/file2variable.config.js', variables.backendWithFrontendStaticFile2variableConfigJs)
+  await libs.writeFile('static/file2variable.config.js', variables.backendWithFrontendStaticFile2VariableConfigJs)
 
   await libs.appendFile('README.md',
     variables.backendWithFrontendReadmeMd
@@ -66,6 +64,8 @@ export async function runBackendWithFrontend(context: libs.Context) {
   await libs.writeFile('postcss.config.js', variables.backendWithFrontendPostcssConfigJs)
   await libs.writeFile('Dockerfile', variables.backendWithFrontendDockerfile)
   await libs.writeFile('clean-run.config.js', variables.backendWithFrontendCleanRunConfigJs)
+  await libs.writeFile('.eslintrc', variables.backendWithFrontendEslintrc)
+  await libs.writeFile('.eslintignore', variables.backendWithFrontendEslintignore)
 
   await libs.mkdir('spec')
   await libs.writeFile('spec/tsconfig.json', variables.backendWithFrontendSpecTsconfigJson)

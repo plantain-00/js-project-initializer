@@ -1,7 +1,7 @@
 /**
  * @public
  */
-export type componentTypeNameData<T = any> = {
+export interface componentTypeNameData<T = any> {
   component: string | Function;
   data: T;
 }

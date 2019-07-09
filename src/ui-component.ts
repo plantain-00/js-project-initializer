@@ -17,7 +17,6 @@ export async function runUIComponent(context: libs.Context) {
   const hasAngularChoice = options.some(o => o === 'angular')
 
   await libs.appendFile('.gitignore', variables.uiComponentGitignore)
-  await libs.appendFile('tslint.json', variables.uiComponentTslintJson)
   await libs.appendFile('.editorconfig', variables.uiComponentEditorconfig)
   await libs.appendFile('tsconfig.base.json', variables.uiComponentTsconfigBaseJson)
 
@@ -31,7 +30,6 @@ export async function runUIComponent(context: libs.Context) {
   if (hasAngularChoice) {
     await libs.exec(`yarn add -DE @angular/compiler @angular/core @angular/compiler-cli`)
   }
-  await libs.exec(`yarn add -DE standard`)
   await libs.exec(`yarn add -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`)
   await libs.exec(`yarn add -DE clean-scripts`)
   await libs.exec(`yarn add -DE no-unused-export`)
@@ -112,7 +110,7 @@ export async function runUIComponent(context: libs.Context) {
     .replace(/AUTHOR/g, context.author)
     .replace(/REPOSITORY_NAME/g, context.repositoryName))
   await libs.writeFile(`packages/vue/src/tsconfig.json`, variables.uiComponentPackagesVueSrcTsconfigJson)
-  await libs.writeFile(`packages/vue/src/file2variable.config.js`, variables.uiComponentPackagesVueSrcFile2variableConfigJs
+  await libs.writeFile(`packages/vue/src/file2variable.config.js`, variables.uiComponentPackagesVueSrcFile2VariableConfigJs
     .replace(/COMPONENT_TYPE_NAME/g, context.componentTypeName))
   await libs.writeFile(`packages/react/src/rollup.config.js`, variables.uiComponentPackagesVueSrcRollupConfigJs
     .replace(/ComponentTypeName/g, context.componentTypeName)
@@ -162,6 +160,8 @@ export async function runUIComponent(context: libs.Context) {
     .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName))
   await libs.writeFile('.browserslistrc', variables.uiComponentBrowserslistrc)
   await libs.writeFile('postcss.config.js', variables.uiComponentPostcssConfigJs)
+  await libs.writeFile('.eslintrc', variables.uiComponentEslintrc)
+  await libs.writeFile('.eslintignore', variables.uiComponentEslintignore)
 
   await libs.writeFile('lerna.json', variables.uiComponentLernaJson)
 

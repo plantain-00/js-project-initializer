@@ -3,7 +3,6 @@ import * as variables from './variables'
 
 export async function runFrontend(context: libs.Context) {
   await libs.appendFile('.gitignore', variables.frontendGitignore)
-  await libs.appendFile('tslint.json', variables.frontendTslintJson)
   await libs.appendFile('.editorconfig', variables.frontendEditorconfig)
   await libs.appendFile('tsconfig.base.json', variables.frontendTsconfigBaseJson)
 
@@ -17,7 +16,6 @@ export async function runFrontend(context: libs.Context) {
   await libs.exec(`yarn add -DE webpack webpack-cli`)
   await libs.exec(`yarn add -DE rev-static`)
   await libs.exec(`yarn add -DE sw-precache uglify-js@^2.8`)
-  await libs.exec(`yarn add -DE standard`)
   await libs.exec(`yarn add -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`)
   await libs.exec(`yarn add -DE clean-scripts`)
   await libs.exec(`yarn add -DE no-unused-export`)
@@ -51,7 +49,9 @@ export async function runFrontend(context: libs.Context) {
   await libs.writeFile('prerender.html', variables.frontendPrerenderHtml)
   await libs.writeFile('.browserslistrc', variables.frontendBrowserslistrc)
   await libs.writeFile('postcss.config.js', variables.frontendPostcssConfigJs)
-  await libs.writeFile('file2variable.config.js', variables.frontendFile2variableConfigJs)
+  await libs.writeFile('file2variable.config.js', variables.frontendFile2VariableConfigJs)
+  await libs.writeFile('.eslintrc', variables.frontendEslintrc)
+  await libs.writeFile('.eslintignore', variables.frontendEslintignore)
 
   await libs.mkdir(`spec`)
   await libs.writeFile(`spec/karma.config.js`, variables.frontendSpecKarmaConfigJs)

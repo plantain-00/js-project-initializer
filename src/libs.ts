@@ -73,7 +73,7 @@ export function getComponentShortName(componentName: string) {
     : componentName
 }
 
-export type Context = {
+export interface Context {
   kind?: ProjectKind;
   repositoryName: string;
   componentShortName: string;

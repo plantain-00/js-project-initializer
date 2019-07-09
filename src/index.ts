@@ -19,7 +19,7 @@ async function run() {
   await libs.mkdir('.vscode')
   await libs.writeFile('.vscode/settings.json', vscodeSetting)
 
-  await libs.exec(`yarn add -DE tslint tslint-config-standard tslint-sonarts`)
+  await libs.exec(`yarn add -DE @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-config-prettier eslint-plugin-plantain eslint`)
   await libs.exec(`yarn add -DE @commitlint/config-conventional @commitlint/cli`)
   await libs.writeFile('commitlint.config.js', commitlintConfig)
   await libs.exec(`yarn add -DE markdownlint-cli`)

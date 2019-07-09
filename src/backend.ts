@@ -3,14 +3,12 @@ import * as variables from './variables'
 
 export async function runBackend(context: libs.Context) {
   await libs.appendFile('.gitignore', variables.backendGitignore)
-  await libs.appendFile('tslint.json', variables.backendTslintJson)
   await libs.appendFile('.editorconfig', variables.backendEditorconfig)
   await libs.appendFile('tsconfig.base.json', variables.backendTsconfigBaseJson)
 
   await libs.exec(`yarn add -SE tslib`)
   await libs.exec(`yarn add -DE @types/node`)
   await libs.exec(`yarn add -DE jasmine @types/jasmine`)
-  await libs.exec(`yarn add -DE standard`)
   await libs.exec(`yarn add -DE clean-scripts`)
   await libs.exec(`yarn add -DE clean-release`)
   await libs.exec(`yarn add -DE no-unused-export`)
@@ -33,6 +31,8 @@ export async function runBackend(context: libs.Context) {
   await libs.writeFile('clean-scripts.config.js', variables.backendCleanScriptsConfigJs)
   await libs.writeFile('Dockerfile', variables.backendDockerfile)
   await libs.writeFile('clean-run.config.js', variables.backendCleanRunConfigJs)
+  await libs.writeFile('.eslintrc', variables.backendEslintrc)
+  await libs.writeFile('.eslintignore', variables.backendEslintignore)
 
   await libs.mkdir('spec')
   await libs.writeFile('spec/tsconfig.json', variables.backendSpecTsconfigJson)

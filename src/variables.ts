@@ -3,6 +3,7 @@
  * It is not mean to be edited by hand
  */
 // tslint:disable
+/* eslint-disable */
 
 export const backendAppveyorYml = `environment:
   nodejs_version: "10"
@@ -65,8 +66,7 @@ module.exports = {
     tscSrcCommand
   ],
   lint: {
-    ts: \`tslint \${tsFiles}\`,
-    js: \`standard \${jsFiles}\`,
+    ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
     export: \`no-unused-export \${tsFiles} --strict\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
@@ -77,10 +77,7 @@ module.exports = {
     'jasmine',
     new Program('clean-release --config clean-run.config.js', 30000)
   ],
-  fix: {
-    ts: \`tslint --fix \${tsFiles}\`,
-    js: \`standard --fix \${jsFiles}\`
-  },
+  fix: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles} --fix\`,
   watch: \`\${tscSrcCommand} --watch\`
 }
 `
@@ -99,6 +96,42 @@ insert_final_newline = true
 charset = utf-8
 indent_style = space
 indent_size = 2
+`
+export const backendEslintignore = `node_modules
+`
+export const backendEslintrc = `{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "prettier/@typescript-eslint"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.base.json"
+  },
+  "plugins": [
+    "plantain"
+  ],
+  "rules": {
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "no-case-declarations": "off",
+    "no-console": "off",
+    "plantain/promise-not-await": "error"
+  },
+  "env": {
+    "node": true
+  },
+  "overrides": [
+    {
+      "files": ["*.js"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    }
+  ]
+}
 `
 export const backendGitignore = `# Source
 .vscode
@@ -214,16 +247,6 @@ export const backendTsconfigBaseJson = `{
   }
 }
 `
-export const backendTslintJson = `{
-  "extends": [
-    "tslint-config-standard",
-    "tslint-sonarts"
-  ],
-  "rules": {
-    "space-before-function-paren": [true, "never"]
-  }
-}
-`
 export const backendWithFrontendAppveyorYml = `environment:
   nodejs_version: "10"
 
@@ -315,8 +338,7 @@ module.exports = {
     ]
   },
   lint: {
-    ts: \`tslint \${tsFiles}\`,
-    js: \`standard \${jsFiles}\`,
+    ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
     less: \`stylelint \${lessFiles}\`,
     export: \`no-unused-export \${tsFiles} \${lessFiles} --strict\`,
     commit: \`commitlint --from=HEAD~1\`,
@@ -336,8 +358,7 @@ module.exports = {
     start: new Program('clean-release --config clean-run.config.js', 30000)
   },
   fix: {
-    ts: \`tslint --fix \${tsFiles}\`,
-    js: \`standard --fix \${jsFiles}\`,
+    ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles} --fix\`,
     less: \`stylelint --fix \${lessFiles}\`
   },
   watch: {
@@ -375,6 +396,42 @@ insert_final_newline = true
 charset = utf-8
 indent_style = space
 indent_size = 2
+`
+export const backendWithFrontendEslintignore = `node_modules
+`
+export const backendWithFrontendEslintrc = `{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "prettier/@typescript-eslint"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.base.json"
+  },
+  "plugins": [
+    "plantain"
+  ],
+  "rules": {
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "no-case-declarations": "off",
+    "no-console": "off",
+    "plantain/promise-not-await": "error"
+  },
+  "env": {
+    "node": true
+  },
+  "overrides": [
+    {
+      "files": ["*.js"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    }
+  ]
+}
 `
 export const backendWithFrontendGitignore = `# Source
 .vscode
@@ -496,7 +553,7 @@ export const backendWithFrontendSrcTsconfigJson = `{
   }
 }
 `
-export const backendWithFrontendStaticFile2variableConfigJs = `module.exports = {
+export const backendWithFrontendStaticFile2VariableConfigJs = `module.exports = {
   base: 'static',
   files: [
     'static/*.template.html'
@@ -550,7 +607,6 @@ import { indexTemplateHtml, indexTemplateHtmlStatic } from './variables'
 export class App extends Vue {
 }
 
-// tslint:disable-next-line:no-unused-expression
 new App({ el: '#container' })
 `
 export const backendWithFrontendStaticPrerenderHtml = ``
@@ -724,16 +780,6 @@ export const backendWithFrontendTsconfigBaseJson = `{
   }
 }
 `
-export const backendWithFrontendTslintJson = `{
-  "extends": [
-    "tslint-config-standard",
-    "tslint-sonarts"
-  ],
-  "rules": {
-    "space-before-function-paren": [true, "never"]
-  }
-}
-`
 export const cliAppveyorYml = `environment:
   nodejs_version: "10"
 
@@ -804,8 +850,7 @@ module.exports = {
     'node dist/index.js --supressError > spec/result.txt'
   ],
   lint: {
-    ts: \`tslint \${tsFiles}\`,
-    js: \`standard \${jsFiles}\`,
+    ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
     export: \`no-unused-export \${tsFiles} --strict\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
@@ -817,10 +862,7 @@ module.exports = {
     'clean-release --config clean-run.config.js',
     () => checkGitStatus()
   ],
-  fix: {
-    ts: \`tslint --fix \${tsFiles}\`,
-    js: \`standard --fix \${jsFiles}\`
-  }
+  fix: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles} --fix\`
 }
 `
 export const cliEditorconfig = `root = true
@@ -831,6 +873,42 @@ insert_final_newline = true
 charset = utf-8
 indent_style = space
 indent_size = 2
+`
+export const cliEslintignore = `node_modules
+`
+export const cliEslintrc = `{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "prettier/@typescript-eslint"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.base.json"
+  },
+  "plugins": [
+    "plantain"
+  ],
+  "rules": {
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "no-case-declarations": "off",
+    "no-console": "off",
+    "plantain/promise-not-await": "error"
+  },
+  "env": {
+    "node": true
+  },
+  "overrides": [
+    {
+      "files": ["*.js"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    }
+  ]
+}
 `
 export const cliGitignore = `# Source
 .vscode
@@ -975,16 +1053,6 @@ export const cliTsconfigBaseJson = `{
   }
 }
 `
-export const cliTslintJson = `{
-  "extends": [
-    "tslint-config-standard",
-    "tslint-sonarts"
-  ],
-  "rules": {
-    "space-before-function-paren": [true, "never"]
-  }
-}
-`
 export const electronAppveyorYml = `environment:
   nodejs_version: "10"
 
@@ -1065,8 +1133,7 @@ module.exports = {
     }
   },
   lint: {
-    ts: \`tslint \${tsFiles}\`,
-    js: \`standard \${jsFiles}\`,
+    ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
     less: \`stylelint \${lessFiles}\`,
     export: \`no-unused-export \${tsFiles} \${lessFiles} --strict\`,
     commit: \`commitlint --from=HEAD~1\`,
@@ -1085,8 +1152,7 @@ module.exports = {
     ]
   },
   fix: {
-    ts: \`tslint --fix \${tsFiles}\`,
-    js: \`standard --fix \${jsFiles}\`,
+    ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles} --fix\`,
     less: \`stylelint --fix \${lessFiles}\`
   },
   watch: {
@@ -1105,6 +1171,42 @@ insert_final_newline = true
 charset = utf-8
 indent_style = space
 indent_size = 2
+`
+export const electronEslintignore = `node_modules
+`
+export const electronEslintrc = `{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "prettier/@typescript-eslint"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.base.json"
+  },
+  "plugins": [
+    "plantain"
+  ],
+  "rules": {
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "no-case-declarations": "off",
+    "no-console": "off",
+    "plantain/promise-not-await": "error"
+  },
+  "env": {
+    "node": true
+  },
+  "overrides": [
+    {
+      "files": ["*.js"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    }
+  ]
+}
 `
 export const electronGitignore = `# Source
 .vscode
@@ -1168,7 +1270,7 @@ export const electronReadmeMd = `
 [![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
 [![type-coverage](https://img.shields.io/badge/dynamic/json.svg?label=type-coverage&prefix=%E2%89%A5&suffix=%&query=\$.typeCoverage.atLeast&uri=https%3A%2F%2Fraw.githubusercontent.com%2FAUTHOR%2FREPOSITORY_NAME%2Fmaster%2Fpackage.json)](https://github.com/AUTHOR/REPOSITORY_NAME)
 `
-export const electronScriptsFile2variableConfigJs = `module.exports = {
+export const electronScriptsFile2VariableConfigJs = `module.exports = {
   base: 'scripts',
   files: [
     'scripts/index.template.html'
@@ -1208,7 +1310,6 @@ import { scriptsIndexTemplateHtml, scriptsIndexTemplateHtmlStatic } from './vari
 class App extends Vue {
 }
 
-// tslint:disable-next-line:no-unused-expression
 new App({ el: '#container' })
 `
 export const electronScriptsTsconfigJson = `{
@@ -1355,16 +1456,6 @@ export const electronTsconfigJson = `{
   ]
 }
 `
-export const electronTslintJson = `{
-  "extends": [
-    "tslint-config-standard",
-    "tslint-sonarts"
-  ],
-  "rules": {
-    "space-before-function-paren": [true, "never"]
-  }
-}
-`
 export const frontendAppveyorYml = `environment:
   nodejs_version: "10"
 
@@ -1421,8 +1512,7 @@ module.exports = {
     swCommand
   ],
   lint: {
-    ts: \`tslint \${tsFiles}\`,
-    js: \`standard \${jsFiles}\`,
+    ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
     less: \`stylelint \${lessFiles}\`,
     export: \`no-unused-export \${tsFiles} \${lessFiles} --strict\`,
     commit: \`commitlint --from=HEAD~1\`,
@@ -1434,8 +1524,7 @@ module.exports = {
     'karma start spec/karma.config.js'
   ],
   fix: {
-    ts: \`tslint --fix \${tsFiles}\`,
-    js: \`standard --fix \${jsFiles}\`,
+    ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles} --fix\`,
     less: \`stylelint --fix \${lessFiles}\`
   },
   watch: {
@@ -1467,7 +1556,43 @@ charset = utf-8
 indent_style = space
 indent_size = 2
 `
-export const frontendFile2variableConfigJs = `module.exports = {
+export const frontendEslintignore = `node_modules
+`
+export const frontendEslintrc = `{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "prettier/@typescript-eslint"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.base.json"
+  },
+  "plugins": [
+    "plantain"
+  ],
+  "rules": {
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "no-case-declarations": "off",
+    "no-console": "off",
+    "plantain/promise-not-await": "error"
+  },
+  "env": {
+    "node": true
+  },
+  "overrides": [
+    {
+      "files": ["*.js"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    }
+  ]
+}
+`
+export const frontendFile2VariableConfigJs = `module.exports = {
   files: [
     '*.template.html'
   ],
@@ -1535,7 +1660,6 @@ import { indexTemplateHtml, indexTemplateHtmlStatic } from './variables'
 export class App extends Vue {
 }
 
-// tslint:disable-next-line:no-unused-expression
 new App({ el: '#container' })
 `
 export const frontendPostcssConfigJs = `module.exports = {
@@ -1758,16 +1882,6 @@ export const frontendTsconfigJson = `{
   ]
 }
 `
-export const frontendTslintJson = `{
-  "extends": [
-    "tslint-config-standard",
-    "tslint-sonarts"
-  ],
-  "rules": {
-    "space-before-function-paren": [true, "never"]
-  }
-}
-`
 export const frontendWebpackConfigJs = `const isDev = process.env.NODE_ENV === 'development'
 
 module.exports = {
@@ -1855,8 +1969,7 @@ module.exports = {
     }
   ],
   lint: {
-    ts: \`tslint \${tsFiles}\`,
-    js: \`standard \${jsFiles}\`,
+    ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
     export: \`no-unused-export \${tsFiles} --strict\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
@@ -1867,10 +1980,7 @@ module.exports = {
     'tsc -p spec',
     'jasmine'
   ],
-  fix: {
-    ts: \`tslint --fix \${tsFiles}\`,
-    js: \`standard --fix \${jsFiles}\`
-  }
+  fix: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles} --fix\`
 }
 `
 export const libraryEditorconfig = `root = true
@@ -1881,6 +1991,42 @@ insert_final_newline = true
 charset = utf-8
 indent_style = space
 indent_size = 2
+`
+export const libraryEslintignore = `node_modules
+`
+export const libraryEslintrc = `{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "prettier/@typescript-eslint"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.base.json"
+  },
+  "plugins": [
+    "plantain"
+  ],
+  "rules": {
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "no-case-declarations": "off",
+    "no-console": "off",
+    "plantain/promise-not-await": "error"
+  },
+  "env": {
+    "node": true
+  },
+  "overrides": [
+    {
+      "files": ["*.js"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    }
+  ]
+}
 `
 export const libraryGitignore = `# Source
 .vscode
@@ -2028,16 +2174,6 @@ export const libraryTsconfigBaseJson = `{
   }
 }
 `
-export const libraryTslintJson = `{
-  "extends": [
-    "tslint-config-standard",
-    "tslint-sonarts"
-  ],
-  "rules": {
-    "space-before-function-paren": [true, "never"]
-  }
-}
-`
 export const uiComponentAppveyorYml = `environment:
   nodejs_version: "10"
 
@@ -2130,8 +2266,7 @@ module.exports = {
     revStaticCommand
   ],
   lint: {
-    ts: \`tslint \${tsFiles} --exclude \${excludeTsFiles}\`,
-    js: \`standard \${jsFiles}\`,
+    ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
     less: \`stylelint \${lessFiles}\`,
     export: \`no-unused-export \${tsFiles} \${lessFiles} --exclude \${excludeTsFiles} --strict\`,
     commit: \`commitlint --from=HEAD~1\`,
@@ -2143,8 +2278,7 @@ module.exports = {
     'karma start spec/karma.config.js'
   ],
   fix: {
-    ts: \`tslint --fix \${tsFiles} --exclude \${excludeTsFiles}\`,
-    js: \`standard --fix \${jsFiles}\`,
+    ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles} --fix\`,
     less: \`stylelint --fix \${lessFiles}\`
   },
   watch: {
@@ -2180,6 +2314,43 @@ insert_final_newline = true
 charset = utf-8
 indent_style = space
 indent_size = 2
+`
+export const uiComponentEslintignore = `node_modules
+packages/@(core|vue|react|angular)/@(src|demo)
+`
+export const uiComponentEslintrc = `{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "prettier/@typescript-eslint"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.base.json"
+  },
+  "plugins": [
+    "plantain"
+  ],
+  "rules": {
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "no-case-declarations": "off",
+    "no-console": "off",
+    "plantain/promise-not-await": "error"
+  },
+  "env": {
+    "node": true
+  },
+  "overrides": [
+    {
+      "files": ["*.js"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    }
+  ]
+}
 `
 export const uiComponentGitignore = `# Source
 .vscode
@@ -2463,7 +2634,7 @@ export const uiComponentPackagesCoreSrcIndexLess = `.componentShortName {
 export const uiComponentPackagesCoreSrcIndexTs = `/**
  * @public
  */
-export type componentTypeNameData<T = any> = {
+export interface componentTypeNameData<T = any> {
   component: string | Function;
   data: T;
 }
@@ -2631,7 +2802,6 @@ export const uiComponentPackagesVueDemoIndexEjsHtml = `<!DOCTYPE html>
 `
 export const uiComponentPackagesVueDemoIndexTs = `import Vue from 'vue'
 import Component from 'vue-class-component'
-// tslint:disable:no-duplicate-imports
 import '../dist/'
 import { componentTypeNameData } from '../dist/'
 
@@ -2649,7 +2819,6 @@ class App extends Vue {
   data: componentTypeNameData
 }
 
-// tslint:disable-next-line:no-unused-expression
 new App({ el: '#container' })
 `
 export const uiComponentPackagesVueDemoTsconfigJson = `{
@@ -2703,7 +2872,7 @@ export const uiComponentPackagesVueReadmeMd = `# COMPONENT_SHORT_NAME-vue-compon
 
 Docs: <https://github.com/AUTHOR/REPOSITORY_NAME>
 `
-export const uiComponentPackagesVueSrcFile2variableConfigJs = `module.exports = {
+export const uiComponentPackagesVueSrcFile2VariableConfigJs = `module.exports = {
   base: 'packages/vue/src/',
   files: [
     'packages/vue/src/*.template.html'
@@ -3078,14 +3247,5 @@ export const uiComponentTsconfigBaseJson = `{
   }
 }
 `
-export const uiComponentTslintJson = `{
-  "extends": [
-    "tslint-config-standard",
-    "tslint-sonarts"
-  ],
-  "rules": {
-    "space-before-function-paren": [true, "never"]
-  }
-}
-`
+/* eslint-enable */
 // tslint:enable

@@ -11,8 +11,7 @@ module.exports = {
     tscSrcCommand
   ],
   lint: {
-    ts: `tslint ${tsFiles}`,
-    js: `standard ${jsFiles}`,
+    ts: `eslint --ext .js,.ts ${tsFiles} ${jsFiles}`,
     export: `no-unused-export ${tsFiles} --strict`,
     commit: `commitlint --from=HEAD~1`,
     markdown: `markdownlint README.md`,
@@ -23,9 +22,6 @@ module.exports = {
     'jasmine',
     new Program('clean-release --config clean-run.config.js', 30000)
   ],
-  fix: {
-    ts: `tslint --fix ${tsFiles}`,
-    js: `standard --fix ${jsFiles}`
-  },
+  fix: `eslint --ext .js,.ts ${tsFiles} ${jsFiles} --fix`,
   watch: `${tscSrcCommand} --watch`
 }
