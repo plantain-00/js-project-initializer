@@ -59,6 +59,7 @@ export function mkdir(dir: string) {
 
 export const enum ProjectKind {
   CLI = 'CLI',
+  CLIMonorepo = 'CLI Monorepo',
   UIComponent = 'UI Component',
   frontend = 'frontend',
   backend = 'backend',

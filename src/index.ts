@@ -6,6 +6,7 @@ import { runBackend } from './backend'
 import { runFrontend } from './frontend'
 import { runBackendWithFrontend } from './backend-with-frontend'
 import { runElectron } from './electron'
+import { runCLIMonorepo } from './cli-monorepo'
 
 const packageJsonFileName = 'package.json'
 
@@ -52,6 +53,9 @@ async function run() {
       break
     case libs.ProjectKind.CLI:
       newPackageJson = await runCLI(context)
+      break
+    case libs.ProjectKind.CLIMonorepo:
+      newPackageJson = await runCLIMonorepo(context)
       break
     case libs.ProjectKind.library:
       newPackageJson = await runLibrary(context)
@@ -100,7 +104,7 @@ async function run() {
     packageJson.types = newPackageJson.types
   }
   packageJson.typeCoverage = {
-    atLeast: 97
+    atLeast: 100
   }
   await libs.writeFile(packageJsonFileName, JSON.stringify(packageJson, null, '  ') + '\n')
 }
@@ -170,6 +174,7 @@ async function selectProjectKind() {
       libs.ProjectKind.backend,
       libs.ProjectKind.backendWithFrontend,
       libs.ProjectKind.frontend,
+      libs.ProjectKind.CLIMonorepo,
       libs.ProjectKind.CLI,
       libs.ProjectKind.library,
       libs.ProjectKind.UIComponent,

@@ -1,0 +1,23 @@
+{
+  "name": "repository-name",
+  "version": "2.0.4",
+  "description": "DESCRIPTION",
+  "repository": "https://github.com/AUTHOR/repository-name.git",
+  "author": "AUTHOR",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AUTHOR/repository-name/issues"
+  },
+  "homepage": "https://github.com/AUTHOR/repository-name#readme",
+  "dependencies": {
+    "minimist": "1.2.0",
+    "repository-name-core": "^1.0.0"
+  },
+  "files": [
+    "dist",
+    "bin"
+  ],
+  "bin": {
+    "repository-name": "bin/repository-name"
+  }
+}

@@ -925,6 +925,323 @@ service-worker.js
 #index.html
 *.data
 `
+export const cliMonorepoAppveyorYml = `environment:
+  nodejs_version: "10"
+
+install:
+  - ps: Install-Product node \$env:nodejs_version
+  - yarn install --frozen-lockfile
+
+test_script:
+  - node --version
+  - npm --version
+  - npm run bootstrap
+  - npm run build
+  - npm run lint
+  - npm run test
+
+build: off
+`
+export const cliMonorepoCleanScriptsConfigJs = `const tsFiles = \`"packages/**/src/**/*.ts" "spec/**/*.ts"\`
+const jsFiles = \`"*.config.js"\`
+
+module.exports = {
+  build: [
+    'rimraf packages/core/dist/',
+    'tsc -p packages/core/src/',
+    'rimraf packages/cli/dist/',
+    'tsc -p packages/cli/src/',
+    'node packages/cli/dist/index.js --supressError > spec/result.txt'
+  ],
+  lint: {
+    ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
+    export: \`no-unused-export \${tsFiles} --need-module tslib --strict\`,
+    commit: \`commitlint --from=HEAD~1\`,
+    markdown: \`markdownlint README.md\`
+  },
+  test: [
+    'tsc -p spec',
+    'jasmine'
+  ],
+  fix: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles} --fix\`
+}
+`
+export const cliMonorepoEditorconfig = `root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+indent_style = space
+indent_size = 2
+`
+export const cliMonorepoEslintignore = `node_modules
+`
+export const cliMonorepoEslintrc = `{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "prettier/@typescript-eslint"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.base.json"
+  },
+  "plugins": [
+    "plantain"
+  ],
+  "rules": {
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "no-case-declarations": "off",
+    "no-console": "off",
+    "plantain/promise-not-await": "error"
+  },
+  "env": {
+    "node": true
+  }
+}
+`
+export const cliMonorepoGitignore = `# Source
+.vscode
+dist
+**/*.js
+**/*.css
+!*.config.js
+!**/*-*.js
+!**/*.index.bundle.js
+!**/*-*.css
+service-worker.js
+!*.index.bundle.js
+#**/*-*.png
+#index.html
+*.data
+`
+export const cliMonorepoLernaJson = `{
+  "packages": [
+    "packages/*"
+  ],
+  "version": "2.0.4",
+  "npmClient": "yarn"
+}
+`
+export const cliMonorepoPackagesCliBinCli = `#!/usr/bin/env node
+require("../dist/index.js");`
+export const cliMonorepoPackagesCliPackageJson = `{
+  "name": "repository-name",
+  "version": "2.0.4",
+  "description": "DESCRIPTION",
+  "repository": "https://github.com/AUTHOR/repository-name.git",
+  "author": "AUTHOR",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AUTHOR/repository-name/issues"
+  },
+  "homepage": "https://github.com/AUTHOR/repository-name#readme",
+  "dependencies": {
+    "minimist": "1.2.0",
+    "repository-name-core": "^1.0.0"
+  },
+  "files": [
+    "dist",
+    "bin"
+  ],
+  "bin": {
+    "repository-name": "bin/repository-name"
+  }
+}
+`
+export const cliMonorepoPackagesCliReadmeMd = `# REPOSITORY_NAME
+
+Docs: <https://github.com/AUTHOR/REPOSITORY_NAME>
+`
+export const cliMonorepoPackagesCliSrcIndexTs = `import minimist from 'minimist'
+import * as packageJson from '../package.json'
+
+let suppressError = false
+
+function showToolVersion() {
+  console.log(\`Version: \${packageJson.version}\`)
+}
+
+async function executeCommandLine() {
+  const argv = minimist(process.argv.slice(2), { '--': true }) as unknown as {
+    v?: unknown
+    version?: unknown
+    suppressError?: unknown
+  }
+
+  const showVersion = argv.v || argv.version
+  if (showVersion) {
+    showToolVersion()
+    return
+  }
+
+  suppressError = !!argv.suppressError
+
+  // todo
+}
+
+executeCommandLine().then(() => {
+  console.log(\`REPOSITORY_NAME success.\`)
+}, (error: unknown) => {
+  if (error instanceof Error) {
+    console.log(error.message)
+  } else {
+    console.log(error)
+  }
+  if (!suppressError) {
+    process.exit(1)
+  }
+})
+`
+export const cliMonorepoPackagesCliSrcLibDTs = `declare module '*.json' {
+  export const version: string
+}
+`
+export const cliMonorepoPackagesCliSrcTsconfigJson = `{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../dist",
+    "module": "commonjs"
+  },
+  "files": [
+    "index.ts",
+    "lib.d.ts"
+  ]
+}
+`
+export const cliMonorepoPackagesCorePackageJson = `{
+  "name": "repository-name-core",
+  "version": "2.0.4",
+  "description": "DESCRIPTION",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": "https://github.com/AUTHOR/repository-name.git",
+  "author": "AUTHOR",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AUTHOR/repository-name/issues"
+  },
+  "homepage": "https://github.com/AUTHOR/repository-name#readme",
+  "dependencies": {
+    "tslib": "1"
+  },
+  "files": [
+    "dist"
+  ]
+}
+`
+export const cliMonorepoPackagesCoreReadmeMd = `# REPOSITORY_NAME-core
+
+Docs: <https://github.com/AUTHOR/REPOSITORY_NAME>
+`
+export const cliMonorepoPackagesCoreSrcIndexTs = `/**
+ * @public
+ */
+export default class ComponentTypeName {
+}
+`
+export const cliMonorepoPackagesCoreSrcTsconfigJson = `{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../dist",
+    "module": "commonjs",
+    "declaration": true
+  },
+  "files": [
+    "index.ts"
+  ]
+}
+`
+export const cliMonorepoReadmeMd = `
+[![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
+[![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
+[![Build Status: Linux](https://travis-ci.org/AUTHOR/REPOSITORY_NAME.svg?branch=master)](https://travis-ci.org/AUTHOR/REPOSITORY_NAME)
+[![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
+[![npm version](https://badge.fury.io/js/REPOSITORY_NAME.svg)](https://badge.fury.io/js/REPOSITORY_NAME)
+[![Downloads](https://img.shields.io/npm/dm/REPOSITORY_NAME.svg)](https://www.npmjs.com/package/REPOSITORY_NAME)
+[![type-coverage](https://img.shields.io/badge/dynamic/json.svg?label=type-coverage&prefix=%E2%89%A5&suffix=%&query=\$.typeCoverage.atLeast&uri=https%3A%2F%2Fraw.githubusercontent.com%2FAUTHOR%2FREPOSITORY_NAME%2Fmaster%2Fpackage.json)](https://github.com/AUTHOR/REPOSITORY_NAME)
+
+## install
+
+\`yarn global add REPOSITORY_NAME\`
+
+## usage
+
+run \`REPOSITORY_NAME\`
+
+## API
+
+\`\`\`ts
+import { foo } from 'REPOSITORY_NAME-core'
+\`\`\`
+`
+export const cliMonorepoSpecIndexSpecTs = `it('', () => {
+  expect(true).toEqual(true)
+})
+`
+export const cliMonorepoSpecTsconfigJson = `{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "commonjs"
+  }
+}
+`
+export const cliMonorepoTravisYml = `language: node_js
+dist: trusty
+node_js:
+  - "10"
+before_install:
+  - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
+  - git fetch --unshallow || true
+install:
+  - yarn install --frozen-lockfile
+script:
+  - npm run bootstrap
+  - npm run build
+  - npm run lint
+  - npm run test
+env:
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
+      - libnss3
+`
+export const cliMonorepoTsconfigBaseJson = `{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "lib": [
+      "dom",
+      "es5",
+      "es2015",
+      "es2016",
+      "es2017"
+    ],
+    "jsx": "react",
+    "importHelpers": true,
+    "downlevelIteration": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "newLine": "LF",
+    "noImplicitAny": true
+  }
+}
+`
 export const cliReadmeMd = `
 [![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
 [![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
@@ -963,7 +1280,11 @@ function showToolVersion() {
 }
 
 async function executeCommandLine() {
-  const argv = minimist(process.argv.slice(2), { '--': true })
+  const argv = minimist(process.argv.slice(2), { '--': true }) as unknown as {
+    v?: unknown
+    version?: unknown
+    suppressError?: unknown
+  }
 
   const showVersion = argv.v || argv.version
   if (showVersion) {
@@ -971,14 +1292,14 @@ async function executeCommandLine() {
     return
   }
 
-  suppressError = argv.suppressError
+  suppressError = !!argv.suppressError
 
   // todo
 }
 
 executeCommandLine().then(() => {
   console.log(\`REPOSITORY_NAME success.\`)
-}, error => {
+}, (error: unknown) => {
   if (error instanceof Error) {
     console.log(error.message)
   } else {
