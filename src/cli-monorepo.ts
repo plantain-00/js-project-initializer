@@ -21,6 +21,7 @@ export async function runCLIMonorepo(context: libs.Context) {
   await libs.exec(`lerna init`)
 
   await libs.mkdir('packages/cli')
+  await libs.mkdir('packages/cli/src')
   await libs.writeFile(`packages/cli/src/index.ts`, variables.cliMonorepoPackagesCliSrcIndexTs.replace(/REPOSITORY_NAME/g, context.repositoryName))
   await libs.writeFile(`packages/cli/src/lib.d.ts`, variables.cliMonorepoPackagesCliSrcLibDTs)
   await libs.writeFile(`packages/cli/src/tsconfig.json`, variables.cliMonorepoPackagesCliSrcTsconfigJson)
@@ -37,6 +38,7 @@ export async function runCLIMonorepo(context: libs.Context) {
   await libs.exec(`chmod 755 packages/cli/bin/${context.repositoryName}`)
 
   await libs.mkdir('packages/core')
+  await libs.mkdir('packages/core/src')
   await libs.writeFile(`packages/core/src/index.ts`, variables.cliMonorepoPackagesCoreSrcIndexTs.replace(/REPOSITORY_NAME/g, context.repositoryName))
   await libs.writeFile(`packages/core/src/tsconfig.json`, variables.cliMonorepoPackagesCoreSrcTsconfigJson)
   await libs.writeFile(`packages/core/README.md`, variables.cliMonorepoPackagesCoreReadmeMd
