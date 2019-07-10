@@ -1030,7 +1030,7 @@ export const cliMonorepoPackagesCliBinCli = `#!/usr/bin/env node
 require("../dist/index.js");`
 export const cliMonorepoPackagesCliPackageJson = `{
   "name": "repository-name",
-  "version": "2.0.4",
+  "version": "0.0.1",
   "description": "DESCRIPTION",
   "repository": "https://github.com/AUTHOR/repository-name.git",
   "author": "AUTHOR",
@@ -1040,8 +1040,8 @@ export const cliMonorepoPackagesCliPackageJson = `{
   },
   "homepage": "https://github.com/AUTHOR/repository-name#readme",
   "dependencies": {
-    "minimist": "1.2.0",
-    "repository-name-core": "^1.0.0"
+    "minimist": "1",
+    "repository-name-core": "^0.0.1"
   },
   "files": [
     "dist",
@@ -1114,7 +1114,7 @@ export const cliMonorepoPackagesCliSrcTsconfigJson = `{
 `
 export const cliMonorepoPackagesCorePackageJson = `{
   "name": "repository-name-core",
-  "version": "2.0.4",
+  "version": "0.0.1",
   "description": "DESCRIPTION",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
