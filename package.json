@@ -42,7 +42,7 @@
     "@commitlint/cli": "8.1.0",
     "@commitlint/config-conventional": "8.1.0",
     "@types/inquirer": "6.5.0",
-    "@types/jasmine": "3.3.16",
+    "@types/jasmine": "3.4.0",
     "@types/mkdirp": "0.5.2",
     "@types/uppercamelcase": "3.0.0",
     "@typescript-eslint/eslint-plugin": "1.13.0",
