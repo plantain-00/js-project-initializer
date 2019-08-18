@@ -98,6 +98,7 @@ indent_style = space
 indent_size = 2
 `
 export const backendEslintignore = `node_modules
+*.d.ts
 `
 export const backendEslintrc = `{
   "extends": [
@@ -108,7 +109,7 @@ export const backendEslintrc = `{
     "prettier/@typescript-eslint"
   ],
   "parserOptions": {
-    "project": "./tsconfig.base.json"
+    "project": "./tsconfig.eslint.json"
   },
   "plugins": [
     "plantain"
@@ -398,6 +399,7 @@ indent_style = space
 indent_size = 2
 `
 export const backendWithFrontendEslintignore = `node_modules
+*.d.ts
 `
 export const backendWithFrontendEslintrc = `{
   "extends": [
@@ -408,7 +410,7 @@ export const backendWithFrontendEslintrc = `{
     "prettier/@typescript-eslint"
   ],
   "parserOptions": {
-    "project": "./tsconfig.base.json"
+    "project": "./tsconfig.eslint.json"
   },
   "plugins": [
     "plantain"
@@ -875,6 +877,7 @@ indent_style = space
 indent_size = 2
 `
 export const cliEslintignore = `node_modules
+*.d.ts
 `
 export const cliEslintrc = `{
   "extends": [
@@ -885,7 +888,7 @@ export const cliEslintrc = `{
     "prettier/@typescript-eslint"
   ],
   "parserOptions": {
-    "project": "./tsconfig.base.json"
+    "project": "./tsconfig.eslint.json"
   },
   "plugins": [
     "plantain"
@@ -976,6 +979,7 @@ indent_style = space
 indent_size = 2
 `
 export const cliMonorepoEslintignore = `node_modules
+*.d.ts
 `
 export const cliMonorepoEslintrc = `{
   "extends": [
@@ -986,7 +990,7 @@ export const cliMonorepoEslintrc = `{
     "prettier/@typescript-eslint"
   ],
   "parserOptions": {
-    "project": "./tsconfig.base.json"
+    "project": "./tsconfig.eslint.json"
   },
   "plugins": [
     "plantain"
@@ -1504,7 +1508,7 @@ export const electronEslintrc = `{
     "prettier/@typescript-eslint"
   ],
   "parserOptions": {
-    "project": "./tsconfig.base.json"
+    "project": "./tsconfig.eslint.json"
   },
   "plugins": [
     "plantain"
@@ -1878,6 +1882,7 @@ indent_style = space
 indent_size = 2
 `
 export const frontendEslintignore = `node_modules
+*.d.ts
 `
 export const frontendEslintrc = `{
   "extends": [
@@ -1888,7 +1893,7 @@ export const frontendEslintrc = `{
     "prettier/@typescript-eslint"
   ],
   "parserOptions": {
-    "project": "./tsconfig.base.json"
+    "project": "./tsconfig.eslint.json"
   },
   "plugins": [
     "plantain"
@@ -2314,6 +2319,7 @@ indent_style = space
 indent_size = 2
 `
 export const libraryEslintignore = `node_modules
+*.d.ts
 `
 export const libraryEslintrc = `{
   "extends": [
@@ -2324,7 +2330,7 @@ export const libraryEslintrc = `{
     "prettier/@typescript-eslint"
   ],
   "parserOptions": {
-    "project": "./tsconfig.base.json"
+    "project": "./tsconfig.eslint.json"
   },
   "plugins": [
     "plantain"
@@ -2638,6 +2644,7 @@ indent_size = 2
 `
 export const uiComponentEslintignore = `node_modules
 packages/@(core|vue|react|angular)/@(src|demo)
+*.d.ts
 `
 export const uiComponentEslintrc = `{
   "extends": [
@@ -2648,7 +2655,7 @@ export const uiComponentEslintrc = `{
     "prettier/@typescript-eslint"
   ],
   "parserOptions": {
-    "project": "./tsconfig.base.json"
+    "project": "./tsconfig.eslint.json"
   },
   "plugins": [
     "plantain"
