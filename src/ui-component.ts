@@ -19,6 +19,7 @@ export async function runUIComponent(context: libs.Context) {
   await libs.appendFile('.gitignore', variables.uiComponentGitignore)
   await libs.appendFile('.editorconfig', variables.uiComponentEditorconfig)
   await libs.appendFile('tsconfig.base.json', variables.uiComponentTsconfigBaseJson)
+  await libs.appendFile('tsconfig.eslint.json', variables.uiComponentTsconfigEslintJson)
 
   await libs.exec(`yarn add -DE github-fork-ribbon-css`)
   await libs.exec(`yarn add -DE less`)

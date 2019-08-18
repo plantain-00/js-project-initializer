@@ -248,6 +248,19 @@ export const backendTsconfigBaseJson = `{
   }
 }
 `
+export const backendTsconfigEslintJson = `{
+  "extends": "./tsconfig.base.json",
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.config.js",
+  ],
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true
+  }
+}
+`
 export const backendWithFrontendAppveyorYml = `environment:
   nodejs_version: "10"
 
@@ -782,6 +795,19 @@ export const backendWithFrontendTsconfigBaseJson = `{
   }
 }
 `
+export const backendWithFrontendTsconfigEslintJson = `{
+  "extends": "./tsconfig.base.json",
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.config.js",
+  ],
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true
+  }
+}
+`
 export const cliAppveyorYml = `environment:
   nodejs_version: "10"
 
@@ -1246,6 +1272,19 @@ export const cliMonorepoTsconfigBaseJson = `{
   }
 }
 `
+export const cliMonorepoTsconfigEslintJson = `{
+  "extends": "./tsconfig.base.json",
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.config.js",
+  ],
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true
+  }
+}
+`
 export const cliReadmeMd = `
 [![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
 [![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
@@ -1375,6 +1414,19 @@ export const cliTsconfigBaseJson = `{
     "skipLibCheck": true,
     "newLine": "LF",
     "noImplicitAny": true
+  }
+}
+`
+export const cliTsconfigEslintJson = `{
+  "extends": "./tsconfig.base.json",
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.config.js",
+  ],
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true
   }
 }
 `
@@ -1766,6 +1818,19 @@ export const electronTsconfigBaseJson = `{
     "skipLibCheck": true,
     "newLine": "LF",
     "noImplicitAny": true
+  }
+}
+`
+export const electronTsconfigEslintJson = `{
+  "extends": "./tsconfig.base.json",
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.config.js",
+  ],
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true
   }
 }
 `
@@ -2197,6 +2262,19 @@ export const frontendTsconfigBaseJson = `{
   }
 }
 `
+export const frontendTsconfigEslintJson = `{
+  "extends": "./tsconfig.base.json",
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.config.js",
+  ],
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true
+  }
+}
+`
 export const frontendTsconfigJson = `{
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
@@ -2498,6 +2576,19 @@ export const libraryTsconfigBaseJson = `{
     "skipLibCheck": true,
     "newLine": "LF",
     "noImplicitAny": true
+  }
+}
+`
+export const libraryTsconfigEslintJson = `{
+  "extends": "./tsconfig.base.json",
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.config.js",
+  ],
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true
   }
 }
 `
@@ -3572,6 +3663,19 @@ export const uiComponentTsconfigBaseJson = `{
     "skipLibCheck": true,
     "newLine": "LF",
     "noImplicitAny": true
+  }
+}
+`
+export const uiComponentTsconfigEslintJson = `{
+  "extends": "./tsconfig.base.json",
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.config.js",
+  ],
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true
   }
 }
 `
