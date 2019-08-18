@@ -1053,7 +1053,8 @@ export const cliMonorepoLernaJson = `{
     "packages/*"
   ],
   "version": "2.0.4",
-  "npmClient": "yarn"
+  "npmClient": "yarn",
+  "useWorkspaces": true
 }
 `
 export const cliMonorepoPackagesCliBinCli = `#!/usr/bin/env node
@@ -2797,7 +2798,8 @@ export const uiComponentLernaJson = `{
     }
   },
   "version": "1.0.0",
-  "npmClient": "yarn"
+  "npmClient": "yarn",
+  "useWorkspaces": true
 }
 `
 export const uiComponentPackagesAngularDemoAotIndexEjsHtml = `<!DOCTYPE html>

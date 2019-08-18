@@ -53,6 +53,10 @@ export async function runCLI(context: libs.Context) {
     },
     bin: {
       [context.repositoryName]: `bin/${context.repositoryName}`
-    }
+    },
+    private: true,
+    workspaces: [
+      'packages/*'
+    ],
   }
 }

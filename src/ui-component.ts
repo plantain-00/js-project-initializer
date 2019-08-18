@@ -180,7 +180,10 @@ export async function runUIComponent(context: libs.Context) {
     dependencies: {
       tslib: '1'
     },
-    private: true
+    private: true,
+    workspaces: [
+      'packages/*'
+    ],
   }
 }
 

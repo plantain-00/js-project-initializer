@@ -43,6 +43,8 @@ async function run() {
     dependencies?: {
       tslib?: string;
     };
+    private?: boolean
+    workspaces?: string[]
   } = {}
 
   context.kind = kind
@@ -102,6 +104,12 @@ async function run() {
   }
   if (newPackageJson.types) {
     packageJson.types = newPackageJson.types
+  }
+  if (newPackageJson.private) {
+    packageJson.private = newPackageJson.private
+  }
+  if (newPackageJson.workspaces) {
+    packageJson.workspaces = newPackageJson.workspaces
   }
   packageJson.typeCoverage = {
     atLeast: 100
