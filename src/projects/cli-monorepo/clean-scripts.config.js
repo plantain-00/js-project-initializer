@@ -11,7 +11,7 @@ module.exports = {
   ],
   lint: {
     ts: `eslint --ext .js,.ts ${tsFiles} ${jsFiles}`,
-    export: `no-unused-export ${tsFiles} --need-module tslib --strict`,
+    export: `no-unused-export ${tsFiles} --need-module tslib --strict --need-module tslib`,
     commit: `commitlint --from=HEAD~1`,
     markdown: `markdownlint README.md`
   },
