@@ -72,6 +72,10 @@ export async function runCLIMonorepo(context: libs.Context) {
       lint: 'clean-scripts lint',
       test: 'clean-scripts test',
       fix: 'clean-scripts fix'
-    }
+    },
+    private: true,
+    workspaces: [
+      'packages/*'
+    ],
   }
 }
