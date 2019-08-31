@@ -11,7 +11,7 @@ export async function runFrontend(context: libs.Context) {
   await libs.exec(`yarn add -DE github-fork-ribbon-css`)
   await libs.exec(`yarn add -DE less`)
   await libs.exec(`yarn add -DE stylelint stylelint-config-standard`)
-  await libs.exec(`yarn add -DE vue vue-class-component`)
+  await libs.exec(`yarn add -SE vue vue-class-component`)
   await libs.exec(`yarn add -DE clean-css-cli`)
   await libs.exec(`yarn add -DE file2variable-cli`)
   await libs.exec(`yarn add -DE webpack webpack-cli`)

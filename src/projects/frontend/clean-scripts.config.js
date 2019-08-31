@@ -41,7 +41,7 @@ module.exports = {
     export: `no-unused-export ${tsFiles} ${lessFiles} --strict --need-module tslib`,
     commit: `commitlint --from=HEAD~1`,
     markdown: `markdownlint README.md`,
-    typeCoverage: 'type-coverage -p . --strict'
+    typeCoverage: 'type-coverage -p . --strict --ignore-files variables.ts'
   },
   test: [
     'tsc -p spec',
