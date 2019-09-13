@@ -3,10 +3,7 @@ module.exports = {
   files: [
     'static/*.template.html'
   ],
-  /**
-   * @argument {string} file
-   */
-  handler: file => {
+  handler: () => {
     return {
       type: 'vue',
       name: 'App',

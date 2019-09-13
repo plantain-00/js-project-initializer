@@ -38,11 +38,11 @@ module.exports = {
   lint: {
     ts: `eslint --ext .js,.ts ${tsFiles} ${jsFiles}`,
     less: `stylelint ${lessFiles}`,
-    export: `no-unused-export ${tsFiles} ${lessFiles} --strict --need-module tslib`,
+    export: `no-unused-export "src/**/*.ts" --strict --need-module tslib`,
     commit: `commitlint --from=HEAD~1`,
     markdown: `markdownlint README.md`,
     typeCoverage: 'type-coverage -p src --strict',
-    typeCoverageStatic: 'type-coverage -p static --strict'
+    typeCoverageStatic: 'type-coverage -p static --strict --ignore-files "static/variables.ts"'
   },
   test: {
     jasmine: [
