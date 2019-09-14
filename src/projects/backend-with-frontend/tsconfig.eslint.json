@@ -3,7 +3,7 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "**/*.config.js",
+    "**/*.config.js"
   ],
   "compilerOptions": {
     "allowJs": true,

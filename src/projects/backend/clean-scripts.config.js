@@ -1,4 +1,4 @@
-import { Program } from 'clean-scripts'
+const { Program } = require('clean-scripts')
 
 const tsFiles = `"src/**/*.ts" "spec/**/*.ts" "test/**/*.ts"`
 const jsFiles = `"*.config.js"`

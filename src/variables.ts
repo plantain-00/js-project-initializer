@@ -53,7 +53,7 @@ export const backendCleanRunConfigJs = `module.exports = {
   ]
 }
 `
-export const backendCleanScriptsConfigJs = `import { Program } from 'clean-scripts'
+export const backendCleanScriptsConfigJs = `const { Program } = require('clean-scripts')
 
 const tsFiles = \`"src/**/*.ts" "spec/**/*.ts" "test/**/*.ts"\`
 const jsFiles = \`"*.config.js"\`
@@ -155,16 +155,18 @@ export const backendReadmeMd = `
 [![Build Status: Linux](https://travis-ci.org/AUTHOR/REPOSITORY_NAME.svg?branch=master)](https://travis-ci.org/AUTHOR/REPOSITORY_NAME)
 [![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
 [![type-coverage](https://img.shields.io/badge/dynamic/json.svg?label=type-coverage&prefix=%E2%89%A5&suffix=%&query=\$.typeCoverage.atLeast&uri=https%3A%2F%2Fraw.githubusercontent.com%2FAUTHOR%2FREPOSITORY_NAME%2Fmaster%2Fpackage.json)](https://github.com/AUTHOR/REPOSITORY_NAME)
+
 ## install
 
 \`\`\`bash
 git clone https://github.com/AUTHOR/REPOSITORY_NAME-release.git . --depth=1 && yarn add --production
+node dist/index.js
 \`\`\`
 
 ## docker
 
 \`\`\`bash
-docker run -d -p \${port}:\${port} AUTHOR/REPOSITORY_NAME
+docker run -d -p 9276:9276 AUTHOR/REPOSITORY_NAME
 \`\`\`
 `
 export const backendSpecIndexSpecTs = `it('', () => {
@@ -252,7 +254,7 @@ export const backendTsconfigEslintJson = `{
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "**/*.config.js",
+    "**/*.config.js"
   ],
   "compilerOptions": {
     "allowJs": true,
@@ -795,7 +797,7 @@ export const backendWithFrontendTsconfigEslintJson = `{
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "**/*.config.js",
+    "**/*.config.js"
   ],
   "compilerOptions": {
     "allowJs": true,
@@ -1272,7 +1274,7 @@ export const cliMonorepoTsconfigEslintJson = `{
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "**/*.config.js",
+    "**/*.config.js"
   ],
   "compilerOptions": {
     "allowJs": true,
@@ -1416,7 +1418,7 @@ export const cliTsconfigEslintJson = `{
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "**/*.config.js",
+    "**/*.config.js"
   ],
   "compilerOptions": {
     "allowJs": true,
@@ -1819,7 +1821,7 @@ export const electronTsconfigEslintJson = `{
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "**/*.config.js",
+    "**/*.config.js"
   ],
   "compilerOptions": {
     "allowJs": true,
@@ -2259,7 +2261,7 @@ export const frontendTsconfigEslintJson = `{
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "**/*.config.js",
+    "**/*.config.js"
   ],
   "compilerOptions": {
     "allowJs": true,
@@ -2575,7 +2577,7 @@ export const libraryTsconfigEslintJson = `{
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "**/*.config.js",
+    "**/*.config.js"
   ],
   "compilerOptions": {
     "allowJs": true,
@@ -3662,7 +3664,7 @@ export const uiComponentTsconfigEslintJson = `{
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "**/*.config.js",
+    "**/*.config.js"
   ],
   "compilerOptions": {
     "allowJs": true,
