@@ -1,6 +1,6 @@
 const { Program } = require('clean-scripts')
 
-const tsFiles = `"src/**/*.ts" "spec/**/*.ts" "test/**/*.ts"`
+const tsFiles = `"src/**/*.ts" "spec/**/*.ts"`
 const jsFiles = `"*.config.js"`
 
 const tscSrcCommand = 'tsc -p src/'
