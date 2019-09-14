@@ -8,7 +8,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
   await libs.appendFile('tsconfig.eslint.json', variables.backendWithFrontendTsconfigEslintJson)
 
   await libs.exec(`yarn add -DE @types/node`)
-  await libs.exec(`yarn add -DE tslib`)
+  await libs.exec(`yarn add -SE tslib`)
   await libs.exec(`yarn add -DE github-fork-ribbon-css`)
   await libs.exec(`yarn add -DE less`)
   await libs.exec(`yarn add -DE stylelint stylelint-config-standard`)
