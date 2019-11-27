@@ -2322,6 +2322,43 @@ module.exports = {
   }
 }
 `
+export const libraryApiExtractorJson = `{
+  "\$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
+  "mainEntryPointFilePath": "<projectFolder>/dist/nodejs/index.d.ts",
+  "apiReport": {
+    "enabled": true,
+    "reportFolder": "<projectFolder>/spec"
+  },
+  "docModel": {
+    "enabled": false
+  },
+  "dtsRollup": {
+    "enabled": true,
+    "untrimmedFilePath": "<projectFolder>/dist/nodejs/index.d.ts",
+    "publicTrimmedFilePath": "<projectFolder>/dist/index.d.ts"
+  },
+  "tsdocMetadata": {
+    "enabled": false
+  },
+  "messages": {
+    "compilerMessageReporting": {
+      "default": {
+        "logLevel": "warning"
+      }
+    },
+    "extractorMessageReporting": {
+      "default": {
+        "logLevel": "warning"
+      }
+    },
+    "tsdocMessageReporting": {
+      "default": {
+        "logLevel": "warning"
+      }
+    }
+  }
+}
+`
 export const libraryAppveyorYml = `environment:
   nodejs_version: "10"
 
@@ -2340,7 +2377,8 @@ build: off
 `
 export const libraryCleanReleaseConfigJs = `module.exports = {
   include: [
-    'dist/**/*',
+    'dist/**/*.js',
+    'dist/index.d.ts',
     'LICENSE',
     'package.json',
     'README.md'
@@ -2369,7 +2407,10 @@ module.exports = {
   build: [
     'rimraf dist/',
     {
-      back: 'tsc -p src/tsconfig.nodejs.json',
+      back: [
+        'tsc -p src/tsconfig.nodejs.json',
+        'api-extractor run --local'
+      ],
       front: [
         'tsc -p src/tsconfig.browser.json',
         'rollup --config rollup.config.js'
@@ -2451,6 +2492,7 @@ service-worker.js
 #**/*-*.png
 #index.html
 *.data
+temp
 `
 export const libraryReadmeMd = `
 [![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
@@ -2593,6 +2635,10 @@ export const libraryTsconfigEslintJson = `{
     "allowJs": true,
     "checkJs": true
   }
+}
+`
+export const libraryTsconfigJson = `{
+  "extends": "./tsconfig.base.json"
 }
 `
 export const uiComponentAppveyorYml = `environment:

@@ -6,6 +6,8 @@ export async function runLibrary(context: libs.Context) {
   await libs.appendFile('.editorconfig', variables.libraryEditorconfig)
   await libs.appendFile('tsconfig.base.json', variables.libraryTsconfigBaseJson)
   await libs.appendFile('tsconfig.eslint.json', variables.libraryTsconfigEslintJson)
+  await libs.appendFile('tsconfig.json', variables.libraryTsconfigJson)
+  await libs.appendFile('api-extractor.json', variables.libraryApiExtractorJson)
 
   await libs.exec(`yarn add -DE jasmine @types/jasmine`)
   await libs.exec(`yarn add -DE rimraf`)
@@ -13,6 +15,7 @@ export async function runLibrary(context: libs.Context) {
   await libs.exec(`yarn add -DE clean-scripts`)
   await libs.exec(`yarn add -DE no-unused-export`)
   await libs.exec(`yarn add -DE type-coverage`)
+  await libs.exec(`yarn add -DE @microsoft/api-extractor`)
 
   await libs.exec('./node_modules/.bin/jasmine init')
 
@@ -42,7 +45,6 @@ export async function runLibrary(context: libs.Context) {
     module: 'browser/index.js',
     unpkg: `${context.repositoryName}.min.js`,
     jsdelivr: `${context.repositoryName}.min.js`,
-    types: 'nodejs/index.d.ts',
     scripts: {
       build: 'clean-scripts build',
       lint: 'clean-scripts lint',
