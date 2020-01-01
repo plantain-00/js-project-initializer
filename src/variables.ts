@@ -2638,7 +2638,10 @@ export const libraryTsconfigEslintJson = `{
 }
 `
 export const libraryTsconfigJson = `{
-  "extends": "./tsconfig.base.json"
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "module": "commonjs"
+  }
 }
 `
 export const uiComponentAppveyorYml = `environment:
