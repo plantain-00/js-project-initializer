@@ -9,6 +9,8 @@ export async function runLibrary(context: libs.Context) {
   await libs.appendFile('tsconfig.json', variables.libraryTsconfigJson)
   await libs.appendFile('api-extractor.json', variables.libraryApiExtractorJson)
 
+  await libs.exec(`yarn add -SE tslib@1`)
+
   await libs.exec(`yarn add -DE jasmine @types/jasmine`)
   await libs.exec(`yarn add -DE rimraf`)
   await libs.exec(`yarn add -DE rollup rollup-plugin-node-resolve rollup-plugin-uglify`)
