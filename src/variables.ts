@@ -2691,7 +2691,7 @@ const webpackAngularAotCommand = \`webpack --config packages/angular/demo/aot/we
 
 const revStaticCommand = \`rev-static\`
 const cssCommand = [
-  \`lessc packages/core/src/index.less -sm=on > packages/core/src/index.css\`,
+  \`lessc packages/core/src/index.less --math=strict > packages/core/src/index.css\`,
   \`postcss packages/core/src/index.css -o packages/core/dist/COMPONENT_SHORT_NAME.css\`,
   \`cleancss packages/core/dist/COMPONENT_SHORT_NAME.css -o packages/core/dist/COMPONENT_SHORT_NAME.min.css\`,
   \`cleancss packages/core/dist/COMPONENT_SHORT_NAME.min.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css -o packages/core/demo/index.bundle.css\`
@@ -3222,8 +3222,8 @@ export function ComponentTypeName(props: {
 }
 `
 export const uiComponentPackagesReactSrcRollupConfigJs = `import { uglify } from 'rollup-plugin-uglify'
-import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
+import resolve from '@rollup/plugin-node-resolve'
+import commonjs from '@rollup/plugin-commonjs'
 
 export default {
   input: 'packages/react/dist/index.js',
@@ -3381,8 +3381,8 @@ class ComponentTypeName extends Vue {
 Vue.component('COMPONENT_SHORT_NAME', ComponentTypeName)
 `
 export const uiComponentPackagesVueSrcRollupConfigJs = `import { uglify } from 'rollup-plugin-uglify'
-import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
+import resolve from '@rollup/plugin-node-resolve'
+import commonjs from '@rollup/plugin-commonjs'
 
 export default {
   input: 'packages/vue/dist/index.js',
@@ -3394,15 +3394,15 @@ export default {
   output: {
     name: 'ComponentTypeName',
     file: 'packages/vue/dist/COMPONENT_SHORT_NAME-vue-component.min.js',
-    format: 'umd'
+    format: 'umd',
+    globals: {
+      'vue-class-component': 'VueClassComponent'
+    }
   },
   external: [
     'vue',
     'vue-class-component'
-  ],
-  globals: {
-    'vue-class-component': 'VueClassComponent'
-  }
+  ]
 }
 `
 export const uiComponentPackagesVueSrcTsconfigJson = `{
