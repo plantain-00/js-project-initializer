@@ -51,11 +51,7 @@ export function appendFile(filename: string, data: string) {
   })
 }
 
-export function mkdir(dir: string) {
-  return new Promise<void>((resolve, reject) => {
-    mkdirp(dir, error => error ? reject(error) : resolve())
-  })
-}
+export const mkdir = mkdirp
 
 export const enum ProjectKind {
   CLI = 'CLI',
