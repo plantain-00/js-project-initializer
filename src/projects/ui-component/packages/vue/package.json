@@ -2,7 +2,7 @@
   "name": "component-short-name-vue-component",
   "version": "1.0.0",
   "description": "DESCRIPTION",
-  "main": "dist/index.js",
+  "main": "dist/component-short-name-vue-component.min.js",
   "module": "dist/index.js",
   "unpkg": "dist/component-short-name-vue-component.min.js",
   "jsdelivr": "dist/component-short-name-vue-component.min.js",

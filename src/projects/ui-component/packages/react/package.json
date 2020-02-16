@@ -2,7 +2,7 @@
   "name": "component-short-name-react-component",
   "version": "1.0.0",
   "description": "DESCRIPTION",
-  "main": "dist/index.js",
+  "main": "dist/component-short-name-react-component.min.js",
   "module": "dist/index.js",
   "unpkg": "dist/component-short-name-react-component.min.js",
   "jsdelivr": "dist/component-short-name-react-component.min.js",
