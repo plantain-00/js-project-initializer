@@ -2876,7 +2876,7 @@ export const uiComponentPackagesCoreSrcIndexLess = `.componentShortName {
     -webkit-font-smoothing: antialiased;
   }
 }
-  `
+`
 export const uiComponentPackagesCoreSrcIndexTs = `/**
  * @public
  */
@@ -3308,7 +3308,7 @@ export const uiComponentScreenshotsIndexTs = `import puppeteer from 'puppeteer'
     await page.screenshot({ path: \`screenshots/\${type}-initial.png\` })
   }
 
-  browser.close()
+  await browser.close()
 })()
 `
 export const uiComponentScreenshotsTsconfigJson = `{
