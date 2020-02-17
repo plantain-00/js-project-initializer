@@ -9,8 +9,8 @@ import { indexTemplateHtml, indexTemplateHtmlStatic } from './variables'
   staticRenderFns: indexTemplateHtmlStatic,
   props: ['data']
 })
-class ComponentTypeName extends Vue {
-  data: common.componentTypeNameData
+export class ComponentTypeName extends Vue {
+  data!: common.componentTypeNameData
 }
 
 Vue.component('COMPONENT_SHORT_NAME', ComponentTypeName)

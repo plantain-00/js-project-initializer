@@ -34,7 +34,7 @@ export async function runUIComponent(context: libs.Context) {
 
   await libs.mkdir('packages/core/src/')
   await libs.writeFile(`packages/core/src/index.less`, variables.uiComponentPackagesCoreSrcIndexLess.replace(/componentShortName/g, context.componentShortName))
-  await libs.writeFile(`packages/core/src/index.ts`, variables.uiComponentPackagesCoreSrcIndexTs.replace(/componentTypeNameData/g, context.componentShortName))
+  await libs.writeFile(`packages/core/src/index.ts`, variables.uiComponentPackagesCoreSrcIndexTs.replace(/componentTypeNameData/g, context.componentTypeName))
   await libs.writeFile(`packages/core/src/tsconfig.json`, variables.uiComponentPackagesCoreSrcTsconfigJson)
 
   await libs.writeFile(`packages/core/README.md`, variables.uiComponentPackagesCoreReadmeMd
@@ -92,11 +92,12 @@ export async function runUIComponent(context: libs.Context) {
     .replace(/ComponentTypeName/g, context.componentTypeName)
     .replace(/DESCRIPTION/g, context.description)
     .replace(/AUTHOR/g, context.author)
+    .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName)
     .replace(/REPOSITORY_NAME/g, context.repositoryName))
   await libs.writeFile(`packages/vue/src/tsconfig.json`, variables.uiComponentPackagesVueSrcTsconfigJson)
   await libs.writeFile(`packages/vue/src/file2variable.config.js`, variables.uiComponentPackagesVueSrcFile2VariableConfigJs
     .replace(/COMPONENT_TYPE_NAME/g, context.componentTypeName))
-  await libs.writeFile(`packages/react/src/rollup.config.js`, variables.uiComponentPackagesVueSrcRollupConfigJs
+  await libs.writeFile(`packages/vue/src/rollup.config.js`, variables.uiComponentPackagesVueSrcRollupConfigJs
     .replace(/ComponentTypeName/g, context.componentTypeName)
     .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName))
 

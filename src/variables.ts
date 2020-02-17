@@ -2881,7 +2881,6 @@ export const uiComponentPackagesCoreSrcIndexTs = `/**
  * @public
  */
 export interface componentTypeNameData<T = any> {
-  component: string | Function;
   data: T;
 }
 `
@@ -2917,8 +2916,7 @@ function Main() {
     <div>
       <a href='https://github.com/AUTHOR/REPOSITORY_NAME/tree/master/packages/react/demo' target='_blank'>the source code of the demo</a>
       <br />
-      <componentTypeName data={data}>
-      </componentTypeName>
+      <componentTypeName data={data} />
     </div>
   )
 }
@@ -3058,7 +3056,7 @@ import { componentTypeNameData } from '../dist/'
     \`
 })
 class App extends Vue {
-  data: componentTypeNameData
+  data!: componentTypeNameData
 }
 
 new App({ el: '#container' })
@@ -3144,8 +3142,8 @@ import { indexTemplateHtml, indexTemplateHtmlStatic } from './variables'
   staticRenderFns: indexTemplateHtmlStatic,
   props: ['data']
 })
-class ComponentTypeName extends Vue {
-  data: common.componentTypeNameData
+export class ComponentTypeName extends Vue {
+  data!: common.componentTypeNameData
 }
 
 Vue.component('COMPONENT_SHORT_NAME', ComponentTypeName)

@@ -14,7 +14,7 @@ import { componentTypeNameData } from '../dist/'
     `
 })
 class App extends Vue {
-  data: componentTypeNameData
+  data!: componentTypeNameData
 }
 
 new App({ el: '#container' })

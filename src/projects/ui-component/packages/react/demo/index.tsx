@@ -8,8 +8,7 @@ function Main() {
     <div>
       <a href='https://github.com/AUTHOR/REPOSITORY_NAME/tree/master/packages/react/demo' target='_blank'>the source code of the demo</a>
       <br />
-      <componentTypeName data={data}>
-      </componentTypeName>
+      <componentTypeName data={data} />
     </div>
   )
 }
