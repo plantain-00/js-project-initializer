@@ -2666,28 +2666,23 @@ export const uiComponentBrowserslistrc = `last 2 Chrome versions
 export const uiComponentCleanScriptsConfigJs = `const { Service, executeScriptAsync } = require('clean-scripts')
 const { watch } = require('watch-then-execute')
 
-const tsFiles = \`"packages/@(core|vue|react|angular)/@(src|demo)/**/*.@(ts|tsx)" "spec/**/*.ts" "screenshots/**/*.ts"\`
+const tsFiles = \`"packages/@(core|vue|react)/@(src|demo)/**/*.@(ts|tsx)" "spec/**/*.ts" "screenshots/**/*.ts"\`
 const lessFiles = \`"packages/core/src/**/*.less"\`
 const jsFiles = \`"*.config.js" "spec/**/*.config.js"\`
-const excludeTsFiles = \`"packages/@(core|vue|react|angular)/@(src|demo)/**/*.d.ts"\`
+const excludeTsFiles = \`"packages/@(core|vue|react)/@(src|demo)/**/*.d.ts"\`
 
 const vueTemplateCommand = \`file2variable-cli --config packages/vue/src/file2variable.config.js\`
-const angularTemplateCommand = \`file2variable-cli packages/angular/src/*.template.html -o packages/angular/src/variables.ts --html-minify --base packages/angular/src\`
 
-const tscCoreSrcCommand = \`ngc -p packages/core/src\`
+const tscCoreSrcCommand = \`tsc -p packages/core/src\`
 const tscVueSrcCommand = \`tsc -p packages/vue/src\`
 const tscReactSrcCommand = \`tsc -p packages/react/src\`
-const tscAngularSrcCommand = \`ngc -p packages/angular/src\`
 
-const tscCoreDemoCommand = \`ngc -p packages/core/demo\`
+const tscCoreDemoCommand = \`tsc -p packages/core/demo\`
 const tscVueDemoCommand = \`tsc -p packages/vue/demo\`
 const tscReactDemoCommand = \`tsc -p packages/react/demo\`
-const tscAngularDemoCommand = \`ngc -p packages/angular/demo\`
 
 const webpackVueCommand = \`webpack --config packages/vue/demo/webpack.config.js\`
 const webpackReactCommand = \`webpack --config packages/react/demo/webpack.config.js\`
-const webpackAngularJitCommand = \`webpack --config packages/angular/demo/jit/webpack.config.js\`
-const webpackAngularAotCommand = \`webpack --config packages/angular/demo/aot/webpack.config.js\`
 
 const revStaticCommand = \`rev-static\`
 const cssCommand = [
@@ -2718,20 +2713,11 @@ module.exports = {
             isDev ? undefined : \`rollup --config packages/react/src/rollup.config.js\`,
             tscReactDemoCommand,
             webpackReactCommand
-          ],
-          angular: [
-            angularTemplateCommand,
-            tscAngularSrcCommand,
-            tscAngularDemoCommand,
-            {
-              webpackAngularJitCommand: isDev ? undefined : webpackAngularJitCommand,
-              webpackAngularAotCommand
-            }
           ]
         }
       ],
       css: cssCommand,
-      clean: \`rimraf "packages/@(core|vue|react|angular)/demo/**/@(*.bundle-*.js|*.bundle-*.css)"\`
+      clean: \`rimraf "packages/@(core|vue|react)/demo/**/@(*.bundle-*.js|*.bundle-*.css)"\`
     },
     revStaticCommand
   ],
@@ -2753,19 +2739,14 @@ module.exports = {
   },
   watch: {
     vueTemplateCommand: \`\${vueTemplateCommand} --watch\`,
-    angularTemplateCommand: \`\${angularTemplateCommand} --watch\`,
     tscCoreSrcCommand: \`\${tscCoreSrcCommand} --watch\`,
     tscVueSrcCommand: \`\${tscVueSrcCommand} --watch\`,
     tscReactSrcCommand: \`\${tscReactSrcCommand} --watch\`,
-    tscAngularSrcCommand: \`\${tscAngularSrcCommand} --watch\`,
     tscCoreDemoCommand: \`\${tscCoreDemoCommand} --watch\`,
     tscVueDemoCommand: \`\${tscVueDemoCommand} --watch\`,
     tscReactDemoCommand: \`\${tscReactDemoCommand} --watch\`,
-    tscAngularDemoCommand: \`\${tscAngularDemoCommand} --watch\`,
     webpackVueCommand: \`\${webpackVueCommand} --watch\`,
     webpackReactCommand: \`\${webpackReactCommand} --watch\`,
-    webpackAngularJitCommand: \`\${webpackAngularJitCommand} --watch\`,
-    webpackAngularAotCommand: \`\${webpackAngularAotCommand} --watch\`,
     less: () => watch(['src/**/*.less'], [], () => executeScriptAsync(cssCommand)),
     rev: \`\${revStaticCommand} --watch\`
   },
@@ -2786,7 +2767,7 @@ indent_style = space
 indent_size = 2
 `
 export const uiComponentEslintignore = `node_modules
-packages/@(core|vue|react|angular)/@(src|demo)
+packages/@(core|vue|react)/@(src|demo)
 *.d.ts
 `
 export const uiComponentEslintrc = `{
@@ -2853,216 +2834,9 @@ export const uiComponentLernaJson = `{
   "useWorkspaces": true
 }
 `
-export const uiComponentPackagesAngularDemoAotIndexEjsHtml = `<!DOCTYPE html>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="../../../core/demo/<%=coreDemoIndexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.coreDemoIndexBundleCss %>" />
-<style>
-    .github-fork-ribbon {
-        position: fixed;
-    }
-</style>
-<app></app>
-<script src="./<%=angularDemoAotIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.angularDemoAotIndexBundleJs %>"></script>
-`
-export const uiComponentPackagesAngularDemoAotIndexTs = `import 'core-js/es6'
-import 'core-js/es7/reflect'
-import 'zone.js/dist/zone'
-
-import { platformBrowser } from '@angular/platform-browser'
-import { enableProdMode } from '@angular/core'
-
-import { MainModuleNgFactory } from '../main.module.ngfactory'
-
-enableProdMode()
-
-platformBrowser().bootstrapModuleFactory(MainModuleNgFactory)
-`
-export const uiComponentPackagesAngularDemoAotWebpackConfigJs = `module.exports = {
-  mode: process.env.NODE_ENV,
-  entry: './packages/angular/demo/aot/index',
-  output: {
-    path: __dirname,
-    filename: 'index.bundle.js'
-  }
-}
-`
-export const uiComponentPackagesAngularDemoJitIndexEjsHtml = `<!DOCTYPE html>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="../../../core/demo/<%=coreDemoIndexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.coreDemoIndexBundleCss %>" />
-<style>
-    .github-fork-ribbon {
-        position: fixed;
-    }
-</style>
-<app></app>
-<script src="./<%=angularDemoJitIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.angularDemoJitIndexBundleJs %>"></script>
-`
-export const uiComponentPackagesAngularDemoJitIndexTs = `import 'core-js/es6'
-import 'core-js/es7/reflect'
-import 'zone.js/dist/zone'
-
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic'
-import { enableProdMode } from '@angular/core'
-
-import { MainModule } from '../main.module'
-
-enableProdMode()
-
-platformBrowserDynamic().bootstrapModule(MainModule)
-`
-export const uiComponentPackagesAngularDemoJitWebpackConfigJs = `module.exports = {
-  mode: process.env.NODE_ENV,
-  entry: './packages/angular/demo/jit/index',
-  output: {
-    path: __dirname,
-    filename: 'index.bundle.js'
-  }
-}
-`
-export const uiComponentPackagesAngularDemoMainComponentTs = `import { Component } from '@angular/core'
-
-import { COMPONENT_TYPE_NAMEData } from '../dist/'
-
-@Component({
-  selector: 'app',
-  template: \`
-    <div>
-        <a href="https://github.com/AUTHOR/REPOSITORY_NAME/tree/master/packages/angular/demo" target="_blank">the source code of the demo</a>
-        <br/>
-        <COMPONENT_SHORT_NAME [data]="data">
-        </COMPONENT_SHORT_NAME>
-    </div>
-    \`
-})
-export class MainComponent {
-  data: COMPONENT_TYPE_NAME
-}
-`
-export const uiComponentPackagesAngularDemoMainModuleTs = `import { NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
-import { FormsModule } from '@angular/forms'
-
-import { COMPONENT_TYPE_NAMEModule } from '../dist/'
-import { MainComponent } from './main.component'
-
-@NgModule({
-  imports: [BrowserModule, FormsModule, COMPONENT_TYPE_NAMEModule],
-  declarations: [MainComponent],
-  bootstrap: [MainComponent]
-})
-export class MainModule { }
-`
-export const uiComponentPackagesAngularDemoTsconfigJson = `{
-  "extends": "../../tsconfig.json",
-  "angularCompilerOptions": {
-    "strictMetadataEmit": true,
-    "fullTemplateTypeCheck" : true
-  }
-}
-`
-export const uiComponentPackagesAngularPackageJson = `{
-  "name": "component-short-name-angular-component",
-  "version": "1.0.0",
-  "description": "DESCRIPTION",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AUTHOR/REPOSITORY_NAME.git"
-  },
-  "author": "AUTHOR_NAME",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/AUTHOR/REPOSITORY_NAME/issues"
-  },
-  "homepage": "https://github.com/AUTHOR/REPOSITORY_NAME#readme",
-  "files": [
-    "dist"
-  ],
-  "dependencies": {
-    "@angular/common": "7",
-    "@angular/core": "7",
-    "@angular/forms": "7",
-    "REPOSITORY_NAME": "^1.0.0"
-  },
-  "devDependencies": {
-    "@angular/platform-browser": "5.0.3",
-    "@angular/platform-browser-dynamic": "5.0.3",
-    "core-js": "2.5.1",
-    "rxjs": "5.5.2",
-    "zone.js": "0.8.18"
-  }
-}
-`
-export const uiComponentPackagesAngularReadmeMd = `# COMPONENT_SHORT_NAME-angular-component
-
-Docs: <https://github.com/AUTHOR/REPOSITORY_NAME>
-`
-export const uiComponentPackagesAngularSrcIndexComponentTs = `import { Component, Input } from '@angular/core'
-import * as common from 'REPOSITORY_NAME'
-import { indexTemplateHtml } from './variables'
-
-/**
- * @public
- */
-@Component({
-  selector: 'COMPONENT_SHORT_NAME',
-  template: indexTemplateHtml
-})
-export class ComponentTypeNameComponent {
-  @Input()
-  data: common.ComponentTypeNameData
-}
-`
-export const uiComponentPackagesAngularSrcIndexTemplateHtml = `<div class="COMPONENT_SHORT_NAME"></div>`
-export const uiComponentPackagesAngularSrcIndexTs = `import { NgModule } from '@angular/core'
-import { CommonModule } from '@angular/common'
-import { ComponentTypeNameComponent } from './index.component'
-export * from './index.component'
-export * from 'REPOSITORY_NAME'
-
-/**
- * @public
- */
-@NgModule({
-  declarations: [
-    ComponentTypeNameComponent
-  ],
-  imports: [
-    CommonModule
-  ],
-  exports: [
-    ComponentTypeNameComponent
-  ]
-})
-export class ComponentTypeNameModule { }
-`
-export const uiComponentPackagesAngularSrcTsconfigJson = `{
-  "extends": "../../tsconfig.json",
-  "angularCompilerOptions": {
-    "strictMetadataEmit": true,
-    "fullTemplateTypeCheck" : true
-  },
-  "compilerOptions": {
-    "outDir": "../dist",
-    "rootDir": ".",
-    "declaration": true
-  }
-}
-`
 export const uiComponentPackagesCoreDemoIndexTs = ``
 export const uiComponentPackagesCoreDemoTsconfigJson = `{
-  "extends": "../../tsconfig.json",
-  "angularCompilerOptions": {
-    "strictMetadataEmit": true,
-    "fullTemplateTypeCheck" : true
-  }
+  "extends": "../../tsconfig.json"
 }
 `
 export const uiComponentPackagesCorePackageJson = `{
@@ -3113,10 +2887,6 @@ export interface componentTypeNameData<T = any> {
 `
 export const uiComponentPackagesCoreSrcTsconfigJson = `{
   "extends": "../../tsconfig.json",
-  "angularCompilerOptions": {
-    "strictMetadataEmit": true,
-    "fullTemplateTypeCheck" : true
-  },
   "compilerOptions": {
     "outDir": "../dist",
     "declaration": true
@@ -3432,7 +3202,6 @@ export const uiComponentReadmeMd = `
 
 + vuejs component
 + reactjs component
-+ angular component
 + custom component
 
 ## link css
@@ -3491,30 +3260,6 @@ or
 
 the online demo: <https://AUTHOR.github.io/REPOSITORY_NAME/packages/react/demo>
 
-## angular component
-
-\`yarn add COMPONENT_SHORT_NAME-angular-component\`
-
-\`\`\`ts
-import { COMPONENT_TYPE_NAMEModule } from "COMPONENT_SHORT_NAME-angular-component";
-
-@NgModule({
-    imports: [BrowserModule, FormsModule, COMPONENT_TYPE_NAMEModule],
-    declarations: [MainComponent],
-    bootstrap: [MainComponent],
-})
-class MainModule { }
-\`\`\`
-
-\`\`\`html
-<COMPONENT_SHORT_NAME [data]="data">
-</COMPONENT_SHORT_NAME>
-\`\`\`
-
-the online demo: <https://AUTHOR.github.io/REPOSITORY_NAME/packages/angular/demo/jit>
-
-the AOT online demo: <https://AUTHOR.github.io/REPOSITORY_NAME/packages/angular/demo/aot>
-
 ## properties and events of the component
 
 name | type | description
@@ -3532,8 +3277,8 @@ type COMPONENT_TYPE_NAMEData<T = any> = {
 `
 export const uiComponentRevStaticConfigJs = `module.exports = {
   inputFiles: [
-    'packages/@(vue|react|angular)/demo/**/index.bundle.js',
-    'packages/@(vue|react|angular)/demo/**/*.ejs.html',
+    'packages/@(vue|react)/demo/**/index.bundle.js',
+    'packages/@(vue|react)/demo/**/*.ejs.html',
     'packages/core/demo/*.bundle.css'
   ],
   revisedFiles: [
@@ -3557,9 +3302,7 @@ export const uiComponentScreenshotsIndexTs = `import puppeteer from 'puppeteer'
 
   const cases = [
     { type: 'vue', url: '/packages/vue/demo' },
-    { type: 'react', url: '/packages/react/demo' },
-    { type: 'angular', url: '/packages/angular/demo/jit' },
-    { type: 'aot', url: '/packages/angular/demo/aot' }
+    { type: 'react', url: '/packages/react/demo' }
   ]
 
   for (const { type, url } of cases) {

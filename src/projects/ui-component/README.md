@@ -11,7 +11,6 @@
 
 + vuejs component
 + reactjs component
-+ angular component
 + custom component
 
 ## link css
@@ -69,30 +68,6 @@ or
 ```
 
 the online demo: <https://AUTHOR.github.io/REPOSITORY_NAME/packages/react/demo>
-
-## angular component
-
-`yarn add COMPONENT_SHORT_NAME-angular-component`
-
-```ts
-import { COMPONENT_TYPE_NAMEModule } from "COMPONENT_SHORT_NAME-angular-component";
-
-@NgModule({
-    imports: [BrowserModule, FormsModule, COMPONENT_TYPE_NAMEModule],
-    declarations: [MainComponent],
-    bootstrap: [MainComponent],
-})
-class MainModule { }
-```
-
-```html
-<COMPONENT_SHORT_NAME [data]="data">
-</COMPONENT_SHORT_NAME>
-```
-
-the online demo: <https://AUTHOR.github.io/REPOSITORY_NAME/packages/angular/demo/jit>
-
-the AOT online demo: <https://AUTHOR.github.io/REPOSITORY_NAME/packages/angular/demo/aot>
 
 ## properties and events of the component
 

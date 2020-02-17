@@ -2,20 +2,6 @@ import * as libs from './libs'
 import * as variables from './variables'
 
 export async function runUIComponent(context: libs.Context) {
-  const answer = await libs.inquirer.prompt<{ options: string[] }>({
-    type: 'checkbox',
-    name: 'options',
-    message: 'Choose options:',
-    default: [
-    ],
-    choices: [
-      'angular'
-    ]
-  })
-  const options = answer.options
-
-  const hasAngularChoice = options.some(o => o === 'angular')
-
   await libs.appendFile('.gitignore', variables.uiComponentGitignore)
   await libs.appendFile('.editorconfig', variables.uiComponentEditorconfig)
   await libs.appendFile('tsconfig.base.json', variables.uiComponentTsconfigBaseJson)
@@ -28,9 +14,6 @@ export async function runUIComponent(context: libs.Context) {
   await libs.exec(`yarn add -DE file2variable-cli`)
   await libs.exec(`yarn add -DE rev-static`)
   await libs.exec(`yarn add -DE webpack webpack-cli`)
-  if (hasAngularChoice) {
-    await libs.exec(`yarn add -DE @angular/compiler @angular/core @angular/compiler-cli`)
-  }
   await libs.exec(`yarn add -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`)
   await libs.exec(`yarn add -DE clean-scripts`)
   await libs.exec(`yarn add -DE no-unused-export`)
@@ -129,10 +112,6 @@ export async function runUIComponent(context: libs.Context) {
 
   await libs.writeFile(`packages/tsconfig.json`, variables.uiComponentPackagesTsconfigJson)
 
-  if (hasAngularChoice) {
-    await initializeAngularFiles(context)
-  }
-
   await libs.writeFile(`rev-static.config.js`, variables.uiComponentRevStaticConfigJs)
 
   await libs.mkdir(`spec`)
@@ -185,47 +164,4 @@ export async function runUIComponent(context: libs.Context) {
       'packages/*'
     ],
   }
-}
-
-async function initializeAngularFiles(context: libs.Context) {
-  await libs.mkdir('packages/angular/demo/aot/')
-  await libs.writeFile(`packages/angular/demo/aot/index.ejs.html`, variables.uiComponentPackagesAngularDemoAotIndexEjsHtml)
-  await libs.writeFile(`packages/angular/demo/aot/index.ts`, variables.uiComponentPackagesAngularDemoAotIndexTs)
-  await libs.writeFile(`packages/angular/demo/aot/webpack.config.js`, variables.uiComponentPackagesAngularDemoAotWebpackConfigJs)
-
-  await libs.mkdir('packages/angular/demo/jit/')
-  await libs.writeFile(`packages/angular/demo/jit/index.ejs.html`, variables.uiComponentPackagesAngularDemoJitIndexEjsHtml)
-  await libs.writeFile(`packages/angular/demo/jit/index.ts`, variables.uiComponentPackagesAngularDemoJitIndexTs)
-  await libs.writeFile(`packages/angular/demo/jit/webpack.config.js`, variables.uiComponentPackagesAngularDemoJitWebpackConfigJs)
-
-  await libs.writeFile(`packages/angular/demo/main.component.ts`, variables.uiComponentPackagesAngularDemoMainComponentTs
-    .replace(/COMPONENT_TYPE_NAME/g, context.componentTypeName)
-    .replace(/AUTHOR/g, context.author)
-    .replace(/REPOSITORY_NAME/g, context.repositoryName)
-    .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName))
-  await libs.writeFile(`packages/angular/demo/main.module.ts`, variables.uiComponentPackagesAngularDemoMainModuleTs
-    .replace(/COMPONENT_TYPE_NAME/g, context.componentTypeName))
-  await libs.writeFile(`packages/angular/demo/tsconfig.json`, variables.uiComponentPackagesAngularDemoTsconfigJson)
-
-  await libs.mkdir('packages/angular/src/')
-  await libs.writeFile(`packages/angular/src/index.template.html`, variables.uiComponentPackagesAngularSrcIndexTemplateHtml
-    .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName))
-  await libs.writeFile(`packages/angular/src/index.ts`, variables.uiComponentPackagesAngularSrcIndexTs
-    .replace(/ComponentTypeName/g, context.componentTypeName)
-    .replace(/REPOSITORY_NAME/g, context.repositoryName))
-  await libs.writeFile(`packages/angular/src/index.component.ts`, variables.uiComponentPackagesAngularSrcIndexComponentTs
-    .replace(/ComponentTypeName/g, context.componentTypeName)
-    .replace(/REPOSITORY_NAME/g, context.repositoryName)
-    .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName))
-  await libs.writeFile(`packages/angular/src/tsconfig.json`, variables.uiComponentPackagesAngularSrcTsconfigJson)
-
-  await libs.writeFile(`packages/angular/README.md`, variables.uiComponentPackagesAngularReadmeMd
-    .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName)
-    .replace(/AUTHOR/g, context.author)
-    .replace(/REPOSITORY_NAME/g, context.repositoryName))
-  await libs.writeFile(`packages/angular/package.json`, variables.uiComponentPackagesAngularPackageJson
-    .replace(/component-short-name/g, context.componentShortName)
-    .replace(/DESCRIPTION/g, context.description)
-    .replace(/AUTHOR/g, context.author)
-    .replace(/REPOSITORY_NAME/g, context.repositoryName))
 }
