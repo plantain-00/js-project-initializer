@@ -2724,7 +2724,7 @@ module.exports = {
   lint: {
     ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
     less: \`stylelint \${lessFiles}\`,
-    export: \`no-unused-export \${tsFiles} \${lessFiles} --exclude \${excludeTsFiles} --strict --need-module tslib\`,
+    // export: \`no-unused-export \${tsFiles} \${lessFiles} --exclude \${excludeTsFiles} --strict --need-module tslib\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
     typeCoverage: 'lerna exec -- type-coverage -p src --strict'
@@ -2877,13 +2877,7 @@ export const uiComponentPackagesCoreSrcIndexLess = `.componentShortName {
   }
 }
 `
-export const uiComponentPackagesCoreSrcIndexTs = `/**
- * @public
- */
-export interface componentTypeNameData<T = any> {
-  data: T;
-}
-`
+export const uiComponentPackagesCoreSrcIndexTs = ``
 export const uiComponentPackagesCoreSrcTsconfigJson = `{
   "extends": "../../tsconfig.json",
   "compilerOptions": {
@@ -2908,15 +2902,14 @@ export const uiComponentPackagesReactDemoIndexEjsHtml = `<!DOCTYPE html>
 `
 export const uiComponentPackagesReactDemoIndexTsx = `import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import { componentTypeName, componentTypeNameData } from '../dist/'
+import { componentTypeName } from '../dist/'
 
 function Main() {
-  const data: componentTypeNameData = {}
   return (
     <div>
       <a href='https://github.com/AUTHOR/REPOSITORY_NAME/tree/master/packages/react/demo' target='_blank'>the source code of the demo</a>
       <br />
-      <componentTypeName data={data} />
+      <componentTypeName />
     </div>
   )
 }
@@ -2974,15 +2967,11 @@ export const uiComponentPackagesReactReadmeMd = `# COMPONENT_SHORT_NAME-react-co
 Docs: <https://github.com/AUTHOR/REPOSITORY_NAME>
 `
 export const uiComponentPackagesReactSrcIndexTsx = `import * as React from 'react'
-import * as common from 'REPOSITORY_NAME'
-export * from 'REPOSITORY_NAME'
 
 /**
  * @public
  */
-export function ComponentTypeName(props: {
-  data: common.ComponentTypeNameData;
-}) {
+export function ComponentTypeName() {
   return (
     <div className='COMPONENT_SHORT_NAME'>
     </div>
@@ -3043,20 +3032,18 @@ export const uiComponentPackagesVueDemoIndexEjsHtml = `<!DOCTYPE html>
 export const uiComponentPackagesVueDemoIndexTs = `import Vue from 'vue'
 import Component from 'vue-class-component'
 import '../dist/'
-import { componentTypeNameData } from '../dist/'
 
 @Component({
   template: \`
     <div>
         <a href="https://github.com/AUTHOR/REPSOTIRY_NAME/tree/master/packages/vue/demo" target="_blank">the source code of the demo</a>
         <br/>
-        <componentShortName :data="data">
+        <componentShortName>
         </componentShortName>
     </div>
     \`
 })
 class App extends Vue {
-  data!: componentTypeNameData
 }
 
 new App({ el: '#container' })
@@ -3133,17 +3120,14 @@ export const uiComponentPackagesVueSrcFile2VariableConfigJs = `module.exports = 
 export const uiComponentPackagesVueSrcIndexTemplateHtml = `<div class="componentShortName"></div>`
 export const uiComponentPackagesVueSrcIndexTs = `import Vue from 'vue'
 import Component from 'vue-class-component'
-import * as common from 'REPOSITORY_NAME'
-export * from 'REPOSITORY_NAME'
 import { indexTemplateHtml, indexTemplateHtmlStatic } from './variables'
 
 @Component({
   render: indexTemplateHtml,
   staticRenderFns: indexTemplateHtmlStatic,
-  props: ['data']
+  props: []
 })
 export class ComponentTypeName extends Vue {
-  data!: common.componentTypeNameData
 }
 
 Vue.component('COMPONENT_SHORT_NAME', ComponentTypeName)
