@@ -7,10 +7,27 @@ import { runFrontend } from './frontend'
 import { runBackendWithFrontend } from './backend-with-frontend'
 import { runElectron } from './electron'
 import { runCLIMonorepo } from './cli-monorepo'
+import * as packageJson from '../package.json'
 
 const packageJsonFileName = 'package.json'
 
+function showToolVersion() {
+  console.log(`Version: ${packageJson.version}`)
+}
+
 async function run() {
+  const argv = libs.minimist(process.argv.slice(2), { '--': true }) as unknown as {
+    v?: unknown
+    version?: unknown
+    suppressError?: unknown
+  }
+
+  const showVersion = argv.v || argv.version
+  if (showVersion) {
+    showToolVersion()
+    return
+  }
+
   const context = await getContext()
 
   const kind = await selectProjectKind()
@@ -85,7 +102,7 @@ async function run() {
     packageJson.bin = newPackageJson.bin
   }
   if (newPackageJson.dependencies && newPackageJson.dependencies.tslib) {
-    if (!newPackageJson.dependencies) {
+    if (!packageJson.dependencies) {
       packageJson.dependencies = {}
     }
     packageJson.dependencies.tslib = newPackageJson.dependencies.tslib

@@ -34,6 +34,7 @@
   "homepage": "https://github.com/plantain-00/js-project-initializer#readme",
   "dependencies": {
     "inquirer": "7.0.4",
+    "minimist": "1.2.0",
     "mkdirp": "1.0.3",
     "tslib": "1.10.0",
     "uppercamelcase": "3.0.0"
@@ -43,6 +44,7 @@
     "@commitlint/config-conventional": "8.3.4",
     "@types/inquirer": "6.5.0",
     "@types/jasmine": "3.5.4",
+    "@types/minimist": "1.2.0",
     "@types/mkdirp": "1.0.0",
     "@types/uppercamelcase": "3.0.0",
     "@typescript-eslint/eslint-plugin": "2.19.2",

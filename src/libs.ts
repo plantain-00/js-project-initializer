@@ -3,8 +3,9 @@ import * as childProcess from 'child_process'
 import * as fs from 'fs'
 import mkdirp from 'mkdirp'
 import upperCamelCase from 'uppercamelcase'
+import minimist from 'minimist'
 
-export { inquirer, upperCamelCase }
+export { inquirer, upperCamelCase, minimist }
 
 export function exec(command: string) {
   return new Promise<void>((resolve, reject) => {
