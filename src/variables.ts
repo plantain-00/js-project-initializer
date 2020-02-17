@@ -3347,7 +3347,7 @@ import { COMPONENT_TYPE_NAME } from '../packages/react/dist'
 import renderer from 'react-test-renderer'
 
 it('renders without crashing', () => {
-  const app = renderer.create(<COMPONENT_TYPE_NAME data={undefined} />)
+  const app = renderer.create(<COMPONENT_TYPE_NAME />)
   const rendered = app.toJSON()
   expect(rendered).toBeTruthy()
   app.unmount()
@@ -3367,7 +3367,6 @@ import { mount } from 'vue-test-utils'
 it('renders without crashing', () => {
   const app = mount(COMPONENT_TYPE_NAME, {
     propsData: {
-      data: undefined
     }
   })
   const rendered = app.html()
