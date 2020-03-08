@@ -2892,6 +2892,7 @@ export const uiComponentPackagesReactDemoIndexEjsHtml = `<!DOCTYPE html>
 <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="../../core/demo/<%=coreDemoIndexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.coreDemoIndexBundleCss %>" />
+<a class="github-fork-ribbon right-bottom" href="https://github.com/AUTHOR/REPOSITORY_NAME" data-ribbon="Fork me on GitHub" title="Fork me on GitHub" target="_blank" rel="noopener">Fork me on GitHub</a>
 <style>
     .github-fork-ribbon {
         position: fixed;
@@ -3021,6 +3022,7 @@ export const uiComponentPackagesVueDemoIndexEjsHtml = `<!DOCTYPE html>
 <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="../../core/demo/<%=coreDemoIndexBundleCss %>" crossOrigin="anonymous" integrity="<%=sri.coreDemoIndexBundleCss %>" />
+<a class="github-fork-ribbon right-bottom" href="https://github.com/AUTHOR/REPOSITORY_NAME" data-ribbon="Fork me on GitHub" title="Fork me on GitHub" target="_blank" rel="noopener">Fork me on GitHub</a>
 <style>
     .github-fork-ribbon {
         position: fixed;

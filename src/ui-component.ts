@@ -48,7 +48,7 @@ export async function runUIComponent(context: libs.Context) {
     .replace(/AUTHOR/g, context.author))
 
   await libs.mkdir('packages/react/demo/')
-  await libs.writeFile(`packages/react/demo/index.ejs.html`, variables.uiComponentPackagesReactDemoIndexEjsHtml)
+  await libs.writeFile(`packages/react/demo/index.ejs.html`, variables.uiComponentPackagesReactDemoIndexEjsHtml.replace(/REPOSITORY_NAME/g, context.repositoryName).replace(/AUTHOR/g, context.author))
   await libs.writeFile(`packages/react/demo/index.tsx`, variables.uiComponentPackagesReactDemoIndexTsx
     .replace(/componentTypeName/g, context.componentTypeName)
     .replace(/AUTHOR/g, context.author)
@@ -77,7 +77,7 @@ export async function runUIComponent(context: libs.Context) {
     .replace(/REPOSITORY_NAME/g, context.repositoryName))
 
   await libs.mkdir('packages/vue/demo/')
-  await libs.writeFile(`packages/vue/demo/index.ejs.html`, variables.uiComponentPackagesVueDemoIndexEjsHtml)
+  await libs.writeFile(`packages/vue/demo/index.ejs.html`, variables.uiComponentPackagesVueDemoIndexEjsHtml.replace(/REPOSITORY_NAME/g, context.repositoryName).replace(/AUTHOR/g, context.author))
   await libs.writeFile(`packages/vue/demo/index.ts`, variables.uiComponentPackagesVueDemoIndexTs
     .replace(/componentTypeName/g, context.componentTypeName)
     .replace(/AUTHOR/g, context.author)
