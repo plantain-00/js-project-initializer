@@ -243,7 +243,10 @@ const pullRequestTemplate = `#### Fixes(if relevant):
 
 const githubCI = `name: Github CI
 
-on: [push]
+on:
+  push:
+    branches-ignore:
+      - 'gh-pages'
 
 jobs:
   build:
