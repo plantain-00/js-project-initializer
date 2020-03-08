@@ -46,6 +46,8 @@ async function run() {
   await libs.mkdir('.github')
   await libs.writeFile('.github/ISSUE_TEMPLATE.md', issueTemplate)
   await libs.writeFile('.github/PULL_REQUEST_TEMPLATE.md', pullRequestTemplate)
+  await libs.mkdir('.github/workflows')
+  await libs.writeFile('.github/workflows/github-ci.yaml', githubCI)
 
   await libs.exec(`yarn add -DE rimraf`)
 
@@ -237,4 +239,32 @@ const pullRequestTemplate = `#### Fixes(if relevant):
 + [ ] Lint Success(\`npm run lint\` to check, \`npm run fix\` to fix)
 + [ ] Add Test(if relevant, \`npm run test\` to check)
 + [ ] Add Demo(if relevant)
+`
+
+const githubCI = `name: Github CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js \${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: \${{ matrix.node-version }}
+    - run: git fetch --unshallow || true
+    - run: yarn install --frozen-lockfile
+    - run: npm run build
+    - run: npm run lint
+    - run: npm run test
+      env:
+        CI: true
 `
