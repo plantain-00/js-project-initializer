@@ -35,7 +35,7 @@
   "dependencies": {
     "inquirer": "7.1.0",
     "minimist": "1.2.5",
-    "mkdirp": "1.0.3",
+    "mkdirp": "1.0.4",
     "tslib": "1.11.1",
     "uppercamelcase": "3.0.0"
   },
@@ -47,8 +47,8 @@
     "@types/minimist": "1.2.0",
     "@types/mkdirp": "1.0.0",
     "@types/uppercamelcase": "3.0.0",
-    "@typescript-eslint/eslint-plugin": "2.25.0",
-    "@typescript-eslint/parser": "2.25.0",
+    "@typescript-eslint/eslint-plugin": "2.26.0",
+    "@typescript-eslint/parser": "2.26.0",
     "clean-scripts": "1.12.2",
     "eslint": "6.8.0",
     "eslint-config-prettier": "6.10.1",
