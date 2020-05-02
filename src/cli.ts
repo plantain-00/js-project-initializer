@@ -7,10 +7,10 @@ export async function runCLI(context: libs.Context) {
   await libs.appendFile('tsconfig.base.json', variables.cliTsconfigBaseJson)
   await libs.appendFile('tsconfig.eslint.json', variables.cliTsconfigEslintJson)
 
-  await libs.exec(`yarn add -SE tslib`)
+  await libs.exec(`yarn add -SE tslib@1`)
   await libs.exec(`yarn add -DE @types/node`)
   await libs.exec(`yarn add -DE jasmine @types/jasmine`)
-  await libs.exec(`yarn add -E minimist`)
+  await libs.exec(`yarn add -SE minimist@1`)
   await libs.exec(`yarn add -DE @types/minimist`)
   await libs.exec(`yarn add -DE clean-scripts`)
   await libs.exec(`yarn add -DE clean-release`)
