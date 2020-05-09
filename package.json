@@ -36,7 +36,7 @@
     "inquirer": "7.1.0",
     "minimist": "1.2.5",
     "mkdirp": "1.0.4",
-    "tslib": "1.11.1",
+    "tslib": "1.11.2",
     "uppercamelcase": "3.0.0"
   },
   "devDependencies": {
@@ -47,18 +47,18 @@
     "@types/minimist": "1.2.0",
     "@types/mkdirp": "1.0.0",
     "@types/uppercamelcase": "3.0.0",
-    "@typescript-eslint/eslint-plugin": "2.30.0",
-    "@typescript-eslint/parser": "2.30.0",
+    "@typescript-eslint/eslint-plugin": "2.31.0",
+    "@typescript-eslint/parser": "2.31.0",
     "clean-scripts": "1.12.3",
-    "eslint": "6.8.0",
+    "eslint": "7.0.0",
     "eslint-config-prettier": "6.11.0",
-    "eslint-plugin-plantain": "0.1.2",
+    "eslint-plugin-plantain": "1.0.0",
     "file2variable-cli": "1.9.2",
     "jasmine": "3.5.0",
-    "markdownlint-cli": "0.22.0",
+    "markdownlint-cli": "0.23.0",
     "no-unused-export": "1.10.3",
     "rimraf": "3.0.2",
-    "type-coverage": "2.4.3",
+    "type-coverage": "2.5.0",
     "typescript": "3.8.3"
   },
   "preferGlobal": true
