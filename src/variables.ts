@@ -2375,6 +2375,18 @@ test_script:
 
 build: off
 `
+export const libraryAvaConfigJs = `export default {
+  "files": [
+    "spec/**/*"
+  ],
+  "extensions": [
+    "ts"
+  ],
+  "require": [
+    "ts-node/register/transpile-only"
+  ]
+}
+`
 export const libraryCleanReleaseConfigJs = `module.exports = {
   include: [
     'dist/**/*.js',
@@ -2425,10 +2437,7 @@ module.exports = {
     typeCoverage: 'type-coverage -p src/tsconfig.nodejs.json --strict',
     typeCoverageBrowser: 'type-coverage -p src/tsconfig.browser.json --strict'
   },
-  test: [
-    'tsc -p spec',
-    'jasmine'
-  ],
+  test: 'ava',
   fix: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles} --fix\`
 }
 `
@@ -2528,16 +2537,11 @@ export default {
   }
 }
 `
-export const librarySpecIndexSpecTs = `it('', () => {
-  expect(true).toEqual(true)
+export const librarySpecIndexTs = `import test from 'ava'
+
+test('', (t) => {
+  t.pass()
 })
-`
-export const librarySpecTsconfigJson = `{
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "module": "commonjs"
-  }
-}
 `
 export const librarySrcIndexTs = `/**
  * @public

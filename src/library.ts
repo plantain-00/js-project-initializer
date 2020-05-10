@@ -11,15 +11,14 @@ export async function runLibrary(context: libs.Context) {
 
   await libs.exec(`yarn add -SE tslib@1`)
 
-  await libs.exec(`yarn add -DE jasmine @types/jasmine`)
+  await libs.exec(`yarn add -DE ts-node`)
+  await libs.exec(`yarn add -DE ava`)
   await libs.exec(`yarn add -DE rimraf`)
   await libs.exec(`yarn add -DE rollup @rollup/plugin-node-resolve rollup-plugin-uglify`)
   await libs.exec(`yarn add -DE clean-scripts`)
   await libs.exec(`yarn add -DE no-unused-export`)
   await libs.exec(`yarn add -DE type-coverage`)
   await libs.exec(`yarn add -DE @microsoft/api-extractor`)
-
-  await libs.exec('./node_modules/.bin/jasmine init')
 
   await libs.mkdir('src')
   await libs.writeFile(`src/index.ts`, variables.librarySrcIndexTs.replace(/ComponentTypeName/g, context.componentTypeName))
@@ -38,9 +37,9 @@ export async function runLibrary(context: libs.Context) {
   await libs.writeFile('clean-scripts.config.js', variables.libraryCleanScriptsConfigJs)
   await libs.writeFile('.eslintrc', variables.libraryEslintrc)
   await libs.writeFile('.eslintignore', variables.libraryEslintignore)
+  await libs.writeFile('ava.config.js', variables.libraryAvaConfigJs)
 
-  await libs.writeFile('spec/tsconfig.json', variables.librarySpecTsconfigJson)
-  await libs.writeFile('spec/indexSpec.ts', variables.librarySpecIndexSpecTs)
+  await libs.writeFile('spec/index.ts', variables.librarySpecIndexTs)
 
   return {
     main: 'nodejs/index.js',

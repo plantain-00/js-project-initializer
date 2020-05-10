@@ -23,9 +23,6 @@ module.exports = {
     typeCoverage: 'type-coverage -p src/tsconfig.nodejs.json --strict',
     typeCoverageBrowser: 'type-coverage -p src/tsconfig.browser.json --strict'
   },
-  test: [
-    'tsc -p spec',
-    'jasmine'
-  ],
+  test: 'ava',
   fix: `eslint --ext .js,.ts ${tsFiles} ${jsFiles} --fix`
 }
