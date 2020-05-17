@@ -7,8 +7,8 @@ export default {
   ],
   exclude: [
   ],
-  postScript: [
-    'cd "[dir]" && yarn --production',
-    'node [dir]/dist/index.js'
+  postScript: ({ dir }) => [
+    `cd "${dir}" && yarn --production`,
+    `node ${dir}/dist/index.js`
   ]
 }

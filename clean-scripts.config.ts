@@ -14,7 +14,7 @@ export default {
     export: `no-unused-export ${tsFiles} --strict --need-module tslib --exclude "src/projects/**/*.ts"`,
     commit: `commitlint --from=HEAD~1`,
     markdown: `markdownlint README.md`,
-    typeCoverage: 'type-coverage -p src --strict'
+    typeCoverage: 'type-coverage -p src --strict --ignore-files "**/projects/**/*"'
   },
   test: [
     () => checkGitStatus()

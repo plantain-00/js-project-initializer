@@ -33,15 +33,15 @@ export const backendCleanReleaseConfigTs = `export default {
   ],
   askVersion: true,
   releaseRepository: 'https://github.com/AUTHOR/REPOSITORY_NAME-release.git',
-  postScript: [
-    // 'cd "[dir]" && rm -rf .git',
-    // 'cp Dockerfile "[dir]"',
-    // 'cd "[dir]" && docker build -t AUTHOR/REPOSITORY_NAME . && docker push AUTHOR/REPOSITORY_NAME'
+  postScript: ({ dir, version }) => [
+    // \`cd "\${dir}" && rm -rf .git\`,
+    // \`cp Dockerfile "\${dir}"\`,
+    // \`cd "\${dir}" && docker build -t AUTHOR/REPOSITORY_NAME . && docker push AUTHOR/REPOSITORY_NAME\`
     'git add package.json',
-    'git commit -m "[version]"',
-    'git tag v[version]',
+    \`git commit -m "\${version}"\`,
+    \`git tag v\${version}\`,
     'git push',
-    'git push origin v[version]',
+    \`git push origin v\${version}\`,
   ]
 }
 `
@@ -53,8 +53,8 @@ export const backendCleanRunConfigTs = `export default {
   ],
   exclude: [
   ],
-  postScript: [
-    'cd "[dir]" && yarn --production && node dist/index.js'
+  postScript: ({ dir }) => [
+    \`cd "\${dir}" && yarn --production && node dist/index.js\`
   ]
 }
 `
@@ -287,15 +287,15 @@ export const backendWithFrontendCleanReleaseConfigTs = `export default {
   ],
   askVersion: true,
   releaseRepository: 'https://github.com/AUTHOR/REPOSITORY_NAME-release.git',
-  postScript: [
-    // 'cd "[dir]" && rm -rf .git',
-    // 'cp Dockerfile "[dir]"',
-    // 'cd "[dir]" && docker build -t AUTHOR/REPOSITORY_NAME . && docker push AUTHOR/REPOSITORY_NAME'
+  postScript: ({ dir, version }) => [
+    // \`cd "\${dir}" && rm -rf .git\`,
+    // \`cp Dockerfile "\${dir}"\`,
+    // \`cd "\${dir}" && docker build -t AUTHOR/REPOSITORY_NAME . && docker push AUTHOR/REPOSITORY_NAME\`
     'git add package.json',
-    'git commit -m "[version]"',
-    'git tag v[version]',
+    \`git commit -m "\${version}"\`,
+    \`git tag v\${version}\`,
     'git push',
-    'git push origin v[version]',
+    \`git push origin v\${version}\`,
   ]
 }
 `
@@ -307,8 +307,8 @@ export const backendWithFrontendCleanRunConfigTs = `export default {
   ],
   exclude: [
   ],
-  postScript: [
-    'cd "[dir]" && yarn --production && node dist/index.js'
+  postScript: ({ dir }) => [
+    \`cd "\${dir}" && yarn --production && node dist/index.js\`
   ]
 }
 `
@@ -703,15 +703,13 @@ export const cliCleanReleaseConfigTs = `export default {
   ],
   askVersion: true,
   changesGitStaged: true,
-  postScript: [
-    ({ dir, tag }) => tag
-      ? \`npm publish "\${dir}" --access public --tag \${tag}\`
-      : \`npm publish "\${dir}" --access public\`,
+  postScript: ({ dir, tag, version }) => [
+    tag ? \`npm publish "\${dir}" --access public --tag \${tag}\` : \`npm publish "\${dir}" --access public\`,
     'git add package.json',
-    ({ version }) => \`git commit -m "\${version}"\`,
-    ({ version }) => \`git tag -a v\${version} -m 'v\${version}'\`,
+    \`git commit -m "\${version}"\`,
+    \`git tag -a v\${version} -m 'v\${version}'\`,
     'git push',
-    ({ version }) => \`git push origin v\${version}\`
+    \`git push origin v\${version}\`
   ]
 }
 `
@@ -724,9 +722,9 @@ export const cliCleanRunConfigTs = `export default {
   ],
   exclude: [
   ],
-  postScript: [
-    'cd "[dir]" && yarn --production',
-    'node [dir]/dist/index.js'
+  postScript: ({ dir }) => [
+    \`cd "\${dir}" && yarn --production\`,
+    \`node \${dir}/dist/index.js\`
   ]
 }
 `
@@ -1303,18 +1301,18 @@ export default {
   ],
   askVersion: true,
   changesGitStaged: true,
-  postScript: [
+  postScript: ({ version, dir }) => [
     'git add package.json',
-    'git commit -m "[version]"',
-    'git tag -a v[version] -m "v[version]"',
+    \`git commit -m "\${version}"\`,
+    \`git tag -a v\${version} -m "v\${version}"\`,
     'git push',
-    'git push origin v[version]',
-    'cd "[dir]" && npm i --production',
-    'prune-node-modules "[dir]/node_modules"',
-    \`electron-packager "[dir]" "\${name}" --out=dist --arch=x64 --electron-version=\${electronVersion} --platform=darwin --ignore="dist/"\`,
-    \`electron-packager "[dir]" "\${name}" --out=dist --arch=x64 --electron-version=\${electronVersion} --platform=win32 --ignore="dist/"\`,
-    \`7z a -r -tzip dist/\${name}-darwin-x64-[version].zip dist/\${name}-darwin-x64/\`,
-    \`7z a -r -tzip dist/\${name}-win32-x64-\$[version].zip dist/\${name}-win32-x64/\`,
+    \`git push origin v\${version}\`,
+    \`cd "\${dir}" && npm i --production\`,
+    \`prune-node-modules "\${dir}/node_modules"\`,
+    \`electron-packager "\${dir}" "\${name}" --out=dist --arch=x64 --electron-version=\${electronVersion} --platform=darwin --ignore="dist/"\`,
+    \`electron-packager "\${dir}" "\${name}" --out=dist --arch=x64 --electron-version=\${electronVersion} --platform=win32 --ignore="dist/"\`,
+    \`7z a -r -tzip dist/\${name}-darwin-x64-\${version}.zip dist/\${name}-darwin-x64/\`,
+    \`7z a -r -tzip dist/\${name}-win32-x64-\$\${version}.zip dist/\${name}-win32-x64/\`,
     \`electron-installer-windows --src dist/\${name}-win32-x64/ --dest dist/\`,
     \`cd dist && create-dmg \${name}-darwin-x64/\${name}.app\`
   ]
@@ -2056,15 +2054,13 @@ export const libraryCleanReleaseConfigTs = `export default {
   base: 'dist',
   askVersion: true,
   changesGitStaged: true,
-  postScript: [
-    ({ dir, tag }) => tag
-      ? \`npm publish "\${dir}" --access public --tag \${tag}\`
-      : \`npm publish "\${dir}" --access public\`,
+  postScript: ({ dir, tag, version }) => [
+    tag ? \`npm publish "\${dir}" --access public --tag \${tag}\` : \`npm publish "\${dir}" --access public\`,
     'git add package.json',
-    ({ version }) => \`git commit -m "\${version}"\`,
-    ({ version }) => \`git tag -a v\${version} -m 'v\${version}'\`,
+    \`git commit -m "\${version}"\`,
+    \`git tag -a v\${version} -m 'v\${version}'\`,
     'git push',
-    ({ version }) => \`git push origin v\${version}\`
+    \`git push origin v\${version}\`
   ]
 }
 `

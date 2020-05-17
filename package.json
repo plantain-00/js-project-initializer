@@ -30,7 +30,7 @@
     "url": "https://github.com/plantain-00/js-project-initializer/issues"
   },
   "typeCoverage": {
-    "atLeast": 98
+    "atLeast": 100
   },
   "homepage": "https://github.com/plantain-00/js-project-initializer#readme",
   "dependencies": {
