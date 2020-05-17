@@ -33,16 +33,7 @@ export default {
     typeCoverage: 'type-coverage -p . --strict',
     typeCoverageStatic: 'type-coverage -p static --strict'
   },
-  test: {
-    jasmine: [
-      'tsc -p spec',
-      'jasmine'
-    ],
-    karma: [
-      'tsc -p static_spec',
-      'karma start static_spec/karma.config.js'
-    ]
-  },
+  test: {},
   fix: {
     ts: `eslint --ext .js,.ts ${tsFiles} ${jsFiles} --fix`,
     less: `stylelint --fix ${lessFiles}`

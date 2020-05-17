@@ -36,6 +36,8 @@ export async function runCLI(context: libs.Context) {
   await libs.writeFile('.eslintrc', variables.cliEslintrc)
   await libs.writeFile('.eslintignore', variables.cliEslintignore)
 
+  await libs.mkdir('spec')
+
   await libs.mkdir('bin')
   await libs.writeFile(`bin/${context.repositoryName}`, variables.cliBinCli)
 

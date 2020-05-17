@@ -1,13 +1,12 @@
-import * as electron from 'electron'
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { scriptsIndexTemplateHtml, scriptsIndexTemplateHtmlStatic } from './variables'
+import { indexTemplateHtml, indexTemplateHtmlStatic } from './variables'
 
 @Component({
-  render: scriptsIndexTemplateHtml,
-  staticRenderFns: scriptsIndexTemplateHtmlStatic
+  render: indexTemplateHtml,
+  staticRenderFns: indexTemplateHtmlStatic
 })
-class App extends Vue {
+export class App extends Vue {
 }
 
 new App({ el: '#container' })

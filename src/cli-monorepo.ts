@@ -62,6 +62,8 @@ export async function runCLIMonorepo(context: libs.Context) {
 
   await libs.writeFile('lerna.json', variables.cliMonorepoLernaJson)
 
+  await libs.mkdir('spec')
+
   return {
     scripts: {
       bootstrap: 'lerna bootstrap -- --frozen-lockfile',

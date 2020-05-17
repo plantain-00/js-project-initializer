@@ -1,7 +1,7 @@
 import * as packageJson from './package.json'
 
 const name = packageJson.name
-const electronVersion = packageJson.devDependencies.electron
+const electronVersion = packageJson.dependencies.electron
 
 export default {
   include: [

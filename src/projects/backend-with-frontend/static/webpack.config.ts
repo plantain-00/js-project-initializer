@@ -12,9 +12,11 @@ export default {
   resolve: {
     extensions: ['.ts', '.tsx', '.js']
   },
-  module: [
-    { test: /\.tsx?$/, loader: 'ts-loader' }
-  ],
+  module: {
+    rules: [
+      { test: /\.tsx?$/, loader: 'ts-loader' }
+    ]
+  },
   optimization: {
     splitChunks: {
       cacheGroups: {

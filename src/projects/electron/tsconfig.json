@@ -2,10 +2,10 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "target": "es6",
-    "module": "commonjs"
+    "module": "commonjs",
+    "resolveJsonModule": true
   },
-  "exclude": [
-    "scripts/",
-    "node_modules/"
+  "files": [
+    "main.ts"
   ]
 }

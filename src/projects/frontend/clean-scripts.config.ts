@@ -1,7 +1,7 @@
 import { executeScriptAsync } from 'clean-scripts'
 import { watch } from 'watch-then-execute'
 
-const tsFiles = `"*.ts"x`
+const tsFiles = `"*.ts"`
 const jsFiles = `"*.config.js"`
 const lessFiles = `"*.less"`
 

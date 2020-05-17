@@ -512,7 +512,7 @@ export const backendWithFrontendStaticIndexEjsHtml = `<!DOCTYPE html>
 <%-inline.indexBundleCss %>
 <a class="github-fork-ribbon right-bottom" href="https://github.com/AUTHOR/REPOSITORY_NAME" data-ribbon="Fork me on GitHub" title="Fork me on GitHub" target="_blank" rel="noopener">Fork me on GitHub</a>
 <div id="prerender-container">
-<div id="container"><%-context.prerender %></div>
+<div id="container"></div>
 </div>
 <script src="<%=vendorBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.vendorBundleJs %>"></script>
 <%-inline.indexBundleJs %>
@@ -584,9 +584,11 @@ export default {
   resolve: {
     extensions: ['.ts', '.tsx', '.js']
   },
-  module: [
-    { test: /\\.tsx?\$/, loader: 'ts-loader' }
-  ],
+  module: {
+    rules: [
+      { test: /\\.tsx?\$/, loader: 'ts-loader' }
+    ]
+  },
   optimization: {
     splitChunks: {
       cacheGroups: {
@@ -747,8 +749,6 @@ export default {
     typeCoverage: 'type-coverage -p src --strict'
   },
   test: [
-    'tsc -p spec',
-    'jasmine',
     'clean-release --config clean-run.config.ts',
     () => checkGitStatus()
   ],
@@ -1287,7 +1287,7 @@ export const electronBrowserslistrc = `last 2 Chrome versions
 export const electronCleanReleaseConfigTs = `import * as packageJson from './package.json'
 
 const name = packageJson.name
-const electronVersion = packageJson.devDependencies.electron
+const electronVersion = packageJson.dependencies.electron
 
 export default {
   include: [
@@ -1355,16 +1355,7 @@ export default {
     typeCoverage: 'type-coverage -p . --strict',
     typeCoverageStatic: 'type-coverage -p static --strict'
   },
-  test: {
-    jasmine: [
-      'tsc -p spec',
-      'jasmine'
-    ],
-    karma: [
-      'tsc -p static_spec',
-      'karma start static_spec/karma.config.js'
-    ]
-  },
+  test: {},
   fix: {
     ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles} --fix\`,
     less: \`stylelint --fix \${lessFiles}\`
@@ -1508,16 +1499,15 @@ export const electronScriptsIndexLess = `* {
   `
 export const electronScriptsIndexTemplateHtml = `<div>
 </div>`
-export const electronScriptsIndexTs = `import * as electron from 'electron'
-import Vue from 'vue'
+export const electronScriptsIndexTs = `import Vue from 'vue'
 import Component from 'vue-class-component'
-import { scriptsIndexTemplateHtml, scriptsIndexTemplateHtmlStatic } from './variables'
+import { indexTemplateHtml, indexTemplateHtmlStatic } from './variables'
 
 @Component({
-  render: scriptsIndexTemplateHtml,
-  staticRenderFns: scriptsIndexTemplateHtmlStatic
+  render: indexTemplateHtml,
+  staticRenderFns: indexTemplateHtmlStatic
 })
-class App extends Vue {
+export class App extends Vue {
 }
 
 new App({ el: '#container' })
@@ -1626,11 +1616,11 @@ export const electronTsconfigJson = `{
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "target": "es6",
-    "module": "commonjs"
+    "module": "commonjs",
+    "resolveJsonModule": true
   },
-  "exclude": [
-    "scripts/",
-    "node_modules/"
+  "files": [
+    "main.ts"
   ]
 }
 `
@@ -1655,7 +1645,7 @@ export const frontendBrowserslistrc = `last 2 Chrome versions
 export const frontendCleanScriptsConfigTs = `import { executeScriptAsync } from 'clean-scripts'
 import { watch } from 'watch-then-execute'
 
-const tsFiles = \`"*.ts"x\`
+const tsFiles = \`"*.ts"\`
 const jsFiles = \`"*.config.js"\`
 const lessFiles = \`"*.less"\`
 
@@ -1947,7 +1937,8 @@ export const frontendTsconfigEslintJson = `{
 export const frontendTsconfigJson = `{
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "target": "es5"
+    "target": "es5",
+    "module": "commonjs"
   },
   "files": [
     "index.ts",

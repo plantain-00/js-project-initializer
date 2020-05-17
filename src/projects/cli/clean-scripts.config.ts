@@ -17,8 +17,6 @@ export default {
     typeCoverage: 'type-coverage -p src --strict'
   },
   test: [
-    'tsc -p spec',
-    'jasmine',
     'clean-release --config clean-run.config.ts',
     () => checkGitStatus()
   ],

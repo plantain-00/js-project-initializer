@@ -22,7 +22,6 @@ export async function runFrontend(context: libs.Context) {
     'no-unused-export',
     'watch-then-execute',
     'http-server',
-    'puppeteer @types/puppeteer',
     'autoprefixer postcss-cli',
     'cross-env',
     'ts-loader',
