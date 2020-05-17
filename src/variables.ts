@@ -2087,7 +2087,7 @@ export default {
   ],
   lint: {
     ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
-    export: \`no-unused-export \${tsFiles} --strict --need-module tslib\`,
+    export: \`no-unused-export "src/**/*.ts" --strict --need-module tslib\`,
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
     typeCoverage: 'type-coverage -p src/tsconfig.nodejs.json --strict',
