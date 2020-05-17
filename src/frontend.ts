@@ -7,26 +7,29 @@ export async function runFrontend(context: libs.Context) {
   await libs.appendFile('tsconfig.base.json', variables.frontendTsconfigBaseJson)
   await libs.appendFile('tsconfig.eslint.json', variables.frontendTsconfigEslintJson)
 
-  await libs.exec(`yarn add -DE tslib`)
-  await libs.exec(`yarn add -DE github-fork-ribbon-css`)
-  await libs.exec(`yarn add -DE less`)
-  await libs.exec(`yarn add -DE stylelint stylelint-config-standard`)
-  await libs.exec(`yarn add -SE vue vue-class-component`)
-  await libs.exec(`yarn add -DE clean-css-cli`)
-  await libs.exec(`yarn add -DE file2variable-cli`)
-  await libs.exec(`yarn add -DE webpack webpack-cli`)
-  await libs.exec(`yarn add -DE rev-static`)
-  await libs.exec(`yarn add -DE sw-precache uglify-js@^2.8`)
-  await libs.exec(`yarn add -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`)
-  await libs.exec(`yarn add -DE clean-scripts`)
-  await libs.exec(`yarn add -DE no-unused-export`)
-  await libs.exec(`yarn add -DE watch-then-execute`)
-  await libs.exec(`yarn add -DE http-server`)
-  await libs.exec(`yarn add -DE puppeteer @types/puppeteer`)
-  await libs.exec(`yarn add -DE autoprefixer postcss-cli`)
-  await libs.exec(`yarn add -DE cross-env`)
-  await libs.exec(`yarn add -DE ts-loader`)
-  await libs.exec(`yarn add -DE type-coverage`)
+  const devDependencies = [
+    'tslib',
+    'github-fork-ribbon-css',
+    'less',
+    'stylelint stylelint-config-standard',
+    'vue vue-class-component',
+    'clean-css-cli',
+    'file2variable-cli',
+    'webpack webpack-cli @types/webpack',
+    'rev-static',
+    'sw-precache uglify-js@^2.8',
+    'clean-scripts',
+    'no-unused-export',
+    'watch-then-execute',
+    'http-server',
+    'puppeteer @types/puppeteer',
+    'autoprefixer postcss-cli',
+    'cross-env',
+    'ts-loader',
+    'type-coverage',
+    'ts-node'
+  ]
+  await libs.exec(`yarn add -DE ${devDependencies.join(' ')}`)
 
   await libs.writeFile(`index.ts`, variables.frontendIndexTs)
   await libs.writeFile(`index.template.html`, variables.frontendIndexTemplateHtml)
@@ -36,8 +39,8 @@ export async function runFrontend(context: libs.Context) {
     .replace(/REPOSITORY_NAME/g, context.repositoryName))
   await libs.writeFile(`index.less`, variables.frontendIndexLess)
   await libs.writeFile('.stylelintrc', variables.frontendStylelintrc)
-  await libs.writeFile(`webpack.config.js`, variables.frontendWebpackConfigJs)
-  await libs.writeFile(`rev-static.config.js`, variables.frontendRevStaticConfigJs)
+  await libs.writeFile(`webpack.config.ts`, variables.frontendWebpackConfigTs)
+  await libs.writeFile(`rev-static.config.ts`, variables.frontendRevStaticConfigTs)
   await libs.writeFile('index.ejs.html',
     variables.frontendIndexEjsHtml
       .replace(/DESCRIPTION/g, context.description)
@@ -46,28 +49,13 @@ export async function runFrontend(context: libs.Context) {
   await libs.writeFile('sw-precache.config.js', variables.frontendSwPrecacheConfigJs)
   await libs.writeFile('.travis.yml', variables.frontendTravisYml)
   await libs.writeFile('appveyor.yml', variables.frontendAppveyorYml)
-  await libs.writeFile('clean-scripts.config.js', variables.frontendCleanScriptsConfigJs)
+  await libs.writeFile('clean-scripts.config.ts', variables.frontendCleanScriptsConfigTs)
   await libs.writeFile('prerender.html', variables.frontendPrerenderHtml)
   await libs.writeFile('.browserslistrc', variables.frontendBrowserslistrc)
   await libs.writeFile('postcss.config.js', variables.frontendPostcssConfigJs)
-  await libs.writeFile('file2variable.config.js', variables.frontendFile2VariableConfigJs)
+  await libs.writeFile('file2variable.config.ts', variables.frontendFile2VariableConfigTs)
   await libs.writeFile('.eslintrc', variables.frontendEslintrc)
   await libs.writeFile('.eslintignore', variables.frontendEslintignore)
-
-  await libs.mkdir(`spec`)
-  await libs.writeFile(`spec/karma.config.js`, variables.frontendSpecKarmaConfigJs)
-  await libs.writeFile(`spec/tsconfig.json`, variables.frontendSpecTsconfigJson)
-  await libs.writeFile(`spec/webpack.config.js`, variables.frontendSpecWebpackConfigJs)
-  await libs.writeFile(`spec/indexSpec.ts`, variables.frontendSpecIndexSpecTs)
-
-  await libs.mkdir(`screenshots`)
-  await libs.writeFile(`screenshots/tsconfig.json`, variables.frontendScreenshotsTsconfigJson)
-  await libs.writeFile(`screenshots/index.ts`, variables.frontendScreenshotsIndexTs)
-
-  await libs.mkdir(`prerender`)
-  await libs.writeFile(`prerender/tsconfig.json`, variables.frontendPrerenderTsconfigJson)
-  await libs.writeFile(`prerender/index.ts`, variables.frontendPrerenderIndexTs)
-  await libs.writeFile(`prerender/index.html`, variables.frontendPrerenderIndexHtml)
 
   return {
     scripts: {

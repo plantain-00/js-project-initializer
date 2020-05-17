@@ -21,7 +21,7 @@ test_script:
 
 build: off
 `
-export const backendCleanReleaseConfigJs = `module.exports = {
+export const backendCleanReleaseConfigTs = `export default {
   include: [
     'dist/*.js',
     'LICENSE',
@@ -45,7 +45,7 @@ export const backendCleanReleaseConfigJs = `module.exports = {
   ]
 }
 `
-export const backendCleanRunConfigJs = `module.exports = {
+export const backendCleanRunConfigTs = `export default {
   include: [
     'dist/*.js',
     'package.json',
@@ -58,14 +58,14 @@ export const backendCleanRunConfigJs = `module.exports = {
   ]
 }
 `
-export const backendCleanScriptsConfigJs = `const { Program } = require('clean-scripts')
+export const backendCleanScriptsConfigTs = `import { Program } from 'clean-scripts'
 
-const tsFiles = \`"src/**/*.ts" "spec/**/*.ts"\`
+const tsFiles = \`"src/**/*.ts"\`
 const jsFiles = \`"*.config.js"\`
 
 const tscSrcCommand = 'tsc -p src/'
 
-module.exports = {
+export default {
   build: [
     'rimraf dist/',
     tscSrcCommand
@@ -78,9 +78,7 @@ module.exports = {
     typeCoverage: 'type-coverage -p src --strict'
   },
   test: [
-    'tsc -p spec',
-    'jasmine',
-    new Program('clean-release --config clean-run.config.js', 30000)
+    new Program('clean-release --config clean-run.config.ts', 30000)
   ],
   fix: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles} --fix\`,
   watch: \`\${tscSrcCommand} --watch\`
@@ -173,17 +171,6 @@ node dist/index.js
 \`\`\`bash
 docker run -d -p 9276:9276 AUTHOR/REPOSITORY_NAME
 \`\`\`
-`
-export const backendSpecIndexSpecTs = `it('', () => {
-  expect(true).toEqual(true)
-})
-`
-export const backendSpecTsconfigJson = `{
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "module": "commonjs"
-  }
-}
 `
 export const backendSrcIndexTs = `console.log('app started!')
 
@@ -286,7 +273,7 @@ build: off
 export const backendWithFrontendBrowserslistrc = `> 1%
 Last 2 versions
 `
-export const backendWithFrontendCleanReleaseConfigJs = `module.exports = {
+export const backendWithFrontendCleanReleaseConfigTs = `export default {
   include: [
     'dist/*.js',
     'static/*.bundle-*.js',
@@ -312,7 +299,7 @@ export const backendWithFrontendCleanReleaseConfigJs = `module.exports = {
   ]
 }
 `
-export const backendWithFrontendCleanRunConfigJs = `module.exports = {
+export const backendWithFrontendCleanRunConfigTs = `export default {
   include: [
     'dist/*.js',
     'package.json',
@@ -325,25 +312,24 @@ export const backendWithFrontendCleanRunConfigJs = `module.exports = {
   ]
 }
 `
-export const backendWithFrontendCleanScriptsConfigJs = `const { Service, executeScriptAsync, Program } = require('clean-scripts')
-const { watch } = require('watch-then-execute')
+export const backendWithFrontendCleanScriptsConfigTs = `import { executeScriptAsync, Program } from 'clean-scripts'
+import { watch } from 'watch-then-execute'
 
-const tsFiles = \`"src/**/*.ts" "static/**/*.ts" "spec/**/*.ts" "static_spec/**/*.ts"\`
-const jsFiles = \`"*.config.js" "static/**/*.config.js" "static_spec/**/*.config.js"\`
+const tsFiles = \`"src/**/*.ts" "static/**/*.ts"\`
+const jsFiles = \`"*.config.js"\`
 const lessFiles = \`"static/**/*.less"\`
 
 const tscSrcCommand = 'tsc -p src/'
-const file2variableCommand = 'file2variable-cli --config static/file2variable.config.js'
-const tscStaticCommand = 'tsc -p static/'
-const webpackCommand = 'webpack --config static/webpack.config.js'
-const revStaticCommand = 'rev-static --config static/rev-static.config.js'
+const file2variableCommand = 'file2variable-cli --config static/file2variable.config.ts'
+const webpackCommand = 'webpack --config static/webpack.config.ts'
+const revStaticCommand = 'rev-static --config static/rev-static.config.ts'
 const cssCommand = [
   'lessc static/index.less > static/index.css',
   'postcss static/index.css -o static/index.postcss.css',
   'cleancss -o static/index.bundle.css static/index.postcss.css ./node_modules/github-fork-ribbon-css/gh-fork-ribbon.css'
 ]
 
-module.exports = {
+export default {
   build: {
     back: [
       'rimraf dist/',
@@ -353,7 +339,6 @@ module.exports = {
       {
         js: [
           file2variableCommand,
-          tscStaticCommand,
           webpackCommand
         ],
         css: cssCommand,
@@ -372,14 +357,6 @@ module.exports = {
     typeCoverageStatic: 'type-coverage -p static --strict --ignore-files "static/variables.ts"'
   },
   test: {
-    jasmine: [
-      'tsc -p spec',
-      'jasmine'
-    ],
-    karma: [
-      'tsc -p static_spec',
-      'karma start static_spec/karma.config.js'
-    ],
     start: new Program('clean-release --config clean-run.config.js', 30000)
   },
   fix: {
@@ -392,18 +369,7 @@ module.exports = {
     webpack: \`\${webpackCommand} --watch\`,
     less: () => watch(['static/**/*.less'], [], () => executeScriptAsync(cssCommand)),
     rev: \`\${revStaticCommand} --watch\`
-  },
-  screenshot: [
-    new Service('node ./dist/index.js'),
-    'tsc -p screenshots',
-    'node screenshots/index.js'
-  ],
-  prerender: [
-    new Service('node ./dist/index.js'),
-    'tsc -p prerender',
-    'node prerender/index.js',
-    revStaticCommand
-  ]
+  }
 }
 `
 export const backendWithFrontendDockerfile = `FROM node:alpine
@@ -480,33 +446,6 @@ export const backendWithFrontendPostcssConfigJs = `module.exports = {
   ]
 }
 `
-export const backendWithFrontendPrerenderIndexHtml = ``
-export const backendWithFrontendPrerenderIndexTs = `import puppeteer from 'puppeteer'
-import * as fs from 'fs'
-
-(async() => {
-  const browser = await puppeteer.launch()
-  const page = await browser.newPage()
-  await page.emulate({ viewport: { width: 1440, height: 900 }, userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36' })
-  await page.waitFor(1000)
-  await page.goto('http://localhost:8000')
-  await page.waitFor(2000)
-  const content = await page.evaluate(() => {
-    const element = document.querySelector('#prerender-container')
-    return element ? element.innerHTML.trim() : ''
-  })
-  fs.writeFileSync('prerender/index.html', content)
-
-  browser.close()
-})()
-`
-export const backendWithFrontendPrerenderTsconfigJson = `{
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "module": "commonjs"
-  }
-}
-`
 export const backendWithFrontendReadmeMd = `
 [![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
 [![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
@@ -525,37 +464,6 @@ git clone https://github.com/AUTHOR/REPOSITORY_NAME-release.git . --depth=1 && y
 \`\`\`bash
 docker run -d -p 8000:8000 AUTHOR/REPOSITORY_NAME
 \`\`\`
-`
-export const backendWithFrontendScreenshotsIndexTs = `import puppeteer from 'puppeteer'
-
-(async() => {
-  const browser = await puppeteer.launch()
-  const page = await browser.newPage()
-  await page.emulate({ viewport: { width: 1440, height: 900 }, userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36' })
-  await page.goto('http://localhost:8000')
-  await page.waitFor(2000)
-  await page.screenshot({ path: 'screenshots/initial.png' })
-
-  browser.close()
-})()
-`
-export const backendWithFrontendScreenshotsTsconfigJson = `{
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "module": "commonjs"
-  }
-}
-`
-export const backendWithFrontendSpecIndexSpecTs = `it('', () => {
-  expect(true).toEqual(true)
-})
-`
-export const backendWithFrontendSpecTsconfigJson = `{
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "module": "commonjs"
-  }
-}
 `
 export const backendWithFrontendSrcIndexTs = `function printInConsole(message: unknown) {
   console.log(message)
@@ -579,7 +487,7 @@ export const backendWithFrontendSrcTsconfigJson = `{
   }
 }
 `
-export const backendWithFrontendStaticFile2VariableConfigJs = `module.exports = {
+export const backendWithFrontendStaticFile2VariableConfigTs = `export default {
   base: 'static',
   files: [
     'static/*.template.html'
@@ -633,9 +541,7 @@ export class App extends Vue {
 new App({ el: '#container' })
 `
 export const backendWithFrontendStaticPrerenderHtml = ``
-export const backendWithFrontendStaticRevStaticConfigJs = `const fs = require('fs')
-
-module.exports = {
+export const backendWithFrontendStaticRevStaticConfigTs = `export default {
   inputFiles: [
     'static/*.bundle.js',
     'static/*.bundle.css',
@@ -647,64 +553,15 @@ module.exports = {
     'static/index.bundle.js',
     'static/*.bundle.css'
   ],
-  outputFiles: file => file.replace('.ejs', ''),
+  outputFiles: (file: string) => file.replace('.ejs', ''),
   ejsOptions: {
     rmWhitespace: true
   },
   sha: 256,
-  customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + '-' + md5String + extensionName,
+  customNewFileName: (_filePath: string, _fileString: string, md5String: string, baseName: string, extensionName: string) => baseName + '-' + md5String + extensionName,
   base: 'static',
-  fileSize: 'static/file-size.json',
-  context: {
-    prerender: fs.readFileSync('prerender/index.html')
-  }
+  fileSize: 'static/file-size.json'
 }
-`
-export const backendWithFrontendStaticSpecIndexSpecTs = `it('', () => {
-  expect(true).toEqual(true)
-})
-`
-export const backendWithFrontendStaticSpecKarmaConfigJs = `const webpackConfig = require('./webpack.config.js')
-
-process.env.CHROME_BIN = require('puppeteer').executablePath()
-
-module.exports = function (karma) {
-  const config = {
-    basePath: '',
-    frameworks: ['jasmine'],
-    files: [
-      '**/*Spec.js'
-    ],
-    reporters: ['progress'],
-    port: 9876,
-    colors: true,
-    logLevel: karma.LOG_INFO,
-    autoWatch: true,
-    browsers: ['ChromeHeadless'],
-    singleRun: true,
-    concurrency: Infinity,
-    webpack: webpackConfig,
-    webpackMiddleware: {},
-    preprocessors: {
-      '**/*Spec.js': ['webpack']
-    }
-  }
-
-  if (process.env.TRAVIS) {
-    config.browsers.push('Firefox')
-  }
-
-  karma.set(config)
-}
-`
-export const backendWithFrontendStaticSpecTsconfigJson = `{
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "target": "es5"
-  }
-}
-`
-export const backendWithFrontendStaticSpecWebpackConfigJs = `module.exports = {}
 `
 export const backendWithFrontendStaticTsconfigJson = `{
   "extends": "../tsconfig.base.json",
@@ -713,10 +570,10 @@ export const backendWithFrontendStaticTsconfigJson = `{
   }
 }
 `
-export const backendWithFrontendStaticWebpackConfigJs = `const isDev = process.env.NODE_ENV === 'development'
+export const backendWithFrontendStaticWebpackConfigTs = `import * as webpack from 'webpack'
 
-module.exports = {
-  mode: process.env.NODE_ENV,
+export default {
+  mode: process.env.NODE_ENV || 'production',
   entry: {
     index: './static/index'
   },
@@ -724,14 +581,12 @@ module.exports = {
     path: __dirname,
     filename: '[name].bundle.js'
   },
-  resolve: isDev ? {
+  resolve: {
     extensions: ['.ts', '.tsx', '.js']
-  } : undefined,
-  module: isDev ? {
-    rules: [
-      { test: /\\.tsx?\$/, loader: 'ts-loader' }
-    ]
-  } : undefined,
+  },
+  module: [
+    { test: /\\.tsx?\$/, loader: 'ts-loader' }
+  ],
   optimization: {
     splitChunks: {
       cacheGroups: {
@@ -743,7 +598,7 @@ module.exports = {
       }
     }
   }
-}
+} as webpack.Configuration
 `
 export const backendWithFrontendStylelintrc = `{
   "extends": "stylelint-config-standard"
@@ -834,7 +689,7 @@ build: off
 export const cliBinCli = `#!/usr/bin/env node
 require("../dist/index.js");
 `
-export const cliCleanReleaseConfigJs = `module.exports = {
+export const cliCleanReleaseConfigTs = `export default {
   include: [
     'bin/*',
     'dist/*',
@@ -858,7 +713,7 @@ export const cliCleanReleaseConfigJs = `module.exports = {
   ]
 }
 `
-export const cliCleanRunConfigJs = `module.exports = {
+export const cliCleanRunConfigTs = `export default {
   include: [
     'bin/*',
     'dist/*.js',
@@ -873,12 +728,12 @@ export const cliCleanRunConfigJs = `module.exports = {
   ]
 }
 `
-export const cliCleanScriptsConfigJs = `const { checkGitStatus } = require('clean-scripts')
+export const cliCleanScriptsConfigTs = `import { checkGitStatus } from 'clean-scripts'
 
-const tsFiles = \`"src/**/*.ts" "spec/**/*.ts"\`
+const tsFiles = \`"src/**/*.ts"\`
 const jsFiles = \`"*.config.js"\`
 
-module.exports = {
+export default {
   build: [
     'rimraf dist/',
     'tsc -p src/',
@@ -894,7 +749,7 @@ module.exports = {
   test: [
     'tsc -p spec',
     'jasmine',
-    'clean-release --config clean-run.config.js',
+    'clean-release --config clean-run.config.ts',
     () => checkGitStatus()
   ],
   fix: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles} --fix\`
@@ -978,10 +833,10 @@ test_script:
 
 build: off
 `
-export const cliMonorepoCleanScriptsConfigJs = `const tsFiles = \`"packages/**/src/**/*.ts" "spec/**/*.ts"\`
+export const cliMonorepoCleanScriptsConfigTs = `const tsFiles = \`"packages/**/src/**/*.ts"\`
 const jsFiles = \`"*.config.js"\`
 
-module.exports = {
+export default {
   build: [
     'rimraf packages/core/dist/',
     'tsc -p packages/core/src/',
@@ -995,10 +850,7 @@ module.exports = {
     commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`
   },
-  test: [
-    'tsc -p spec',
-    'jasmine'
-  ],
+  test: [],
   fix: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles} --fix\`
 }
 `
@@ -1216,17 +1068,6 @@ run \`REPOSITORY_NAME\`
 import { foo } from 'REPOSITORY_NAME-core'
 \`\`\`
 `
-export const cliMonorepoSpecIndexSpecTs = `it('', () => {
-  expect(true).toEqual(true)
-})
-`
-export const cliMonorepoSpecTsconfigJson = `{
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "module": "commonjs"
-  }
-}
-`
 export const cliMonorepoTravisYml = `language: node_js
 dist: trusty
 node_js:
@@ -1308,17 +1149,6 @@ export const cliReadmeMd = `
 ## usage
 
 run \`REPOSITORY_NAME\`
-`
-export const cliSpecIndexSpecTs = `it('', () => {
-  expect(true).toEqual(true)
-})
-`
-export const cliSpecTsconfigJson = `{
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "module": "commonjs"
-  }
-}
 `
 export const cliSrcIndexTs = `import minimist from 'minimist'
 import * as packageJson from '../package.json'
@@ -1454,9 +1284,12 @@ build: off
 `
 export const electronBrowserslistrc = `last 2 Chrome versions
 `
-export const electronCleanReleaseConfigJs = `const { name, devDependencies: { electron: electronVersion } } = require('./package.json')
+export const electronCleanReleaseConfigTs = `import * as packageJson from './package.json'
 
-module.exports = {
+const name = packageJson.name
+const electronVersion = packageJson.devDependencies.electron
+
+export default {
   include: [
     'main.js',
     'scripts/index.css',
@@ -1487,29 +1320,27 @@ module.exports = {
   ]
 }
 `
-export const electronCleanScriptsConfigJs = `const { executeScriptAsync } = require('clean-scripts')
-const { watch } = require('watch-then-execute')
+export const electronCleanScriptsConfigTs = `import { executeScriptAsync } from 'clean-scripts'
+import { watch } from 'watch-then-execute'
 
-const tsFiles = \`"src/**/*.ts" "scripts/**/*.ts" "spec/**/*.ts" "static_spec/**/*.ts"\`
-const jsFiles = \`"*.config.js" "scripts/**/*.config.js" "static_spec/**/*.config.js"\`
+const tsFiles = \`"src/**/*.ts" "scripts/**/*.ts"\`
+const jsFiles = \`"*.config.js"\`
 const lessFiles = \`"scripts/**/*.less"\`
 
-const templateCommand = 'file2variable-cli --config scripts/file2variable.config.js'
-const tscScriptsCommand = 'tsc -p scripts/'
-const webpackCommand = 'webpack --config scripts/webpack.config.js'
+const templateCommand = 'file2variable-cli --config scripts/file2variable.config.ts'
+const webpackCommand = 'webpack --config scripts/webpack.config.ts'
 const cssCommand = [
   'lessc scripts/index.less > scripts/index.css',
   'postcss scripts/index.css -o scripts/index.postcss.css',
   'cleancss -o scripts/index.bundle.css scripts/index.postcss.css'
 ]
 
-module.exports = {
+export default {
   build: {
     back: 'tsc',
     front: {
       js: [
         templateCommand,
-        tscScriptsCommand,
         webpackCommand
       ],
       css: cssCommand
@@ -1540,7 +1371,6 @@ module.exports = {
   },
   watch: {
     template: \`\${templateCommand} --watch\`,
-    script: \`\${tscScriptsCommand} --watch\`,
     webpack: \`\${webpackCommand} --watch\`,
     less: () => watch(['scripts/**/*.less'], [], () => executeScriptAsync(cssCommand))
   }
@@ -1653,15 +1483,12 @@ export const electronReadmeMd = `
 [![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
 [![type-coverage](https://img.shields.io/badge/dynamic/json.svg?label=type-coverage&prefix=%E2%89%A5&suffix=%&query=\$.typeCoverage.atLeast&uri=https%3A%2F%2Fraw.githubusercontent.com%2FAUTHOR%2FREPOSITORY_NAME%2Fmaster%2Fpackage.json)](https://github.com/AUTHOR/REPOSITORY_NAME)
 `
-export const electronScriptsFile2VariableConfigJs = `module.exports = {
+export const electronScriptsFile2VariableConfigTs = `export default {
   base: 'scripts',
   files: [
     'scripts/index.template.html'
   ],
-  /**
-   * @argument {string} file
-   */
-  handler: file => {
+  handler: () => {
     return {
       type: 'vue',
       name: 'App',
@@ -1702,72 +1529,28 @@ export const electronScriptsTsconfigJson = `{
   }
 }
 `
-export const electronScriptsWebpackConfigJs = `module.exports = {
+export const electronScriptsWebpackConfigTs = `import * as webpack from 'webpack'
+
+export default {
   entry: {
     index: './scripts/index'
+  },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js'],
+  },
+  module: {
+    rules: [
+      {
+        test: /\\.tsx?\$/,
+        loader: 'ts-loader',
+      },
+    ],
   },
   output: {
     path: __dirname,
     filename: '[name].bundle.js'
   }
-}
-`
-export const electronSpecIndexSpecTs = `it('', () => {
-  expect(true).toEqual(true)
-})
-`
-export const electronSpecTsconfigJson = `{
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "module": "commonjs"
-  }
-}
-`
-export const electronStaticSpecIndexSpecTs = `it('', () => {
-  expect(true).toEqual(true)
-})
-`
-export const electronStaticSpecKarmaConfigJs = `const webpackConfig = require('./webpack.config.js')
-
-process.env.CHROME_BIN = require('puppeteer').executablePath()
-
-module.exports = function (karma) {
-  const config = {
-    basePath: '',
-    frameworks: ['jasmine'],
-    files: [
-      '**/*Spec.js'
-    ],
-    reporters: ['progress'],
-    port: 9876,
-    colors: true,
-    logLevel: karma.LOG_INFO,
-    autoWatch: true,
-    browsers: ['ChromeHeadless'],
-    singleRun: true,
-    concurrency: Infinity,
-    webpack: webpackConfig,
-    webpackMiddleware: {},
-    preprocessors: {
-      '**/*Spec.js': ['webpack']
-    }
-  }
-
-  if (process.env.TRAVIS) {
-    config.browsers.push('Firefox')
-  }
-
-  karma.set(config)
-}
-`
-export const electronStaticSpecTsconfigJson = `{
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "target": "es5"
-  }
-}
-`
-export const electronStaticSpecWebpackConfigJs = `module.exports = {}
+} as webpack.Configuration
 `
 export const electronStylelintrc = `{
   "extends": "stylelint-config-standard"
@@ -1869,19 +1652,18 @@ build: off
 `
 export const frontendBrowserslistrc = `last 2 Chrome versions
 `
-export const frontendCleanScriptsConfigJs = `const { Service, executeScriptAsync } = require('clean-scripts')
-const { watch } = require('watch-then-execute')
+export const frontendCleanScriptsConfigTs = `import { executeScriptAsync } from 'clean-scripts'
+import { watch } from 'watch-then-execute'
 
-const tsFiles = \`"*.ts" "spec/**/*.ts" "screenshots/**/*.ts" "prerender/**/*.ts"\`
-const jsFiles = \`"*.config.js" "spec/**/*.config.js"\`
+const tsFiles = \`"*.ts"x\`
+const jsFiles = \`"*.config.js"\`
 const lessFiles = \`"*.less"\`
 
 const isDev = process.env.NODE_ENV === 'development'
 
-const templateCommand = 'file2variable-cli --config file2variable.config.js'
-const tscCommand = 'tsc'
-const webpackCommand = 'webpack'
-const revStaticCommand = 'rev-static'
+const templateCommand = 'file2variable-cli --config file2variable.config.ts'
+const webpackCommand = 'webpack --config webpack.config.ts'
+const revStaticCommand = 'rev-static --config rev-static.config.ts'
 const cssCommand = [
   'lessc index.less > index.css',
   'postcss index.css -o index.postcss.css',
@@ -1892,12 +1674,11 @@ const swCommand = isDev ? undefined : [
   'uglifyjs service-worker.js -o service-worker.bundle.js'
 ]
 
-module.exports = {
+export default {
   build: [
     {
       js: [
         templateCommand,
-        tscCommand,
         webpackCommand
       ],
       css: cssCommand,
@@ -1914,10 +1695,7 @@ module.exports = {
     markdown: \`markdownlint README.md\`,
     typeCoverage: 'type-coverage -p . --strict --ignore-files variables.ts'
   },
-  test: [
-    'tsc -p spec',
-    'karma start spec/karma.config.js'
-  ],
+  test: [],
   fix: {
     ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles} --fix\`,
     less: \`stylelint --fix \${lessFiles}\`
@@ -1927,19 +1705,7 @@ module.exports = {
     webpack: \`\${webpackCommand} --watch\`,
     less: () => watch(['*.less'], [], () => executeScriptAsync(cssCommand)),
     rev: \`\${revStaticCommand} --watch\`
-  },
-  screenshot: [
-    new Service('http-server -p 8000'),
-    'tsc -p screenshots',
-    'node screenshots/index.js'
-  ],
-  prerender: [
-    new Service('http-server -p 8000'),
-    'tsc -p prerender',
-    'node prerender/index.js',
-    revStaticCommand,
-    swCommand
-  ]
+  }
 }
 `
 export const frontendEditorconfig = `root = true
@@ -1988,14 +1754,11 @@ export const frontendEslintrc = `{
   ]
 }
 `
-export const frontendFile2VariableConfigJs = `module.exports = {
+export const frontendFile2VariableConfigTs = `export default {
   files: [
     '*.template.html'
   ],
-  /**
-   * @argument {string} file
-   */
-  handler: file => {
+  handler: () => {
     return {
       type: 'vue',
       name: 'App',
@@ -2030,7 +1793,7 @@ export const frontendIndexEjsHtml = `<!DOCTYPE html>
 <%-inline.indexBundleCss %>
 <a class="github-fork-ribbon right-bottom" href="https://github.com/AUTHOR/REPOSITORY_NAME" data-ribbon="Fork me on GitHub" title="Fork me on GitHub" target="_blank" rel="noopener">Fork me on GitHub</a>
 <div id="prerender-container">
-<div id="container"><%-context.prerender %></div>
+<div id="container"></div>
 </div>
 <script src="<%=vendorBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.vendorBundleJs %>"></script>
 <%-inline.indexBundleJs %>
@@ -2065,33 +1828,6 @@ export const frontendPostcssConfigJs = `module.exports = {
 }
 `
 export const frontendPrerenderHtml = ``
-export const frontendPrerenderIndexHtml = ``
-export const frontendPrerenderIndexTs = `import puppeteer from 'puppeteer'
-import * as fs from 'fs'
-
-(async() => {
-  const browser = await puppeteer.launch()
-  const page = await browser.newPage()
-  await page.emulate({ viewport: { width: 1440, height: 900 }, userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36' })
-  await page.waitFor(1000)
-  await page.goto('http://localhost:8000')
-  await page.waitFor(2000)
-  const content = await page.evaluate(() => {
-    const element = document.querySelector('#prerender-container')
-    return element ? element.innerHTML.trim() : ''
-  })
-  fs.writeFileSync('prerender/index.html', content)
-
-  browser.close()
-})()
-`
-export const frontendPrerenderTsconfigJson = `{
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "module": "commonjs"
-  }
-}
-`
 export const frontendReadmeMd = `
 [![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
 [![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
@@ -2099,9 +1835,7 @@ export const frontendReadmeMd = `
 [![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
 [![type-coverage](https://img.shields.io/badge/dynamic/json.svg?label=type-coverage&prefix=%E2%89%A5&suffix=%&query=\$.typeCoverage.atLeast&uri=https%3A%2F%2Fraw.githubusercontent.com%2FAUTHOR%2FREPOSITORY_NAME%2Fmaster%2Fpackage.json)](https://github.com/AUTHOR/REPOSITORY_NAME)
 `
-export const frontendRevStaticConfigJs = `const fs = require('fs')
-
-module.exports = {
+export const frontendRevStaticConfigTs = `export default {
   inputFiles: [
     '*.bundle.js',
     '*.bundle.css',
@@ -2116,83 +1850,14 @@ module.exports = {
     'index.bundle.js',
     'index.bundle.css'
   ],
-  outputFiles: file => file.replace('.ejs', ''),
+  outputFiles: (file: string) => file.replace('.ejs', ''),
   ejsOptions: {
     rmWhitespace: true
   },
   sha: 256,
-  customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + '-' + md5String + extensionName,
-  fileSize: 'file-size.json',
-  context: {
-    prerender: fs.readFileSync('prerender/index.html')
-  }
+  customNewFileName: (filePath: string, fileString: string, md5String: string, baseName: string, extensionName: string) => baseName + '-' + md5String + extensionName,
+  fileSize: 'file-size.json'
 }
-`
-export const frontendScreenshotsIndexTs = `import puppeteer from 'puppeteer'
-
-(async() => {
-  const browser = await puppeteer.launch()
-  const page = await browser.newPage()
-  await page.emulate({ viewport: { width: 1440, height: 900 }, userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36' })
-  await page.goto('http://localhost:8000')
-  await page.waitFor(2000)
-  await page.screenshot({ path: 'screenshots/initial.png' })
-
-  browser.close()
-})()
-`
-export const frontendScreenshotsTsconfigJson = `{
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "module": "commonjs"
-  }
-}
-`
-export const frontendSpecIndexSpecTs = `it('', () => {
-  expect(true).toEqual(true)
-})
-`
-export const frontendSpecKarmaConfigJs = `const webpackConfig = require('./webpack.config.js')
-
-process.env.CHROME_BIN = require('puppeteer').executablePath()
-
-module.exports = function (karma) {
-  const config = {
-    basePath: '',
-    frameworks: ['jasmine'],
-    files: [
-      '**/*Spec.js'
-    ],
-    reporters: ['progress'],
-    port: 9876,
-    colors: true,
-    logLevel: karma.LOG_INFO,
-    autoWatch: true,
-    browsers: ['ChromeHeadless'],
-    singleRun: true,
-    concurrency: Infinity,
-    webpack: webpackConfig,
-    webpackMiddleware: {},
-    preprocessors: {
-      '**/*Spec.js': ['webpack']
-    }
-  }
-
-  if (process.env.TRAVIS) {
-    config.browsers.push('Firefox')
-  }
-
-  karma.set(config)
-}
-`
-export const frontendSpecTsconfigJson = `{
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "target": "es5"
-  }
-}
-`
-export const frontendSpecWebpackConfigJs = `module.exports = {}
 `
 export const frontendStylelintrc = `{
   "extends": "stylelint-config-standard"
@@ -2290,9 +1955,9 @@ export const frontendTsconfigJson = `{
   ]
 }
 `
-export const frontendWebpackConfigJs = `const isDev = process.env.NODE_ENV === 'development'
+export const frontendWebpackConfigTs = `import * as webpack from 'webpack'
 
-module.exports = {
+export default {
   mode: process.env.NODE_ENV,
   entry: {
     index: './index'
@@ -2301,14 +1966,14 @@ module.exports = {
     path: __dirname,
     filename: '[name].bundle.js'
   },
-  resolve: isDev ? {
+  resolve: {
     extensions: ['.ts', '.tsx', '.js']
-  } : undefined,
-  module: isDev ? {
+  },
+  module: {
     rules: [
       { test: /\\.tsx?\$/, loader: 'ts-loader' }
     ]
-  } : undefined,
+  },
   optimization: {
     splitChunks: {
       cacheGroups: {
@@ -2320,7 +1985,7 @@ module.exports = {
       }
     }
   }
-}
+} as webpack.Configuration
 `
 export const libraryApiExtractorJson = `{
   "\$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
@@ -2387,7 +2052,7 @@ export const libraryAvaConfigJs = `export default {
   ]
 }
 `
-export const libraryCleanReleaseConfigJs = `module.exports = {
+export const libraryCleanReleaseConfigTs = `export default {
   include: [
     'dist/**/*.js',
     'dist/index.d.ts',
@@ -2412,10 +2077,10 @@ export const libraryCleanReleaseConfigJs = `module.exports = {
   ]
 }
 `
-export const libraryCleanScriptsConfigJs = `const tsFiles = \`"src/**/*.ts" "spec/**/*.ts"\`
+export const libraryCleanScriptsConfigTs = `const tsFiles = \`"src/**/*.ts" "spec/**/*.ts"\`
 const jsFiles = \`"*.config.js"\`
 
-module.exports = {
+export default {
   build: [
     'rimraf dist/',
     {
@@ -2667,28 +2332,23 @@ build: off
 `
 export const uiComponentBrowserslistrc = `last 2 Chrome versions
 `
-export const uiComponentCleanScriptsConfigJs = `const { Service, executeScriptAsync } = require('clean-scripts')
-const { watch } = require('watch-then-execute')
+export const uiComponentCleanScriptsConfigTs = `import { executeScriptAsync } from 'clean-scripts'
+import { watch } from 'watch-then-execute'
 
-const tsFiles = \`"packages/@(core|vue|react)/@(src|demo)/**/*.@(ts|tsx)" "spec/**/*.ts" "screenshots/**/*.ts"\`
+const tsFiles = \`"packages/@(core|vue|react)/@(src|demo)/**/*.@(ts|tsx)"\`
 const lessFiles = \`"packages/core/src/**/*.less"\`
-const jsFiles = \`"*.config.js" "spec/**/*.config.js"\`
-const excludeTsFiles = \`"packages/@(core|vue|react)/@(src|demo)/**/*.d.ts"\`
+const jsFiles = \`"*.config.js"\`
 
-const vueTemplateCommand = \`file2variable-cli --config packages/vue/src/file2variable.config.js\`
+const vueTemplateCommand = \`file2variable-cli --config packages/vue/src/file2variable.config.ts\`
 
 const tscCoreSrcCommand = \`tsc -p packages/core/src\`
 const tscVueSrcCommand = \`tsc -p packages/vue/src\`
 const tscReactSrcCommand = \`tsc -p packages/react/src\`
 
-const tscCoreDemoCommand = \`tsc -p packages/core/demo\`
-const tscVueDemoCommand = \`tsc -p packages/vue/demo\`
-const tscReactDemoCommand = \`tsc -p packages/react/demo\`
+const webpackVueCommand = \`webpack --config packages/vue/demo/webpack.config.ts\`
+const webpackReactCommand = \`webpack --config packages/react/demo/webpack.config.ts\`
 
-const webpackVueCommand = \`webpack --config packages/vue/demo/webpack.config.js\`
-const webpackReactCommand = \`webpack --config packages/react/demo/webpack.config.js\`
-
-const revStaticCommand = \`rev-static\`
+const revStaticCommand = \`rev-static --config rev-static.config.ts\`
 const cssCommand = [
   \`lessc packages/core/src/index.less --math=strict > packages/core/src/index.css\`,
   \`postcss packages/core/src/index.css -o packages/core/dist/COMPONENT_SHORT_NAME.css\`,
@@ -2698,24 +2358,21 @@ const cssCommand = [
 
 const isDev = process.env.NODE_ENV === 'development'
 
-module.exports = {
+export default {
   build: [
     {
       js: [
         tscCoreSrcCommand,
-        tscCoreDemoCommand,
         {
           vue: [
             vueTemplateCommand,
             tscVueSrcCommand,
             isDev ? undefined : \`rollup --config packages/vue/src/rollup.config.js\`,
-            tscVueDemoCommand,
             webpackVueCommand
           ],
           react: [
             tscReactSrcCommand,
             isDev ? undefined : \`rollup --config packages/react/src/rollup.config.js\`,
-            tscReactDemoCommand,
             webpackReactCommand
           ]
         }
@@ -2733,10 +2390,7 @@ module.exports = {
     markdown: \`markdownlint README.md\`,
     typeCoverage: 'lerna exec -- type-coverage -p src --strict'
   },
-  test: [
-    'tsc -p spec',
-    'karma start spec/karma.config.js'
-  ],
+  test: [],
   fix: {
     ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles} --fix\`,
     less: \`stylelint --fix \${lessFiles}\`
@@ -2746,19 +2400,11 @@ module.exports = {
     tscCoreSrcCommand: \`\${tscCoreSrcCommand} --watch\`,
     tscVueSrcCommand: \`\${tscVueSrcCommand} --watch\`,
     tscReactSrcCommand: \`\${tscReactSrcCommand} --watch\`,
-    tscCoreDemoCommand: \`\${tscCoreDemoCommand} --watch\`,
-    tscVueDemoCommand: \`\${tscVueDemoCommand} --watch\`,
-    tscReactDemoCommand: \`\${tscReactDemoCommand} --watch\`,
     webpackVueCommand: \`\${webpackVueCommand} --watch\`,
     webpackReactCommand: \`\${webpackReactCommand} --watch\`,
     less: () => watch(['src/**/*.less'], [], () => executeScriptAsync(cssCommand)),
     rev: \`\${revStaticCommand} --watch\`
-  },
-  screenshot: [
-    new Service('http-server -p 8000'),
-    'tsc -p screenshots',
-    'node screenshots/index.js'
-  ]
+  }
 }
 `
 export const uiComponentEditorconfig = `root = true
@@ -2925,14 +2571,27 @@ export const uiComponentPackagesReactDemoTsconfigJson = `{
   "extends": "../../tsconfig.json"
 }
 `
-export const uiComponentPackagesReactDemoWebpackConfigJs = `module.exports = {
+export const uiComponentPackagesReactDemoWebpackConfigTs = `import * as webpack from 'webpack'
+
+export default {
   mode: process.env.NODE_ENV,
   entry: './packages/react/demo/index',
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js'],
+  },
+  module: {
+    rules: [
+      {
+        test: /\\.tsx?\$/,
+        loader: 'ts-loader',
+      },
+    ],
+  },
   output: {
     path: __dirname,
     filename: 'index.bundle.js'
   }
-}
+} as webpack.Configuration
 `
 export const uiComponentPackagesReactPackageJson = `{
   "name": "component-short-name-react-component",
@@ -3058,19 +2717,30 @@ export const uiComponentPackagesVueDemoTsconfigJson = `{
   "extends": "../../tsconfig.json"
 }
 `
-export const uiComponentPackagesVueDemoWebpackConfigJs = `module.exports = {
+export const uiComponentPackagesVueDemoWebpackConfigTs = `import * as webpack from 'webpack'
+
+export default {
   mode: process.env.NODE_ENV,
   entry: './packages/vue/demo/index',
+  module: {
+    rules: [
+      {
+        test: /\\.tsx?\$/,
+        loader: 'ts-loader',
+      },
+    ],
+  },
   output: {
     path: __dirname,
     filename: 'index.bundle.js'
   },
   resolve: {
+    extensions: ['.ts', '.tsx', '.js'],
     alias: {
       'vue\$': 'vue/dist/vue.esm.js'
     }
   }
-}
+} as webpack.Configuration
 `
 export const uiComponentPackagesVuePackageJson = `{
   "name": "component-short-name-vue-component",
@@ -3105,15 +2775,12 @@ export const uiComponentPackagesVueReadmeMd = `# COMPONENT_SHORT_NAME-vue-compon
 
 Docs: <https://github.com/AUTHOR/REPOSITORY_NAME>
 `
-export const uiComponentPackagesVueSrcFile2VariableConfigJs = `module.exports = {
+export const uiComponentPackagesVueSrcFile2VariableConfigTs = `export default {
   base: 'packages/vue/src/',
   files: [
     'packages/vue/src/*.template.html'
   ],
-  /**
-   * @argument {string} file
-   */
-  handler: file => {
+  handler: () => {
     return {
       type: 'vue',
       name: 'COMPONENT_TYPE_NAME',
@@ -3263,7 +2930,7 @@ type COMPONENT_TYPE_NAMEData<T = any> = {
 };
 \`\`\`
 `
-export const uiComponentRevStaticConfigJs = `module.exports = {
+export const uiComponentRevStaticConfigTs = `export default {
   inputFiles: [
     'packages/@(vue|react)/demo/**/index.bundle.js',
     'packages/@(vue|react)/demo/**/*.ejs.html',
@@ -3271,116 +2938,15 @@ export const uiComponentRevStaticConfigJs = `module.exports = {
   ],
   revisedFiles: [
   ],
-  outputFiles: file => file.replace('.ejs', ''),
+  outputFiles: (file: string) => file.replace('.ejs', ''),
   ejsOptions: {
     rmWhitespace: true
   },
   sha: 256,
-  customNewFileName: (filePath, fileString, md5String, baseName, extensionName) => baseName + '-' + md5String + extensionName,
+  customNewFileName: (filePath: string, fileString: string, md5String: string, baseName: string, extensionName: string) => baseName + '-' + md5String + extensionName,
   base: 'packages',
   fileSize: 'file-size.json'
 }
-`
-export const uiComponentScreenshotsIndexTs = `import puppeteer from 'puppeteer'
-
-(async() => {
-  const browser = await puppeteer.launch()
-  const page = await browser.newPage()
-  await page.emulate({ viewport: { width: 1440, height: 900 }, userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36' })
-
-  const cases = [
-    { type: 'vue', url: '/packages/vue/demo' },
-    { type: 'react', url: '/packages/react/demo' }
-  ]
-
-  for (const { type, url } of cases) {
-    await page.goto(\`http://localhost:8000\${url}\`)
-    await page.screenshot({ path: \`screenshots/\${type}-initial.png\` })
-  }
-
-  await browser.close()
-})()
-`
-export const uiComponentScreenshotsTsconfigJson = `{
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "module": "commonjs"
-  }
-}
-`
-export const uiComponentSpecIndexSpecTs = `import '../packages/core/dist'
-
-it('', () => {
-  expect(true).toEqual(true)
-})
-`
-export const uiComponentSpecKarmaConfigJs = `const webpackConfig = require('./webpack.config.js')
-
-process.env.CHROME_BIN = require('puppeteer').executablePath()
-
-module.exports = function (karma) {
-  const config = {
-    basePath: '',
-    frameworks: ['jasmine'],
-    files: [
-      '**/*Spec.js'
-    ],
-    reporters: ['progress'],
-    port: 9876,
-    colors: true,
-    logLevel: karma.LOG_INFO,
-    autoWatch: true,
-    browsers: ['ChromeHeadless'],
-    singleRun: true,
-    concurrency: Infinity,
-    webpack: webpackConfig,
-    webpackMiddleware: {},
-    preprocessors: {
-      '**/*Spec.js': ['webpack']
-    }
-  }
-
-  if (process.env.TRAVIS) {
-    config.browsers.push('Firefox')
-  }
-
-  karma.set(config)
-}
-`
-export const uiComponentSpecReactSpecTsx = `import React from 'react'
-import { COMPONENT_TYPE_NAME } from '../packages/react/dist'
-
-import renderer from 'react-test-renderer'
-
-it('renders without crashing', () => {
-  const app = renderer.create(<COMPONENT_TYPE_NAME />)
-  const rendered = app.toJSON()
-  expect(rendered).toBeTruthy()
-  app.unmount()
-})
-`
-export const uiComponentSpecTsconfigJson = `{
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "target": "es5"
-  }
-}
-`
-export const uiComponentSpecVueSpecTsx = `import { COMPONENT_TYPE_NAME } from '../packages/vue/dist'
-
-import { mount } from 'vue-test-utils'
-
-it('renders without crashing', () => {
-  const app = mount(COMPONENT_TYPE_NAME, {
-    propsData: {
-    }
-  })
-  const rendered = app.html()
-  expect(rendered).toBeTruthy()
-  app.destroy()
-})
-`
-export const uiComponentSpecWebpackConfigJs = `module.exports = {}
 `
 export const uiComponentStylelintrc = `{
   "extends": "stylelint-config-standard"

@@ -10,7 +10,7 @@ export { inquirer, upperCamelCase, minimist }
 export function exec(command: string) {
   return new Promise<void>((resolve, reject) => {
     console.log(`${command}...`)
-    const subProcess = childProcess.exec(command, (error, stdout, stderr) => {
+    const subProcess = childProcess.exec(command, (error) => {
       if (error) {
         reject(error)
       } else {

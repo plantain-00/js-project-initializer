@@ -32,15 +32,19 @@ async function run() {
 
   const kind = await selectProjectKind()
 
-  await libs.exec(`yarn add -DE typescript`)
+  const devDependencies = [
+    'typescript',
+    '@typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-config-prettier eslint-plugin-plantain eslint',
+    '@commitlint/config-conventional @commitlint/cli',
+    'markdownlint-cli',
+    'rimraf',
+  ]
+  await libs.exec(`yarn add -DE ${devDependencies.join(' ')}`)
 
   await libs.mkdir('.vscode')
   await libs.writeFile('.vscode/settings.json', vscodeSetting)
 
-  await libs.exec(`yarn add -DE @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-config-prettier eslint-plugin-plantain eslint`)
-  await libs.exec(`yarn add -DE @commitlint/config-conventional @commitlint/cli`)
   await libs.writeFile('commitlint.config.js', commitlintConfig)
-  await libs.exec(`yarn add -DE markdownlint-cli`)
   await libs.writeFile('.markdownlint.json', markdownlintConfig)
 
   await libs.mkdir('.github')
@@ -49,22 +53,7 @@ async function run() {
   await libs.mkdir('.github/workflows')
   await libs.writeFile('.github/workflows/github-ci.yaml', githubCI)
 
-  await libs.exec(`yarn add -DE rimraf`)
-
-  let newPackageJson: {
-    main?: string;
-    module?: string;
-    unpkg?: string;
-    jsdelivr?: string;
-    types?: string;
-    scripts?: { [key: string]: string };
-    bin?: { [key: string]: string };
-    dependencies?: {
-      tslib?: string;
-    };
-    private?: boolean
-    workspaces?: string[]
-  } = {}
+  let newPackageJson: PackageJson = {}
 
   context.kind = kind
 
@@ -96,7 +85,7 @@ async function run() {
   }
 
   const packages = await libs.readFile(packageJsonFileName)
-  const packageJson = JSON.parse(packages)
+  const packageJson: PackageJson = JSON.parse(packages)
   if (newPackageJson.scripts) {
     packageJson.scripts = newPackageJson.scripts
   }
@@ -138,7 +127,7 @@ async function run() {
 
 run().then(() => {
   console.log('initialize repository success.')
-}).catch(error => {
+}).catch((error: Error) => {
   if (error instanceof Error) {
     console.log(error.message)
   } else {
@@ -209,6 +198,22 @@ async function selectProjectKind() {
     ]
   })
   return projectKindAnswer.projectKind
+}
+
+interface PackageJson {
+  main?: string;
+  module?: string;
+  unpkg?: string;
+  jsdelivr?: string;
+  types?: string;
+  scripts?: { [key: string]: string };
+  bin?: { [key: string]: string };
+  dependencies?: {
+    tslib?: string;
+  };
+  private?: boolean
+  workspaces?: string[]
+  typeCoverage?: { atLeast: number }
 }
 
 const vscodeSetting = `{

@@ -7,17 +7,18 @@ export async function runCLIMonorepo(context: libs.Context) {
   await libs.appendFile('tsconfig.base.json', variables.cliMonorepoTsconfigBaseJson)
   await libs.appendFile('tsconfig.eslint.json', variables.cliMonorepoTsconfigEslintJson)
 
-  await libs.exec(`yarn add -SE tslib`)
-  await libs.exec(`yarn add -DE @types/node`)
-  await libs.exec(`yarn add -DE jasmine @types/jasmine`)
-  await libs.exec(`yarn add -E minimist`)
-  await libs.exec(`yarn add -DE @types/minimist`)
-  await libs.exec(`yarn add -DE clean-scripts`)
-  await libs.exec(`yarn add -DE clean-release`)
-  await libs.exec(`yarn add -DE no-unused-export`)
-  await libs.exec(`yarn add -DE type-coverage`)
+  await libs.exec(`yarn add -SE tslib minimist`)
 
-  await libs.exec('./node_modules/.bin/jasmine init')
+  const devDependencies = [
+    '@types/node',
+    '@types/minimist',
+    'clean-scripts',
+    'clean-release',
+    'no-unused-export',
+    'type-coverage',
+    'ts-node',
+  ]
+  await libs.exec(`yarn add -DE ${devDependencies.join(' ')}`)
 
   await libs.exec(`lerna init`)
 
@@ -55,13 +56,9 @@ export async function runCLIMonorepo(context: libs.Context) {
     .replace(/AUTHOR/g, context.author))
   await libs.writeFile('.travis.yml', variables.cliMonorepoTravisYml)
   await libs.writeFile('appveyor.yml', variables.cliMonorepoAppveyorYml)
-  await libs.writeFile('clean-scripts.config.js', variables.cliMonorepoCleanScriptsConfigJs)
+  await libs.writeFile('clean-scripts.config.Ts', variables.cliMonorepoCleanScriptsConfigTs)
   await libs.writeFile('.eslintrc', variables.cliMonorepoEslintrc)
   await libs.writeFile('.eslintignore', variables.cliMonorepoEslintignore)
-
-  await libs.mkdir('spec')
-  await libs.writeFile('spec/tsconfig.json', variables.cliMonorepoSpecTsconfigJson)
-  await libs.writeFile('spec/indexSpec.ts', variables.cliMonorepoSpecIndexSpecTs)
 
   await libs.writeFile('lerna.json', variables.cliMonorepoLernaJson)
 

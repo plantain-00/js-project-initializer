@@ -7,28 +7,34 @@ export async function runBackendWithFrontend(context: libs.Context) {
   await libs.appendFile('tsconfig.base.json', variables.backendWithFrontendTsconfigBaseJson)
   await libs.appendFile('tsconfig.eslint.json', variables.backendWithFrontendTsconfigEslintJson)
 
-  await libs.exec(`yarn add -DE @types/node`)
   await libs.exec(`yarn add -SE tslib`)
-  await libs.exec(`yarn add -DE github-fork-ribbon-css`)
-  await libs.exec(`yarn add -DE less`)
-  await libs.exec(`yarn add -DE stylelint stylelint-config-standard`)
-  await libs.exec(`yarn add -DE vue vue-class-component`)
-  await libs.exec(`yarn add -DE clean-css-cli`)
-  await libs.exec(`yarn add -DE file2variable-cli`)
-  await libs.exec(`yarn add -DE webpack webpack-cli`)
-  await libs.exec(`yarn add -DE rev-static`)
-  await libs.exec(`yarn add -DE jasmine @types/jasmine karma karma-jasmine karma-webpack karma-chrome-launcher karma-firefox-launcher`)
-  await libs.exec(`yarn add -DE clean-scripts`)
-  await libs.exec(`yarn add -DE clean-release`)
-  await libs.exec(`yarn add -DE no-unused-export`)
-  await libs.exec(`yarn add -DE watch-then-execute`)
-  await libs.exec(`yarn add -DE puppeteer @types/puppeteer`)
-  await libs.exec(`yarn add -DE autoprefixer postcss-cli`)
-  await libs.exec(`yarn add -DE cross-env`)
-  await libs.exec(`yarn add -DE ts-loader`)
-  await libs.exec(`yarn add -DE type-coverage`)
 
-  await libs.exec('./node_modules/.bin/jasmine init')
+  const devDependencies = [
+    '@types/node',
+    'github-fork-ribbon-css',
+    'less',
+    'stylelint',
+    'stylelint-config-standard',
+    'vue',
+    'vue-class-component',
+    'clean-css-cli',
+    'file2variable-cli',
+    'webpack',
+    'webpack-cli',
+    '@types/webpack',
+    'ts-loader',
+    'rev-static',
+    'clean-scripts',
+    'ts-node',
+    'clean-release',
+    'no-unused-export',
+    'watch-then-execute',
+    'autoprefixer',
+    'postcss-cli',
+    'cross-env',
+    'type-coverage',
+  ]
+  await libs.exec(`yarn add -DE ${devDependencies.join(' ')}`)
 
   await libs.mkdir('src')
   await libs.writeFile(`src/index.ts`, variables.backendWithFrontendSrcIndexTs)
@@ -39,15 +45,15 @@ export async function runBackendWithFrontend(context: libs.Context) {
   await libs.writeFile(`static/index.ts`, variables.backendWithFrontendStaticIndexTs)
   await libs.writeFile(`static/index.template.html`, variables.backendWithFrontendStaticIndexTemplateHtml)
   await libs.writeFile(`static/index.less`, variables.backendWithFrontendStaticIndexLess)
-  await libs.writeFile(`static/webpack.config.js`, variables.backendWithFrontendStaticWebpackConfigJs)
-  await libs.writeFile(`static/rev-static.config.js`, variables.backendWithFrontendStaticRevStaticConfigJs)
+  await libs.writeFile(`static/webpack.config.ts`, variables.backendWithFrontendStaticWebpackConfigTs)
+  await libs.writeFile(`static/rev-static.config.ts`, variables.backendWithFrontendStaticRevStaticConfigTs)
   await libs.writeFile('static/index.ejs.html',
     variables.backendWithFrontendStaticIndexEjsHtml
       .replace(/DESCRIPTION/g, context.description)
       .replace(/REPOSITORY_NAME/g, context.repositoryName)
       .replace(/AUTHOR/g, context.author))
   await libs.writeFile('static/prerender.html', variables.backendWithFrontendStaticPrerenderHtml)
-  await libs.writeFile('static/file2variable.config.js', variables.backendWithFrontendStaticFile2VariableConfigJs)
+  await libs.writeFile('static/file2variable.config.ts', variables.backendWithFrontendStaticFile2VariableConfigTs)
 
   await libs.appendFile('README.md',
     variables.backendWithFrontendReadmeMd
@@ -56,36 +62,17 @@ export async function runBackendWithFrontend(context: libs.Context) {
   await libs.writeFile('.stylelintrc', variables.backendWithFrontendStylelintrc)
   await libs.writeFile('.travis.yml', variables.backendWithFrontendTravisYml)
   await libs.writeFile('appveyor.yml', variables.backendWithFrontendAppveyorYml)
-  await libs.writeFile('clean-release.config.js',
-    variables.backendWithFrontendCleanReleaseConfigJs
+  await libs.writeFile('clean-release.config.ts',
+    variables.backendWithFrontendCleanReleaseConfigTs
       .replace(/AUTHOR/g, context.author)
       .replace(/REPOSITORY_NAME/g, context.repositoryName))
-  await libs.writeFile('clean-scripts.config.js', variables.backendWithFrontendCleanScriptsConfigJs)
+  await libs.writeFile('clean-scripts.config.ts', variables.backendWithFrontendCleanScriptsConfigTs)
   await libs.writeFile('.browserslistrc', variables.backendWithFrontendBrowserslistrc)
   await libs.writeFile('postcss.config.js', variables.backendWithFrontendPostcssConfigJs)
   await libs.writeFile('Dockerfile', variables.backendWithFrontendDockerfile)
-  await libs.writeFile('clean-run.config.js', variables.backendWithFrontendCleanRunConfigJs)
+  await libs.writeFile('clean-run.config.ts', variables.backendWithFrontendCleanRunConfigTs)
   await libs.writeFile('.eslintrc', variables.backendWithFrontendEslintrc)
   await libs.writeFile('.eslintignore', variables.backendWithFrontendEslintignore)
-
-  await libs.mkdir('spec')
-  await libs.writeFile('spec/tsconfig.json', variables.backendWithFrontendSpecTsconfigJson)
-  await libs.writeFile('spec/indexSpec.ts', variables.backendWithFrontendSpecIndexSpecTs)
-
-  await libs.mkdir('static_spec')
-  await libs.writeFile(`static_spec/karma.config.js`, variables.backendWithFrontendStaticSpecKarmaConfigJs)
-  await libs.writeFile(`static_spec/tsconfig.json`, variables.backendWithFrontendStaticSpecTsconfigJson)
-  await libs.writeFile(`static_spec/webpack.config.js`, variables.backendWithFrontendStaticSpecWebpackConfigJs)
-  await libs.writeFile(`static_spec/indexSpec.ts`, variables.backendWithFrontendStaticSpecIndexSpecTs)
-
-  await libs.mkdir('screenshots')
-  await libs.writeFile(`screenshots/tsconfig.json`, variables.backendWithFrontendScreenshotsTsconfigJson)
-  await libs.writeFile(`screenshots/index.ts`, variables.backendWithFrontendScreenshotsIndexTs)
-
-  await libs.mkdir('prerender')
-  await libs.writeFile(`prerender/tsconfig.json`, variables.backendWithFrontendPrerenderTsconfigJson)
-  await libs.writeFile(`prerender/index.ts`, variables.backendWithFrontendPrerenderIndexTs)
-  await libs.writeFile(`prerender/index.html`, variables.backendWithFrontendPrerenderIndexHtml)
 
   return {
     scripts: {

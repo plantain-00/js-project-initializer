@@ -8,14 +8,15 @@ export async function runBackend(context: libs.Context) {
   await libs.appendFile('tsconfig.eslint.json', variables.backendTsconfigEslintJson)
 
   await libs.exec(`yarn add -SE tslib`)
-  await libs.exec(`yarn add -DE @types/node`)
-  await libs.exec(`yarn add -DE jasmine @types/jasmine`)
-  await libs.exec(`yarn add -DE clean-scripts`)
-  await libs.exec(`yarn add -DE clean-release`)
-  await libs.exec(`yarn add -DE no-unused-export`)
-  await libs.exec(`yarn add -DE type-coverage`)
 
-  await libs.exec('./node_modules/.bin/jasmine init')
+  const devDependencies = [
+    '@types/node',
+    'clean-scripts',
+    'clean-release',
+    'no-unused-export',
+    'type-coverage',
+  ]
+  await libs.exec(`yarn add -DE ${devDependencies.join(' ')}`)
 
   await libs.mkdir('src')
   await libs.writeFile(`src/index.ts`, variables.backendSrcIndexTs)
@@ -26,18 +27,14 @@ export async function runBackend(context: libs.Context) {
     .replace(/REPOSITORY_NAME/g, context.repositoryName))
   await libs.writeFile('.travis.yml', variables.backendTravisYml)
   await libs.writeFile('appveyor.yml', variables.backendAppveyorYml)
-  await libs.writeFile('clean-release.config.js', variables.backendCleanReleaseConfigJs
+  await libs.writeFile('clean-release.config.ts', variables.backendCleanReleaseConfigTs
     .replace(/AUTHOR/g, context.author)
     .replace(/REPOSITORY_NAME/g, context.repositoryName))
-  await libs.writeFile('clean-scripts.config.js', variables.backendCleanScriptsConfigJs)
+  await libs.writeFile('clean-scripts.config.ts', variables.backendCleanScriptsConfigTs)
   await libs.writeFile('Dockerfile', variables.backendDockerfile)
-  await libs.writeFile('clean-run.config.js', variables.backendCleanRunConfigJs)
+  await libs.writeFile('clean-run.config.ts', variables.backendCleanRunConfigTs)
   await libs.writeFile('.eslintrc', variables.backendEslintrc)
   await libs.writeFile('.eslintignore', variables.backendEslintignore)
-
-  await libs.mkdir('spec')
-  await libs.writeFile('spec/tsconfig.json', variables.backendSpecTsconfigJson)
-  await libs.writeFile('spec/indexSpec.ts', variables.backendSpecIndexSpecTs)
 
   return {
     scripts: {
