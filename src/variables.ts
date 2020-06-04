@@ -1148,6 +1148,10 @@ export const cliReadmeMd = `
 
 run \`REPOSITORY_NAME\`
 `
+export const cliSrcCoreTs = `export function foo() {
+
+}
+`
 export const cliSrcIndexTs = `import minimist from 'minimist'
 import * as packageJson from '../package.json'
 
@@ -1196,6 +1200,8 @@ export const cliSrcTsconfigJson = `{
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "../dist",
+    "declaration": true,
+    "target": "es2018",
     "module": "commonjs"
   }
 }

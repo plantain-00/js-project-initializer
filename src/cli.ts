@@ -22,6 +22,7 @@ export async function runCLI(context: libs.Context) {
 
   await libs.mkdir('src')
   await libs.writeFile(`src/index.ts`, variables.cliSrcIndexTs.replace(/REPOSITORY_NAME/g, context.repositoryName))
+  await libs.writeFile(`src/core.ts`, variables.cliSrcCoreTs)
   await libs.writeFile(`src/lib.d.ts`, variables.cliSrcLibDTs)
   await libs.writeFile(`src/tsconfig.json`, variables.cliSrcTsconfigJson)
 
@@ -53,5 +54,7 @@ export async function runCLI(context: libs.Context) {
     bin: {
       [context.repositoryName]: `bin/${context.repositoryName}`
     },
+    main: 'dist/index.js',
+    types: 'dist/index.d.ts',
   }
 }
