@@ -953,16 +953,33 @@ function showToolVersion() {
   console.log(\`Version: \${packageJson.version}\`)
 }
 
+function showHelp() {
+  console.log(\`Version \${packageJson.version}
+Syntax:   REPOSITORY_NAME [options]
+Examples: REPOSITORY_NAME
+Options:
+ -h, --help                                         Print this message.
+ -v, --version                                      Print the version
+\`)
+}
+
 async function executeCommandLine() {
   const argv = minimist(process.argv.slice(2), { '--': true }) as unknown as {
     v?: unknown
     version?: unknown
     suppressError?: unknown
+    h?: unknown
+    help?: unknown
   }
 
   const showVersion = argv.v || argv.version
   if (showVersion) {
     showToolVersion()
+    return
+  }
+
+  if (argv.h || argv.help) {
+    showHelp()
     return
   }
 
@@ -1060,6 +1077,13 @@ export const cliMonorepoReadmeMd = `
 
 run \`REPOSITORY_NAME\`
 
+## options
+
+key | description
+--- | ---
+-h,--help | Print this message.
+-v,--version | Print the version
+
 ## API
 
 \`\`\`ts
@@ -1147,6 +1171,13 @@ export const cliReadmeMd = `
 ## usage
 
 run \`REPOSITORY_NAME\`
+
+## options
+
+key | description
+--- | ---
+-h,--help | Print this message.
+-v,--version | Print the version
 `
 export const cliSrcCoreTs = `export function foo() {
 
@@ -1161,16 +1192,33 @@ function showToolVersion() {
   console.log(\`Version: \${packageJson.version}\`)
 }
 
+function showHelp() {
+  console.log(\`Version \${packageJson.version}
+Syntax:   REPOSITORY_NAME [options]
+Examples: REPOSITORY_NAME
+Options:
+ -h, --help                                         Print this message.
+ -v, --version                                      Print the version
+\`)
+}
+
 async function executeCommandLine() {
   const argv = minimist(process.argv.slice(2), { '--': true }) as unknown as {
     v?: unknown
     version?: unknown
     suppressError?: unknown
+    h?: unknown
+    help?: unknown
   }
 
   const showVersion = argv.v || argv.version
   if (showVersion) {
     showToolVersion()
+    return
+  }
+
+  if (argv.h || argv.help) {
+    showHelp()
     return
   }
 

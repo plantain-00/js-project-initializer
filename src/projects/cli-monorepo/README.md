@@ -15,6 +15,13 @@
 
 run `REPOSITORY_NAME`
 
+## options
+
+key | description
+--- | ---
+-h,--help | Print this message.
+-v,--version | Print the version
+
 ## API
 
 ```ts

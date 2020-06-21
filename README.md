@@ -18,6 +18,13 @@ An tool to initialize a nodejs project or frontend project.
 
 run `js-project-initialize`
 
+## options
+
+key | description
+--- | ---
+-h,--help | Print this message.
+-v,--version | Print the version
+
 ## features
 
 - [x] UI Component
