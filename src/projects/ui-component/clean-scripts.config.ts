@@ -3,7 +3,6 @@ import { watch } from 'watch-then-execute'
 
 const tsFiles = `"packages/@(core|vue|react)/@(src|demo)/**/*.@(ts|tsx)"`
 const lessFiles = `"packages/core/src/**/*.less"`
-const jsFiles = `"*.config.js"`
 
 const vueTemplateCommand = `file2variable-cli --config packages/vue/src/file2variable.config.ts`
 
@@ -49,7 +48,7 @@ export default {
     revStaticCommand
   ],
   lint: {
-    ts: `eslint --ext .js,.ts ${tsFiles} ${jsFiles}`,
+    ts: `eslint --ext .js,.ts ${tsFiles}`,
     less: `stylelint ${lessFiles}`,
     // export: `no-unused-export ${tsFiles} ${lessFiles} --exclude ${excludeTsFiles} --strict --need-module tslib`,
     markdown: `markdownlint README.md`,
@@ -57,7 +56,7 @@ export default {
   },
   test: [],
   fix: {
-    ts: `eslint --ext .js,.ts ${tsFiles} ${jsFiles} --fix`,
+    ts: `eslint --ext .js,.ts ${tsFiles} --fix`,
     less: `stylelint --fix ${lessFiles}`
   },
   watch: {

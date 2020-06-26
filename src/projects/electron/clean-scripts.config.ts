@@ -2,7 +2,6 @@ import { executeScriptAsync } from 'clean-scripts'
 import { watch } from 'watch-then-execute'
 
 const tsFiles = `"src/**/*.ts" "scripts/**/*.ts"`
-const jsFiles = `"*.config.js"`
 const lessFiles = `"scripts/**/*.less"`
 
 const templateCommand = 'file2variable-cli --config scripts/file2variable.config.ts'
@@ -25,7 +24,7 @@ export default {
     }
   },
   lint: {
-    ts: `eslint --ext .js,.ts ${tsFiles} ${jsFiles}`,
+    ts: `eslint --ext .js,.ts ${tsFiles}`,
     less: `stylelint ${lessFiles}`,
     export: `no-unused-export ${tsFiles} ${lessFiles} --strict --need-module tslib`,
     markdown: `markdownlint README.md`,
@@ -34,7 +33,7 @@ export default {
   },
   test: {},
   fix: {
-    ts: `eslint --ext .js,.ts ${tsFiles} ${jsFiles} --fix`,
+    ts: `eslint --ext .js,.ts ${tsFiles} --fix`,
     less: `stylelint --fix ${lessFiles}`
   },
   watch: {

@@ -61,7 +61,6 @@ export const backendCleanRunConfigTs = `export default {
 export const backendCleanScriptsConfigTs = `import { Program } from 'clean-scripts'
 
 const tsFiles = \`"src/**/*.ts"\`
-const jsFiles = \`"*.config.js"\`
 
 const tscSrcCommand = 'tsc -p src/'
 
@@ -71,7 +70,7 @@ export default {
     tscSrcCommand
   ],
   lint: {
-    ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
+    ts: \`eslint --ext .js,.ts \${tsFiles}\`,
     export: \`no-unused-export \${tsFiles} --strict --need-module tslib\`,
     markdown: \`markdownlint README.md\`,
     typeCoverage: 'type-coverage -p src --strict'
@@ -79,7 +78,7 @@ export default {
   test: [
     new Program('clean-release --config clean-run.config.ts', 30000)
   ],
-  fix: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles} --fix\`,
+  fix: \`eslint --ext .js,.ts \${tsFiles} --fix\`,
   watch: \`\${tscSrcCommand} --watch\`
 }
 `
@@ -315,7 +314,6 @@ export const backendWithFrontendCleanScriptsConfigTs = `import { executeScriptAs
 import { watch } from 'watch-then-execute'
 
 const tsFiles = \`"src/**/*.ts" "static/**/*.ts"\`
-const jsFiles = \`"*.config.js"\`
 const lessFiles = \`"static/**/*.less"\`
 
 const tscSrcCommand = 'tsc -p src/'
@@ -347,7 +345,7 @@ export default {
     ]
   },
   lint: {
-    ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
+    ts: \`eslint --ext .js,.ts \${tsFiles}\`,
     less: \`stylelint \${lessFiles}\`,
     export: \`no-unused-export "src/**/*.ts" --strict --need-module tslib\`,
     markdown: \`markdownlint README.md\`,
@@ -358,7 +356,7 @@ export default {
     start: new Program('clean-release --config clean-run.config.js', 30000)
   },
   fix: {
-    ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles} --fix\`,
+    ts: \`eslint --ext .js,.ts \${tsFiles} --fix\`,
     less: \`stylelint --fix \${lessFiles}\`
   },
   watch: {
@@ -729,7 +727,6 @@ export const cliCleanRunConfigTs = `export default {
 export const cliCleanScriptsConfigTs = `import { checkGitStatus } from 'clean-scripts'
 
 const tsFiles = \`"src/**/*.ts"\`
-const jsFiles = \`"*.config.js"\`
 
 export default {
   build: [
@@ -738,7 +735,7 @@ export default {
     'node dist/index.js --supressError > spec/result.txt'
   ],
   lint: {
-    ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
+    ts: \`eslint --ext .js,.ts \${tsFiles}\`,
     export: \`no-unused-export \${tsFiles} --strict --need-module tslib\`,
     markdown: \`markdownlint README.md\`,
     typeCoverage: 'type-coverage -p src --strict'
@@ -747,7 +744,7 @@ export default {
     'clean-release --config clean-run.config.ts',
     () => checkGitStatus()
   ],
-  fix: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles} --fix\`
+  fix: \`eslint --ext .js,.ts \${tsFiles} --fix\`
 }
 `
 export const cliEditorconfig = `root = true
@@ -829,7 +826,6 @@ test_script:
 build: off
 `
 export const cliMonorepoCleanScriptsConfigTs = `const tsFiles = \`"packages/**/src/**/*.ts"\`
-const jsFiles = \`"*.config.js"\`
 
 export default {
   build: [
@@ -840,12 +836,12 @@ export default {
     'node packages/cli/dist/index.js --supressError > spec/result.txt'
   ],
   lint: {
-    ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
+    ts: \`eslint --ext .js,.ts \${tsFiles}\`,
     export: \`no-unused-export \${tsFiles} --need-module tslib --strict --need-module tslib\`,
     markdown: \`markdownlint README.md\`
   },
   test: [],
-  fix: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles} --fix\`
+  fix: \`eslint --ext .js,.ts \${tsFiles} --fix\`
 }
 `
 export const cliMonorepoEditorconfig = `root = true
@@ -1372,7 +1368,6 @@ export const electronCleanScriptsConfigTs = `import { executeScriptAsync } from 
 import { watch } from 'watch-then-execute'
 
 const tsFiles = \`"src/**/*.ts" "scripts/**/*.ts"\`
-const jsFiles = \`"*.config.js"\`
 const lessFiles = \`"scripts/**/*.less"\`
 
 const templateCommand = 'file2variable-cli --config scripts/file2variable.config.ts'
@@ -1395,7 +1390,7 @@ export default {
     }
   },
   lint: {
-    ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
+    ts: \`eslint --ext .js,.ts \${tsFiles}\`,
     less: \`stylelint \${lessFiles}\`,
     export: \`no-unused-export \${tsFiles} \${lessFiles} --strict --need-module tslib\`,
     markdown: \`markdownlint README.md\`,
@@ -1404,7 +1399,7 @@ export default {
   },
   test: {},
   fix: {
-    ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles} --fix\`,
+    ts: \`eslint --ext .js,.ts \${tsFiles} --fix\`,
     less: \`stylelint --fix \${lessFiles}\`
   },
   watch: {
@@ -1693,7 +1688,6 @@ export const frontendCleanScriptsConfigTs = `import { executeScriptAsync } from 
 import { watch } from 'watch-then-execute'
 
 const tsFiles = \`"*.ts"\`
-const jsFiles = \`"*.config.js"\`
 const lessFiles = \`"*.less"\`
 
 const isDev = process.env.NODE_ENV === 'development'
@@ -1725,7 +1719,7 @@ export default {
     swCommand
   ],
   lint: {
-    ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
+    ts: \`eslint --ext .js,.ts \${tsFiles}\`,
     less: \`stylelint \${lessFiles}\`,
     export: \`no-unused-export \${tsFiles} \${lessFiles} --strict --need-module tslib\`,
     markdown: \`markdownlint README.md\`,
@@ -1733,7 +1727,7 @@ export default {
   },
   test: [],
   fix: {
-    ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles} --fix\`,
+    ts: \`eslint --ext .js,.ts \${tsFiles} --fix\`,
     less: \`stylelint --fix \${lessFiles}\`
   },
   watch: {
@@ -2113,7 +2107,6 @@ export const libraryCleanReleaseConfigTs = `export default {
 }
 `
 export const libraryCleanScriptsConfigTs = `const tsFiles = \`"src/**/*.ts" "spec/**/*.ts"\`
-const jsFiles = \`"*.config.js"\`
 
 export default {
   build: [
@@ -2130,14 +2123,14 @@ export default {
     }
   ],
   lint: {
-    ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
+    ts: \`eslint --ext .js,.ts \${tsFiles}\`,
     export: \`no-unused-export "src/**/*.ts" --strict --need-module tslib\`,
     markdown: \`markdownlint README.md\`,
     typeCoverage: 'type-coverage -p src/tsconfig.nodejs.json --strict',
     typeCoverageBrowser: 'type-coverage -p src/tsconfig.browser.json --strict'
   },
   test: 'ava',
-  fix: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles} --fix\`
+  fix: \`eslint --ext .js,.ts \${tsFiles} --fix\`
 }
 `
 export const libraryEditorconfig = `root = true
@@ -2371,7 +2364,6 @@ import { watch } from 'watch-then-execute'
 
 const tsFiles = \`"packages/@(core|vue|react)/@(src|demo)/**/*.@(ts|tsx)"\`
 const lessFiles = \`"packages/core/src/**/*.less"\`
-const jsFiles = \`"*.config.js"\`
 
 const vueTemplateCommand = \`file2variable-cli --config packages/vue/src/file2variable.config.ts\`
 
@@ -2417,7 +2409,7 @@ export default {
     revStaticCommand
   ],
   lint: {
-    ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
+    ts: \`eslint --ext .js,.ts \${tsFiles}\`,
     less: \`stylelint \${lessFiles}\`,
     // export: \`no-unused-export \${tsFiles} \${lessFiles} --exclude \${excludeTsFiles} --strict --need-module tslib\`,
     markdown: \`markdownlint README.md\`,
@@ -2425,7 +2417,7 @@ export default {
   },
   test: [],
   fix: {
-    ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles} --fix\`,
+    ts: \`eslint --ext .js,.ts \${tsFiles} --fix\`,
     less: \`stylelint --fix \${lessFiles}\`
   },
   watch: {

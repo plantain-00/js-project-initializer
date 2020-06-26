@@ -2,7 +2,6 @@ import { executeScriptAsync, Program } from 'clean-scripts'
 import { watch } from 'watch-then-execute'
 
 const tsFiles = `"src/**/*.ts" "static/**/*.ts"`
-const jsFiles = `"*.config.js"`
 const lessFiles = `"static/**/*.less"`
 
 const tscSrcCommand = 'tsc -p src/'
@@ -34,7 +33,7 @@ export default {
     ]
   },
   lint: {
-    ts: `eslint --ext .js,.ts ${tsFiles} ${jsFiles}`,
+    ts: `eslint --ext .js,.ts ${tsFiles}`,
     less: `stylelint ${lessFiles}`,
     export: `no-unused-export "src/**/*.ts" --strict --need-module tslib`,
     markdown: `markdownlint README.md`,
@@ -45,7 +44,7 @@ export default {
     start: new Program('clean-release --config clean-run.config.js', 30000)
   },
   fix: {
-    ts: `eslint --ext .js,.ts ${tsFiles} ${jsFiles} --fix`,
+    ts: `eslint --ext .js,.ts ${tsFiles} --fix`,
     less: `stylelint --fix ${lessFiles}`
   },
   watch: {
