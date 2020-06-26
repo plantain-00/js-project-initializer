@@ -41,8 +41,6 @@
     "uppercamelcase": "3"
   },
   "devDependencies": {
-    "@commitlint/cli": "9.0.1",
-    "@commitlint/config-conventional": "9.0.1",
     "@types/inquirer": "6.5.0",
     "@types/minimist": "1.2.0",
     "@types/mkdirp": "1.0.1",

@@ -52,7 +52,6 @@ export default {
     ts: `eslint --ext .js,.ts ${tsFiles} ${jsFiles}`,
     less: `stylelint ${lessFiles}`,
     // export: `no-unused-export ${tsFiles} ${lessFiles} --exclude ${excludeTsFiles} --strict --need-module tslib`,
-    commit: `commitlint --from=HEAD~1`,
     markdown: `markdownlint README.md`,
     typeCoverage: 'lerna exec -- type-coverage -p src --strict'
   },

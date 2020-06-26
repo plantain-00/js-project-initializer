@@ -73,7 +73,6 @@ export default {
   lint: {
     ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
     export: \`no-unused-export \${tsFiles} --strict --need-module tslib\`,
-    commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
     typeCoverage: 'type-coverage -p src --strict'
   },
@@ -351,7 +350,6 @@ export default {
     ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
     less: \`stylelint \${lessFiles}\`,
     export: \`no-unused-export "src/**/*.ts" --strict --need-module tslib\`,
-    commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
     typeCoverage: 'type-coverage -p src --strict',
     typeCoverageStatic: 'type-coverage -p static --strict --ignore-files "static/variables.ts"'
@@ -742,7 +740,6 @@ export default {
   lint: {
     ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
     export: \`no-unused-export \${tsFiles} --strict --need-module tslib\`,
-    commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
     typeCoverage: 'type-coverage -p src --strict'
   },
@@ -845,7 +842,6 @@ export default {
   lint: {
     ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
     export: \`no-unused-export \${tsFiles} --need-module tslib --strict --need-module tslib\`,
-    commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`
   },
   test: [],
@@ -1402,7 +1398,6 @@ export default {
     ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
     less: \`stylelint \${lessFiles}\`,
     export: \`no-unused-export \${tsFiles} \${lessFiles} --strict --need-module tslib\`,
-    commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
     typeCoverage: 'type-coverage -p . --strict',
     typeCoverageStatic: 'type-coverage -p static --strict'
@@ -1733,7 +1728,6 @@ export default {
     ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
     less: \`stylelint \${lessFiles}\`,
     export: \`no-unused-export \${tsFiles} \${lessFiles} --strict --need-module tslib\`,
-    commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
     typeCoverage: 'type-coverage -p . --strict --ignore-files variables.ts'
   },
@@ -2138,7 +2132,6 @@ export default {
   lint: {
     ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
     export: \`no-unused-export "src/**/*.ts" --strict --need-module tslib\`,
-    commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
     typeCoverage: 'type-coverage -p src/tsconfig.nodejs.json --strict',
     typeCoverageBrowser: 'type-coverage -p src/tsconfig.browser.json --strict'
@@ -2427,7 +2420,6 @@ export default {
     ts: \`eslint --ext .js,.ts \${tsFiles} \${jsFiles}\`,
     less: \`stylelint \${lessFiles}\`,
     // export: \`no-unused-export \${tsFiles} \${lessFiles} --exclude \${excludeTsFiles} --strict --need-module tslib\`,
-    commit: \`commitlint --from=HEAD~1\`,
     markdown: \`markdownlint README.md\`,
     typeCoverage: 'lerna exec -- type-coverage -p src --strict'
   },

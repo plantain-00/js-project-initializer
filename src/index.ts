@@ -52,7 +52,6 @@ async function run() {
   const devDependencies = [
     'typescript',
     '@typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-config-prettier eslint-plugin-plantain eslint',
-    '@commitlint/config-conventional @commitlint/cli',
     'markdownlint-cli',
     'rimraf',
   ]
@@ -61,7 +60,6 @@ async function run() {
   await libs.mkdir('.vscode')
   await libs.writeFile('.vscode/settings.json', vscodeSetting)
 
-  await libs.writeFile('commitlint.config.js', commitlintConfig)
   await libs.writeFile('.markdownlint.json', markdownlintConfig)
 
   await libs.mkdir('.github')
@@ -156,11 +154,6 @@ run().then(() => {
 const markdownlintConfig = `{
     "default": true,
     "line-length": false
-}
-`
-
-const commitlintConfig = `module.exports = {
-  extends: ['@commitlint/config-conventional']
 }
 `
 
