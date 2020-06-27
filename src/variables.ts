@@ -210,35 +210,6 @@ addons:
       - g++-4.8
       - libnss3
 `
-export const backendTsconfigBaseJson = `{
-  "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "lib": [
-      "dom",
-      "es5",
-      "es2015",
-      "es2016",
-      "es2017"
-    ],
-    "jsx": "react",
-    "importHelpers": true,
-    "downlevelIteration": true,
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "skipLibCheck": true,
-    "newLine": "LF",
-    "noImplicitAny": true
-  }
-}
-`
 export const backendTsconfigEslintJson = `{
   "extends": "tsconfig-plantain",
   "include": [
@@ -625,35 +596,6 @@ addons:
       - g++-4.8
       - libnss3
   firefox: latest
-`
-export const backendWithFrontendTsconfigBaseJson = `{
-  "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "lib": [
-      "dom",
-      "es5",
-      "es2015",
-      "es2016",
-      "es2017"
-    ],
-    "jsx": "react",
-    "importHelpers": true,
-    "downlevelIteration": true,
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "skipLibCheck": true,
-    "newLine": "LF",
-    "noImplicitAny": true
-  }
-}
 `
 export const backendWithFrontendTsconfigEslintJson = `{
   "extends": "tsconfig-plantain",
@@ -1105,35 +1047,6 @@ addons:
       - g++-4.8
       - libnss3
 `
-export const cliMonorepoTsconfigBaseJson = `{
-  "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "lib": [
-      "dom",
-      "es5",
-      "es2015",
-      "es2016",
-      "es2017"
-    ],
-    "jsx": "react",
-    "importHelpers": true,
-    "downlevelIteration": true,
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "skipLibCheck": true,
-    "newLine": "LF",
-    "noImplicitAny": true
-  }
-}
-`
 export const cliMonorepoTsconfigEslintJson = `{
   "extends": "tsconfig-plantain",
   "include": [
@@ -1267,35 +1180,6 @@ addons:
     packages:
       - g++-4.8
       - libnss3
-`
-export const cliTsconfigBaseJson = `{
-  "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "lib": [
-      "dom",
-      "es5",
-      "es2015",
-      "es2016",
-      "es2017"
-    ],
-    "jsx": "react",
-    "importHelpers": true,
-    "downlevelIteration": true,
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "skipLibCheck": true,
-    "newLine": "LF",
-    "noImplicitAny": true
-  }
-}
 `
 export const cliTsconfigEslintJson = `{
   "extends": "tsconfig-plantain",
@@ -1612,35 +1496,6 @@ addons:
       - libnss3
   firefox: latest
 `
-export const electronTsconfigBaseJson = `{
-  "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "lib": [
-      "dom",
-      "es5",
-      "es2015",
-      "es2016",
-      "es2017"
-    ],
-    "jsx": "react",
-    "importHelpers": true,
-    "downlevelIteration": true,
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "skipLibCheck": true,
-    "newLine": "LF",
-    "noImplicitAny": true
-  }
-}
-`
 export const electronTsconfigEslintJson = `{
   "extends": "tsconfig-plantain",
   "include": [
@@ -1932,35 +1787,6 @@ deploy:
   on:
     branch: master
 `
-export const frontendTsconfigBaseJson = `{
-  "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "lib": [
-      "dom",
-      "es5",
-      "es2015",
-      "es2016",
-      "es2017"
-    ],
-    "jsx": "react",
-    "importHelpers": true,
-    "downlevelIteration": true,
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "skipLibCheck": true,
-    "newLine": "LF",
-    "noImplicitAny": true
-  }
-}
-`
 export const frontendTsconfigEslintJson = `{
   "extends": "tsconfig-plantain",
   "include": [
@@ -2241,16 +2067,6 @@ export const librarySrcIndexTs = `/**
 export default class ComponentTypeName {
 }
 `
-export const librarySrcTsconfigBaseJson = `{
-  "extends": "tsconfig-plantain",
-  "compilerOptions": {
-    "target": "es5",
-    "declaration": true,
-    "outDir": "../dist",
-    "module": "commonjs"
-  }
-}
-`
 export const librarySrcTsconfigBrowserJson = `{
   "extends": "tsconfig-plantain",
   "compilerOptions": {
@@ -2290,35 +2106,6 @@ addons:
     packages:
       - g++-4.8
       - libnss3
-`
-export const libraryTsconfigBaseJson = `{
-  "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "lib": [
-      "dom",
-      "es5",
-      "es2015",
-      "es2016",
-      "es2017"
-    ],
-    "jsx": "react",
-    "importHelpers": true,
-    "downlevelIteration": true,
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "skipLibCheck": true,
-    "newLine": "LF",
-    "noImplicitAny": true
-  }
-}
 `
 export const libraryTsconfigEslintJson = `{
   "extends": "tsconfig-plantain",
@@ -3009,35 +2796,6 @@ deploy:
   keep-history: true
   on:
     branch: master
-`
-export const uiComponentTsconfigBaseJson = `{
-  "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "lib": [
-      "dom",
-      "es5",
-      "es2015",
-      "es2016",
-      "es2017"
-    ],
-    "jsx": "react",
-    "importHelpers": true,
-    "downlevelIteration": true,
-    "strict": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "skipLibCheck": true,
-    "newLine": "LF",
-    "noImplicitAny": true
-  }
-}
 `
 export const uiComponentTsconfigEslintJson = `{
   "extends": "tsconfig-plantain",
