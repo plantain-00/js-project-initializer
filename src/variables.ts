@@ -181,7 +181,7 @@ process.on('SIGTERM', () => {
 })
 `
 export const backendSrcTsconfigJson = `{
-  "extends": "../tsconfig.base.json",
+  "extends": "tsconfig-plantain",
   "compilerOptions": {
     "outDir": "../dist",
     "module": "commonjs"
@@ -240,7 +240,7 @@ export const backendTsconfigBaseJson = `{
 }
 `
 export const backendTsconfigEslintJson = `{
-  "extends": "./tsconfig.base.json",
+  "extends": "tsconfig-plantain",
   "include": [
     "**/*.ts",
     "**/*.tsx",
@@ -476,7 +476,7 @@ process.on('SIGTERM', () => {
 })
 `
 export const backendWithFrontendSrcTsconfigJson = `{
-  "extends": "../tsconfig.base.json",
+  "extends": "tsconfig-plantain",
   "compilerOptions": {
     "outDir": "../dist",
     "module": "commonjs"
@@ -560,7 +560,7 @@ export const backendWithFrontendStaticRevStaticConfigTs = `export default {
 }
 `
 export const backendWithFrontendStaticTsconfigJson = `{
-  "extends": "../tsconfig.base.json",
+  "extends": "tsconfig-plantain",
   "compilerOptions": {
     "target": "es5"
   }
@@ -656,7 +656,7 @@ export const backendWithFrontendTsconfigBaseJson = `{
 }
 `
 export const backendWithFrontendTsconfigEslintJson = `{
-  "extends": "./tsconfig.base.json",
+  "extends": "tsconfig-plantain",
   "include": [
     "**/*.ts",
     "**/*.tsx",
@@ -998,7 +998,7 @@ export const cliMonorepoPackagesCliSrcLibDTs = `declare module '*.json' {
 }
 `
 export const cliMonorepoPackagesCliSrcTsconfigJson = `{
-  "extends": "../../../tsconfig.base.json",
+  "extends": "tsconfig-plantain",
   "compilerOptions": {
     "outDir": "../dist",
     "module": "commonjs"
@@ -1041,7 +1041,7 @@ export default class ComponentTypeName {
 }
 `
 export const cliMonorepoPackagesCoreSrcTsconfigJson = `{
-  "extends": "../../../tsconfig.base.json",
+  "extends": "tsconfig-plantain",
   "compilerOptions": {
     "outDir": "../dist",
     "module": "commonjs",
@@ -1135,7 +1135,7 @@ export const cliMonorepoTsconfigBaseJson = `{
 }
 `
 export const cliMonorepoTsconfigEslintJson = `{
-  "extends": "./tsconfig.base.json",
+  "extends": "tsconfig-plantain",
   "include": [
     "**/*.ts",
     "**/*.tsx",
@@ -1237,7 +1237,7 @@ export const cliSrcLibDTs = `declare module '*.json' {
 }
 `
 export const cliSrcTsconfigJson = `{
-  "extends": "../tsconfig.base.json",
+  "extends": "tsconfig-plantain",
   "compilerOptions": {
     "outDir": "../dist",
     "declaration": true,
@@ -1298,7 +1298,7 @@ export const cliTsconfigBaseJson = `{
 }
 `
 export const cliTsconfigEslintJson = `{
-  "extends": "./tsconfig.base.json",
+  "extends": "tsconfig-plantain",
   "include": [
     "**/*.ts",
     "**/*.tsx",
@@ -1555,7 +1555,7 @@ export class App extends Vue {
 new App({ el: '#container' })
 `
 export const electronScriptsTsconfigJson = `{
-  "extends": "../tsconfig.base.json",
+  "extends": "tsconfig-plantain",
   "compilerOptions": {
     "target": "es5"
   }
@@ -1642,7 +1642,7 @@ export const electronTsconfigBaseJson = `{
 }
 `
 export const electronTsconfigEslintJson = `{
-  "extends": "./tsconfig.base.json",
+  "extends": "tsconfig-plantain",
   "include": [
     "**/*.ts",
     "**/*.tsx",
@@ -1655,7 +1655,7 @@ export const electronTsconfigEslintJson = `{
 }
 `
 export const electronTsconfigJson = `{
-  "extends": "./tsconfig.base.json",
+  "extends": "tsconfig-plantain",
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
@@ -1962,7 +1962,7 @@ export const frontendTsconfigBaseJson = `{
 }
 `
 export const frontendTsconfigEslintJson = `{
-  "extends": "./tsconfig.base.json",
+  "extends": "tsconfig-plantain",
   "include": [
     "**/*.ts",
     "**/*.tsx",
@@ -1975,7 +1975,7 @@ export const frontendTsconfigEslintJson = `{
 }
 `
 export const frontendTsconfigJson = `{
-  "extends": "./tsconfig.base.json",
+  "extends": "tsconfig-plantain",
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs"
@@ -2242,7 +2242,7 @@ export default class ComponentTypeName {
 }
 `
 export const librarySrcTsconfigBaseJson = `{
-  "extends": "../tsconfig.base.json",
+  "extends": "tsconfig-plantain",
   "compilerOptions": {
     "target": "es5",
     "declaration": true,
@@ -2252,7 +2252,7 @@ export const librarySrcTsconfigBaseJson = `{
 }
 `
 export const librarySrcTsconfigBrowserJson = `{
-  "extends": "../tsconfig.base.json",
+  "extends": "tsconfig-plantain",
   "compilerOptions": {
     "outDir": "../dist/browser",
     "declaration": true,
@@ -2261,7 +2261,7 @@ export const librarySrcTsconfigBrowserJson = `{
 }
 `
 export const librarySrcTsconfigNodejsJson = `{
-  "extends": "../tsconfig.base.json",
+  "extends": "tsconfig-plantain",
   "compilerOptions": {
     "declaration": true,
     "outDir": "../dist/nodejs",
@@ -2321,7 +2321,7 @@ export const libraryTsconfigBaseJson = `{
 }
 `
 export const libraryTsconfigEslintJson = `{
-  "extends": "./tsconfig.base.json",
+  "extends": "tsconfig-plantain",
   "include": [
     "**/*.ts",
     "**/*.tsx",
@@ -2334,7 +2334,7 @@ export const libraryTsconfigEslintJson = `{
 }
 `
 export const libraryTsconfigJson = `{
-  "extends": "./tsconfig.base.json",
+  "extends": "tsconfig-plantain",
   "compilerOptions": {
     "module": "commonjs"
   }
@@ -2698,7 +2698,7 @@ export const uiComponentPackagesReactSrcTsconfigJson = `{
 }
 `
 export const uiComponentPackagesTsconfigJson = `{
-  "extends": "../tsconfig.base.json",
+  "extends": "tsconfig-plantain",
   "compilerOptions": {
     "target": "es5"
   }
@@ -3040,7 +3040,7 @@ export const uiComponentTsconfigBaseJson = `{
 }
 `
 export const uiComponentTsconfigEslintJson = `{
-  "extends": "./tsconfig.base.json",
+  "extends": "tsconfig-plantain",
   "include": [
     "**/*.ts",
     "**/*.tsx",

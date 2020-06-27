@@ -4,7 +4,6 @@ import * as variables from './variables'
 export async function runLibrary(context: libs.Context) {
   await libs.appendFile('.gitignore', variables.libraryGitignore)
   await libs.appendFile('.editorconfig', variables.libraryEditorconfig)
-  await libs.appendFile('tsconfig.base.json', variables.libraryTsconfigBaseJson)
   await libs.appendFile('tsconfig.eslint.json', variables.libraryTsconfigEslintJson)
   await libs.appendFile('tsconfig.json', variables.libraryTsconfigJson)
   await libs.appendFile('api-extractor.json', variables.libraryApiExtractorJson)
@@ -27,7 +26,6 @@ export async function runLibrary(context: libs.Context) {
 
   await libs.mkdir('src')
   await libs.writeFile(`src/index.ts`, variables.librarySrcIndexTs.replace(/ComponentTypeName/g, context.componentTypeName))
-  await libs.writeFile(`src/tsconfig.base.json`, variables.librarySrcTsconfigBaseJson)
   await libs.writeFile(`src/tsconfig.nodejs.json`, variables.librarySrcTsconfigNodejsJson)
   await libs.writeFile(`src/tsconfig.browser.json`, variables.librarySrcTsconfigBrowserJson)
 

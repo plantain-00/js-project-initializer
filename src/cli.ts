@@ -4,7 +4,6 @@ import * as variables from './variables'
 export async function runCLI(context: libs.Context) {
   await libs.appendFile('.gitignore', variables.cliGitignore)
   await libs.appendFile('.editorconfig', variables.cliEditorconfig)
-  await libs.appendFile('tsconfig.base.json', variables.cliTsconfigBaseJson)
   await libs.appendFile('tsconfig.eslint.json', variables.cliTsconfigEslintJson)
 
   await libs.exec(`yarn add -SE tslib@1 minimist@1`)

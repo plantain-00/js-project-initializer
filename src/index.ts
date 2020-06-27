@@ -51,6 +51,7 @@ async function run() {
 
   const devDependencies = [
     'typescript',
+    'tsconfig-plantain',
     '@typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-config-prettier eslint-plugin-plantain eslint',
     'markdownlint-cli',
     'rimraf',
