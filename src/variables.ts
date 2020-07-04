@@ -2057,7 +2057,7 @@ export default {
 `
 export const librarySpecIndexTs = `import test from 'ava'
 
-test('', (t) => {
+test('title', (t) => {
   t.pass()
 })
 `
