@@ -4,7 +4,6 @@ import * as variables from './variables'
 export async function runUIComponent(context: libs.Context) {
   await libs.appendFile('.gitignore', variables.uiComponentGitignore)
   await libs.appendFile('.editorconfig', variables.uiComponentEditorconfig)
-  await libs.appendFile('tsconfig.eslint.json', variables.uiComponentTsconfigEslintJson)
 
   const devDependencies = [
     'github-fork-ribbon-css',

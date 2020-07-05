@@ -4,7 +4,6 @@ import * as variables from './variables'
 export async function runCLIMonorepo(context: libs.Context) {
   await libs.appendFile('.gitignore', variables.cliMonorepoGitignore)
   await libs.appendFile('.editorconfig', variables.cliMonorepoEditorconfig)
-  await libs.appendFile('tsconfig.eslint.json', variables.cliMonorepoTsconfigEslintJson)
 
   await libs.exec(`yarn add -SE tslib minimist`)
 

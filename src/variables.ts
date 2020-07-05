@@ -109,9 +109,6 @@ export const backendEslintrc = `{
     "prettier",
     "prettier/@typescript-eslint"
   ],
-  "parserOptions": {
-    "project": "./tsconfig.eslint.json"
-  },
   "plugins": [
     "plantain"
   ],
@@ -209,19 +206,6 @@ addons:
     packages:
       - g++-4.8
       - libnss3
-`
-export const backendTsconfigEslintJson = `{
-  "extends": "tsconfig-plantain",
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.config.js"
-  ],
-  "compilerOptions": {
-    "allowJs": true,
-    "checkJs": true
-  }
-}
 `
 export const backendWithFrontendAppveyorYml = `environment:
   nodejs_version: "10"
@@ -366,9 +350,6 @@ export const backendWithFrontendEslintrc = `{
     "prettier",
     "prettier/@typescript-eslint"
   ],
-  "parserOptions": {
-    "project": "./tsconfig.eslint.json"
-  },
   "plugins": [
     "plantain"
   ],
@@ -597,19 +578,6 @@ addons:
       - libnss3
   firefox: latest
 `
-export const backendWithFrontendTsconfigEslintJson = `{
-  "extends": "tsconfig-plantain",
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.config.js"
-  ],
-  "compilerOptions": {
-    "allowJs": true,
-    "checkJs": true
-  }
-}
-`
 export const cliAppveyorYml = `environment:
   nodejs_version: "10"
 
@@ -709,9 +677,6 @@ export const cliEslintrc = `{
     "prettier",
     "prettier/@typescript-eslint"
   ],
-  "parserOptions": {
-    "project": "./tsconfig.eslint.json"
-  },
   "plugins": [
     "plantain"
   ],
@@ -806,9 +771,6 @@ export const cliMonorepoEslintrc = `{
     "prettier",
     "prettier/@typescript-eslint"
   ],
-  "parserOptions": {
-    "project": "./tsconfig.eslint.json"
-  },
   "plugins": [
     "plantain"
   ],
@@ -1047,19 +1009,6 @@ addons:
       - g++-4.8
       - libnss3
 `
-export const cliMonorepoTsconfigEslintJson = `{
-  "extends": "tsconfig-plantain",
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.config.js"
-  ],
-  "compilerOptions": {
-    "allowJs": true,
-    "checkJs": true
-  }
-}
-`
 export const cliReadmeMd = `
 [![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
 [![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
@@ -1181,19 +1130,6 @@ addons:
       - g++-4.8
       - libnss3
 `
-export const cliTsconfigEslintJson = `{
-  "extends": "tsconfig-plantain",
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.config.js"
-  ],
-  "compilerOptions": {
-    "allowJs": true,
-    "checkJs": true
-  }
-}
-`
 export const electronAppveyorYml = `environment:
   nodejs_version: "10"
 
@@ -1312,9 +1248,6 @@ export const electronEslintrc = `{
     "prettier",
     "prettier/@typescript-eslint"
   ],
-  "parserOptions": {
-    "project": "./tsconfig.eslint.json"
-  },
   "plugins": [
     "plantain"
   ],
@@ -1496,19 +1429,6 @@ addons:
       - libnss3
   firefox: latest
 `
-export const electronTsconfigEslintJson = `{
-  "extends": "tsconfig-plantain",
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.config.js"
-  ],
-  "compilerOptions": {
-    "allowJs": true,
-    "checkJs": true
-  }
-}
-`
 export const electronTsconfigJson = `{
   "extends": "tsconfig-plantain",
   "compilerOptions": {
@@ -1613,9 +1533,6 @@ export const frontendEslintrc = `{
     "prettier",
     "prettier/@typescript-eslint"
   ],
-  "parserOptions": {
-    "project": "./tsconfig.eslint.json"
-  },
   "plugins": [
     "plantain"
   ],
@@ -1786,19 +1703,6 @@ deploy:
   keep-history: true
   on:
     branch: master
-`
-export const frontendTsconfigEslintJson = `{
-  "extends": "tsconfig-plantain",
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.config.js"
-  ],
-  "compilerOptions": {
-    "allowJs": true,
-    "checkJs": true
-  }
-}
 `
 export const frontendTsconfigJson = `{
   "extends": "tsconfig-plantain",
@@ -1979,9 +1883,6 @@ export const libraryEslintrc = `{
     "prettier",
     "prettier/@typescript-eslint"
   ],
-  "parserOptions": {
-    "project": "./tsconfig.eslint.json"
-  },
   "plugins": [
     "plantain"
   ],
@@ -2107,19 +2008,6 @@ addons:
       - g++-4.8
       - libnss3
 `
-export const libraryTsconfigEslintJson = `{
-  "extends": "tsconfig-plantain",
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.config.js"
-  ],
-  "compilerOptions": {
-    "allowJs": true,
-    "checkJs": true
-  }
-}
-`
 export const libraryTsconfigJson = `{
   "extends": "tsconfig-plantain",
   "compilerOptions": {
@@ -2240,9 +2128,6 @@ export const uiComponentEslintrc = `{
     "prettier",
     "prettier/@typescript-eslint"
   ],
-  "parserOptions": {
-    "project": "./tsconfig.eslint.json"
-  },
   "plugins": [
     "plantain"
   ],
@@ -2796,19 +2681,6 @@ deploy:
   keep-history: true
   on:
     branch: master
-`
-export const uiComponentTsconfigEslintJson = `{
-  "extends": "tsconfig-plantain",
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.config.js"
-  ],
-  "compilerOptions": {
-    "allowJs": true,
-    "checkJs": true
-  }
-}
 `
 /* eslint-enable */
 // tslint:enable

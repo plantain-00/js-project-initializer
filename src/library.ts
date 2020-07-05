@@ -4,7 +4,6 @@ import * as variables from './variables'
 export async function runLibrary(context: libs.Context) {
   await libs.appendFile('.gitignore', variables.libraryGitignore)
   await libs.appendFile('.editorconfig', variables.libraryEditorconfig)
-  await libs.appendFile('tsconfig.eslint.json', variables.libraryTsconfigEslintJson)
   await libs.appendFile('tsconfig.json', variables.libraryTsconfigJson)
   await libs.appendFile('api-extractor.json', variables.libraryApiExtractorJson)
 
