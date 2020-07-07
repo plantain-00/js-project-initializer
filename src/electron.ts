@@ -5,7 +5,7 @@ export async function runElectron(context: libs.Context) {
   await libs.appendFile('.gitignore', variables.electronGitignore)
   await libs.appendFile('.editorconfig', variables.electronEditorconfig)
 
-  await libs.exec(`yarn add -E electron tslib@2`)
+  await libs.exec(`yarn add -E electron "tslib@1 || 2"`)
 
   const devDependencies = [
     'electron-packager',

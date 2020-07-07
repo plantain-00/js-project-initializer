@@ -927,7 +927,7 @@ export const cliMonorepoPackagesCorePackageJson = `{
   },
   "homepage": "https://github.com/AUTHOR/repository-name#readme",
   "dependencies": {
-    "tslib": "1"
+    "tslib": "1 || 2"
   },
   "files": [
     "dist"
@@ -2206,7 +2206,7 @@ export const uiComponentPackagesCorePackageJson = `{
         "dist"
     ],
     "dependencies": {
-        "tslib": "1"
+        "tslib": "1 || 2"
     }
 }
 `

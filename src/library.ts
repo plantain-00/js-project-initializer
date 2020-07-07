@@ -7,7 +7,7 @@ export async function runLibrary(context: libs.Context) {
   await libs.appendFile('tsconfig.json', variables.libraryTsconfigJson)
   await libs.appendFile('api-extractor.json', variables.libraryApiExtractorJson)
 
-  await libs.exec(`yarn add -SE tslib@2`)
+  await libs.exec(`yarn add -SE "tslib@1 || 2"`)
 
   const devDependencies = [
     'ts-node',

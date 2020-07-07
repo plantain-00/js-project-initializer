@@ -37,7 +37,7 @@
     "inquirer": "7",
     "minimist": "1",
     "mkdirp": "1",
-    "tslib": "2",
+    "tslib": "1 || 2",
     "uppercamelcase": "3"
   },
   "devDependencies": {
