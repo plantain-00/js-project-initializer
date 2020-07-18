@@ -52,7 +52,7 @@ export async function runCLI(context: libs.Context) {
     bin: {
       [context.repositoryName]: `bin/${context.repositoryName}`
     },
-    main: 'dist/index.js',
-    types: 'dist/index.d.ts',
+    main: 'dist/core.js',
+    types: 'dist/core.d.ts',
   }
 }
