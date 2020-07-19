@@ -18,8 +18,6 @@ export async function runCLIMonorepo(context: libs.Context) {
   ]
   await libs.exec(`yarn add -DE ${devDependencies.join(' ')}`)
 
-  await libs.exec(`lerna init`)
-
   await libs.mkdir('packages/cli')
   await libs.mkdir('packages/cli/src')
   await libs.writeFile(`packages/cli/src/index.ts`, variables.cliMonorepoPackagesCliSrcIndexTs.replace(/REPOSITORY_NAME/g, context.repositoryName))
@@ -54,17 +52,15 @@ export async function runCLIMonorepo(context: libs.Context) {
     .replace(/AUTHOR/g, context.author))
   await libs.writeFile('.travis.yml', variables.cliMonorepoTravisYml)
   await libs.writeFile('appveyor.yml', variables.cliMonorepoAppveyorYml)
-  await libs.writeFile('clean-scripts.config.Ts', variables.cliMonorepoCleanScriptsConfigTs)
+  await libs.writeFile('clean-scripts.config.ts', variables.cliMonorepoCleanScriptsConfigTs)
+  await libs.writeFile('clean-release.config.ts', variables.cliMonorepoCleanReleaseConfigTs)
   await libs.writeFile('.eslintrc', variables.cliMonorepoEslintrc)
   await libs.writeFile('.eslintignore', variables.cliMonorepoEslintignore)
-
-  await libs.writeFile('lerna.json', variables.cliMonorepoLernaJson)
 
   await libs.mkdir('spec')
 
   return {
     scripts: {
-      bootstrap: 'lerna bootstrap -- --frozen-lockfile',
       build: 'clean-scripts build',
       lint: 'clean-scripts lint',
       test: 'clean-scripts test',

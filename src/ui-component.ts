@@ -27,8 +27,6 @@ export async function runUIComponent(context: libs.Context) {
 
   await libs.exec(`yarn add -DE ${devDependencies.join(' ')}`)
 
-  await libs.exec(`lerna init`)
-
   await libs.mkdir('packages/core/demo/')
   await libs.writeFile(`packages/core/demo/index.ts`, variables.uiComponentPackagesCoreDemoIndexTs)
   await libs.writeFile(`packages/core/demo/tsconfig.json`, variables.uiComponentPackagesCoreDemoTsconfigJson)
@@ -126,23 +124,20 @@ export async function runUIComponent(context: libs.Context) {
   await libs.writeFile('appveyor.yml', variables.uiComponentAppveyorYml)
   await libs.writeFile('clean-scripts.config.ts', variables.uiComponentCleanScriptsConfigTs
     .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName))
+  await libs.writeFile('clean-release.config.ts', variables.uiComponentCleanReleaseConfigTs)
   await libs.writeFile('.browserslistrc', variables.uiComponentBrowserslistrc)
   await libs.writeFile('postcss.config.js', variables.uiComponentPostcssConfigJs)
   await libs.writeFile('.eslintrc', variables.uiComponentEslintrc)
   await libs.writeFile('.eslintignore', variables.uiComponentEslintignore)
 
-  await libs.writeFile('lerna.json', variables.uiComponentLernaJson)
-
   return {
     scripts: {
-      bootstrap: 'lerna bootstrap -- --frozen-lockfile',
       build: `clean-scripts build`,
       dev: `cross-env NODE_ENV=development clean-scripts build`,
       lint: `clean-scripts lint`,
       test: 'clean-scripts test',
       fix: `clean-scripts fix`,
-      watch: 'clean-scripts watch',
-      screenshot: 'clean-scripts screenshot'
+      watch: 'clean-scripts watch'
     },
     dependencies: {
       tslib: '1'

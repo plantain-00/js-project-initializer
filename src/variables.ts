@@ -727,12 +727,36 @@ install:
 test_script:
   - node --version
   - npm --version
-  - npm run bootstrap
   - npm run build
   - npm run lint
   - npm run test
 
 build: off
+`
+export const cliMonorepoCleanReleaseConfigTs = `export default {
+  include: [
+    'packages/*/dist/*',
+    'packages/*/package.json',
+    'packages/*/README.md',
+  ],
+  exclude: [
+  ],
+  askVersion: true,
+  changesGitStaged: true,
+  postScript: ({ dir, tag, version, effectedWorkspacePaths }) => [
+    ...effectedWorkspacePaths.map((w) => w.map((e) => {
+      return tag
+        ? \`npm publish "\${dir}/\${e}" --access public --tag \${tag}\`
+        : \`npm publish "\${dir}/\${e}" --access public\`
+    })),
+    \`git-commits-to-changelog --release \${version}\`,
+    'git add CHANGELOG.md',
+    \`git commit -m "\${version}"\`,
+    \`git tag -a v\${version} -m 'v\${version}'\`,
+    'git push',
+    \`git push origin v\${version}\`
+  ]
+}
 `
 export const cliMonorepoCleanScriptsConfigTs = `const tsFiles = \`"packages/**/src/**/*.ts"\`
 
@@ -802,15 +826,6 @@ service-worker.js
 #**/*-*.png
 #index.html
 *.data
-`
-export const cliMonorepoLernaJson = `{
-  "packages": [
-    "packages/*"
-  ],
-  "version": "2.0.4",
-  "npmClient": "yarn",
-  "useWorkspaces": true
-}
 `
 export const cliMonorepoPackagesCliBinCli = `#!/usr/bin/env node
 require("../dist/index.js");`
@@ -998,7 +1013,6 @@ before_install:
 install:
   - yarn install --frozen-lockfile
 script:
-  - npm run bootstrap
   - npm run build
   - npm run lint
   - npm run test
@@ -2032,7 +2046,6 @@ install:
 test_script:
   - node --version
   - npm --version
-  - npm run bootstrap
   - npm run build
   - npm run lint
   - npm run test
@@ -2040,6 +2053,31 @@ test_script:
 build: off
 `
 export const uiComponentBrowserslistrc = `last 2 Chrome versions
+`
+export const uiComponentCleanReleaseConfigTs = `export default {
+  include: [
+    'packages/*/dist/*',
+    'packages/*/package.json',
+    'packages/*/README.md',
+  ],
+  exclude: [
+  ],
+  askVersion: true,
+  changesGitStaged: true,
+  postScript: ({ dir, tag, version, effectedWorkspacePaths }) => [
+    ...effectedWorkspacePaths.map((w) => w.map((e) => {
+      return tag
+        ? \`npm publish "\${dir}/\${e}" --access public --tag \${tag}\`
+        : \`npm publish "\${dir}/\${e}" --access public\`
+    })),
+    \`git-commits-to-changelog --release \${version}\`,
+    'git add CHANGELOG.md',
+    \`git commit -m "\${version}"\`,
+    \`git tag -a v\${version} -m 'v\${version}'\`,
+    'git push',
+    \`git push origin v\${version}\`
+  ]
+}
 `
 export const uiComponentCleanScriptsConfigTs = `import { executeScriptAsync } from 'clean-scripts'
 import { watch } from 'watch-then-execute'
@@ -2170,23 +2208,6 @@ dist
 !**/*-*.js
 !**/*-*.css
 !**/*.index.bundle.js
-`
-export const uiComponentLernaJson = `{
-  "packages": [
-    "packages/*"
-  ],
-  "command": {
-    "publish": {
-      "ignoreChanges": [
-        "**/*.md",
-        "**/demo/**"
-      ]
-    }
-  },
-  "version": "1.0.0",
-  "npmClient": "yarn",
-  "useWorkspaces": true
-}
 `
 export const uiComponentPackagesCoreDemoIndexTs = ``
 export const uiComponentPackagesCoreDemoTsconfigJson = `{
@@ -2667,7 +2688,6 @@ before_install:
 install:
   - yarn install --frozen-lockfile
 script:
-  - npm run bootstrap
   - npm run build
   - npm run lint
   - npm run test
