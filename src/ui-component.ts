@@ -129,6 +129,7 @@ export async function runUIComponent(context: libs.Context) {
   await libs.writeFile('postcss.config.js', variables.uiComponentPostcssConfigJs)
   await libs.writeFile('.eslintrc', variables.uiComponentEslintrc)
   await libs.writeFile('.eslintignore', variables.uiComponentEslintignore)
+  await libs.writeFile('CONTRIBUTING.md', variables.uiComponentContributingMd)
 
   return {
     scripts: {

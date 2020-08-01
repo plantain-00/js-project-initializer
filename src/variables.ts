@@ -777,6 +777,20 @@ export default {
   fix: \`eslint --ext .js,.ts \${tsFiles} --fix\`
 }
 `
+export const cliMonorepoContributingMd = `# How to contribute
+
+## install dev dependencies
+
+\`yarn\`
+
+## build
+
+\`yarn build\`
+
+## lint code
+
+\`yarn lint\`
+`
 export const cliMonorepoEditorconfig = `root = true
 
 [*]
@@ -2155,6 +2169,26 @@ export default {
     rev: \`\${revStaticCommand} --watch\`
   }
 }
+`
+export const uiComponentContributingMd = `# How to contribute
+
+## install dev dependencies
+
+\`yarn\`
+
+## build
+
++ production build: \`yarn build\`
++ development build: \`yarn dev\`
++ watch mode: \`yarn watch\`
+
+## serve demo
+
+Use a static files http server, for example: \`http-server -p 8080\`
+
+## lint code
+
+\`yarn lint\`
 `
 export const uiComponentEditorconfig = `root = true
 

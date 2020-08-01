@@ -56,6 +56,7 @@ export async function runCLIMonorepo(context: libs.Context) {
   await libs.writeFile('clean-release.config.ts', variables.cliMonorepoCleanReleaseConfigTs)
   await libs.writeFile('.eslintrc', variables.cliMonorepoEslintrc)
   await libs.writeFile('.eslintignore', variables.cliMonorepoEslintignore)
+  await libs.writeFile('CONTRIBUTING.md', variables.cliMonorepoContributingMd)
 
   await libs.mkdir('spec')
 
