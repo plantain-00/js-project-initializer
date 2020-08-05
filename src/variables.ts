@@ -736,6 +736,7 @@ build: off
 export const cliMonorepoCleanReleaseConfigTs = `export default {
   include: [
     'packages/*/dist/*',
+    'packages/*/bin/*',
     'packages/*/package.json',
     'packages/*/README.md',
   ],
