@@ -15,7 +15,8 @@
     "test:backend-with-frontend": "cd tests/backend-with-frontend/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
     "test:cli": "cd tests/cli/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
     "test:electron": "cd tests/electron/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
-    "test:cli-monorepo": "cd tests/cli-monorepo/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../"
+    "test:cli-monorepo": "cd tests/cli-monorepo/ && ../../bin/js-project-initialize && npm run build && npm run lint && cd ../../",
+    "release": "clean-release"
   },
   "repository": {
     "type": "git",
@@ -47,6 +48,7 @@
     "@types/uppercamelcase": "3.0.0",
     "@typescript-eslint/eslint-plugin": "3.8.0",
     "@typescript-eslint/parser": "3.8.0",
+    "clean-release": "2.14.0",
     "clean-scripts": "1.17.0",
     "eslint": "7.6.0",
     "eslint-config-prettier": "6.11.0",
