@@ -23,6 +23,7 @@ export async function runUIComponent(context: libs.Context) {
     'type-coverage',
     'ts-node',
     'ts-loader',
+    'clean-release',
   ]
 
   await libs.exec(`yarn add -DE ${devDependencies.join(' ')}`)
@@ -138,6 +139,7 @@ export async function runUIComponent(context: libs.Context) {
       lint: `clean-scripts lint`,
       test: 'clean-scripts test',
       fix: `clean-scripts fix`,
+      release: 'clean-release',
       watch: 'clean-scripts watch'
     },
     dependencies: {

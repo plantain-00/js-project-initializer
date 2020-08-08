@@ -599,7 +599,9 @@ build: off
 export const cliBinCli = `#!/usr/bin/env node
 require("../dist/index.js");
 `
-export const cliCleanReleaseConfigTs = `export default {
+export const cliCleanReleaseConfigTs = `import { Configuration } from 'clean-release'
+
+const config: Configuration = {
   include: [
     'bin/*',
     'dist/*',
@@ -620,6 +622,8 @@ export const cliCleanReleaseConfigTs = `export default {
     \`git push origin v\${version}\`
   ]
 }
+
+export default config
 `
 export const cliCleanRunConfigTs = `export default {
   include: [
@@ -733,7 +737,9 @@ test_script:
 
 build: off
 `
-export const cliMonorepoCleanReleaseConfigTs = `export default {
+export const cliMonorepoCleanReleaseConfigTs = `import { Configuration } from 'clean-release'
+
+const config: Configuration = {
   include: [
     'packages/*/dist/*',
     'packages/*/bin/*',
@@ -758,6 +764,8 @@ export const cliMonorepoCleanReleaseConfigTs = `export default {
     \`git push origin v\${version}\`
   ]
 }
+
+export default config
 `
 export const cliMonorepoCleanScriptsConfigTs = `const tsFiles = \`"packages/**/src/**/*.ts"\`
 
@@ -791,6 +799,12 @@ export const cliMonorepoContributingMd = `# How to contribute
 ## lint code
 
 \`yarn lint\`
+
+## release
+
+Make sure you have the permission to execute \`git push\` and \`npm publish\` first.
+
+\`yarn release\`
 `
 export const cliMonorepoEditorconfig = `root = true
 
@@ -1848,7 +1862,9 @@ export const libraryAvaConfigJs = `export default {
   ]
 }
 `
-export const libraryCleanReleaseConfigTs = `export default {
+export const libraryCleanReleaseConfigTs = `import { Configuration } from 'clean-release'
+
+const config: Configuration = {
   include: [
     'dist/**/*.js',
     'dist/index.d.ts',
@@ -1870,6 +1886,8 @@ export const libraryCleanReleaseConfigTs = `export default {
     \`git push origin v\${version}\`
   ]
 }
+
+export default config
 `
 export const libraryCleanScriptsConfigTs = `const tsFiles = \`"src/**/*.ts" "spec/**/*.ts"\`
 
@@ -2069,7 +2087,9 @@ build: off
 `
 export const uiComponentBrowserslistrc = `last 2 Chrome versions
 `
-export const uiComponentCleanReleaseConfigTs = `export default {
+export const uiComponentCleanReleaseConfigTs = `import { Configuration } from 'clean-release'
+
+const config: Configuration = {
   include: [
     'packages/*/dist/*',
     'packages/*/package.json',
@@ -2093,6 +2113,8 @@ export const uiComponentCleanReleaseConfigTs = `export default {
     \`git push origin v\${version}\`
   ]
 }
+
+export default config
 `
 export const uiComponentCleanScriptsConfigTs = `import { executeScriptAsync } from 'clean-scripts'
 import { watch } from 'watch-then-execute'
@@ -2190,6 +2212,12 @@ Use a static files http server, for example: \`http-server -p 8080\`
 ## lint code
 
 \`yarn lint\`
+
+## release
+
+Make sure you have the permission to execute \`git push\` and \`npm publish\` first.
+
+\`yarn release\`
 `
 export const uiComponentEditorconfig = `root = true
 

@@ -20,6 +20,7 @@ export async function runLibrary(context: libs.Context) {
     'no-unused-export',
     'type-coverage',
     '@microsoft/api-extractor',
+    'clean-release',
   ]
   await libs.exec(`yarn add -DE ${devDependencies.join(' ')}`)
 
@@ -53,6 +54,7 @@ export async function runLibrary(context: libs.Context) {
       build: 'clean-scripts build',
       lint: 'clean-scripts lint',
       test: 'clean-scripts test',
+      release: 'clean-release',
       fix: 'clean-scripts fix'
     }
   }
