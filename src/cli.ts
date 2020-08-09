@@ -56,5 +56,8 @@ export async function runCLI(context: libs.Context) {
     },
     main: 'dist/core.js',
     types: 'dist/core.d.ts',
+    "publishConfig": {
+      "registry":"https://registry.npmjs.org/"
+    },
   }
 }

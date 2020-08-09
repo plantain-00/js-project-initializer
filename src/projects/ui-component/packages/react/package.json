@@ -17,9 +17,9 @@
     "url": "https://github.com/AUTHOR/REPOSITORY_NAME/issues"
   },
   "homepage": "https://github.com/AUTHOR/REPOSITORY_NAME#readme",
-  "files": [
-    "dist"
-  ],
+  "publishConfig": {
+    "registry":"https://registry.npmjs.org/"
+  },
   "dependencies": {
     "react": "16",
     "react-dom": "16",

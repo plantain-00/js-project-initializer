@@ -13,10 +13,9 @@
     "minimist": "1",
     "repository-name-core": "^0.0.1"
   },
-  "files": [
-    "dist",
-    "bin"
-  ],
+  "publishConfig": {
+    "registry":"https://registry.npmjs.org/"
+  },
   "bin": {
     "repository-name": "bin/repository-name"
   }

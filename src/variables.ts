@@ -873,10 +873,9 @@ export const cliMonorepoPackagesCliPackageJson = `{
     "minimist": "1",
     "repository-name-core": "^0.0.1"
   },
-  "files": [
-    "dist",
-    "bin"
-  ],
+  "publishConfig": {
+    "registry":"https://registry.npmjs.org/"
+  },
   "bin": {
     "repository-name": "bin/repository-name"
   }
@@ -975,9 +974,9 @@ export const cliMonorepoPackagesCorePackageJson = `{
   "dependencies": {
     "tslib": "1 || 2"
   },
-  "files": [
-    "dist"
-  ]
+  "publishConfig": {
+    "registry":"https://registry.npmjs.org/"
+  }
 }
 `
 export const cliMonorepoPackagesCoreReadmeMd = `# REPOSITORY_NAME-core
@@ -2297,9 +2296,9 @@ export const uiComponentPackagesCorePackageJson = `{
         "url": "https://github.com/AUTHOR/repository-name/issues"
     },
     "homepage": "https://github.com/AUTHOR/repository-name#readme",
-    "files": [
-        "dist"
-    ],
+    "publishConfig": {
+      "registry":"https://registry.npmjs.org/"
+    },
     "dependencies": {
         "tslib": "1 || 2"
     }
@@ -2404,9 +2403,9 @@ export const uiComponentPackagesReactPackageJson = `{
     "url": "https://github.com/AUTHOR/REPOSITORY_NAME/issues"
   },
   "homepage": "https://github.com/AUTHOR/REPOSITORY_NAME#readme",
-  "files": [
-    "dist"
-  ],
+  "publishConfig": {
+    "registry":"https://registry.npmjs.org/"
+  },
   "dependencies": {
     "react": "16",
     "react-dom": "16",
@@ -2553,9 +2552,9 @@ export const uiComponentPackagesVuePackageJson = `{
     "url": "https://github.com/AUTHOR/REPOSITORY_NAME/issues"
   },
   "homepage": "https://github.com/AUTHOR/REPOSITORY_NAME#readme",
-  "files": [
-    "dist"
-  ],
+  "publishConfig": {
+    "registry":"https://registry.npmjs.org/"
+  },
   "dependencies": {
     "vue": "2",
     "vue-class-component": "6",

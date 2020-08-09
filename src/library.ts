@@ -56,6 +56,9 @@ export async function runLibrary(context: libs.Context) {
       test: 'clean-scripts test',
       release: 'clean-release',
       fix: 'clean-scripts fix'
-    }
+    },
+    "publishConfig": {
+      "registry":"https://registry.npmjs.org/"
+    },
   }
 }

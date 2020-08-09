@@ -14,9 +14,9 @@
         "url": "https://github.com/AUTHOR/repository-name/issues"
     },
     "homepage": "https://github.com/AUTHOR/repository-name#readme",
-    "files": [
-        "dist"
-    ],
+    "publishConfig": {
+      "registry":"https://registry.npmjs.org/"
+    },
     "dependencies": {
         "tslib": "1 || 2"
     }
