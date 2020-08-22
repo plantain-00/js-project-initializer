@@ -4,6 +4,7 @@ import * as variables from './variables'
 export async function runFrontend(context: libs.Context) {
   await libs.appendFile('.gitignore', variables.frontendGitignore)
   await libs.appendFile('.editorconfig', variables.frontendEditorconfig)
+  await libs.appendFile('tsconfig.eslint.json', variables.frontendTsconfigEslintJson)
 
   const devDependencies = [
     'tslib',

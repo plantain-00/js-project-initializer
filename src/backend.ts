@@ -4,6 +4,7 @@ import * as variables from './variables'
 export async function runBackend(context: libs.Context) {
   await libs.appendFile('.gitignore', variables.backendGitignore)
   await libs.appendFile('.editorconfig', variables.backendEditorconfig)
+  await libs.appendFile('tsconfig.eslint.json', variables.backendTsconfigEslintJson)
 
   await libs.exec(`yarn add -SE tslib`)
 
