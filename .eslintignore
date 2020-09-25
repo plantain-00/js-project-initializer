@@ -1,3 +1,4 @@
 node_modules
 src/projects
 *.d.ts
+variables.ts
