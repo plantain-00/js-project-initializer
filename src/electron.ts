@@ -16,7 +16,6 @@ export async function runElectron(context: libs.Context) {
     'stylelint',
     'stylelint-config-standard',
     'vue',
-    'vue-class-component',
     'clean-css-cli',
     'file2variable-cli',
     'webpack',
@@ -27,6 +26,7 @@ export async function runElectron(context: libs.Context) {
     'no-unused-export',
     'watch-then-execute',
     'autoprefixer',
+    'postcss',
     'postcss-cli',
     'type-coverage',
   ]

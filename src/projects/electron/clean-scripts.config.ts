@@ -29,7 +29,7 @@ export default {
     export: `no-unused-export ${tsFiles} ${lessFiles} --strict --need-module tslib`,
     markdown: `markdownlint README.md`,
     typeCoverage: 'type-coverage -p . --strict',
-    typeCoverageStatic: 'type-coverage -p static --strict'
+    typeCoverageStatic: 'type-coverage -p static --strict --ignore-files "static/variables.ts"'
   },
   test: {},
   fix: {

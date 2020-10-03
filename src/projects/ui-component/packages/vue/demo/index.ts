@@ -1,8 +1,7 @@
-import Vue from 'vue'
-import Component from 'vue-class-component'
-import '../dist/'
+import { createApp, defineComponent } from 'vue'
+import { ComponentTypeName } from '../dist/'
 
-@Component({
+const App = defineComponent({
   template: `
     <div>
         <a href="https://github.com/AUTHOR/REPSOTIRY_NAME/tree/master/packages/vue/demo" target="_blank">the source code of the demo</a>
@@ -12,7 +11,7 @@ import '../dist/'
     </div>
     `
 })
-class App extends Vue {
-}
 
-new App({ el: '#container' })
+const app = createApp(App)
+app.component('componentShortName', ComponentTypeName)
+app.mount('#container')

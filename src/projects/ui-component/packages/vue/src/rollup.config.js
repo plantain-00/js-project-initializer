@@ -12,13 +12,9 @@ export default {
   output: {
     name: 'ComponentTypeName',
     file: 'packages/vue/dist/COMPONENT_SHORT_NAME-vue-component.min.js',
-    format: 'umd',
-    globals: {
-      'vue-class-component': 'VueClassComponent'
-    }
+    format: 'umd'
   },
   external: [
     'vue',
-    'vue-class-component'
   ]
 }

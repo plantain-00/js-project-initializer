@@ -21,8 +21,7 @@
     "registry":"https://registry.npmjs.org/"
   },
   "dependencies": {
-    "vue": "2",
-    "vue-class-component": "6",
+    "vue": "3",
     "REPOSITORY_NAME": "^1.0.0"
   }
 }

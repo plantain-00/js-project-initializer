@@ -1,14 +1,16 @@
-export default {
+import { Configuration } from 'file2variable-cli'
+
+const config: Configuration = {
   base: 'packages/vue/src/',
   files: [
     'packages/vue/src/*.template.html'
   ],
   handler: () => {
     return {
-      type: 'vue',
-      name: 'COMPONENT_TYPE_NAME',
-      path: './index'
+      type: 'vue3',
     }
   },
   out: 'packages/vue/src/variables.ts'
 }
+
+export default config

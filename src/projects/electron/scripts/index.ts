@@ -1,12 +1,9 @@
-import Vue from 'vue'
-import Component from 'vue-class-component'
-import { indexTemplateHtml, indexTemplateHtmlStatic } from './variables'
+import { defineComponent, createApp } from 'vue'
+import { indexTemplateHtml } from './variables'
 
-@Component({
+const App = defineComponent({
   render: indexTemplateHtml,
-  staticRenderFns: indexTemplateHtmlStatic
 })
-export class App extends Vue {
-}
 
-new App({ el: '#container' })
+const app = createApp(App)
+app.mount('#container')

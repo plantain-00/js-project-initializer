@@ -457,20 +457,22 @@ export const backendWithFrontendSrcTsconfigJson = `{
   }
 }
 `
-export const backendWithFrontendStaticFile2VariableConfigTs = `export default {
+export const backendWithFrontendStaticFile2VariableConfigTs = `import { Configuration } from 'file2variable-cli'
+
+const config: Configuration = {
   base: 'static',
   files: [
     'static/*.template.html'
   ],
   handler: () => {
     return {
-      type: 'vue',
-      name: 'App',
-      path: './index'
+      type: 'vue3',
     }
   },
   out: 'static/variables.ts'
 }
+
+export default config
 `
 export const backendWithFrontendStaticIndexEjsHtml = `<!DOCTYPE html>
 <meta charset="UTF-8">
@@ -497,18 +499,15 @@ export const backendWithFrontendStaticIndexLess = `* {
 `
 export const backendWithFrontendStaticIndexTemplateHtml = `<div>
 </div>`
-export const backendWithFrontendStaticIndexTs = `import Vue from 'vue'
-import Component from 'vue-class-component'
-import { indexTemplateHtml, indexTemplateHtmlStatic } from './variables'
+export const backendWithFrontendStaticIndexTs = `import { defineComponent, createApp } from 'vue'
+import { indexTemplateHtml } from './variables'
 
-@Component({
+const App = defineComponent({
   render: indexTemplateHtml,
-  staticRenderFns: indexTemplateHtmlStatic
 })
-export class App extends Vue {
-}
 
-new App({ el: '#container' })
+const app = createApp(App)
+app.mount('#container')
 `
 export const backendWithFrontendStaticPrerenderHtml = ``
 export const backendWithFrontendStaticRevStaticConfigTs = `export default {
@@ -1326,7 +1325,7 @@ export default {
     export: \`no-unused-export \${tsFiles} \${lessFiles} --strict --need-module tslib\`,
     markdown: \`markdownlint README.md\`,
     typeCoverage: 'type-coverage -p . --strict',
-    typeCoverageStatic: 'type-coverage -p static --strict'
+    typeCoverageStatic: 'type-coverage -p static --strict --ignore-files "static/variables.ts"'
   },
   test: {},
   fix: {
@@ -1448,20 +1447,22 @@ export const electronReadmeMd = `
 ![Github CI](https://github.com/AUTHOR/REPOSITORY_NAME/workflows/Github%20CI/badge.svg)
 [![type-coverage](https://img.shields.io/badge/dynamic/json.svg?label=type-coverage&prefix=%E2%89%A5&suffix=%&query=\$.typeCoverage.atLeast&uri=https%3A%2F%2Fraw.githubusercontent.com%2FAUTHOR%2FREPOSITORY_NAME%2Fmaster%2Fpackage.json)](https://github.com/AUTHOR/REPOSITORY_NAME)
 `
-export const electronScriptsFile2VariableConfigTs = `export default {
+export const electronScriptsFile2VariableConfigTs = `import { Configuration } from 'file2variable-cli'
+
+const config: Configuration = {
   base: 'scripts',
   files: [
     'scripts/index.template.html'
   ],
   handler: () => {
     return {
-      type: 'vue',
-      name: 'App',
-      path: './index'
+      type: 'vue3',
     }
   },
   out: 'scripts/variables.ts'
 }
+
+export default config
 `
 export const electronScriptsIndexLess = `* {
   box-sizing: border-box;
@@ -1473,18 +1474,15 @@ export const electronScriptsIndexLess = `* {
   `
 export const electronScriptsIndexTemplateHtml = `<div>
 </div>`
-export const electronScriptsIndexTs = `import Vue from 'vue'
-import Component from 'vue-class-component'
-import { indexTemplateHtml, indexTemplateHtmlStatic } from './variables'
+export const electronScriptsIndexTs = `import { defineComponent, createApp } from 'vue'
+import { indexTemplateHtml } from './variables'
 
-@Component({
+const App = defineComponent({
   render: indexTemplateHtml,
-  staticRenderFns: indexTemplateHtmlStatic
 })
-export class App extends Vue {
-}
 
-new App({ el: '#container' })
+const app = createApp(App)
+app.mount('#container')
 `
 export const electronScriptsTsconfigJson = `{
   "extends": "tsconfig-plantain",
@@ -1688,19 +1686,21 @@ export const frontendEslintrc = `{
   ]
 }
 `
-export const frontendFile2VariableConfigTs = `export default {
+export const frontendFile2VariableConfigTs = `import { Configuration } from 'file2variable-cli'
+
+const config: Configuration = {
   files: [
     '*.template.html'
   ],
   handler: () => {
     return {
-      type: 'vue',
-      name: 'App',
-      path: './index'
+      type: 'vue3',
     }
   },
   out: 'variables.ts'
 }
+
+export default config
 `
 export const frontendGitignore = `# Source
 .vscode
@@ -1742,18 +1742,15 @@ export const frontendIndexLess = `* {
 `
 export const frontendIndexTemplateHtml = `<div>
 </div>`
-export const frontendIndexTs = `import Vue from 'vue'
-import Component from 'vue-class-component'
-import { indexTemplateHtml, indexTemplateHtmlStatic } from './variables'
+export const frontendIndexTs = `import { defineComponent, createApp } from 'vue'
+import { indexTemplateHtml } from './variables'
 
-@Component({
+const App = defineComponent({
   render: indexTemplateHtml,
-  staticRenderFns: indexTemplateHtmlStatic
 })
-export class App extends Vue {
-}
 
-new App({ el: '#container' })
+const app = createApp(App)
+app.mount('#container')
 `
 export const frontendPostcssConfigJs = `module.exports = {
   plugins: [
@@ -2285,7 +2282,7 @@ export default {
     markdown: \`markdownlint README.md\`,
     typeCoverage: {
       core: 'cd packages/core && type-coverage -p src --strict',
-      vue: 'cd packages/vue && type-coverage -p src --strict',
+      vue: 'cd packages/vue && type-coverage -p src --strict --ignore-files "src/variables.ts"',
       react: 'cd packages/react && type-coverage -p src --strict'
     }
   },
@@ -2603,11 +2600,10 @@ export const uiComponentPackagesVueDemoIndexEjsHtml = `<!DOCTYPE html>
 <div id="container"></div>
 <script src="./<%=vueDemoIndexBundleJs %>" crossOrigin="anonymous" integrity="<%=sri.vueDemoIndexBundleJs %>"></script>
 `
-export const uiComponentPackagesVueDemoIndexTs = `import Vue from 'vue'
-import Component from 'vue-class-component'
-import '../dist/'
+export const uiComponentPackagesVueDemoIndexTs = `import { createApp, defineComponent } from 'vue'
+import { ComponentTypeName } from '../dist/'
 
-@Component({
+const App = defineComponent({
   template: \`
     <div>
         <a href="https://github.com/AUTHOR/REPSOTIRY_NAME/tree/master/packages/vue/demo" target="_blank">the source code of the demo</a>
@@ -2617,10 +2613,10 @@ import '../dist/'
     </div>
     \`
 })
-class App extends Vue {
-}
 
-new App({ el: '#container' })
+const app = createApp(App)
+app.component('componentShortName', ComponentTypeName)
+app.mount('#container')
 `
 export const uiComponentPackagesVueDemoTsconfigJson = `{
   "extends": "../../tsconfig.json"
@@ -2646,7 +2642,7 @@ export default {
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
     alias: {
-      'vue\$': 'vue/dist/vue.esm.js'
+      'vue\$': 'vue/dist/vue.esm-bundler.js'
     }
   }
 } as webpack.Configuration
@@ -2674,8 +2670,7 @@ export const uiComponentPackagesVuePackageJson = `{
     "registry":"https://registry.npmjs.org/"
   },
   "dependencies": {
-    "vue": "2",
-    "vue-class-component": "6",
+    "vue": "3",
     "REPOSITORY_NAME": "^1.0.0"
   }
 }
@@ -2684,35 +2679,33 @@ export const uiComponentPackagesVueReadmeMd = `# COMPONENT_SHORT_NAME-vue-compon
 
 Docs: <https://github.com/AUTHOR/REPOSITORY_NAME>
 `
-export const uiComponentPackagesVueSrcFile2VariableConfigTs = `export default {
+export const uiComponentPackagesVueSrcFile2VariableConfigTs = `import { Configuration } from 'file2variable-cli'
+
+const config: Configuration = {
   base: 'packages/vue/src/',
   files: [
     'packages/vue/src/*.template.html'
   ],
   handler: () => {
     return {
-      type: 'vue',
-      name: 'COMPONENT_TYPE_NAME',
-      path: './index'
+      type: 'vue3',
     }
   },
   out: 'packages/vue/src/variables.ts'
 }
+
+export default config
 `
 export const uiComponentPackagesVueSrcIndexTemplateHtml = `<div class="componentShortName"></div>`
-export const uiComponentPackagesVueSrcIndexTs = `import Vue from 'vue'
-import Component from 'vue-class-component'
-import { indexTemplateHtml, indexTemplateHtmlStatic } from './variables'
+export const uiComponentPackagesVueSrcIndexTs = `import { defineComponent } from 'vue'
+import { indexTemplateHtml } from './variables'
 
-@Component({
+/**
+ * @public
+ */
+export const FileUploader = defineComponent({
   render: indexTemplateHtml,
-  staticRenderFns: indexTemplateHtmlStatic,
-  props: []
 })
-export class ComponentTypeName extends Vue {
-}
-
-Vue.component('COMPONENT_SHORT_NAME', ComponentTypeName)
 `
 export const uiComponentPackagesVueSrcRollupConfigJs = `import { uglify } from 'rollup-plugin-uglify'
 import resolve from '@rollup/plugin-node-resolve'
@@ -2728,14 +2721,10 @@ export default {
   output: {
     name: 'ComponentTypeName',
     file: 'packages/vue/dist/COMPONENT_SHORT_NAME-vue-component.min.js',
-    format: 'umd',
-    globals: {
-      'vue-class-component': 'VueClassComponent'
-    }
+    format: 'umd'
   },
   external: [
     'vue',
-    'vue-class-component'
   ]
 }
 `
@@ -2782,14 +2771,14 @@ export const uiComponentReadmeMd = `
 \`yarn add COMPONENT_SHORT_NAME-vue-component\`
 
 \`\`\`ts
-import "COMPONENT_SHORT_NAME-vue-component";
+import { COMPONENT_TYPE_NAME } from "COMPONENT_SHORT_NAME-vue-component";
+app.component('COMPONENT_SHORT_NAME', COMPONENT_TYPE_NAME)
 \`\`\`
 
 or
 
 \`\`\`html
 <script src="./node_modules/vue/dist/vue.min.js"></script>
-<script src="./node_modules/vue-class-component/dist/vue-class-component.min.js"></script>
 <script src="./node_modules/COMPONENT_SHORT_NAME-vue-component/dist/COMPONENT_SHORT_NAME-vue-component.min.js"></script>
 \`\`\`
 

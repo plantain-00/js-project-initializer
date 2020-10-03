@@ -27,14 +27,14 @@
 `yarn add COMPONENT_SHORT_NAME-vue-component`
 
 ```ts
-import "COMPONENT_SHORT_NAME-vue-component";
+import { COMPONENT_TYPE_NAME } from "COMPONENT_SHORT_NAME-vue-component";
+app.component('COMPONENT_SHORT_NAME', COMPONENT_TYPE_NAME)
 ```
 
 or
 
 ```html
 <script src="./node_modules/vue/dist/vue.min.js"></script>
-<script src="./node_modules/vue-class-component/dist/vue-class-component.min.js"></script>
 <script src="./node_modules/COMPONENT_SHORT_NAME-vue-component/dist/COMPONENT_SHORT_NAME-vue-component.min.js"></script>
 ```
 

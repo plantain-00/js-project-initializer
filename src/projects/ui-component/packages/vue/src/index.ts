@@ -1,13 +1,9 @@
-import Vue from 'vue'
-import Component from 'vue-class-component'
-import { indexTemplateHtml, indexTemplateHtmlStatic } from './variables'
+import { defineComponent } from 'vue'
+import { indexTemplateHtml } from './variables'
 
-@Component({
+/**
+ * @public
+ */
+export const FileUploader = defineComponent({
   render: indexTemplateHtml,
-  staticRenderFns: indexTemplateHtmlStatic,
-  props: []
 })
-export class ComponentTypeName extends Vue {
-}
-
-Vue.component('COMPONENT_SHORT_NAME', ComponentTypeName)
