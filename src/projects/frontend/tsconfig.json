@@ -5,7 +5,7 @@
     "module": "commonjs"
   },
   "files": [
-    "index.ts",
+    "index.tsx",
     "variables.ts"
   ]
 }

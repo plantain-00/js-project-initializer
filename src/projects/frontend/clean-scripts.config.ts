@@ -6,7 +6,6 @@ const lessFiles = `"*.less"`
 
 const isDev = process.env.NODE_ENV === 'development'
 
-const templateCommand = 'file2variable-cli --config file2variable.config.ts'
 const webpackCommand = 'webpack --config webpack.config.ts'
 const revStaticCommand = 'rev-static --config rev-static.config.ts'
 const cssCommand = [
@@ -22,10 +21,7 @@ const swCommand = isDev ? undefined : [
 export default {
   build: [
     {
-      js: [
-        templateCommand,
-        webpackCommand
-      ],
+      js: webpackCommand,
       css: cssCommand,
       clean: 'rimraf **/*.bundle-*.js *.bundle-*.css'
     },

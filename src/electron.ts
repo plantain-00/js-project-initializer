@@ -15,9 +15,8 @@ export async function runElectron(context: libs.Context) {
     'ts-node',
     'stylelint',
     'stylelint-config-standard',
-    'vue',
+    'react react-dom @types/react @types/react-dom',
     'clean-css-cli',
-    'file2variable-cli',
     'webpack',
     'webpack-cli',
     '@types/webpack',
@@ -49,12 +48,10 @@ export async function runElectron(context: libs.Context) {
   await libs.writeFile('.eslintignore', variables.electronEslintignore)
 
   await libs.mkdir('scripts')
-  await libs.writeFile('scripts/index.ts', variables.electronScriptsIndexTs)
+  await libs.writeFile('scripts/index.tsx', variables.electronScriptsIndexTsx)
   await libs.writeFile(`scripts/index.less`, variables.electronScriptsIndexLess)
   await libs.writeFile('scripts/tsconfig.json', variables.electronScriptsTsconfigJson)
-  await libs.writeFile(`scripts/index.template.html`, variables.electronScriptsIndexTemplateHtml)
   await libs.writeFile(`scripts/webpack.config.ts`, variables.electronScriptsWebpackConfigTs)
-  await libs.writeFile('scripts/file2variable.config.ts', variables.electronScriptsFile2VariableConfigTs)
 
   return {
     scripts: {

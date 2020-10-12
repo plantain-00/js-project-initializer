@@ -5,7 +5,6 @@ const tsFiles = `"src/**/*.ts" "static/**/*.ts"`
 const lessFiles = `"static/**/*.less"`
 
 const tscSrcCommand = 'tsc -p src/'
-const file2variableCommand = 'file2variable-cli --config static/file2variable.config.ts'
 const webpackCommand = 'webpack --config static/webpack.config.ts'
 const revStaticCommand = 'rev-static --config static/rev-static.config.ts'
 const cssCommand = [
@@ -22,10 +21,7 @@ export default {
     ],
     front: [
       {
-        js: [
-          file2variableCommand,
-          webpackCommand
-        ],
+        js: webpackCommand,
         css: cssCommand,
         clean: 'rimraf static/**/*.bundle-*.js static/**/*.bundle-*.css'
       },

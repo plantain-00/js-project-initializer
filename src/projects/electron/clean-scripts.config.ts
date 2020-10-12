@@ -4,7 +4,6 @@ import { watch } from 'watch-then-execute'
 const tsFiles = `"src/**/*.ts" "scripts/**/*.ts"`
 const lessFiles = `"scripts/**/*.less"`
 
-const templateCommand = 'file2variable-cli --config scripts/file2variable.config.ts'
 const webpackCommand = 'webpack --config scripts/webpack.config.ts'
 const cssCommand = [
   'lessc scripts/index.less > scripts/index.css',
@@ -16,10 +15,7 @@ export default {
   build: {
     back: 'tsc',
     front: {
-      js: [
-        templateCommand,
-        webpackCommand
-      ],
+      js: webpackCommand,
       css: cssCommand
     }
   },

@@ -289,7 +289,6 @@ const tsFiles = \`"src/**/*.ts" "static/**/*.ts"\`
 const lessFiles = \`"static/**/*.less"\`
 
 const tscSrcCommand = 'tsc -p src/'
-const file2variableCommand = 'file2variable-cli --config static/file2variable.config.ts'
 const webpackCommand = 'webpack --config static/webpack.config.ts'
 const revStaticCommand = 'rev-static --config static/rev-static.config.ts'
 const cssCommand = [
@@ -306,10 +305,7 @@ export default {
     ],
     front: [
       {
-        js: [
-          file2variableCommand,
-          webpackCommand
-        ],
+        js: webpackCommand,
         css: cssCommand,
         clean: 'rimraf static/**/*.bundle-*.js static/**/*.bundle-*.css'
       },
@@ -457,23 +453,6 @@ export const backendWithFrontendSrcTsconfigJson = `{
   }
 }
 `
-export const backendWithFrontendStaticFile2VariableConfigTs = `import { Configuration } from 'file2variable-cli'
-
-const config: Configuration = {
-  base: 'static',
-  files: [
-    'static/*.template.html'
-  ],
-  handler: () => {
-    return {
-      type: 'vue3',
-    }
-  },
-  out: 'static/variables.ts'
-}
-
-export default config
-`
 export const backendWithFrontendStaticIndexEjsHtml = `<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -497,19 +476,18 @@ export const backendWithFrontendStaticIndexLess = `* {
   -webkit-font-smoothing: antialiased;
 }
 `
-export const backendWithFrontendStaticIndexTemplateHtml = `<div>
-</div>`
-export const backendWithFrontendStaticIndexTs = `import { defineComponent, createApp } from 'vue'
-import { indexTemplateHtml } from './variables'
+export const backendWithFrontendStaticIndexTsx = `import * as React from 'react'
+import * as ReactDOM from 'react-dom'
 
-const App = defineComponent({
-  render: indexTemplateHtml,
-})
+function Main() {
+  return (
+    <div>
+    </div>
+  )
+}
 
-const app = createApp(App)
-app.mount('#container')
+ReactDOM.render(<Main />, document.getElementById('container'))
 `
-export const backendWithFrontendStaticPrerenderHtml = ``
 export const backendWithFrontendStaticRevStaticConfigTs = `export default {
   inputFiles: [
     'static/*.bundle.js',
@@ -1300,7 +1278,6 @@ import { watch } from 'watch-then-execute'
 const tsFiles = \`"src/**/*.ts" "scripts/**/*.ts"\`
 const lessFiles = \`"scripts/**/*.less"\`
 
-const templateCommand = 'file2variable-cli --config scripts/file2variable.config.ts'
 const webpackCommand = 'webpack --config scripts/webpack.config.ts'
 const cssCommand = [
   'lessc scripts/index.less > scripts/index.css',
@@ -1312,10 +1289,7 @@ export default {
   build: {
     back: 'tsc',
     front: {
-      js: [
-        templateCommand,
-        webpackCommand
-      ],
+      js: webpackCommand,
       css: cssCommand
     }
   },
@@ -1447,23 +1421,6 @@ export const electronReadmeMd = `
 ![Github CI](https://github.com/AUTHOR/REPOSITORY_NAME/workflows/Github%20CI/badge.svg)
 [![type-coverage](https://img.shields.io/badge/dynamic/json.svg?label=type-coverage&prefix=%E2%89%A5&suffix=%&query=\$.typeCoverage.atLeast&uri=https%3A%2F%2Fraw.githubusercontent.com%2FAUTHOR%2FREPOSITORY_NAME%2Fmaster%2Fpackage.json)](https://github.com/AUTHOR/REPOSITORY_NAME)
 `
-export const electronScriptsFile2VariableConfigTs = `import { Configuration } from 'file2variable-cli'
-
-const config: Configuration = {
-  base: 'scripts',
-  files: [
-    'scripts/index.template.html'
-  ],
-  handler: () => {
-    return {
-      type: 'vue3',
-    }
-  },
-  out: 'scripts/variables.ts'
-}
-
-export default config
-`
 export const electronScriptsIndexLess = `* {
   box-sizing: border-box;
   margin: 0;
@@ -1472,17 +1429,17 @@ export const electronScriptsIndexLess = `* {
   -webkit-font-smoothing: antialiased;
 }
   `
-export const electronScriptsIndexTemplateHtml = `<div>
-</div>`
-export const electronScriptsIndexTs = `import { defineComponent, createApp } from 'vue'
-import { indexTemplateHtml } from './variables'
+export const electronScriptsIndexTsx = `import * as React from 'react'
+import * as ReactDOM from 'react-dom'
 
-const App = defineComponent({
-  render: indexTemplateHtml,
-})
+function Main() {
+  return (
+    <div>
+    </div>
+  )
+}
 
-const app = createApp(App)
-app.mount('#container')
+ReactDOM.render(<Main />, document.getElementById('container'))
 `
 export const electronScriptsTsconfigJson = `{
   "extends": "tsconfig-plantain",
@@ -1593,7 +1550,6 @@ const lessFiles = \`"*.less"\`
 
 const isDev = process.env.NODE_ENV === 'development'
 
-const templateCommand = 'file2variable-cli --config file2variable.config.ts'
 const webpackCommand = 'webpack --config webpack.config.ts'
 const revStaticCommand = 'rev-static --config rev-static.config.ts'
 const cssCommand = [
@@ -1609,10 +1565,7 @@ const swCommand = isDev ? undefined : [
 export default {
   build: [
     {
-      js: [
-        templateCommand,
-        webpackCommand
-      ],
+      js: webpackCommand,
       css: cssCommand,
       clean: 'rimraf **/*.bundle-*.js *.bundle-*.css'
     },
@@ -1686,22 +1639,6 @@ export const frontendEslintrc = `{
   ]
 }
 `
-export const frontendFile2VariableConfigTs = `import { Configuration } from 'file2variable-cli'
-
-const config: Configuration = {
-  files: [
-    '*.template.html'
-  ],
-  handler: () => {
-    return {
-      type: 'vue3',
-    }
-  },
-  out: 'variables.ts'
-}
-
-export default config
-`
 export const frontendGitignore = `# Source
 .vscode
 dist
@@ -1740,17 +1677,17 @@ export const frontendIndexLess = `* {
   -webkit-font-smoothing: antialiased;
 }
 `
-export const frontendIndexTemplateHtml = `<div>
-</div>`
-export const frontendIndexTs = `import { defineComponent, createApp } from 'vue'
-import { indexTemplateHtml } from './variables'
+export const frontendIndexTsx = `import * as React from 'react'
+import * as ReactDOM from 'react-dom'
 
-const App = defineComponent({
-  render: indexTemplateHtml,
-})
+function Main() {
+  return (
+    <div>
+    </div>
+  )
+}
 
-const app = createApp(App)
-app.mount('#container')
+ReactDOM.render(<Main />, document.getElementById('container'))
 `
 export const frontendPostcssConfigJs = `module.exports = {
   plugins: [
@@ -1758,7 +1695,6 @@ export const frontendPostcssConfigJs = `module.exports = {
   ]
 }
 `
-export const frontendPrerenderHtml = ``
 export const frontendReadmeMd = `
 [![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
 [![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
@@ -1854,7 +1790,7 @@ export const frontendTsconfigJson = `{
     "module": "commonjs"
   },
   "files": [
-    "index.ts",
+    "index.tsx",
     "variables.ts"
   ]
 }

@@ -14,9 +14,8 @@ export async function runBackendWithFrontend(context: libs.Context) {
     'less',
     'stylelint',
     'stylelint-config-standard',
-    'vue',
+    'react react-dom @types/react @types/react-dom',
     'clean-css-cli',
-    'file2variable-cli',
     'webpack',
     'webpack-cli',
     '@types/webpack',
@@ -41,8 +40,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
 
   await libs.mkdir('static')
   await libs.writeFile(`static/tsconfig.json`, variables.backendWithFrontendStaticTsconfigJson)
-  await libs.writeFile(`static/index.ts`, variables.backendWithFrontendStaticIndexTs)
-  await libs.writeFile(`static/index.template.html`, variables.backendWithFrontendStaticIndexTemplateHtml)
+  await libs.writeFile(`static/index.tsx`, variables.backendWithFrontendStaticIndexTsx)
   await libs.writeFile(`static/index.less`, variables.backendWithFrontendStaticIndexLess)
   await libs.writeFile(`static/webpack.config.ts`, variables.backendWithFrontendStaticWebpackConfigTs)
   await libs.writeFile(`static/rev-static.config.ts`, variables.backendWithFrontendStaticRevStaticConfigTs)
@@ -51,8 +49,6 @@ export async function runBackendWithFrontend(context: libs.Context) {
       .replace(/DESCRIPTION/g, context.description)
       .replace(/REPOSITORY_NAME/g, context.repositoryName)
       .replace(/AUTHOR/g, context.author))
-  await libs.writeFile('static/prerender.html', variables.backendWithFrontendStaticPrerenderHtml)
-  await libs.writeFile('static/file2variable.config.ts', variables.backendWithFrontendStaticFile2VariableConfigTs)
 
   await libs.appendFile('README.md',
     variables.backendWithFrontendReadmeMd
@@ -81,9 +77,7 @@ export async function runBackendWithFrontend(context: libs.Context) {
       lint: 'clean-scripts lint',
       test: 'clean-scripts test',
       fix: 'clean-scripts fix',
-      watch: 'cross-env NODE_ENV=development clean-scripts watch',
-      screenshot: 'clean-scripts screenshot',
-      prerender: 'clean-scripts prerender'
+      watch: 'cross-env NODE_ENV=development clean-scripts watch'
     }
   }
 }
