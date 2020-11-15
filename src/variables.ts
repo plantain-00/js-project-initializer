@@ -2458,13 +2458,9 @@ export const uiComponentPackagesReactPackageJson = `{
     "registry":"https://registry.npmjs.org/"
   },
   "dependencies": {
-    "react": "16",
-    "react-dom": "16",
+    "react": "17",
+    "react-dom": "17",
     "REPOSITORY_NAME": "^1.0.0"
-  },
-  "devDependencies": {
-    "@types/react": "16.0.25",
-    "@types/react-dom": "16.0.3"
   }
 }
 `

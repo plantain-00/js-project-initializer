@@ -27,6 +27,8 @@ export async function runUIComponent(context: libs.Context) {
     'ts-node',
     'ts-loader',
     'clean-release',
+    '@types/react',
+    '@types/react-dom',
   ]
 
   await libs.exec(`yarn add -DE ${devDependencies.join(' ')}`)
