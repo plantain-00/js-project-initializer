@@ -135,6 +135,9 @@ async function run() {
   if (newPackageJson.workspaces) {
     packageJson.workspaces = newPackageJson.workspaces
   }
+  if (newPackageJson.publishConfig) {
+    packageJson.publishConfig = newPackageJson.publishConfig
+  }
   packageJson.typeCoverage = {
     atLeast: 100
   }
@@ -225,6 +228,7 @@ interface PackageJson {
   private?: boolean
   workspaces?: string[]
   typeCoverage?: { atLeast: number }
+  publishConfig?: { [key: string]: string };
 }
 
 const vscodeSetting = `{
