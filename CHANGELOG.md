@@ -1,5 +1,23 @@
 # Change Log
 
+## [2.6.1](https://github.com/plantain-00/js-project-initializer/compare/v2.6.0...v2.6.1) (2021-02-01)
+  
+* chore: update dependencies ([7228efe](https://github.com/plantain-00/js-project-initializer/commit/7228efe16d673ca46c9ee8e6d257c7246a0500b2)) ([60e0bc9](https://github.com/plantain-00/js-project-initializer/commit/60e0bc96cb118e854a7f47207a81e6db587ac246)) ([c1e4e94](https://github.com/plantain-00/js-project-initializer/commit/c1e4e947c968c1e6f1ab017926e36341d416ee14)) ([d6b3810](https://github.com/plantain-00/js-project-initializer/commit/d6b3810be2e92c0f95c7415593dc60760edfeefa)) ([5a17b3b](https://github.com/plantain-00/js-project-initializer/commit/5a17b3b0aa1590354a97032c35d1e21b64e8e128)) ([aa21e13](https://github.com/plantain-00/js-project-initializer/commit/aa21e13241b7edab36efc7a16390548651dab9ea)) ([a2f2be8](https://github.com/plantain-00/js-project-initializer/commit/a2f2be88fd3f371131f97b6795ddfd831f1112e2)) ([93ab3f8](https://github.com/plantain-00/js-project-initializer/commit/93ab3f8e096371eec72ae7cc0f60e2475f72056d)) ([416ee81](https://github.com/plantain-00/js-project-initializer/commit/416ee81fd656a5367a97e247f6cb4ddc5da49c03)) ([e3f1ef9](https://github.com/plantain-00/js-project-initializer/commit/e3f1ef97836b9cea5e7c584049f405fc6d023d9d)) ([f66d132](https://github.com/plantain-00/js-project-initializer/commit/f66d13209aeefede0a6eecc112345c0969a12d03)) ([9fd324c](https://github.com/plantain-00/js-project-initializer/commit/9fd324c74e7631001fef69612cc6b64dfc33c945)) ([7e23bb6](https://github.com/plantain-00/js-project-initializer/commit/7e23bb68ec5891247bdb06e92a1305c0e20d9a46)) ([c4ff155](https://github.com/plantain-00/js-project-initializer/commit/c4ff155e05e6bcada505e853da3039655e8eb5b5)) ([ff530eb](https://github.com/plantain-00/js-project-initializer/commit/ff530eb9fd4f57a0348ba04af894c00f6f319b18)) ([a865b4d](https://github.com/plantain-00/js-project-initializer/commit/a865b4d4f9f440121d08de2d60e70a96286a4d2e)) ([e8a78c4](https://github.com/plantain-00/js-project-initializer/commit/e8a78c4ee6fc341e37bcfdc204af6a6a1bd0d5f1)) ([dd16c42](https://github.com/plantain-00/js-project-initializer/commit/dd16c42fc242a8806bd0370c9e4335000841a1fa)) ([ea2f155](https://github.com/plantain-00/js-project-initializer/commit/ea2f155469e1d5c176c998f4c0ff50e5a189edea)) ([67614d0](https://github.com/plantain-00/js-project-initializer/commit/67614d02fc6bd92590d4617225a113e9372de85e)) ([3a54620](https://github.com/plantain-00/js-project-initializer/commit/3a54620f2412828cc0b7768598efcb8331090ff7)) ([a3883d0](https://github.com/plantain-00/js-project-initializer/commit/a3883d0f887ca5d3f0ab400256cdf4fd5ed7443c)) ([0f2e5b8](https://github.com/plantain-00/js-project-initializer/commit/0f2e5b8442e2fbf899438a02a23331e9ea5b3977)) ([b134c1a](https://github.com/plantain-00/js-project-initializer/commit/b134c1af695f30a2bb417c63f72382c3913f724d)) ([f23d824](https://github.com/plantain-00/js-project-initializer/commit/f23d8244153c016e2e79afb885da6c6e6259e97f)) ([6280cc2](https://github.com/plantain-00/js-project-initializer/commit/6280cc297617c2693e686757fea044ba8758b61f)) ([ce8b4cf](https://github.com/plantain-00/js-project-initializer/commit/ce8b4cf9ab44599c69607bfad349d45fe8ae1916)) ([cd99107](https://github.com/plantain-00/js-project-initializer/commit/cd991075dd58037afb1917ca34e1cc204003a3d0)) ([34e8afa](https://github.com/plantain-00/js-project-initializer/commit/34e8afacd7f84bee6ab0f92484514053ca73577e))
+* chore: move devDependencies to root ([da34cda](https://github.com/plantain-00/js-project-initializer/commit/da34cdaa3b150ab932bfe98e35d20216891d9883))
+* feat: use reactjs ([902fe9e](https://github.com/plantain-00/js-project-initializer/commit/902fe9e9ea5644bf7d4433ea1ff4ebf65b22d268))
+* feat: support vue3 ([f8f5bac](https://github.com/plantain-00/js-project-initializer/commit/f8f5bac5656147d03f27186c8bc48ec34d99b6d4))
+* fix: add missing parserOptions ([b000874](https://github.com/plantain-00/js-project-initializer/commit/b000874bbab5afc3aa7e4ddf76967c9e9e7fca78)) ([5cf5106](https://github.com/plantain-00/js-project-initializer/commit/5cf5106fa667d8e105e70eb40d66e0e702e863f7))
+* build: add missing publishConfig ([b1ce9d2](https://github.com/plantain-00/js-project-initializer/commit/b1ce9d24d572fcdb3317e7e6ec13954f9469635f))
+* feat: set publishConfig in package.json ([27d7a6f](https://github.com/plantain-00/js-project-initializer/commit/27d7a6f416caa434c794e943ef93a4f89d703bbb))
+* build: improve release script ([21893de](https://github.com/plantain-00/js-project-initializer/commit/21893de7b61644c304d98151e9127404e9458da5))
+* feat: improve release script ([92ac80c](https://github.com/plantain-00/js-project-initializer/commit/92ac80c92b6bf5f989d307f5dbfce00a67c8214c))
+* fix: forgot to publish bin ([e3c49da](https://github.com/plantain-00/js-project-initializer/commit/e3c49da58531077d1a7b39e56a9442c11dc2f48c))
+* feat: add contributing ([bfa4e1e](https://github.com/plantain-00/js-project-initializer/commit/bfa4e1ee8e4a0b9e1e5536e3a2ec54a1cd9e10b1))
+* chore: add changelog ([b866b66](https://github.com/plantain-00/js-project-initializer/commit/b866b66073ec9325316dfbcd258b043ba73800fe))
+* fix: remove lerna ([b7d59b3](https://github.com/plantain-00/js-project-initializer/commit/b7d59b3cd6bf7183fabaf4adb5bd0f67d6dd575e))
+* feat: remove lerna and add changelog ([fe09359](https://github.com/plantain-00/js-project-initializer/commit/fe09359e02e499878140e4ae1511b83c5ba2b249))
+* fix: cli main and types ([3d8503c](https://github.com/plantain-00/js-project-initializer/commit/3d8503cf07528990db690e6b4d76e73318589b36))
+
 ## [2.6.0](https://github.com/plantain-00/js-project-initializer/compare/v2.5.2...v2.6.0) (2020-07-11)
   
 * docs: add github ci badge ([0f9471e](https://github.com/plantain-00/js-project-initializer/commit/0f9471e6a76d3e5ca417a5a6c4fdf9d758c076c0))
@@ -93,11 +111,11 @@
 * fix: add missing tsconfig.eslint.json ([199b48a](https://github.com/plantain-00/js-project-initializer/commit/199b48a3866e2120a96a1700e4b19199ab22d347))
 * fix: version ([cce821f](https://github.com/plantain-00/js-project-initializer/commit/cce821f0d7547b35370e242fac0f5c65868bd531))
 
-## [2.3.0-alpha.1](https://github.com/plantain-00/js-project-initializer/compare/v2.3.0-alpha.0...v2.3.0-alpha.1) (2019-07-11)
+### [2.3.0-alpha.1](https://github.com/plantain-00/js-project-initializer/compare/v2.3.0-alpha.0...v2.3.0-alpha.1) (2019-07-11)
   
 * fix: mkdir error ([37d71b3](https://github.com/plantain-00/js-project-initializer/commit/37d71b3f2bd84f42b7472e8b9c7ffe419b27eea5))
 
-## [2.3.0-alpha.0](https://github.com/plantain-00/js-project-initializer/compare/v2.2.0...v2.3.0-alpha.0) (2019-07-11)
+### [2.3.0-alpha.0](https://github.com/plantain-00/js-project-initializer/compare/v2.2.0...v2.3.0-alpha.0) (2019-07-11)
   
 * feat: add cli monorepo ([a119cb7](https://github.com/plantain-00/js-project-initializer/commit/a119cb78539d7ba511682e6d0da55cc6377ea776))
 * feat: use eslint rather than tslint ([1378b0c](https://github.com/plantain-00/js-project-initializer/commit/1378b0cb706c4a0c6e9ece39051fe7d56666ee61))
