@@ -106,8 +106,7 @@ export const backendEslintrc = `{
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "prettier/@typescript-eslint"
+    "prettier"
   ],
   "parserOptions": {
     "project": "./tsconfig.eslint.json"
@@ -361,8 +360,7 @@ export const backendWithFrontendEslintrc = `{
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "prettier/@typescript-eslint"
+    "prettier"
   ],
   "parserOptions": {
     "project": "./tsconfig.eslint.json"
@@ -690,8 +688,7 @@ export const cliEslintrc = `{
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "prettier/@typescript-eslint"
+    "prettier"
   ],
   "parserOptions": {
     "project": "./tsconfig.eslint.json"
@@ -836,8 +833,7 @@ export const cliMonorepoEslintrc = `{
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "prettier/@typescript-eslint"
+    "prettier"
   ],
   "parserOptions": {
     "project": "./tsconfig.eslint.json"
@@ -1329,8 +1325,7 @@ export const electronEslintrc = `{
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "prettier/@typescript-eslint"
+    "prettier"
   ],
   "parserOptions": {
     "project": "./tsconfig.eslint.json"
@@ -1610,8 +1605,7 @@ export const frontendEslintrc = `{
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "prettier/@typescript-eslint"
+    "prettier"
   ],
   "parserOptions": {
     "project": "./tsconfig.eslint.json"
@@ -1963,8 +1957,7 @@ export const libraryEslintrc = `{
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "prettier/@typescript-eslint"
+    "prettier"
   ],
   "parserOptions": {
     "project": "./tsconfig.eslint.json"
@@ -2284,8 +2277,7 @@ export const uiComponentEslintrc = `{
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "prettier/@typescript-eslint"
+    "prettier"
   ],
   "parserOptions": {
     "project": "./tsconfig.eslint.json"
