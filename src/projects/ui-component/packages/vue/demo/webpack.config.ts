@@ -15,6 +15,11 @@ export default {
     path: __dirname,
     filename: 'index.bundle.js'
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      __VUE_PROD_DEVTOOLS__: false,
+    }),
+  ],
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
     alias: {
