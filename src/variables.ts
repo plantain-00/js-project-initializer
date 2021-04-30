@@ -6,7 +6,7 @@
 /* eslint-disable */
 
 export const backendAppveyorYml = `environment:
-  nodejs_version: "10"
+  nodejs_version: "14"
 
 install:
   - ps: Install-Product node \$env:nodejs_version
@@ -191,7 +191,7 @@ export const backendSrcTsconfigJson = `{
 export const backendTravisYml = `language: node_js
 dist: trusty
 node_js:
-  - "10"
+  - "14"
 before_install:
   - git fetch --unshallow || true
 install:
@@ -224,7 +224,7 @@ export const backendTsconfigEslintJson = `{
 }
 `
 export const backendWithFrontendAppveyorYml = `environment:
-  nodejs_version: "10"
+  nodejs_version: "14"
 
 install:
   - ps: Install-Product node \$env:nodejs_version
@@ -553,7 +553,7 @@ export const backendWithFrontendStylelintrc = `{
 export const backendWithFrontendTravisYml = `language: node_js
 dist: trusty
 node_js:
-  - "10"
+  - "14"
 before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
@@ -589,7 +589,7 @@ export const backendWithFrontendTsconfigEslintJson = `{
 }
 `
 export const cliAppveyorYml = `environment:
-  nodejs_version: "10"
+  nodejs_version: "14"
 
 install:
   - ps: Install-Product node \$env:nodejs_version
@@ -732,7 +732,7 @@ service-worker.js
 *.data
 `
 export const cliMonorepoAppveyorYml = `environment:
-  nodejs_version: "10"
+  nodejs_version: "14"
 
 install:
   - ps: Install-Product node \$env:nodejs_version
@@ -1047,7 +1047,7 @@ import { foo } from 'REPOSITORY_NAME-core'
 export const cliMonorepoTravisYml = `language: node_js
 dist: trusty
 node_js:
-  - "10"
+  - "14"
 before_install:
   - git fetch --unshallow || true
 install:
@@ -1182,7 +1182,7 @@ export const cliSrcTsconfigJson = `{
 export const cliTravisYml = `language: node_js
 dist: trusty
 node_js:
-  - "10"
+  - "14"
 before_install:
   - git fetch --unshallow || true
 install:
@@ -1215,7 +1215,7 @@ export const cliTsconfigEslintJson = `{
 }
 `
 export const electronAppveyorYml = `environment:
-  nodejs_version: "10"
+  nodejs_version: "14"
 
 install:
   - ps: Install-Product node \$env:nodejs_version
@@ -1472,7 +1472,7 @@ export const electronStylelintrc = `{
 export const electronTravisYml = `language: node_js
 dist: trusty
 node_js:
-  - "10"
+  - "14"
 before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
@@ -1520,7 +1520,7 @@ export const electronTsconfigJson = `{
 }
 `
 export const frontendAppveyorYml = `environment:
-  nodejs_version: "10"
+  nodejs_version: "14"
 
 install:
   - ps: Install-Product node \$env:nodejs_version
@@ -1734,7 +1734,7 @@ export const frontendSwPrecacheConfigJs = `module.exports = {
 export const frontendTravisYml = `language: node_js
 dist: trusty
 node_js:
-  - "10"
+  - "14"
 before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
@@ -1859,7 +1859,7 @@ export const libraryApiExtractorJson = `{
 }
 `
 export const libraryAppveyorYml = `environment:
-  nodejs_version: "10"
+  nodejs_version: "14"
 
 install:
   - ps: Install-Product node \$env:nodejs_version
@@ -2069,7 +2069,7 @@ export const librarySrcTsconfigNodejsJson = `{
 export const libraryTravisYml = `language: node_js
 dist: trusty
 node_js:
-  - "10"
+  - "14"
 before_install:
   - git fetch --unshallow || true
 install:
@@ -2109,7 +2109,7 @@ export const libraryTsconfigJson = `{
 }
 `
 export const uiComponentAppveyorYml = `environment:
-  nodejs_version: "10"
+  nodejs_version: "14"
 
 install:
   - ps: Install-Product node \$env:nodejs_version
@@ -2782,7 +2782,7 @@ export const uiComponentStylelintrc = `{
 export const uiComponentTravisYml = `language: node_js
 dist: trusty
 node_js:
-  - "10"
+  - "14"
 before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
