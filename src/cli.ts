@@ -29,7 +29,6 @@ export async function runCLI(context: libs.Context) {
   await libs.appendFile('README.md', variables.cliReadmeMd
     .replace(/REPOSITORY_NAME/g, context.repositoryName)
     .replace(/AUTHOR/g, context.author))
-  await libs.writeFile('.travis.yml', variables.cliTravisYml)
   await libs.writeFile('appveyor.yml', variables.cliAppveyorYml)
   await libs.writeFile('clean-release.config.ts', variables.cliCleanReleaseConfigTs)
   await libs.writeFile('clean-scripts.config.ts', variables.cliCleanScriptsConfigTs)

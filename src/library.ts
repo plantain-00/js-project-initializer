@@ -34,7 +34,6 @@ export async function runLibrary(context: libs.Context) {
     .replace(/AUTHOR/g, context.author)
     .replace(/REPOSITORY_NAME/g, context.repositoryName)
     .replace(/ComponentTypeName/g, context.componentTypeName))
-  await libs.writeFile('.travis.yml', variables.libraryTravisYml)
   await libs.writeFile('appveyor.yml', variables.libraryAppveyorYml)
   await libs.writeFile('clean-release.config.ts', variables.libraryCleanReleaseConfigTs)
   await libs.writeFile('rollup.config.js', variables.libraryRollupConfigJs.replace(/ComponentTypeName/g, context.componentTypeName).replace(/REPOSITORY_NAME/g, context.repositoryName))

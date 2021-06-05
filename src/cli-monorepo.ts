@@ -52,7 +52,6 @@ export async function runCLIMonorepo(context: libs.Context) {
   await libs.appendFile('README.md', variables.cliMonorepoReadmeMd
     .replace(/REPOSITORY_NAME/g, context.repositoryName)
     .replace(/AUTHOR/g, context.author))
-  await libs.writeFile('.travis.yml', variables.cliMonorepoTravisYml)
   await libs.writeFile('appveyor.yml', variables.cliMonorepoAppveyorYml)
   await libs.writeFile('clean-scripts.config.ts', variables.cliMonorepoCleanScriptsConfigTs)
   await libs.writeFile('clean-release.config.ts', variables.cliMonorepoCleanReleaseConfigTs)

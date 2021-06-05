@@ -126,7 +126,6 @@ export async function runUIComponent(context: libs.Context) {
     .replace(/AUTHOR/g, context.author)
     .replace(/COMPONENT_TYPE_NAME/g, context.componentTypeName))
   await libs.writeFile('.stylelintrc', variables.uiComponentStylelintrc)
-  await libs.writeFile('.travis.yml', variables.uiComponentTravisYml)
   await libs.writeFile('appveyor.yml', variables.uiComponentAppveyorYml)
   await libs.writeFile('clean-scripts.config.ts', variables.uiComponentCleanScriptsConfigTs
     .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName))

@@ -24,7 +24,6 @@ export async function runBackend(context: libs.Context) {
   await libs.appendFile('README.md', variables.backendReadmeMd
     .replace(/AUTHOR/g, context.author)
     .replace(/REPOSITORY_NAME/g, context.repositoryName))
-  await libs.writeFile('.travis.yml', variables.backendTravisYml)
   await libs.writeFile('appveyor.yml', variables.backendAppveyorYml)
   await libs.writeFile('clean-release.config.ts', variables.backendCleanReleaseConfigTs
     .replace(/AUTHOR/g, context.author)

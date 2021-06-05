@@ -38,7 +38,6 @@ export async function runElectron(context: libs.Context) {
     .replace(/AUTHOR/g, context.author)
     .replace(/REPOSITORY_NAME/g, context.repositoryName))
   await libs.writeFile('.stylelintrc', variables.electronStylelintrc)
-  await libs.writeFile('.travis.yml', variables.electronTravisYml)
   await libs.writeFile('appveyor.yml', variables.electronAppveyorYml)
   await libs.writeFile('clean-release.config.ts', variables.electronCleanReleaseConfigTs)
   await libs.writeFile('clean-scripts.config.ts', variables.electronCleanScriptsConfigTs)

@@ -45,7 +45,6 @@ export async function runFrontend(context: libs.Context) {
       .replace(/REPOSITORY_NAME/g, context.repositoryName)
       .replace(/AUTHOR/g, context.author))
   await libs.writeFile('sw-precache.config.js', variables.frontendSwPrecacheConfigJs)
-  await libs.writeFile('.travis.yml', variables.frontendTravisYml)
   await libs.writeFile('appveyor.yml', variables.frontendAppveyorYml)
   await libs.writeFile('clean-scripts.config.ts', variables.frontendCleanScriptsConfigTs)
   await libs.writeFile('.browserslistrc', variables.frontendBrowserslistrc)

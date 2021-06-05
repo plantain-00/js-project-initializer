@@ -55,7 +55,6 @@ export async function runBackendWithFrontend(context: libs.Context) {
       .replace(/AUTHOR/g, context.author)
       .replace(/REPOSITORY_NAME/g, context.repositoryName))
   await libs.writeFile('.stylelintrc', variables.backendWithFrontendStylelintrc)
-  await libs.writeFile('.travis.yml', variables.backendWithFrontendTravisYml)
   await libs.writeFile('appveyor.yml', variables.backendWithFrontendAppveyorYml)
   await libs.writeFile('clean-release.config.ts',
     variables.backendWithFrontendCleanReleaseConfigTs

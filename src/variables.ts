@@ -152,7 +152,6 @@ service-worker.js
 export const backendReadmeMd = `
 [![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
 [![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
-[![Build Status: Linux](https://travis-ci.org/AUTHOR/REPOSITORY_NAME.svg?branch=master)](https://travis-ci.org/AUTHOR/REPOSITORY_NAME)
 [![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
 ![Github CI](https://github.com/AUTHOR/REPOSITORY_NAME/workflows/Github%20CI/badge.svg)
 [![type-coverage](https://img.shields.io/badge/dynamic/json.svg?label=type-coverage&prefix=%E2%89%A5&suffix=%&query=\$.typeCoverage.atLeast&uri=https%3A%2F%2Fraw.githubusercontent.com%2FAUTHOR%2FREPOSITORY_NAME%2Fmaster%2Fpackage.json)](https://github.com/AUTHOR/REPOSITORY_NAME)
@@ -187,28 +186,6 @@ export const backendSrcTsconfigJson = `{
     "module": "commonjs"
   }
 }
-`
-export const backendTravisYml = `language: node_js
-dist: trusty
-node_js:
-  - "14"
-before_install:
-  - git fetch --unshallow || true
-install:
-  - yarn install --frozen-lockfile
-script:
-  - npm run build
-  - npm run lint
-  - npm run test
-env:
-  - CXX=g++-4.8
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8
-      - libnss3
 `
 export const backendTsconfigEslintJson = `{
   "extends": "tsconfig-plantain",
@@ -412,7 +389,6 @@ export const backendWithFrontendPostcssConfigJs = `module.exports = {
 export const backendWithFrontendReadmeMd = `
 [![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
 [![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
-[![Build Status: Linux](https://travis-ci.org/AUTHOR/REPOSITORY_NAME.svg?branch=master)](https://travis-ci.org/AUTHOR/REPOSITORY_NAME)
 [![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
 ![Github CI](https://github.com/AUTHOR/REPOSITORY_NAME/workflows/Github%20CI/badge.svg)
 [![type-coverage](https://img.shields.io/badge/dynamic/json.svg?label=type-coverage&prefix=%E2%89%A5&suffix=%&query=\$.typeCoverage.atLeast&uri=https%3A%2F%2Fraw.githubusercontent.com%2FAUTHOR%2FREPOSITORY_NAME%2Fmaster%2Fpackage.json)](https://github.com/AUTHOR/REPOSITORY_NAME)
@@ -550,31 +526,6 @@ export default {
 export const backendWithFrontendStylelintrc = `{
   "extends": "stylelint-config-standard"
 }`
-export const backendWithFrontendTravisYml = `language: node_js
-dist: trusty
-node_js:
-  - "14"
-before_install:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - git fetch --unshallow || true
-install:
-  - yarn install --frozen-lockfile
-script:
-  - npm run build
-  - npm run lint
-  - npm run test
-env:
-  - CXX=g++-4.8
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8
-      - libnss3
-  firefox: latest
-`
 export const backendWithFrontendTsconfigEslintJson = `{
   "extends": "tsconfig-plantain",
   "include": [
@@ -1016,7 +967,6 @@ export const cliMonorepoPackagesCoreSrcTsconfigJson = `{
 export const cliMonorepoReadmeMd = `
 [![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
 [![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
-[![Build Status: Linux](https://travis-ci.org/AUTHOR/REPOSITORY_NAME.svg?branch=master)](https://travis-ci.org/AUTHOR/REPOSITORY_NAME)
 [![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
 ![Github CI](https://github.com/AUTHOR/REPOSITORY_NAME/workflows/Github%20CI/badge.svg)
 [![npm version](https://badge.fury.io/js/REPOSITORY_NAME.svg)](https://badge.fury.io/js/REPOSITORY_NAME)
@@ -1044,28 +994,6 @@ key | description
 import { foo } from 'REPOSITORY_NAME-core'
 \`\`\`
 `
-export const cliMonorepoTravisYml = `language: node_js
-dist: trusty
-node_js:
-  - "14"
-before_install:
-  - git fetch --unshallow || true
-install:
-  - yarn install --frozen-lockfile
-script:
-  - npm run build
-  - npm run lint
-  - npm run test
-env:
-  - CXX=g++-4.8
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8
-      - libnss3
-`
 export const cliMonorepoTsconfigEslintJson = `{
   "extends": "tsconfig-plantain",
   "include": [
@@ -1082,7 +1010,6 @@ export const cliMonorepoTsconfigEslintJson = `{
 export const cliReadmeMd = `
 [![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
 [![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
-[![Build Status: Linux](https://travis-ci.org/AUTHOR/REPOSITORY_NAME.svg?branch=master)](https://travis-ci.org/AUTHOR/REPOSITORY_NAME)
 [![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
 ![Github CI](https://github.com/AUTHOR/REPOSITORY_NAME/workflows/Github%20CI/badge.svg)
 [![npm version](https://badge.fury.io/js/REPOSITORY_NAME.svg)](https://badge.fury.io/js/REPOSITORY_NAME)
@@ -1178,28 +1105,6 @@ export const cliSrcTsconfigJson = `{
     "module": "commonjs"
   }
 }
-`
-export const cliTravisYml = `language: node_js
-dist: trusty
-node_js:
-  - "14"
-before_install:
-  - git fetch --unshallow || true
-install:
-  - yarn install --frozen-lockfile
-script:
-  - npm run build
-  - npm run lint
-  - npm run test
-env:
-  - CXX=g++-4.8
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8
-      - libnss3
 `
 export const cliTsconfigEslintJson = `{
   "extends": "tsconfig-plantain",
@@ -1411,7 +1316,6 @@ export const electronPostcssConfigJs = `module.exports = {
 export const electronReadmeMd = `
 [![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
 [![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
-[![Build Status: Linux](https://travis-ci.org/AUTHOR/REPOSITORY_NAME.svg?branch=master)](https://travis-ci.org/AUTHOR/REPOSITORY_NAME)
 [![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
 ![Github CI](https://github.com/AUTHOR/REPOSITORY_NAME/workflows/Github%20CI/badge.svg)
 [![type-coverage](https://img.shields.io/badge/dynamic/json.svg?label=type-coverage&prefix=%E2%89%A5&suffix=%&query=\$.typeCoverage.atLeast&uri=https%3A%2F%2Fraw.githubusercontent.com%2FAUTHOR%2FREPOSITORY_NAME%2Fmaster%2Fpackage.json)](https://github.com/AUTHOR/REPOSITORY_NAME)
@@ -1469,31 +1373,6 @@ export default {
 export const electronStylelintrc = `{
   "extends": "stylelint-config-standard"
 }`
-export const electronTravisYml = `language: node_js
-dist: trusty
-node_js:
-  - "14"
-before_install:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - git fetch --unshallow || true
-install:
-  - yarn install --frozen-lockfile
-script:
-  - npm run build
-  - npm run lint
-  - npm run test
-env:
-  - CXX=g++-4.8
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8
-      - libnss3
-  firefox: latest
-`
 export const electronTsconfigEslintJson = `{
   "extends": "tsconfig-plantain",
   "include": [
@@ -1692,7 +1571,6 @@ export const frontendPostcssConfigJs = `module.exports = {
 export const frontendReadmeMd = `
 [![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
 [![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
-[![Build Status: Linux](https://travis-ci.org/AUTHOR/REPOSITORY_NAME.svg?branch=master)](https://travis-ci.org/AUTHOR/REPOSITORY_NAME)
 [![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
 ![Github CI](https://github.com/AUTHOR/REPOSITORY_NAME/workflows/Github%20CI/badge.svg)
 [![type-coverage](https://img.shields.io/badge/dynamic/json.svg?label=type-coverage&prefix=%E2%89%A5&suffix=%&query=\$.typeCoverage.atLeast&uri=https%3A%2F%2Fraw.githubusercontent.com%2FAUTHOR%2FREPOSITORY_NAME%2Fmaster%2Fpackage.json)](https://github.com/AUTHOR/REPOSITORY_NAME)
@@ -1730,39 +1608,6 @@ export const frontendSwPrecacheConfigJs = `module.exports = {
     'vendor.bundle-*.js'
   ]
 }
-`
-export const frontendTravisYml = `language: node_js
-dist: trusty
-node_js:
-  - "14"
-before_install:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - git fetch --unshallow || true
-install:
-  - yarn install --frozen-lockfile
-script:
-  - npm run build
-  - npm run lint
-  - npm run test
-env:
-  - CXX=g++-4.8
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8
-      - libnss3
-  firefox: latest
-
-deploy:
-  provider: pages
-  skip-cleanup: true
-  github-token: \$GITHUB_TOKEN
-  keep-history: true
-  on:
-    branch: master
 `
 export const frontendTsconfigEslintJson = `{
   "extends": "tsconfig-plantain",
@@ -2004,7 +1849,6 @@ temp
 export const libraryReadmeMd = `
 [![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
 [![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
-[![Build Status: Linux](https://travis-ci.org/AUTHOR/REPOSITORY_NAME.svg?branch=master)](https://travis-ci.org/AUTHOR/REPOSITORY_NAME)
 [![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
 ![Github CI](https://github.com/AUTHOR/REPOSITORY_NAME/workflows/Github%20CI/badge.svg)
 [![npm version](https://badge.fury.io/js/REPOSITORY_NAME.svg)](https://badge.fury.io/js/REPOSITORY_NAME)
@@ -2065,28 +1909,6 @@ export const librarySrcTsconfigNodejsJson = `{
     "module": "commonjs"
   }
 }
-`
-export const libraryTravisYml = `language: node_js
-dist: trusty
-node_js:
-  - "14"
-before_install:
-  - git fetch --unshallow || true
-install:
-  - yarn install --frozen-lockfile
-script:
-  - npm run build
-  - npm run lint
-  - npm run test
-env:
-  - CXX=g++-4.8
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8
-      - libnss3
 `
 export const libraryTsconfigEslintJson = `{
   "extends": "tsconfig-plantain",
@@ -2674,7 +2496,6 @@ export const uiComponentPostcssConfigJs = `module.exports = {
 export const uiComponentReadmeMd = `
 [![Dependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME)
 [![devDependency Status](https://david-dm.org/AUTHOR/REPOSITORY_NAME/dev-status.svg)](https://david-dm.org/AUTHOR/REPOSITORY_NAME#info=devDependencies)
-[![Build Status: Linux](https://travis-ci.org/AUTHOR/REPOSITORY_NAME.svg?branch=master)](https://travis-ci.org/AUTHOR/REPOSITORY_NAME)
 [![Build Status: Windows](https://ci.appveyor.com/api/projects/status/github/AUTHOR/REPOSITORY_NAME?branch=master&svg=true)](https://ci.appveyor.com/project/AUTHOR/REPOSITORY_NAME/branch/master)
 ![Github CI](https://github.com/AUTHOR/REPOSITORY_NAME/workflows/Github%20CI/badge.svg)
 [![npm version](https://badge.fury.io/js/REPOSITORY_NAME.svg)](https://badge.fury.io/js/REPOSITORY_NAME)
@@ -2779,39 +2600,6 @@ export const uiComponentRevStaticConfigTs = `export default {
 export const uiComponentStylelintrc = `{
   "extends": "stylelint-config-standard"
 }`
-export const uiComponentTravisYml = `language: node_js
-dist: trusty
-node_js:
-  - "14"
-before_install:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - git fetch --unshallow || true
-install:
-  - yarn install --frozen-lockfile
-script:
-  - npm run build
-  - npm run lint
-  - npm run test
-env:
-  - CXX=g++-4.8
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8
-      - libnss3
-  firefox: latest
-
-deploy:
-  provider: pages
-  skip-cleanup: true
-  github-token: \$GITHUB_TOKEN
-  keep-history: true
-  on:
-    branch: master
-`
 export const uiComponentTsconfigEslintJson = `{
   "extends": "tsconfig-plantain",
   "include": [

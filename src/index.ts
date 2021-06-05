@@ -67,7 +67,7 @@ async function run() {
   await libs.writeFile('.github/ISSUE_TEMPLATE.md', issueTemplate)
   await libs.writeFile('.github/PULL_REQUEST_TEMPLATE.md', pullRequestTemplate)
   await libs.mkdir('.github/workflows')
-  await libs.writeFile('.github/workflows/github-ci.yaml', githubCI)
+  await libs.writeFile('.github/workflows/github-ci.yaml', githubCI(kind === libs.ProjectKind.UIComponent || kind === libs.ProjectKind.frontend))
 
   let newPackageJson: PackageJson = {}
 
@@ -261,7 +261,7 @@ const pullRequestTemplate = `#### Fixes(if relevant):
 + [ ] Add Demo(if relevant)
 `
 
-const githubCI = `name: Github CI
+const githubCI = (page: boolean) => `name: Github CI
 
 on:
   push:
@@ -275,7 +275,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [14.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -288,6 +288,14 @@ jobs:
     - run: npm run build
     - run: npm run lint
     - run: npm run test
+${page ? `    - name: Deploy to GitHub Pages
+      if: github.ref == 'refs/heads/master'
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: \${{ secrets.GITHUB_TOKEN }}
+        commit_message: \${{ github.event.head_commit.message }}
+        publish_dir: .
+        keep_files: true` : ''}
       env:
         CI: true
 `
