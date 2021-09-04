@@ -188,7 +188,7 @@ async function getContext(): Promise<libs.Context> {
     if (repositoryUrl) {
       const items = repositoryUrl.split('/')
       if (items.length >= 4) {
-        author = items[3]
+        author = items[3]!
       }
     }
   }
