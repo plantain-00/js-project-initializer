@@ -67,7 +67,7 @@ export async function runUIComponent(context: libs.Context) {
     .replace(/ComponentTypeName/g, context.componentTypeName)
     .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName))
   await libs.writeFile(`packages/react/src/tsconfig.json`, variables.uiComponentPackagesReactSrcTsconfigJson)
-  await libs.writeFile(`packages/react/src/rollup.config.js`, variables.uiComponentPackagesReactSrcRollupConfigJs
+  await libs.writeFile(`packages/react/src/rollup.config.mjs`, variables.uiComponentPackagesReactSrcRollupConfigMjs
     .replace(/ComponentTypeName/g, context.componentTypeName)
     .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName))
 
@@ -102,7 +102,7 @@ export async function runUIComponent(context: libs.Context) {
   await libs.writeFile(`packages/vue/src/tsconfig.json`, variables.uiComponentPackagesVueSrcTsconfigJson)
   await libs.writeFile(`packages/vue/src/file2variable.config.ts`, variables.uiComponentPackagesVueSrcFile2VariableConfigTs
     .replace(/COMPONENT_TYPE_NAME/g, context.componentTypeName))
-  await libs.writeFile(`packages/vue/src/rollup.config.js`, variables.uiComponentPackagesVueSrcRollupConfigJs
+  await libs.writeFile(`packages/vue/src/rollup.config.mjs`, variables.uiComponentPackagesVueSrcRollupConfigMjs
     .replace(/ComponentTypeName/g, context.componentTypeName)
     .replace(/COMPONENT_SHORT_NAME/g, context.componentShortName))
 

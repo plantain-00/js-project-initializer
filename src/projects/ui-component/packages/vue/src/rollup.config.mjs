@@ -1,6 +1,6 @@
-const { uglify } = require('rollup-plugin-uglify')
-const resolve = require('@rollup/plugin-node-resolve')
-const commonjs = require('@rollup/plugin-commonjs')
+import { uglify } from 'rollup-plugin-uglify'
+import commonjs from '@rollup/plugin-commonjs'
+import resolve from '@rollup/plugin-node-resolve'
 
 export default {
   input: 'packages/vue/dist/index.js',

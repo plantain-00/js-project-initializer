@@ -32,12 +32,12 @@ export default {
           vue: [
             vueTemplateCommand,
             tscVueSrcCommand,
-            isDev ? undefined : `rollup --config packages/vue/src/rollup.config.js`,
+            isDev ? undefined : `rollup --config packages/vue/src/rollup.config.mjs`,
             webpackVueCommand
           ],
           react: [
             tscReactSrcCommand,
-            isDev ? undefined : `rollup --config packages/react/src/rollup.config.js`,
+            isDev ? undefined : `rollup --config packages/react/src/rollup.config.mjs`,
             webpackReactCommand
           ]
         }
