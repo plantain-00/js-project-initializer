@@ -1867,8 +1867,8 @@ import ComponentTypeName from "REPOSITORY_NAME";
 // <script src="./node_modules/REPOSITORY_NAME/REPOSITORY_NAME.min.js"></script>
 \`\`\`
 `
-export const libraryRollupConfigJs = `import { uglify } from 'rollup-plugin-uglify'
-import resolve from '@rollup/plugin-node-resolve'
+export const libraryRollupConfigJs = `const { uglify } = require('rollup-plugin-uglify')
+const resolve = require('@rollup/plugin-node-resolve')
 
 export default {
   input: 'dist/browser/index.js',
@@ -2294,9 +2294,9 @@ export function ComponentTypeName() {
   )
 }
 `
-export const uiComponentPackagesReactSrcRollupConfigJs = `import { uglify } from 'rollup-plugin-uglify'
-import resolve from '@rollup/plugin-node-resolve'
-import commonjs from '@rollup/plugin-commonjs'
+export const uiComponentPackagesReactSrcRollupConfigJs = `const { uglify } = require('rollup-plugin-uglify')
+const resolve = require('@rollup/plugin-node-resolve')
+const commonjs = require('@rollup/plugin-commonjs')
 
 export default {
   input: 'packages/react/dist/index.js',
@@ -2458,9 +2458,9 @@ export const FileUploader = defineComponent({
   render: indexTemplateHtml,
 })
 `
-export const uiComponentPackagesVueSrcRollupConfigJs = `import { uglify } from 'rollup-plugin-uglify'
-import resolve from '@rollup/plugin-node-resolve'
-import commonjs from '@rollup/plugin-commonjs'
+export const uiComponentPackagesVueSrcRollupConfigJs = `const { uglify } = require('rollup-plugin-uglify')
+const resolve = require('@rollup/plugin-node-resolve')
+const commonjs = require('@rollup/plugin-commonjs')
 
 export default {
   input: 'packages/vue/dist/index.js',
