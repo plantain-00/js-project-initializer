@@ -37,14 +37,12 @@
   "dependencies": {
     "inquirer": "8 || 9",
     "minimist": "1",
-    "mkdirp": "1",
     "tslib": "1 || 2",
     "uppercamelcase": "3"
   },
   "devDependencies": {
     "@types/inquirer": "8.2.1",
     "@types/minimist": "1.2.2",
-    "@types/mkdirp": "1.0.2",
     "@types/uppercamelcase": "3.0.0",
     "@typescript-eslint/eslint-plugin": "5.42.0",
     "@typescript-eslint/parser": "5.42.0",

@@ -1,9 +1,9 @@
 import * as inquirer from 'inquirer'
 import * as childProcess from 'child_process'
 import * as fs from 'fs'
-import mkdirp from 'mkdirp'
 import upperCamelCase from 'uppercamelcase'
 import minimist from 'minimist'
+import { promisify } from 'util'
 
 export { inquirer, upperCamelCase, minimist }
 
@@ -52,7 +52,10 @@ export function appendFile(filename: string, data: string) {
   })
 }
 
-export const mkdir = mkdirp
+const mkdirp = promisify(fs.mkdir)
+export const mkdir = async (p: string) => {
+  await mkdirp(p, { recursive: true })
+}
 
 export const enum ProjectKind {
   CLI = 'CLI',
